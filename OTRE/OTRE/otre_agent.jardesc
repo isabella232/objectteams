@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="org.eclipse.objectteams.otdt/lib/otre_agent.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/OTRE/otre_agent.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="false" manifestLocation="/OTRE/MANIFEST.MF">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=OTRE/src&lt;org.eclipse.objectteams.otre.jplis{otreAgent.java"/>
+    </selectedElements>
+</jardesc>
