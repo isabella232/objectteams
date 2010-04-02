@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otdt"
+      label="Object Teams Development Tooling"
+      version="1.4.0.qualifier"
+      provider-name="Eclipse Object Teams Project"
+      plugin="org.eclipse.objectteams.otdt"
+      image="OTDT-110.png">
+
+   <description url="http://www.eclipse.org/objectteams">
+This Eclipse Plug-In feature supports development with Object Teams
+and the OT/J programming language (see http://www.eclipse.org/objectteams). 
+It extends all of the Eclipse Java development tools
+to support development with Object Teams
+throughout all views and development activities.
+   </description>
+
+   <copyright>
+The software &quot;Object Teams Development Tooling&quot; (OTDT) is a result of
+the joint project TOPPrax and has been developed in collaboration between the 
+Fraunhofer Institut für Rechnerarchitektur und Softwaretechnik (FIRST)
+and the Technische Unversität Berlin.
+
+The software consists of three distinguishable parts:
+- A compiler for OT/J (Compiler),
+- A graphical user interface (GUI) and
+- A runtime environment for OT/J (Runtime).
+The copyright is held by the Technische Universität (Compiler and Runtime)
+and by the Fraunhofer Gesellschaft, München, Deutschland,
+for its Fraunhofer Institut für Rechnerarchitektur und Softwaretechnik
+(FIRST) (Compiler and GUI) and others.
+This software is based on Eclipse and the Java Development Tooling
+(JDT) of which it contains parts.
+Authors:
+	Andreas Kaiser
+	Carsten Pfeiffer
+	Christine Hering
+	Christine Hundt
+	Gregor Brcan
+	Jan Wloka
+	Jaroslav Svacina
+	Joachim Hänsel
+	Johannes Gebauer
+	Jürgen Widiker
+	Karsten Meier
+	Marco Mosconi
+	Markus Witte
+	Michael Krüger
+	Ralf Anklam
+	Sascha Kolewa
+	Stephan Herrmann
+Project Leader:
+	Stephan Herrmann
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+
+   <url>
+      <update label="Object Teams Updates" url="http://www.eclipse.org/downloads/download.php?file=/objectteams/otdt-updates-0.7"/>
+      <discovery label="Object Teams Updates" url="http://www.eclipse.org/downloads/download.php?file=/objectteams/otdt-updates-0.7"/>
+   </url>
+
+   <includes
+         id="org.eclipse.objectteams.otdt.core.patch"
+         version="1.4.0.qualifier"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.update.core"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt"
+         download-size="189"
+         install-size="228"
+         version="1.4.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.debug"
+         download-size="39"
+         install-size="39"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.debug.ui"
+         download-size="84"
+         install-size="84"
+         version="1.3.2.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.ui"
+         download-size="285"
+         install-size="285"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.ui.help"
+         download-size="778"
+         install-size="3180"
+         version="1.4.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.metrics"
+         download-size="123"
+         install-size="123"
+         version="1.3.2.qualifier"
+         unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.objectteams.jdt.ui.adaptor"
+         download-size="427"
+         install-size="427"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.compiler.adaptor"
+         download-size="146"
+         install-size="146"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.debug.adaptor"
+         download-size="10"
+         install-size="10"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.pde.ui"
+         download-size="16"
+         install-size="16"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.refactoring.adaptor"
+         download-size="77"
+         install-size="77"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.samples"
+         download-size="398"
+         install-size="752"
+         version="1.4.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otdt.apt.adaptor"
+         download-size="15"
+         install-size="15"
+         version="1.4.0.qualifier"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otdt-tests"
+      label="OTDT Development Tools Unit Tests"
+      version="1.2.4"
+      provider-name="Eclipse Object Teams Project">
+
+   <description>
+This is a build-time-only feature for testing the Object Teams Development Tooling.
+   </description>
+
+   <copyright>
+      The software &quot;Object Teams Development Tooling&quot; (OTDT) is a
+result of the joint project TOPPrax and has been developed in
+collaboration between 
+the Fraunhofer Institut für Rechnerarchitektur und Softwaretechnik
+(FIRST) 
+and the Technische Unversität Berlin. 
+The software consists of three distinguishable parts:
+- A compiler for OT/J (Compiler),
+- A graphical user interface (GUI) and
+- A runtime environment for OT/J (Runtime).
+The copyright is held by the Technische Universität (Compiler
+and Runtime)
+and by the Fraunhofer Gesellschaft, München, Deutschland,
+for its Fraunhofer Institut für Rechnerarchitektur und Softwaretechnik
+(FIRST) (Compiler and GUI) and others.
+This software is based on Eclipse and the Java Development Tooling
+(JDT) of which it contains parts.
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+
+   <requires>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.debug"/>
+      <import plugin="org.eclipse.team.core"/>
+      <import plugin="org.eclipse.text"/>
+   </requires>
+
+
+   <plugin
+         id="org.eclipse.test.performance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.core.tests.compiler"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.core.tests.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.core.tests.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.objectteams.otdt.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.ui.tests.refactoring"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.debug.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.jdt.ui.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+    
+   <plugin
+         id="org.objectteams.otdt.debug.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.objectteams.otdt.ui.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.objectteams.otdt.ui.tests.dom"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.objectteams.otdt.ui.tests.refactoring"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+    <plugin
+         id="org.objectteams.otdt.test.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+</feature>

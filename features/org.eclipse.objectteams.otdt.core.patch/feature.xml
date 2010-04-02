@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otdt.core.patch"
+      label="OTDT Core Patch Feature"
+      version="1.4.0.qualifier"
+      provider-name="Eclipse Object Teams Project"
+      plugin="org.eclipse.jdt.core">
+
+   <description url="http://www.eclipse.org/objectteams">
+      This feature updates the org.eclipse.jdt.core plugin 
+by the corresponding version for Object Teams.
+This update makes the JDT Core able to handle OT/J code.
+   </description>
+
+   <copyright>
+      The software &quot;Object Teams Development Tooling&quot; (OTDT) is a result of 
+the joint project TOPPrax and has been developed in collaboration between the 
+Fraunhofer Institut f&#252;r Rechnerarchitektur und Softwaretechnik (FIRST)
+and the Technische Unversit&#228;t Berlin.
+
+This feature contains the modified Java Development Tooling Core 
+capable of handling OT/J code.
+
+The copyright is held by the Technische Universit&#228;t 
+and by the Fraunhofer Gesellschaft, M&#252;nchen, Deutschland,
+for its Fraunhofer Institut f&#252;r Rechnerarchitektur und Softwaretechnik
+(FIRST) and others.
+
+This software is based on Eclipse and the Java Development Tooling
+(JDT) of which it contains parts.
+
+Authors:
+ Andreas Kaiser
+ Carsten Pfeiffer
+ Christine Hering
+ Christine Hundt
+ Gregor Brcan
+ Jan Wloka
+ Jaroslav Svacina
+ Joachim H&#228;nsel
+ J&#252;rgen Widiker
+ Karsten Meier
+ Marco Mosconi
+ Markus Witte
+ Michael Kr&#252;ger
+ Ralf Anklam
+ Sascha Kolewa
+ Stephan Herrmann
+Project Leader:
+ Stephan Herrmann
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+
+   <url>
+      <update label="Object Teams Updates" url="http://www.eclipse.org/downloads/download.php?file=/objectteams/otdt-updates-0.7"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.jdt" version="3.6.0.v20100124-2000-7z8WFRAFMTdeCo0y7FJt1Zi45027" patch="true"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.jdt.core"
+         download-size="5380"
+         install-size="5380"
+         version="3.6.0.v_OTDT_r140_qualifier"
+         unpack="false"/>
+
+</feature>
