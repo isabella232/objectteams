@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Trac132 Base Plug-in
+Bundle-SymbolicName: Trac132b; singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.ui
+Export-Package: trac132b.api,
+ trac132b.actions;x-internal:=true

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Trac154 base Plug-in 2
+Bundle-SymbolicName: Trac154b2
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: Trac154b1;bundle-version="1.0.0",
+ org.eclipse.ui

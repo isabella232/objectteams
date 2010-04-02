@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Trac304f
+Bundle-SymbolicName: Trac304f
+Bundle-Version: 1.0.0
+Fragment-Host: Trac304b
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: fragment304

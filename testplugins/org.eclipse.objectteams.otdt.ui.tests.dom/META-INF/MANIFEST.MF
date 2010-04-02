@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-Name: OTDT DOMTest Plug-in
+Bundle-SymbolicName: org.eclipse.objectteams.otdt.ui.tests.dom;singleton:=true
+Bundle-Version: 1.3.0
+Bundle-ClassPath: otdt-domtests.jar
+Bundle-Activator: org.eclipse.objectteams.otdt.ui.tests.dom.DOMTestPlugin
+Bundle-Vendor: The TOPPrax consortium
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit,
+ org.eclipse.objectteams.otdt.tests,
+ org.eclipse.jdt.core.tests.model,
+ org.eclipse.jdt.core.tests.compiler,
+ org.eclipse.jdt.core,
+ org.eclipse.jface.text,
+ org.eclipse.test.performance,
+ org.eclipse.core.resources,
+ org.eclipse.objectteams.otdt
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.objectteams.otdt.ui.tests.dom,
+ org.eclipse.objectteams.otdt.ui.tests.dom.bindings,
+ org.eclipse.objectteams.otdt.ui.tests.dom.converter,
+ org.eclipse.objectteams.otdt.ui.tests.dom.rewrite
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

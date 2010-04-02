@@ -1,0 +1,18 @@
+The data setting looks like this inside this package:
+
+package rolehierarchy2:
+		Team1
+		^	- R1 --------------------- playedBy Base1
+		|		- m1()                          	- b1(), b2()
+		|		- m2()
+		|		- m3()
+		Team2
+		^	- R1
+		|		- m1 -> b1
+		|
+		Team3
+		^	- R1
+		|		- m2 -> b2
+		|
+		Team4
+			-R1
