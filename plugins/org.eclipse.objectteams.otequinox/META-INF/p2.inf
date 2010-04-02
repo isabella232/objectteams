@@ -1,0 +1,10 @@
+instructions.install = \
+	setProgramProperty(propName:osgi.hook.configurators.include,propValue:org.eclipse.objectteams.otequinox.hook.HookConfigurator); \
+	setProgramProperty(propName:osgi.classloader.singleThreadLoads,propValue:false); \
+	setProgramProperty(propName:osgi.classloader.lock,propValue:classname); \
+	setProgramProperty(propName:ot.equinox,propValue:1);
+instructions.uninstall = \
+	setProgramProperty(propName:osgi.hook.configurators.include,propValue:); \
+	setProgramProperty(propName:osgi.classloader.singleThreadLoads,propValue:); \
+	setProgramProperty(propName:osgi.classloader.lock,propValue:); \
+	setProgramProperty(propName:ot.equinox,propValue:);

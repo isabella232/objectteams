@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <meta name="copyright" content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+	<link rel=stylesheet type="text/css" href="../css/book.css">
+	<link rel=stylesheet type="text/css" href="otjld/css/ot.css">
+	<style type="text/css">
+		body { margin:10px; }
+		.high { background-color:#a5b7bd;color:white; }
+		.low { background-color:#fff0c8; padding:2px; }
+		.caption { text-decoration:underline; vertical-align:top;position:relative;top:20px; margin-top:10px;}
+	</style>
+    <title>OT/J content/code assist</title>
+    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  </head>
+  <body>
+	<h1 align="center">OT/J code completion<a name="completion"></a></h1>
+	<u>On this page:</u>
+	<br /><a href="#completeBase">1. Completing a role's base class</a>
+	<br /><a href="#completeMapping">2. Creating callout/callin method bindings</a>
+	<br /><a href="#completeCall">3. Completing special method calls</a>
+	<br /><a href="#completeTemplate">4. Completion templates</a>
+	
+    <h2><a name="completeBase">1. Completing a role's base class</a></h2>
+        When expanding the base type after the keyword <code class="keyword">playedBy</code>,
+        completion will also generate an "<code class="keyword">import <strong>base</strong> ...</code>" declaration 
+        (<a href="otjld/def/s2.html#s2.1.2.d"><img src="../icons/ot_paragraph.gif"> 2.1.2(d)</a>), if needed.
+        
+
+	<h2><a name="completeMapping">2. Creating callout/callin method bindings</a></h2>
+	
+	Specific support for code completion exists to facilitate the creation of <b>callout</b> (<a href="otjld/def/s3.html"><img src="../icons/ot_paragraph.gif"> 3.</a>) and <b>callin</b> (<a href="otjld/def/s4.html"><img src="../icons/ot_paragraph.gif"> 4.</a>) method bindings.<br />
+	Completion can be used for
+	<ul>
+	<li><a href="#full">Creating full method bindings (callout/callin)</a>
+	<li><a href="#partial">Completing partial callout/callin bindings</a>
+	<li><a href="#correct">Corrections after callin creation.</a>
+	</ul>
+	
+	<h3><a name="full">2.1 Creating full method bindings (callout/callin)</a></h3>
+	Just activating the completion anywhere in the body of a role class allows you to create a full callout or callin binding to an existing base method (or field &mdash; "callout to field", see <a href="otjld/def/s3.html#s3.5"><img src="../icons/ot_paragraph.gif"> 3.5</a>).<br />
+	<table>
+	<tr><td colspan=2>
+	After pressing <code>Ctrl-space</code>, selection of the desired binding happens in three steps: 
+	<tr><td class="caption">a) Select a base method</td>
+	<td><img src="images/screenshots/complete_binding_1.png">
+	<tr><td class="caption">b) Change the role method name if desired.</td>
+	<td><img src="images/screenshots/complete_binding_2.png">
+	<tr><td class="caption">c) Select the binding kind.</td>
+	<td><img src="images/screenshots/complete_binding_3.png">
+	</table>
+	<h4>2.1.1 Creating callout to field</h4>
+	<p>	
+	Two additional kinds of callouts can be generated, by typing "<code>get</code>" or "<code>set</code>" before invoking completion:
+	<table class="border" cellpadding=3>
+	<tr class="z2"><td>after typing <code class="keyword">get</code>
+	<td>Create a callout to field <i>getter</i>.</tr>
+	<tr class="z3">
+	<td>after typing <code class="keyword">set</code>
+	<td>Create a callout to field <i>setter</i>.
+        </table>
+    </p> 
+    <h4>2.1.2 Mapping signatures using lifting/lowering</h4>
+    <p>
+    When binding to a base method/field, whose signature contains other base types for which a bound role exists in the current team,
+    completion lets you select whether the role side of the binding should use base or role types.
+    If role types are selected, they will be conform to the corresponding base type by implicitly using lifting (<a href="otjld/def/s2.html#s2.3"><img src="../icons/ot_paragraph.gif"> 2.3</a>) or lowering (<a href="otjld/def/s2.html#s2.2"><img src="../icons/ot_paragraph.gif"> 2.2</a>).
+    </p>
+    
+    <h3><a name="partial">2.2 Completing partial callin/callout bindings</a></h3>
+        <p>
+        If a callin or callout binding has been typed up-to and including the "<code class="keyword">&lt;-</code>" or "<code class="keyword">-&gt;</code>" token, completion can be used to expand the right hand side specifying the base method or field. For callin bindings you may optionally first type the callin modifier (<code class="keyword">before, replace</code> or <code class="keyword">after</code>). Otherwise you will be prompted for the desired callin modifier.
+        In this case the proposed modifier is inferred to match the bound base method:<br />
+        <table class="border">
+        <tr class="z2"><td>regular method<td>Default is <code class="keyword">before</code> (also <code class="keyword">after</code> is legal).
+        <tr class="z3"><td><code class="keyword">callin</code> method<td>Default is <code class="keyword">replace</code>
+        </table>
+        </p><p>
+        Normally, after "<code class="keyword">-&gt;</code>" (as well as for "<code class="keyword">&lt;-</code>") completion will try to expand a base <i>method</i>, if for a callout one of the modifiers <code>get</code> or <code>set</code> has been typed, a <i>field</i> is searched instead.
+        
+    <h3><a name="correct">2.3 Corrections after callin creation</a></h3>
+        After generating a callin binding using completion, the following two corrections might be especially helpful:
+        <ul>
+        <li>Adjusting the role method's <code class="keyword">callin</code> modifier, to match the binding's callin modifier.
+        <li>Creating a missing role method.
+        </ul>
+        Both corrections can easily be performed by a <a href="quickfix.html">quickfix</a> offered on the erroneous role method spec.
+
+	<h2><a name="completeCall">3. Completing special method calls</a></h2>
+	<ul>
+	<li>After <code class="keyword">base.</code> (<a href="otjld/def/s4.html#s4.3"><img src="../icons/ot_paragraph.gif"> 4.3</a>) and <code class="keyword">tsuper.</code> (<a href="otjld/def/s1.html#s1.3.1.f"><img src="../icons/ot_paragraph.gif"> 1.3.1(f)</a>) completion offers only those methods that are actually legal in this context,
+	 which in bose cases implies the same name and signature as the surrounding role (callin) method.</li>
+	<li>Completion also offers calls to members of the bound base class which are implicitly available using <b>inferred callout</b> (<a href="otjld/def/s3.html#s3.1.j"><img src="../icons/ot_paragraph.gif"> 3.1(j)</a>, <a href="otjld/def/s3.html#s3.5.h"><img src="../icons/ot_paragraph.gif"> 3.5(h)</a>)
+    </ul>        
+    <h2><a name="completeTemplate">4. Completion templates</a></h2>
+	 Content assist in the
+	form of <a href="/help/topic/org.eclipse.jdt.doc.user/concepts/ctemplates.htm">
+	templates</a> exists for a few specific OT/J language constructs like <span class="low"><code class="keyword">within</code> (<i>Expression</i>)</span>.
+	</p>
+	

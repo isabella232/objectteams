@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<cheatsheet title="Simple Object Teams Program">
+
+	<intro 
+		href="/org.eclipse.platform.doc.user/reference/ref-cheatsheets.htm">
+		<description>
+			Welcome to the Object Teams tutorial.
+			It will help you build a small Object Teams program.
+			You will create an <b>Object Teams project</b>, a <b>Base class</b>,
+			a <b>Team class</b> and a <b>Role class</b> which contains two
+			kinds of bindings: a <b>callout binding</b> and a <b>callin binding</b>.
+			Let's get started!
+		</description>
+	</intro>
+
+	<item
+		href="/org.eclipse.platform.doc.user/concepts/concepts-4.htm"
+		title="Open the Object Teams Perspective">
+		<action
+			pluginId="org.eclipse.ui.cheatsheets"
+			class="org.eclipse.ui.internal.cheatsheets.actions.OpenPerspective"
+			param1="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"/>
+		<description>
+			Select <b>Window-&gt;Open Perspective-&gt;Object Teams</b> in the menubar at
+			the top of the workbench. This step changes the perspective to
+			set up the Eclipse workbench for Object Teams development. You can
+			click the "Click to Perform" button to have the "Object Teams"
+			perspective opened automatically.
+		</description>
+	</item>
+
+	<item
+		title="Create an Object Teams Project"
+		skip="true">
+		<action
+			pluginId="org.eclipse.objectteams.otdt.ui"
+			class="org.eclipse.objectteams.otdt.internal.ui.wizards.OpenOTProjectWizardAction"/>
+		<description>
+			The first thing you will need is an Object Teams project. If you
+			already have an Object Teams project in your workspace that you
+			would like to use, you may skip this step by clicking the
+			"Click to Skip" button. If not, select <b>File-&gt;New-&gt;Project...</b>
+			and choose <b>Object Teams Project</b> in the list. Complete the subsequent
+			pages as required. The "New Object Teams Project" wizard will be automatically
+			displayed when you click the "Click to Perform" button.
+			After creating the project, it will appear in the <b>OT Package Explorer</b>
+			view. Select the project by clicking it with the mouse, so that the next actions
+			will know that they apply to this project.
+		</description>
+	</item>
+
+	<item
+		href="/org.eclipse.jdt.doc.user/gettingStarted/qs-9.htm" 
+		title="Create a Base class"
+		skip="true">
+		<action
+			pluginId="org.eclipse.jdt.ui"
+			class="org.eclipse.jdt.ui.actions.OpenNewClassWizardAction"/>
+		<description>
+			You should now have an Object Teams project in your workspace. The
+			next step in building your Object Teams application is to first
+			create a normal (Base) class. You may do this by either clicking 
+			the "Click to Perform" button below to launch the "New Java Class"
+			wizard, or you may use the Eclipse tools to do it, by using the 
+			<b>File-&gt;New-&gt;Class</b> action. Name your class for example
+			"<b>MyBase</b>". If you do not use the "Click to Perform" button below,
+			click the "Click to Skip" button to advance to the next step in
+			building your Object Teams application.
+		</description>
+	</item>
+
+	<item
+		title="Add two methods to your Base class">
+		<description>
+			Now that you have your MyBase class, add, e.g., the following two
+			methods:
+			<br/><b>public void hello() { System.out.println("Hello"); }</b><br/>
+			and
+			<br/><b>public String getWorld() { return "World"; }</b><br/>
+			and save your changes. The first method will be used in a callin binding,
+			the other in a callout binding. These bindings will be members of a
+			Role class which you are going to create in a minute. Click the 
+			"Click to Complete" button below when finished.
+		</description>
+	</item>
+
+	<item
+		title="Create a Team class"
+		skip="true">
+		<action
+			pluginId="org.eclipse.objectteams.otdt.ui"
+			class="org.eclipse.objectteams.otdt.internal.ui.wizards.OpenTeamWizardAction"/>
+		<description>
+			The next step in building your Object Teams application is to create a
+			Team class, which is going to be the enclosing context for the Role class.
+			You may do this by either clicking the "Click to Perform" button
+			below to launch the "New Team Class wizard", or you may use the Eclipse
+			tools to do it, by using the <b>File-&gt;New-&gt;Team</b> action.
+			Name your class, e.g. "<b>MyTeam</b>". If you do not use the "Click to Perform"
+			button below, click the "Click to Skip" button to advance to the next
+			step in building your Object Teams application.
+		</description>
+	</item>
+
+	<item
+		title="Create a Role class"
+		skip="true">
+		<action
+			pluginId="org.eclipse.objectteams.otdt.ui"
+			class="org.eclipse.objectteams.otdt.internal.ui.wizards.OpenRoleWizardAction"/>
+		<description>
+			The next step in building your Object Teams application is to create a
+			Role class for the previously created Team class.
+			You may do this by either clicking the "Click to Perform" button
+			below to launch the New Role Class wizard, or you may use the Eclipse
+			tools to do it, by using the <b>File-&gt;New-&gt;Role</b> action.
+			Name your class, e.g. "<b>MyRole</b>".	Enter the name of the enclosing Team
+			you have created before, in this case "MyTeam". Now bind the Role class to
+			your previously created Base class, either by typing in its name ("MyBase")
+			into the designated input field, or by choosing the Base class after clicking 
+			the "Browse..." button next to the input field.	If you do not use the "Click
+			to Perform" button below, click the "Click to Skip" button to advance to the
+			next step.
+		</description>
+	</item>
+
+	<item
+		title="Add two methods and two different bindings to your Role class">
+		<description>
+			Now that you have your "MyRole" class, add, e.g., the following two
+			methods:
+			<br/><b>public abstract String getAddressee();</b><br/>
+			and 
+			<br/><b>public void greet() { System.out.println(getAddressee()); }</b><br/>
+			These are the Role methods that will be bound in a callout and callin
+			binding respectively. Let's add a callout binding:
+			<br/><b>getAddressee -&gt; getWorld;</b><br/>
+			and a callin binding: 
+			<br/><b>greet &lt;- after hello;</b><br/>
+			and save your changes. Click the "Click to Complete" button below when finished.
+		</description>
+	</item>
+	
+	<item
+		title="Add a main method.">
+		<description>
+			In order to complete your application, add a main method to your Team class:
+			<br/><b>public static void main(String[] args) {</b>
+			<br/><b>MyTeam myTeam = new MyTeam();</b>
+			<br/><b>myTeam.activate();</b>
+			<br/><b>new MyBase().hello();</b>
+			<br/><b>}</b><br/>
+			Click the "Click to Complete" button below when finished.
+		</description>
+	</item>
+
+	<item
+		href="/org.eclipse.jdt.doc.user/gettingStarted/qs-12.htm"
+		title="Tutorial finished!">
+		<description>
+			Congratulations! You have built your first Object Teams program. Now let's run it!
+			Open the <b>Run-Configuration</b> by choosing in the menubar <b>Run->Run...</b>. 
+			Select <b>New Object Teams Application</b>
+			and click the "New" button at the bottom. Your project's name and main-class should
+			already be in place, otherwise please add them manually. All other settings can keep
+			their defaults, so simply press the <b>Run</b> button and watch the <b>Console</b>
+			view appear, showing the application's output!			
+			That's it, you are now ready for Object Teams development!
+		</description>
+	</item>
+			
+</cheatsheet>

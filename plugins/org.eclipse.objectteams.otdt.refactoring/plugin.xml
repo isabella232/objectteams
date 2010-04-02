@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.objectteams.otequinox.aspectBindings">
+      <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin
+               id="org.eclipse.jdt.ui"
+               icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif">
+         </basePlugin>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.RenameAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.ReorgAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.CorextAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.MoveAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.corext.rename.RolePartsUnifier"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.pullup.PullUpAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.RenameTypeAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.MoveInstanceMethodAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.pushdown.PushDownAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.ActionGroupAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+      </aspectBinding>
+      <aspectBinding
+            icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin
+               icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+               id="org.eclipse.jdt.core">
+         </basePlugin>
+         <team
+               activation="NONE"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.pullup.OTTypeHierarchyAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="NONE"
+               class="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.PhantomTypeAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+      </aspectBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Action set containing OT/J refactoring actions"
+            id="org.eclipse.objectteams.otdt.internal.refactoring.actionSet"
+            label="OT/J Refactor">
+<!-- Copy&Paste from JDT.UI as per https://bugs.eclipse.org/bugs/show_bug.cgi?id=15670 -->
+         <menu
+               label="%Refactoring.menu.label"
+               path="edit"
+               id="org.eclipse.jdt.ui.refactoring.menu">
+            <separator name="undoRedoGroup"/>
+            <separator name="reorgGroup"/>
+            <separator name="codingGroup"/>
+            <separator name="reorgGroup2"/>
+            <separator name="typeGroup"/>
+            <separator name="typeGroup2"/>
+            <separator name="codingGroup2"/>
+            <separator name="typeGroup3"/>
+            <separator name="scriptGroup"/>
+         </menu>
+<!-- -->
+         <action
+               class="org.eclipse.objectteams.otdt.internal.refactoring.otrefactorings.extractcallin.ExtractCallinAction"
+               definitionId="org.eclipse.objectteams.otdt.refactoring.extract.callin"
+               id="org.eclipse.objectteams.otdt.internal.refactoring.adaptor.action2"
+               label="%Extract.callin.label"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/callinbinding_obj.gif"
+               menubarPath="org.eclipse.jdt.ui.refactoring.menu/codingGroup"
+               style="push"
+               tooltip="%Extract.callin.tooltip">
+         </action>
+         <action
+			   class="org.eclipse.objectteams.otdt.internal.refactoring.otrefactorings.inlinecallin.InlineCallinAction"
+               definitionId="org.eclipse.objectteams.otdt.refactoring.inline.callin"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/callinbinding_obj.gif"
+               id="org.eclipse.objectteams.otdt.internal.refactoring.InlineCallin"
+               label="%Inline.callin.label"
+               menubarPath="org.eclipse.jdt.ui.refactoring.menu/codingGroup"
+               style="push">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            name="%ActionDefinition.inline.callin.name"
+            description="%ActionDefinition.inline.callin.description"
+            categoryId="org.eclipse.jdt.ui.category.refactoring"
+            id="org.eclipse.objectteams.otdt.refactoring.inline.callin">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            name="%ActionDefinition.extract.callin.name"
+            description="%ActionDefinition.extract.callin.description"
+            categoryId="org.eclipse.jdt.ui.category.refactoring"
+            id="org.eclipse.objectteams.otdt.refactoring.extract.callin">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.objectteams.otdt.ui.OTJavaPerspective">
+         <actionSet
+               id="org.eclipse.objectteams.otdt.internal.refactoring.actionSet">
+         </actionSet>
+      </perspectiveExtension>
+   </extension>
+</plugin>

@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.objectteams.otequinox" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.objectteams.otequinox" id="aspectBindings" name="OT/J Aspect Bindings"/>
+      </appInfo>
+      <documentation>
+         This extension point allows to define a new &lt;strong&gt;relationship&lt;/strong&gt; between plug-ins 
+called &lt;strong&gt;&quot;aspectBinding&quot;&lt;/strong&gt;.
+By an aspectBinding an aspect plug-in declares which &lt;strong&gt;base plug-ins&lt;/strong&gt; it wishes to adapt 
+and which &lt;strong&gt;team classes&lt;/strong&gt; are used for that purpose.
+Only teams in this list are allowed to adapt classes from another plug-in, and such
+adaptation is restricted to classes residing in the specified base plug-in.
+
+Each team class mentioned in an aspectBinding is automatically &lt;strong&gt;instantiated&lt;/strong&gt; 
+before the corresponding base plug-in is fully activated.
+In addition extensions may specify that a given team is also &lt;strong&gt;activated&lt;/strong&gt; 
+after instantiation.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="aspectBinding" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="aspectBinding">
+      <annotation>
+         <appInfo>
+            <meta.element icon="icon"/>
+         </appInfo>
+         <documentation>
+            Specifies an individual aspect binding by which a given team class adapts classes from a given base plugin.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="basePlugin"/>
+            <element ref="team" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="icon" type="string" use="default" value="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+            <annotation>
+               <documentation>
+                  &lt;i&gt;Default value to provide an icon for this element kind. No need to edit&lt;/i&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="basePlugin">
+      <annotation>
+         <appInfo>
+            <meta.element icon="icon"/>
+         </appInfo>
+         <documentation>
+            &lt;p&gt;
+The base plug-in whose classes may be adapted by the given team(s). 
+The base bundle must be a regular bundle, not a fragment.
+If a bundle &lt;b&gt;fragment&lt;/b&gt; should be adapted the aspect binding must refer to the fragment&apos;s host bundle
+and additionally a &lt;code&gt;requiredFragment&lt;/code&gt; should be added.
+&lt;/p&gt;
+&lt;p&gt;
+By specifying &lt;code&gt;SELF&lt;/code&gt; as the basePlugin, a team may adapt classes from its own bundle.
+&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="forcedExports" minOccurs="0" maxOccurs="1"/>
+            <element ref="requiredFragment" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Qualified identifier of the base plug-in.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string" use="default" value="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif">
+            <annotation>
+               <documentation>
+                  &lt;i&gt;Default value to provide an icon for this element kind. No need to edit&lt;/i&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="team">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="class" icon="icon"/>
+         </appInfo>
+         <documentation>
+            The team class of this plug-in which is allowed to adapt classes of the given base plug-in.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Fully qualified name of a team class.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.objectteams.ITeam"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="superclass" type="string">
+            <annotation>
+               <documentation>
+                  Fully qualified name of the team&apos;s super-class if that is not org.objectteams.Team but another team of the same plugin.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.objectteams.ITeam"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="activation">
+            <annotation>
+               <documentation>
+                  Request activation of this team class: 
+NONE:        don&apos;t automatically activate (default)
+THREAD:      activate for one thread (discouraged)
+ALL_THREADS: activate for all threads
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="NONE">
+                  </enumeration>
+                  <enumeration value="THREAD">
+                  </enumeration>
+                  <enumeration value="ALL_THREADS">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="icon" type="string" use="default" value="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+            <annotation>
+               <documentation>
+                  &lt;i&gt;Default value to provide an icon for this element kind. No need to edit&lt;/i&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="forcedExports" type="string">
+      <annotation>
+         <documentation>
+            Declare any requests to access packages from the base plugin which are not exported.
+Provide comma separated list of package names (as in the OSGi Export-Package: header).
+         </documentation>
+      </annotation>
+   </element>
+
+   <element name="requiredFragment">
+      <annotation>
+         <documentation>
+            Name of a fragment of the base bundle that is required by the aspect.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Symbolic name of the fragment.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         OTDT 0.9.1 based on Eclipse 3.2.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         See example plugin org.eclipse.objectteams.otequinox.branding.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The &lt;code&gt;class&lt;/code&gt; named in the class property must be a team class thus implementing the &lt;code&gt;org.objectteams.ITeam&lt;/code&gt; interface.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         None.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         &lt;em&gt;
+&lt;p&gt;
+This file is part of &quot;Object Teams Development Tooling&quot;-Software
+&lt;/p&gt;&lt;p&gt;
+Copyright 2006, 2010 Technical University Berlin, Germany.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+&lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;
+Please visit &lt;a href=&quot;http://www.objectteams.org&quot;&gt;www.objectteams.org&lt;/a&gt; for updates and contact.
+&lt;/p&gt;&lt;p&gt;
+Contributors:&lt;br&gt;
+Technical University Berlin - Initial API and implementation
+&lt;/p&gt;
+&lt;/em&gt;
+      </documentation>
+   </annotation>
+
+</schema>

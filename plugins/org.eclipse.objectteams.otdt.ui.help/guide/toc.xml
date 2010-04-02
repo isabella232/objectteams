@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<?eclipse version="3.0"?>
+
+<toc label="Object Teams Development User Guide">
+	<topic label="Object Teams Development Tooling (OTDT)" href="guide/develop.html">
+   		<topic label="OTDT Features" href="guide/features.html"/>
+		<topic label="Object Teams perspective" href="guide/perspective.html"/>
+		<topic label="Object Teams project creation" href="guide/project.html"/>
+		<topic label="Team and role creation wizards" href="guide/wizards.html"/>
+		<topic label="Java editor with Object Teams capability" href="guide/editor.html">
+			<topic label="OT/J syntax highlighting" href="guide/syntaxhighlight.html"/>
+			<topic label="OT/J content/code assist" href="guide/contentassist.html">
+				<topic label="OT/J code completion" href="guide/completion.html"/>
+				<topic label="OT/J quick fixes" href="guide/quickfix.html"/>
+			</topic>
+			<topic label="Binding markers" href="guide/callinmarker.html"/>
+		</topic>
+		<topic label="Object Teams structural/navigational views" href="guide/views.html">
+			<topic label="OT/J package explorer" href="guide/packageexplorer.html"/>
+			<topic label="OT/J outline" href="guide/outline.html"/>
+			<topic label="OT/J type hierarchy" href="guide/typehierarchy.html"/>
+   			<topic href="guide/callhierarchy.html" label="Call hierarchy extended for OT/J">
+   </topic>
+		</topic>
+		<topic label="Compiling Object Teams programs" href="guide/compilation.html">
+			<topic label="Java builder extended for Object Teams" href="guide/builder.html"/>
+		</topic>
+		<topic label="Running Object Teams programs" href="guide/running.html"/>
+		<topic label="Debugging Object Teams programs" href="guide/debugging.html">
+			<topic label="Team monitor view" href="guide/teammonitor.html"/>
+			<topic label="Stepping through OT/J code" href="guide/stepping.html"/>
+		</topic>
+		<topic label="Refactoring Object Teams programs" href="guide/refactoring.html"/>
+	</topic>
+	<topic label="Object Teams Language Definition" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/index.html">
+		<topic label="Teams and Roles" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s1.html"/>
+		<topic label="Role Binding" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s2.html"/>
+		<topic label="Callout Binding" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s3.html"/>
+		<topic label="Callin Binding" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s4.html"/>
+		<topic label="Team Activation" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s5.html"/>
+		<topic label="Object Teams API" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s6.html"/>
+		<topic label="Role Encapsulation" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s7.html"/>
+		<topic label="Value Dependent Classes" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/s9.html"/>
+		<topic label="OT/J Syntax" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/sA.html"/>
+		<topic label="Changes between versions" href="/org.eclipse.objectteams.otdt.ui.help/guide/otjld/def/sB.html"/>
+	</topic>
+	<topic label="OT/Equinox Extension Points Reference">
+	 	<topic label="org.eclipse.objectteams.otequinox.aspectBindings" href="/org.eclipse.objectteams.otdt.ui.help/reference/extension-points/org_objectteams_otequinox_aspectBindings.html"/>
+	 	<topic label="org.eclipse.objectteams.otequinox.aspectBindingNegotiators" href="/org.eclipse.objectteams.otdt.ui.help/reference/extension-points/org_objectteams_otequinox_aspectBindingNegotiators.html"/>
+	</topic>
+</toc>

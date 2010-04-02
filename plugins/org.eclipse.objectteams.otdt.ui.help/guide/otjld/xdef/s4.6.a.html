@@ -1,0 +1,54 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s4.html" rel="section">&sect;4&nbsp;Callin Binding</a>&nbsp;&gt;&nbsp;<a class="nav" href="s4.6.html" rel="section">&sect;4.6&nbsp;Overriding access restrictions</a></div>
+         <div class="subsect depth3" id="s4.6.a">
+            <h4 class="subsect">&sect;4.6.(a)&nbsp;<span class="title">Private methods from super classes</span></h4>
+            <p><em>(Cf. <a href="s3.4.d.html"
+                     title="&sect;3.4.(d)&nbsp;Private methods from super classes"
+                     class="sect">&sect;3.4.(d)</a>)</em>
+               			If a callin binding shall bind to a private base method, that method
+               must be defined in the exact base class to which the current role
+               class is bound using <code>playedBy</code>.
+               <br />
+               If a private base feature must indeed be callin-bound, a role class
+               must be defined that is played by the exact base class defining the
+               private feature. Another role bound to a sub-base-class can then
+               be defined as a sub class of the first role. It will inherit the
+               callin binding and through this it can access the desired feature.
+               
+            </p>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s4.html" rel="section">&sect;4&nbsp;Callin Binding</a>&nbsp;&gt;&nbsp;<a class="nav" href="s4.6.html" rel="section">&sect;4.6&nbsp;Overriding access restrictions</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

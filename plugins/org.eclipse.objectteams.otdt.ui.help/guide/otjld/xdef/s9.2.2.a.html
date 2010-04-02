@@ -1,0 +1,63 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s9.2.2.b.html" rel="next">&sect;9.2.2.(b)&nbsp;Conformance of raw types&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s9.html" rel="section">&sect;9&nbsp;Value Dependent Classes</a>&nbsp;&gt;&nbsp;<a class="nav" href="s9.2.html" rel="section">&sect;9.2&nbsp;Using classes with value parameters</a>&nbsp;&gt;&nbsp;<a class="nav" href="s9.2.2.html" rel="section">&sect;9.2.2&nbsp;Type conformance</a></div>
+         <div class="subsect depth4" id="s9.2.2.a">
+            <h4 class="subsect">&sect;9.2.2.(a)&nbsp;<span class="title">Substitutions for type anchors</span></h4>
+            <p>Only two substitutions are considered for determining anchor identity:
+               				
+            </p>
+            <ol>
+               <li>If a method signature uses <code>this</code> as the anchor of any of its types, 
+                  		type checking an application of this method performs the following substitutions:
+                  		<br />
+                  A simple <code>this</code> expression is substituted by the actual call target 
+                  of the method application.
+                  <br />
+                  A qualified <code>Outer.this</code> expression is substituted by the corresponding 
+                  enclosing instance of the call target.
+               </li>
+               <li>Assignments from a <code>final</code> identifier to another <code>final</code> 
+                  					identifier are transitively followed, i.e., if <code>t1, t2</code> are final, 
+                  					after an assignment <code>t1=t2</code> the types <code>C&lt;@t1&gt;</code> and 
+                  					<code>C&lt;@t2&gt;</code> are considered identical. Otherwise <code>C&lt;@t1&gt;</code> 
+                  					and <code>C&lt;@t2&gt;</code> are incommensurable.
+                  					<br />
+                  Attaching an actual parameter to a formal parameter in a method call is also considered 
+                  as an assignment with respect to this rule.
+               </li>
+            </ol>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s9.2.2.b.html" rel="next">&sect;9.2.2.(b)&nbsp;Conformance of raw types&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s9.html" rel="section">&sect;9&nbsp;Value Dependent Classes</a>&nbsp;&gt;&nbsp;<a class="nav" href="s9.2.html" rel="section">&sect;9.2&nbsp;Using classes with value parameters</a>&nbsp;&gt;&nbsp;<a class="nav" href="s9.2.2.html" rel="section">&sect;9.2.2&nbsp;Type conformance</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

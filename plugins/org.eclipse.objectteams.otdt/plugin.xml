@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+
+
+<plugin>
+	<!-- Note that the nature and builder definitions appear here mainly
+	     because they should have an ID starting with org.eclipse.objectteams.otdt, 
+	     rather than org.eclipse.jdt, allthough they are defined in jdt.core -->
+	     
+	<!-- objectteams project nature -->
+	<extension
+	    point="org.eclipse.core.resources.natures"
+	    id="OTJavaNature"
+	    name="%otNatureName">
+	    <runtime>
+	       <run class="org.eclipse.objectteams.otdt.core.ext.OTJavaNature">
+	       </run>
+	    </runtime>
+	    <builder
+	       id="org.eclipse.objectteams.otdt.builder.OTJBuilder">
+	    </builder>
+	<!-- run and configure our nature AFTER the java-nature has been configured -->
+	    <requires-nature
+	            id="org.eclipse.jdt.core.javanature">
+	    </requires-nature>
+	</extension>
+	
+	<!-- OT/J Builder: -->
+	<extension
+	    point="org.eclipse.core.resources.builders"
+	    id="builder.OTJBuilder"
+		name="%otjBuilderName">
+	    <builder hasNature="true">
+	       <run class="org.eclipse.objectteams.otdt.internal.core.builder.OTJBuilder">
+	       </run>
+	    </builder>
+	</extension>
+
+   <extension point="org.eclipse.jdt.core.classpathVariableInitializer">
+      <classpathVariableInitializer 
+         	variable="OTDT_INSTALLDIR" 
+         	class="org.eclipse.objectteams.otdt.core.ext.OTVariableInitializer"/> 
+   </extension>
+   
+   <extension 
+   		point="org.eclipse.jdt.core.classpathContainerInitializer"
+        id="org.eclipse.objectteams.otdt.otreContainerInitializer">
+      <classpathContainerInitializer
+	 		id="OTRE"
+            class="org.eclipse.objectteams.otdt.core.ext.OTREContainerInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.jdt.core.classpathVariableInitializer">
+      <classpathVariableInitializer
+            variable="OTRUNTIME_INSTALLDIR"
+            class="org.eclipse.objectteams.otdt.core.ext.OTRuntimeVariableInitializer">
+      </classpathVariableInitializer>
+   </extension>
+
+   <extension point="org.eclipse.jdt.launching.classpathProviders">
+	   <classpathProvider 
+	      id="org.eclipse.objectteams.otdt.OTRuntimeClasspathProvider"
+	      class="org.eclipse.objectteams.otdt.core.ext.OTRuntimeClasspathProvider">
+	   </classpathProvider>
+   </extension>
+</plugin>

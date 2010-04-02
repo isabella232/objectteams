@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Object Teams"
+            id="org.eclipse.objectteams.otdt.ui">
+      </category>
+      <view
+            name="OT/Equinox Monitor"
+			icon="icons/monitor.png"
+            category="org.eclipse.objectteams.otdt.ui"
+            class="org.eclipse.objectteams.eclipse.monitor.MonitorView"
+            id="org.eclipse.objectteams.eclipse.monitor.MonitorView">
+         <description>
+            Presentation of all teams instantiated by OT/Equinox.
+Allows to interactively (de)activate a selected team.
+         </description>
+      </view>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="org.eclipse.objectteams.eclipse.monitor.MonitorView">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.objectteams.otdt.ui.OTJavaPerspective">
+         <viewShortcut
+               id="org.eclipse.objectteams.eclipse.monitor.MonitorView">
+         </viewShortcut>
+      </perspectiveExtension>
+   </extension>
+</plugin>

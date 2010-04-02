@@ -1,0 +1,17 @@
+#Wed Feb 03 00:49:52 CET 2010
+eclipse.preferences.version=1
+org.objectteams.otdt.compiler.option.scoped_keywords=enabled
+org.objectteams.otdt.compiler.problem.abstract_potential_relevant_role=warning
+org.objectteams.otdt.compiler.problem.adapting_deprecated=error
+org.objectteams.otdt.compiler.problem.ambiguous_lowering=warning
+org.objectteams.otdt.compiler.problem.basecall=warning
+org.objectteams.otdt.compiler.problem.binding_conventions=warning
+org.objectteams.otdt.compiler.problem.decapsulation=warning
+org.objectteams.otdt.compiler.problem.deprecated_path_syntax=warning
+org.objectteams.otdt.compiler.problem.exception_in_guard=error
+org.objectteams.otdt.compiler.problem.fragile_callin=warning
+org.objectteams.otdt.compiler.problem.inferred_callout=warning
+org.objectteams.otdt.compiler.problem.override_final_role=error
+org.objectteams.otdt.compiler.problem.potential_ambiguous_playedby=warning
+org.objectteams.otdt.compiler.problem.unsafe_role_instantiation=warning
+org.objectteams.otdt.compiler.problem.weave_into_system_class=warning

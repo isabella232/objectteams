@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<introContent>
+  <!-- Extension to the SDK Tutorial Page. -->
+  <extensionContent id="org.eclipse.pde" 
+  					name="OT Tutorial Extension" 
+  					alt-style="css/swt-intro.properties" 
+  					style="css/tutorials.css" 
+  					path="tutorials/@">
+	<group label="Object Teams Development" id="ot" style-id="content-group">
+      <link url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=org.eclipse.objectteams.otdt.ui.help.cheatsheets.SimpleOTApplication"
+             label="Build a simple Object Teams application"
+             id="ot-tutorial"
+             style-id="content-link">
+        <text>Create a small Object Teams program consisting of a team, a role, a callin binding and a callout binding</text>
+      </link>
+	</group>
+  					
+  </extensionContent>
+</introContent>

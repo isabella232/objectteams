@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OTHelp Plug-in
+Bundle-SymbolicName: org.eclipse.objectteams.otdt.ui.help;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: org.eclipse.objectteams.otdt.ui.help.OTHelpPlugin
+Bundle-Vendor: The TOPPrax consortium
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.objectteams.otdt.ui,
+ org.eclipse.ui.intro,
+ org.eclipse.ui.cheatsheets,
+ org.eclipse.help,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.browser
+Bundle-ActivationPolicy: lazy
+Bundle-Classpath: otdtuihelp.jar
+Export-Package: org.eclipse.objectteams.otdt.ui.help,
+ org.eclipse.objectteams.otdt.ui.help.actions,
+ org.eclipse.objectteams.otdt.ui.help.views
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

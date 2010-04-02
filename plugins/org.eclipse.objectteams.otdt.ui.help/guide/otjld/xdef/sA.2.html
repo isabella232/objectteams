@@ -1,0 +1,60 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a><a href="sA.1.html" rel="prev">&lt;&lt;&nbsp;&sect;A.1&nbsp;Class definitions</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="sA.3.html" rel="next">&sect;A.3&nbsp;Method bindings&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="sA.html" rel="section">&sect;A&nbsp;OT/J Syntax</a></div>
+         <div class="sect depth2" id="sA.2">
+            <h2 class="sect">&sect;A.2&nbsp;Modifiers</h2>
+            <p>The rule for method modifiers adds one keyword: <code>callin</code>:
+               		
+            </p>
+            <table class="syntaxrule" id="sA.2.1">
+               <tr>
+                  <td class="sect">&sect;&nbsp;A.2.1</td>
+                  <td class="rule"><span class="title">Modifier</span><br />... <br /><strong class="blue">callin</strong></td>
+               </tr>
+            </table>
+            <div class="constraints">
+               <h5 class="constraints">Contextual constraints:</h5>
+               <ol class="constraints">
+                  <li>The class of a method which has the <code>callin</code> modifier 
+                     					may not be declared static and must be directly contained in a team class.
+                  </li>
+                  <li>A method that has the <code>callin</code> modifier may not
+                     					appear in an explicit method call (rule Apply in JLS).
+                  </li>
+               </ol>
+            </div>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"><a href="sA.1.html" rel="prev">&lt;&lt;&nbsp;&sect;A.1&nbsp;Class definitions</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="sA.3.html" rel="next">&sect;A.3&nbsp;Method bindings&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="sA.html" rel="section">&sect;A&nbsp;OT/J Syntax</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

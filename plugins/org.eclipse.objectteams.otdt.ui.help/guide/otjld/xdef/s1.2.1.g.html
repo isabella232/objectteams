@@ -1,0 +1,55 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a><a href="s1.2.1.f.html" rel="prev">&lt;&lt;&nbsp;&sect;1.2.1.(f)&nbsp;Static role methods</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s1.html" rel="section">&sect;1&nbsp;Teams and Roles</a>&nbsp;&gt;&nbsp;<a class="nav" href="s1.2.html" rel="section">&sect;1.2&nbsp;Role classes and objects</a>&nbsp;&gt;&nbsp;<a class="nav" href="s1.2.1.html" rel="section">&sect;1.2.1&nbsp;Modifiers for roles</a></div>
+         <div class="subsect depth4" id="s1.2.1.g">
+            <h4 class="subsect">&sect;1.2.1.(g)&nbsp;<span class="title">No static initializers</span></h4>
+            <p>A static field of a role class must not have a non-constant initialization expression.
+               					   Static initialization blocks are already prohibited for inner classes by Java (see <a href="http://java.sun.com/docs/books/jls/second_edition/html/classes.doc.html#262890"
+                  class="ext">JLS &sect;8.1.2</a>).
+               				
+            </p>
+            <div class="note">
+               <h5>Note:</h5>   
+               					Static initialization generally provides a means for performing initialization code prior to instantiation, i.e., at
+               class-loading time.
+               					Before any role can be created already two levels of initialization are performed: (1) The (outer most) enclosing team
+               class performs static initializations when it is loaded. (2) Any enclosing team executes 
+               					its constructor when it is instantiated. It should be possible to allocate any early initialization to either of these
+               two phases instead of using static role initializers.
+               				
+            </div>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"><a href="s1.2.1.f.html" rel="prev">&lt;&lt;&nbsp;&sect;1.2.1.(f)&nbsp;Static role methods</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s1.html" rel="section">&sect;1&nbsp;Teams and Roles</a>&nbsp;&gt;&nbsp;<a class="nav" href="s1.2.html" rel="section">&sect;1.2&nbsp;Role classes and objects</a>&nbsp;&gt;&nbsp;<a class="nav" href="s1.2.1.html" rel="section">&sect;1.2.1&nbsp;Modifiers for roles</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

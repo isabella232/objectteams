@@ -1,0 +1,192 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="sB.2.html" rel="next">&sect;B.2&nbsp;Additions between versions&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="sB.html" rel="section">&sect;B&nbsp;Changes between versions</a></div>
+         <div class="sect depth2" id="sB.1">
+            <h2 class="sect">&sect;B.1&nbsp;Paragraphs changed between versions</h2>
+            <div class="subsect depth3" id="sB.1.1">
+               <h4 class="subsect">(1)&nbsp;<span class="title">Between OTJLD 1.0 and OTJLD 1.1</span></h4>
+               <ul>
+                  <li><a href="s3.2.a.html" title="&sect;3.2.(a)&nbsp;with clause" class="sect">&sect;3.2.(a)</a> :
+                     				<strong>Parameter mappings</strong><p>
+                        				Disallow parameter mappings in a role interface.
+                        			
+                     </p>
+                  </li>
+                  <li><a href="s4.5.d.html" title="&sect;4.5.(d)&nbsp;Typing rules" class="sect">&sect;4.5.(d)</a> :
+                     				<strong>Replace bindings</strong><p>
+                        				Disallow unsafe use of polymorphism and primitive type conversions.
+                        			
+                     </p>
+                  </li>
+                  <li><a href="s6.1.a.html"
+                        title="&sect;6.1.(a)&nbsp;Interface to the role registry"
+                        class="sect">&sect;6.1.(a)</a> :
+                     				<strong>Signatures of reflective methods</strong><p>
+                        					Made two methods generic so that return values can be used without the need of casting.
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s7.2.html" title="&sect;7.2&nbsp;Confined roles" class="sect">&sect;7.2</a> :
+                     				<strong>Confined roles</strong><p>
+                        					Improved explanation.
+                        				
+                     </p>
+                  </li>
+               </ul>
+            </div>
+            <div class="subsect depth3" id="sB.1.2">
+               <h4 class="subsect">(2)&nbsp;<span class="title">Between OTJLD 1.1 and OTJLD 1.2</span></h4>
+               <ul>
+                  <li><a href="s1.2.1.e.html" title="&sect;1.2.1.(e)&nbsp;Role features"
+                        class="sect">&sect;1.2.1.(e)</a>:
+                     				<strong>Visibility of role features</strong><p>
+                        					Clarification has been added that a role can always access all the 
+                        					features that its enclosing team has access to.
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s2.1.2.e.html" title="&sect;2.1.2.(e)&nbsp;No free type parameters"
+                        class="sect">&sect;2.1.2.(e)</a>:
+                     				<strong>Generic roles/bases</strong><p>
+                        					Relaxed the rules about generic bound roles. This change also subsumes what previously was a specific restriction in
+                        <a href="s4.1.b.html" title="&sect;4.1.(b)&nbsp;Prerequisite: Class binding"
+                           class="sect">&sect;4.1.(b)</a>.
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s3.1.i.html" title="&sect;3.1.(i)&nbsp;Shorthand definition"
+                        class="sect">&sect;3.1.(i)</a> and <a href="s3.5.f.html" title="&sect;3.5.(f)&nbsp;Shorthand definition"
+                        class="sect">&sect;3.5.(f)</a>:
+                     				<strong>Visibility of shorthand callout</strong><p>
+                        					A role method defined by a shorthand callout binding can now specify a visibility modifier
+                        					(see also <a href="sA.html#sA.3.2" title="&sect;A.3.2&nbsp;CalloutBinding" class="sect">&sect;A.3.2</a>), 
+                        					otherwise it inherits the visibility modifier of it's bound base method/field.
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s3.1.j.html" title="&sect;3.1.(j)&nbsp;Inferred callout" class="sect">&sect;3.1.(j)</a> and <a href="s3.5.h.html" title="&sect;3.5.(h)&nbsp;Inferred callout" class="sect">&sect;3.5.(h)</a>:
+                     				<strong>Visibility of inferred callout</strong><p>
+                        					Role methods inferred as a callout binding are either <code>public</code>
+                        					(inferred via interface) or <code>private</code> inferred from 
+                        					self call / field access. 
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s3.5.h.html" title="&sect;3.5.(h)&nbsp;Inferred callout" class="sect">&sect;3.5.(h)</a>:
+                     				<strong>No explicit use of inferred callout to field</strong><p>
+                        					Clarification has been added that an accessor method generated for an inferred callout to field
+                        					can not be explicitly invoked. 
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s4.1.b.html" title="&sect;4.1.(b)&nbsp;Prerequisite: Class binding"
+                        class="sect">&sect;4.1.(b)</a>:
+                     				<strong>No callin in generic role</strong><p>
+                        					A restriction has been made explicit that a generic role cannot define callin bindings. 
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s4.2.d.html" title="&sect;4.2.(d)&nbsp;Callin methods" class="sect">&sect;4.2.(d)</a> :
+                     				<strong>Callin methods</strong><p>Slightly rephrased and extended the rule to make explicit that a callin method can
+                        					indeed be intercepted using a second level callin binding.
+                        				
+                     </p>
+                  </li>
+                  <li><a href="s6.1.a.html"
+                        title="&sect;6.1.(a)&nbsp;Interface to the role registry"
+                        class="sect">&sect;6.1.(a)</a> :
+                     				<strong>Reflective methods <code>getAllRoles</code></strong><p>
+                        					More precision: answer only <em>bound</em> roles.
+                        				
+                     </p>
+                  </li>
+               </ul>
+            </div>
+            <div class="subsect depth3" id="sB.1.3">
+               <h4 class="subsect">(3)&nbsp;<span class="title">Between OTJLD 1.2 and OTJLD 1.3</span></h4>
+               <ul>
+                  <li><a href="s1.2.4.c.html" title="&sect;1.2.4.(c)&nbsp;Class literal"
+                        class="sect">&sect;1.2.4.(c)</a> :
+                     					<strong>Syntax for role class literals</strong><p>Previously, the syntax <code>R&lt;@t&gt;.class</code> was not supported.
+                        						This restriction has been removed.
+                        					
+                     </p>
+                  </li>
+                  <li><a href="s1.3.html"
+                        title="&sect;1.3&nbsp;Acquisition and implicit inheritance of role classes"
+                        class="sect">&sect;1.3</a> :
+                     					<strong>Teams extending non-team classes</strong><p>Previously, <code>org.objectteams.Team</code> was the super class of all team classes.
+                        					As a consequence a team could not extend a non-team class.
+                        					This restriction has been removed by introducing a new super-type of all teams,
+                        					the interface <code>org.objectteams.ITeam</code>.
+                        					This change also affects some paragraphs in <a href="s6.html" title="&sect;6&nbsp;Object Teams API" class="sect">&sect;6</a> as members
+                        					have been moved to the new interface.
+                        					
+                     </p>
+                  </li>
+                  <li><a href="s4.4.c.html"
+                        title="&sect;4.4.(c)&nbsp;Mapping the result of a base method"
+                        class="sect">&sect;4.4.(c)</a> :
+                     					<strong>Further restrict result mapping in after callin bindings</strong><p>Clarify that <code>after</code> callin bindings cannot use the <code>-&gt;</code>
+                        					token to map a result value.
+                        					
+                     </p>
+                  </li>
+                  <li><a href="s4.10.html" title="&sect;4.10&nbsp;Generic callin bindings"
+                        class="sect">&sect;4.10</a>, <a href="s4.10.a.html" title="&sect;4.10.(a)&nbsp;Fresh type parameter"
+                        class="sect">&sect;4.10.(a)</a> :
+                     	<strong>Generic callin bindings</strong><p>Minor changes to give room for new paragraph <a href="s4.10.e.html" title="&sect;4.10.(e)&nbsp;Propagating type parameters"
+                           class="sect">&sect;4.10.(e)</a>.
+                     </p>
+                  </li>
+                  <li><a href="s5.4.1.a.html" title="&sect;5.4.1.(a)&nbsp;Method binding guards"
+                        class="sect">&sect;5.4.1.(a)</a> :
+                     	<strong>Scope of regular binding guard</strong><p>Removed an erroneous sentence about the special identifier <code>result</code> in a regular method binding guard.
+                        		Since parameter mappings are applied before evaluating the guard, the result value can be accessed through
+                        		a result mapping (<a href="s4.4.c.html"
+                           title="&sect;4.4.(c)&nbsp;Mapping the result of a base method"
+                           class="sect">&sect;4.4.(c)</a>). Furthermore, the sentence actually confused
+                        		base and role sides.
+                        	
+                     </p>
+                  </li>
+                  <li><a href="sA.html#sA.3.2" title="&sect;A.3.2&nbsp;CalloutBinding" class="sect">&sect;A.3.2</a>, <a href="sA.html#sA.3.3" title="&sect;A.3.3&nbsp;Callin binding" class="sect">&sect;A.3.3</a> :
+                     	<strong>Syntax: generic method bindings</strong><p>The location of possible type parameters in a method binding has been made explicit.</p>
+                  </li>
+               </ul>
+            </div>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="sB.2.html" rel="next">&sect;B.2&nbsp;Additions between versions&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="sB.html" rel="section">&sect;B&nbsp;Changes between versions</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

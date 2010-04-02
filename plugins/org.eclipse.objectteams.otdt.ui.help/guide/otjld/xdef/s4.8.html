@@ -1,0 +1,173 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a><a href="s4.7.html" rel="prev">&lt;&lt;&nbsp;&sect;4.7&nbsp;Callin binding with static methods</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s4.9.html" rel="next">&sect;4.9&nbsp;Callin inheritance&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s4.html" rel="section">&sect;4&nbsp;Callin Binding</a></div>
+         <div class="sect depth2" id="s4.8">
+            <h2 class="sect">&sect;4.8&nbsp;Callin precedence</h2>
+            <div class="syntaxlink"><a href="sA.8.html" title="&sect;A.8&nbsp;Precedence declaration"
+                  class="syntax">&rarr;&nbsp;Syntax&nbsp;&sect;A.8</a></div>
+            <p>If multiple callins from the same team refer to the same base method and also have the same 
+               	callin modifier (<code>before</code>, <code>after</code> or <code>replace</code>), the order in which 
+               	the callin bindings shall be triggered has to be declared using a precedence declaration.
+               		
+            </p>
+            <div class="subsect depth3" id="s4.8.a">
+               <h4 class="subsect">(a)&nbsp;<span class="title">Precedence declaration</span></h4>
+               <p>A precedence declaration consists of the keyword <code>precedence</code> followed by 
+                  		a list of names referring to callin bindings (see <a href="s4.1.e.html" title="&sect;4.1.(e)&nbsp;Named callin bindin"
+                     class="sect">&sect;4.1.(e)</a> for named callin bindings).
+                  		<br />
+                  	A precedence declaration is only legal within a role or team class.
+                  			
+               </p>
+            </div>
+            <div class="subsect depth3" id="s4.8.b">
+               <h4 class="subsect">(b)&nbsp;<span class="title">Qualified and unqualified names</span></h4>
+               <p>Within a role class a callin binding may be referenced by its unqualified name. 
+                  		A precedence declaration in a team class must qualify the callin name with the name of the declaring 
+                  		role class. A team with nested teams may concat role class names. 
+                  		Elements of a qualified callin name are separated by ".".
+                  		<br />
+                  The callin binding must be found in the role specified by the qualifying prefix or 
+                  in the enclosing role for unqualified names, or any super class of this role 
+                  (including implicit super classes <a href="s1.3.1.html"
+                     title="&sect;1.3.1&nbsp;Acquisition and implicit inheritance of role classes"
+                     class="sect">&sect;1.3.1</a>).
+                  			
+               </p>
+            </div>
+            <div class="subsect depth3" id="s4.8.c">
+               <h4 class="subsect">(c)&nbsp;<span class="title">Class based precedence</span></h4>
+               <p>At the team level a precedence declaration may contain role class names without 
+                  		explicitly mentioning callin bindings in order to refer to all callin bindings of the role.
+                  			
+               </p>
+            </div>
+            <div class="subsect depth3" id="s4.8.d">
+               <h4 class="subsect">(d)&nbsp;<span class="title">Multiple precedence statements</span></h4>
+               <p>All precedence statements are collected at the outer-most team. At that level all 
+                  		precedence declarations involving the same base method are merged using the 
+                  		C3 algorithm <a href="s4.html#fn3-c3-algorithm" class="int">[3]</a>. It is an error to declare 
+                  		incompatible precedence lists that cannot be merged by the C3 algorithm.
+                  			
+               </p>
+            </div>
+            <div class="subsect depth3" id="s4.8.e">
+               <h4 class="subsect">(e)&nbsp;<span class="title">Binding overriding</span></h4>
+               <p>Precedence declarations may conflict with overriding of callin bindings 
+                  		(see <a href="s4.1.e.html" title="&sect;4.1.(e)&nbsp;Named callin bindin"
+                     class="sect">&sect;4.1.(e)</a>): For each pair of callin bindings of which one 
+                  		callin binding overrides the other one, precedence declarations are not applicable, 
+                  		since dynamic binding will already select exactly one callin binding.
+                  		<br />
+                  		It is an error to <i>explicitly mention</i> such a pair of overriding callin bindings in a precedence declaration.
+                  		<br />
+                  		When a class-based precedence declaration <i>implicitly refers to</i> a callin binding that is overridden by, 
+                  		or overrides any other callin binding within the same precedence declaration, this does not affect the fact, 
+                  		that the most specific callin binding overrides less specific ones.
+                  			
+               </p>
+            </div>
+            <h5 class="listing">Callin binding example</h5>
+            <div class="listing example frame">
+               <table class="listing">
+                  <tr class="line odd">
+                     <td class="ln">1</td>
+                     <td><pre><b>public</b> <b>class</b> LogLog<b>in</b> <b>playedBy</b> Data<b>base</b> {</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">2</td>
+                     <td><pre>  <b>callin</b> <b>void</b> log (String what) {</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">3</td>
+                     <td><pre>    System.out.println("enter " + what);</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">4</td>
+                     <td><pre>    base.log(what.toLowerCase());</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">5</td>
+                     <td><pre>    System.out.println("leave " + what);</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">6</td>
+                     <td><pre>  }</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">7</td>
+                     <td><pre>  <b>void</b> log(String what) <b>&lt;-</b> <b>replace</b> <b>void</b> login(String uid, String passwd) </pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">8</td>
+                     <td><pre>    <b>with</b> { what <b>&lt;-</b> uid }</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">9</td>
+                     <td><pre>}</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">10</td>
+                     <td><pre>(<b>new</b> Database()).login("Admin", "Passwd");</pre></td>
+                  </tr>
+               </table>
+            </div>
+            <div class="codecomment">
+               <h5>Effects:</h5>
+               <p>Provided the callin bindings are active (cf. <a href="s5.html" title="&sect;5&nbsp;Team Activation" class="sect">&sect;5</a>) then:
+                  			
+               </p>
+               <ul>
+                  <li>the call in line 10 is intercepted by method <code>log</code>
+                     						of role <code>LogLogin</code>.
+                  </li>
+                  <li>the call target of <code>log</code> is a role of type
+                     						<code>LogLogin</code> which is created by lifting the
+                     						original call target (of type <code>Database</code>) to
+                     						<code>LogLogin</code>.
+                  </li>
+                  <li>only parameter <code>uid</code> is passed to <code>log</code>
+                     						(bound to formal parameter <code>what</code>).
+                  </li>
+                  <li>within method <code>log</code> the base call (line 4) invokes 
+                     						the original method passing a modified uid (converted to lower case, cf. line 4) 
+                     						and the unmodified password, which is hidden from the callin method due to the
+                     						parameter mapping in line 8.
+                  </li>
+               </ul>
+            </div>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"><a href="s4.7.html" rel="prev">&lt;&lt;&nbsp;&sect;4.7&nbsp;Callin binding with static methods</a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s4.9.html" rel="next">&sect;4.9&nbsp;Callin inheritance&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s4.html" rel="section">&sect;4&nbsp;Callin Binding</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

@@ -1,0 +1,291 @@
+/* override margins from ot.css: */
+body.otdt {
+	margin: 4px;
+	padding: 4px;
+}
+
+body.otdt #content {
+	margin: 0;
+	padding: 0;
+}
+
+body.otdt #footer {
+	margin-top: 10px;
+	margin-left: 4px;
+}
+
+/* Syntax links: */
+a.syntax {
+	border: 1px solid red;
+	margin: 2px;
+	padding: 2px;
+}
+
+/* ToC page: */
+div.toc {
+	font-weight: bold;
+	padding-left: 20px;
+}
+
+div.toc.depth1 {
+	font-size: 1.2em;
+}
+
+div.toc.depth2 {
+	padding-left: 50px;
+}
+div.toc.depth2 a {
+	color: black;
+}
+
+div.toc.depth3 {
+	padding-left: 80px;
+}
+div.toc.depth3 a {
+	color: black;
+}
+
+/* Chapter headings (with icon): */
+div.chapter {
+	margin: 0px;
+	padding: 0px;
+}
+
+/* Mini-ToC-Box: */
+div#toc-box {
+	position: fixed;
+	top: 100px;
+	right: 5px;
+	width: 22pt;
+	z-index: 9;
+	background-color: #fff8e0;
+	border: 2px solid #e0e0f0;
+	border-right: none;
+	font-size: 10pt;
+	white-space: nowrap;
+	opacity: 0.5;
+	-moz-opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+div#toc-box.web {
+	top: 200px;
+}
+
+div#toc-box:hover {
+	right: 5px;
+	width: auto;
+	border: 2px solid #e0e0f0;
+	opacity: 0.9;
+	-moz-opacity: 0.9;
+	filter: alpha(opacity=90);
+}
+
+ul.toc-box {
+	list-style-type: none;
+	margin: 5px;
+	padding: 0px;
+}
+
+/* (Sub)sections: */
+div.sect, div.aux {
+	padding-left: 5px;
+	margin-right: 25pt;
+}
+
+h2.sect {
+	position: relative;
+	background-color: #e0e0f0;
+	padding: 2px;
+	padding-left: 10px;
+}
+
+h3.sect, h4.aux {
+	position: relative;
+	background-color: #e0e0f0;
+	padding: 2px;
+	padding-left: 5px;
+}
+
+div.subsect {
+	width: 90%;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+h4.subsect {
+	font-weight: normal;
+	margin-left: -20px;
+	margin-bottom: 4px;
+}
+h4.subsect + p {
+	margin-top: 2px;
+}
+
+h4.subsect .title {
+	text-decoration: underline;
+}
+
+span.toplink {
+	position: absolute; right: 10px;
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+/* Listings: */
+div.listing {
+	float: none;
+	width: 90%;
+	overflow: auto;
+	font-family: Courier;
+	font-size: 10pt;
+	padding: 0;
+	margin: 2px;
+}
+
+div.listing.frame {
+	border: 4px solid #9090B0;	
+}
+
+table.listing {
+	width: 100%;
+	border: none;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+tr.line.odd {
+	background-color: #fff0c8;
+}
+
+tr.line.even {
+	background-color: #fff8e0;
+}
+
+div.listing pre {
+	margin: 0px;
+	padding: 2px;
+}
+
+td.ln {
+	color: #5060f7;
+	width: 20px;
+	text-align: right;
+	vertical-align: middle;
+	font-size: 12pt;
+	padding-left: 5px;
+	padding-right: 10px;
+}
+
+pre em {
+	font-style: normal;
+	color: blue;
+}
+pre .comment {
+	color: green;
+}
+
+h5.listing {
+	margin-bottom: 0px;
+}
+
+/* other OTJLD elements: */
+div.note {
+	font-style: italic;
+	margin-left: 10px;
+}
+
+div.codecomment {
+	width: 90%;
+	background-color: #fff8e0;
+	font-size: 0.8em;
+	margin-top: 5px;
+	padding: 2px;
+}
+div.codecomment>h5, div.note>h5 {
+	margin: 2px;
+}
+div.codecomment>h5+p, div.note>h5+p {
+	margin-top: 2px;
+}
+
+table.syntaxrule {
+	width: 80%;
+	border: 2px solid #e0e0f0;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	margin: 4px;
+	padding: 0;
+}
+table.syntaxrule td.sect {
+	width: 80px;
+	border: 2px solid #e0e0f0;
+	padding: 5px;
+	vertical-align: top;
+	font-weight: bold;
+}
+table.syntaxrule td.rule {
+	padding-left: 20px;
+	background-color: #fff8e0;
+}
+table.syntaxrule .title {
+	margin-left: -10px;
+	font-weight: bold;
+	font-style: italic;
+	color: blue;
+}
+
+ol.constraints {
+	list-style-type: lower-alpha;
+}
+ol.constraints .title {
+	text-decoration: underline;
+}
+h5.constraints {
+	margin-bottom: 2px;
+}
+
+/* page navigation: */
+table.nav {
+	border: 2px solid #e0e0f0;
+	border-collapse: collapse;
+	width: 95%;
+	white-space: nowrap;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #fff8e0;
+	font-size: 10pt;
+}
+
+td.back {
+	width: 35%;
+	padding-left: 4px;
+	text-align: left;
+	white-space: nowrap;
+}
+td.top {
+	border: 2px solid #e0e0f0;
+	text-align: center;
+	white-space: nowrap;
+}
+td.next {
+	width: 35%;
+	padding-right: 4px;
+	text-align: right;
+	white-space: nowrap;
+}
+
+div.breadcrumb {
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	white-space: nowrap;
+}
+
+a.nav {
+	font-size: 10pt;
+}

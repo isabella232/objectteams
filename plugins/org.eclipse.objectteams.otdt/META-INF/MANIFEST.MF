@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Object Teams Development Tooling
+Bundle-SymbolicName: org.eclipse.objectteams.otdt;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: org.eclipse.objectteams.otdt.core.ext.OTDTPlugin
+Bundle-Vendor: The TOPPrax consortium
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core;bundle-version="[3.5.1.v_OTDT_r140,4.0.0)",
+ org.eclipse.jdt.launching,
+ org.eclipse.debug.core,
+ org.eclipse.objectteams.otequinox.branding
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: otdtcoreext.jar
+Export-Package: org.eclipse.objectteams.otdt.core.ext
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

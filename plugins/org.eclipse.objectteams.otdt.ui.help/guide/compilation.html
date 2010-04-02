@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta name="copyright" content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+	<link rel=stylesheet type="text/css" href="../css/book.css">
+	<link rel=stylesheet type="text/css" href="otguide.css">
+    <title>Compiling Object Teams programs</title>
+    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  </head>
+  <body>
+    <h1>Compiling Object Teams programs</h1>
+    <p>
+    Object Teams programs are compiled <u>automatically</u> and <u>incrementally</u> using
+    an <b><a href="builder.html">extended Java builder</a></b>.
+    </p>
+    <p>The language accepted by the compiler is defined in the <a href="otjld/def/index.html">OTJLD</a>
+    (OT/J Language Definition), which is bundled with the OTDT.
+    <p>Problems detected by the compiler are classified as either <b><i>warnings</i></b> or
+    <b><i>errors</i></b>.<br />
+    The existence of a warning does not prohibit the execution of the program; 
+    some warnings only signal a programming style that is not recommended,
+    others may report situations that are potentially unsafe such that an undeclared 
+    exception might occur at runtime.<br />
+	Compile-time errors (as specified by the OT/J Language Specification) imply 
+	that byte code generation was incomplete (it may be possible to run even programs with
+	compile errors, but the program will terminate as soon as it tries to execute an
+	erroneous method).
+	<p>
+	<h3>Configuring Diagnostics</h3>
+    For a number of problems you can specify if you want the OT/J compiler
+    to report them as warnings, errors or to ignore them. 
+    To change the default settings, use the <span class="ui">Window > Preferences > Java >
+    Compiler (OT/J)</span> preference page (or change the project properties to specify
+    project specific settings).<br />
+    For easy reference, on the preference page each group of diagnostics 
+    mentions the paragraph in the language definition that defines the issue at hand.</p>
+    Also note that many of these diagnostics can be fixed using a <a href="quickfix.html">quick fix</a>.
+    
+    <h3>Consulting the language definition on problems</h3>
+    <p>When viewing OT/J-specific error/warning messages in the Problems view, the context menu
+    offers a &nbsp;<img src="../icons/ot_paragraph.gif"> <span class="ui">Go To Language Definition</span> &nbsp;link,
+    taking you directly to the paragraph
+    that defines the rule which is being violated by the compiled source code. For presenting the
+    language definition the internal HTML-browser is used to allow easy navigation within the
+    language definition.</p>
+    <img title="Language Definition Integrated in the OTDT" src="images/screenshots/langdef.png"/>
+  </body>
+</html>

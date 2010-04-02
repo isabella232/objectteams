@@ -1,0 +1,81 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "../xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="copyright"
+            content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+      <link rel="stylesheet" type="text/css" href="../css/ot.css" />
+      <link rel="stylesheet" type="text/css" href="../css/otjld.css" />
+      <title>OT/J Language Definition v1.3</title>
+   </head>
+   <body class="otdt">
+      <div id="content">
+         <table class="nav">
+            <tr>
+               <td class="back"><a id="top"></a></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s2.6.b.html" rel="next">&sect;2.6.(b)&nbsp;Explicit base object creation&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s2.html" rel="section">&sect;2&nbsp;Role Binding</a>&nbsp;&gt;&nbsp;<a class="nav" href="s2.6.html" rel="section">&sect;2.6&nbsp;Explicit base references</a></div>
+         <div class="subsect depth3" id="s2.6.a">
+            <h4 class="subsect">&sect;2.6.(a)&nbsp;<span class="title">Externalized roles of a base team</span></h4>
+            <p>If the base class of a role <code>T1.R1</code> is again a team
+               <code>T2</code>, roles of that team <code>T2</code> can be
+               externalized (see <a href="s1.2.2.html" title="&sect;1.2.2&nbsp;Externalized roles" class="sect">&sect;1.2.2</a>)
+               using <code>base</code> as their type anchor. Given that
+               <code>R2</code> is a role of <code>T2</code>, one could write:
+               			
+            </p>
+            <div class="listing example frame">
+               <table class="listing">
+                  <tr class="line odd">
+                     <td class="ln">1</td>
+                     <td><pre><b>public</b> <b>team</b> <b>class</b> T1 {</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">2</td>
+                     <td><pre>  <b>protected</b> <b>class</b> R1 <em><b>playedBy</b> T2</em> {</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">3</td>
+                     <td><pre>    <b>protected</b> <em>R2&lt;@base&gt;</em> aRoleOfMyBase;</pre></td>
+                  </tr>
+                  <tr class="line even">
+                     <td class="ln">4</td>
+                     <td><pre>  }</pre></td>
+                  </tr>
+                  <tr class="line odd">
+                     <td class="ln">5</td>
+                     <td><pre>}</pre></td>
+                  </tr>
+               </table>
+            </div>
+            <p>This syntax is only legal within the body of the role <code>T1.R1</code> which is bound 
+               		to the team <code>T2</code> containing role <code>R2</code>.
+               A static type prefix can be used to disambiguate a base anchor, so the explicit variant 
+               of the above type would be <code>R2&lt;@<strong>R1</strong>.base&gt;</code>.
+               <br />
+               It is not legal to use a type anchor containing <code>base</code> as an element in a path 
+               of references like <code>&lt;@base.<span class="error">field</span>&gt;</code> 
+               or <code>&lt;@<span class="error">field</span>.base&gt;</code>.
+               			
+            </p>
+         </div>
+         <table class="nav">
+            <tr>
+               <td class="back"></td>
+               <td class="top"><a href="index.html" rel="contents">&uarr;&nbsp;Table of Contents&nbsp;&uarr;</a></td>
+               <td class="next"><a href="s2.6.b.html" rel="next">&sect;2.6.(b)&nbsp;Explicit base object creation&nbsp;&gt;&gt;</a></td>
+            </tr>
+         </table>
+         <div class="breadcrumb"><a class="nav" href="s2.html" rel="section">&sect;2&nbsp;Role Binding</a>&nbsp;&gt;&nbsp;<a class="nav" href="s2.6.html" rel="section">&sect;2.6&nbsp;Explicit base references</a></div>
+      </div>
+      <div id="footer">
+         <hr />
+         <address>&copy; Stephan Herrmann, Christine Hundt, Marco Mosconi</address>
+         			OT/J version 1.3 &mdash; last modified: 2010-02-20
+      </div>
+   </body>
+</html>

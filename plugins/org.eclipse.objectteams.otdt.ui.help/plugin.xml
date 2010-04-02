@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+
+<!-- OTDT extensions for intro/welcome page -->
+   <extension point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+         configId="org.eclipse.ui.intro.universalConfig"
+         content="intro/overviewExtensionContent.xml"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+         configId="org.eclipse.ui.intro.universalConfig"
+         content="intro/tutorialsExtensionContentOT.xml"/>
+   </extension>
+
+<!-- OTDT cheat sheet extension for small OT example -->   
+   <extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+     <cheatsheet
+           category="org.eclipse.objectteams.otdt.ui.java"
+           contentFile="cheatsheets/SimpleOTApplication.xml"
+           id="org.eclipse.objectteams.otdt.ui.help.cheatsheets.SimpleOTApplication"
+           name="%cheatsheet.SimpleOTApplication.name">
+      <description>%cheatsheet.SimpleOTApplication.desc</description>
+     </cheatsheet>
+   </extension>
+
+<!-- OTDT help extension-->      
+   <extension point="org.eclipse.help.toc">
+     <toc file="guide/toc.xml" primary="true"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="OT/J Language Definition"
+            icon="icons/ot_paragraph.gif"
+            category="org.eclipse.objectteams.otdt.ui"
+            class="org.eclipse.objectteams.otdt.ui.help.views.OTJLDView"
+            id="org.eclipse.objectteams.otdt.ui.help.views.OTJLDView">
+         <description>
+            Browsable view of the OT/J Language Definition.
+         </description>
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            targetID="org.eclipse.ui.views.ProblemView"
+            id="org.eclipse.objectteams.otdt.ui.help.problemContribution">
+         <action
+               class="org.eclipse.objectteams.otdt.ui.help.actions.ShowOTJLDAction"
+               enablesFor="1"
+               icon="icons/ot_paragraph.gif"
+               id="org.eclipse.objectteams.otdt.ui.help.actions.ShowOTJLDAction"
+               label="Go to Language Definition"
+               menubarPath="group.showIn"/>
+      </viewerContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="org.eclipse.objectteams.otdt.ui.help.OTJLDView.actions"
+            targetID="org.eclipse.objectteams.otdt.ui.help.views.OTJLDView">
+         <action
+               class="org.eclipse.objectteams.otdt.ui.help.actions.OTJLDViewActionDelegate"
+               disabledIcon="icons/dlcl16/nav_home.gif"
+               hoverIcon="icons/clcl16/nav_home.gif"
+               icon="icons/elcl16/nav_home.gif"
+               id="org.eclipse.objectteams.otdt.ui.help.OTJLDView.home"
+               label="Table Of Contents"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Table Of Contents">
+         </action>
+         <action
+               class="org.eclipse.objectteams.otdt.ui.help.actions.OTJLDViewActionDelegate"
+               disabledIcon="icons/dlcl16/nav_forward.gif"
+               hoverIcon="icons/clcl16/nav_forward.gif"
+               icon="icons/elcl16/nav_forward.gif"
+               id="org.eclipse.objectteams.otdt.ui.help.OTJLDView.next"
+               label="Forward to the next page"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Forward to the next page">
+         </action>
+         <action
+               class="org.eclipse.objectteams.otdt.ui.help.actions.OTJLDViewActionDelegate"
+               disabledIcon="icons/dlcl16/nav_backward.gif"
+               hoverIcon="icons/clcl16/nav_backward.gif"
+               icon="icons/elcl16/nav_backward.gif"
+               id="org.eclipse.objectteams.otdt.ui.help.OTJLDView.back"
+               label="Back to the previous page"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Back to the previous page">
+         </action>
+      </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.objectteams.otdt.ui.OTJavaPerspective">
+         <viewShortcut
+               id="org.eclipse.objectteams.otdt.ui.help.views.OTJLDView">
+         </viewShortcut>
+         <view
+               id="org.eclipse.objectteams.otdt.ui.help.views.OTJLDView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+   <!--
+   <extension
+         point="org.eclipse.jdt.ui.javaEditorTextHovers">
+         <hover
+         	id="org.eclipse.objectteams.otdt.ui.help.IProblemDocumentation"
+         	class="org.eclipse.objectteams.otdt.ui.help.IProblemDocumentation"
+         	label="ObjectTeams Language Specification Hover"/>
+   </extension>
+   -->
+
+</plugin>
