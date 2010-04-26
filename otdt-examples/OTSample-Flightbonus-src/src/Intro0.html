@@ -1,0 +1,127 @@
+<title>OTSample-FlightBonus Intro</title>
+<style type="text/css">
+code { background-color:lightgray; }
+img { border:0px; }
+</style>
+<body>
+<h1>Overview of the Flight Bonus example</h1>
+This is a simple flight booking program, which exists in different versions.
+
+<h2>Flight booking - bare application</h2>
+Package <img src="images/package.gif" /><code>flightbooking</code> 
+is available only as jar file (<img src="images/jar_src_obj.gif"/><code>Referenced Libraries/booking.jar</code>).<br />
+<img src="images/run_exc.gif" /><strong>Running:</strong> 
+This regular Java application can be invoked like a regular Java program
+(e.g., by click the link <u><font color="blue">run the sample</font></u> on the welcome sheet at the right).
+The main method is in <img src="images/class_public.gif" /><code>flightbooking.Main</code>.
+It has a simple GUI which will direct you through the relevant transactions.
+Note that this variant does not include collecting bonus points.
+
+<h2>Bonus and FlightBonus</h2>
+The first scenario of adaptation concerns the definition of a bonus
+programme for frequent flyers. Two team classes are involved.
+
+The purpose of each team class is:
+
+<dl>
+<dt><img src="images/team_obj.gif" /><code>bonussystem/Bonus</code>:</dt>
+<dd>Define an abstract, re-usable concept of 
+    <img src="images/role_obj.gif"/>Subscriber</code>s that may collect credits,
+    and <img src="images/role_obj.gif"/>BonusItems</code> that are acquired by a Subscriber 
+    and give a specific amount of credits.</dd>
+<dt><img src="images/team_obj.gif" /><code>fbappication/FlightBonus</code>:</dt>
+<dd>Bind the abstract team Bonus to the flightbooking package. Other
+    than class and method bindings, this team only adds one method
+    implementation for calculating the credit for booking a flight segment.</dd>
+</dl>
+
+<h2>Integrating the application</h2>
+In order to integrate the new functionality into the GUI, even another
+team class exists: <img src="images/team_obj.gif" /><code>GUIConnector</code>. 
+It adapts the original GUI in <code>booking.jar</code>.<br />
+
+<img src="images/run_exc.gif" /><strong>Running:</strong> 
+To invoke the variant with bonus apply the supplied launch configuration <img src="images/file_obj.gif" /><code>FlightbookingWithBonus.launch</code>.
+Looking at this launch configuration you will find these relevant settings:
+<ul>
+	<li>On tab "JRE" two options are checked: <code>Enable OTRE</code> and <code>Java 5 JPLIS Launching</code></li>
+	<li>On the tab "<img src="images/team_obj.gif"> Team Activation" the team <code>GUIConnector</code> is selected for instantiation and activation.<br>
+	<strong>Optional:</strong><br>
+	   <ol type="a">
+	      <li>You may additionally select the team <code>WindowPlacer</code> which ensures that
+	      new windows are always centered with respect to the desktop/their parent.<br>
+	      <i>Note,</i> that this team requires the "Java 5 JPLIS Launching" option (see above),
+	      because it adapts class <code>java.awt.Window</code>
+	      which is not adaptable using the old launch mode.
+	   </ol></li>
+</ul>
+
+The most important step is to add a method binding to <code>flightbooking.PassengerList.add()</code>.<br />
+The following line in 
+<code><img src="images/role_obj.gif"/>&nbsp;fbapplication.GUIConnector.Controller</code> 
+is responsible for this (it's a callin binding):<br />
+<img src="images/callinbinding_obj.gif" />&nbsp;&nbsp;&nbsp;&nbsp;<code> queryRegisterForBonus &lt;- <strong>after</strong>  add;</code><br />
+
+<p>
+Whenever a passenger is added to that list (an internal "repository"),
+the user is asked, whether the passenger wants to participate in the bonus programme. 
+If so, a new <img src="images/team_obj.gif" /><code>FlightBonus</code> instance is created 
+and the passenger is implicitly registered
+(cf. the implementation of <code>fbapplication.BonusGUI.Controller.queryRegisterForBonus</code>).
+After that all bookings for this passenger will also give bonus credits
+to the passenger.
+</p>
+<p>
+Collecting credits will be reported by a new dialog box &mdash; the nested team 
+<code><img src="images/team_role_obj.gif" />&nbsp;fbapplication.GUIConnector.FlightBonusDialog</code>.
+This team defines another layer over the team FlightBonus, observing the behaviour of its roles.
+</p>
+
+<h2>OT/J concepts used</h2>
+The following concepts are demonstrated and documented in the source code (<a href="guide/otjld/def/index.html"><img src="images/ot_paragraph.gif" /> numbers refer to paragraphs in the language definition</a>):
+<dl>
+<dt><strong>team inheritance and implicit inheritance of roles</strong> (<a href="guide/otjld/def/team.html"><img src="images/ot_paragraph.gif" /> 1</a>)</dt>
+<dd>There are two team inheritance relations: <code>FlightBonus extends Bonus</code>
+  and <code>GUIConnector extends BonusGUI</code>.
+  In both cases the contained roles are further specialized in the sub-team.<br />
+  Implicit inheritance works accross levels (<a href="guide/otjld/def/team.html#s1.5"><img src="images/ot_paragraph.gif" /> 1.5</a>): 
+  the nested team <code>FlightBonusDialog</code>
+  implicitly inherits all roles from its implicit super team of the same name.
+  The inner most roles recursively inherit from their implicit super roles.<br />
+  You may want to try the special hierarchy view (F4) for exploring this implicit inheritance.
+  </dd>
+<dt><strong>callin method bindinds</strong> (<a href="guide/otjld/def/callin.html"><img src="images/ot_paragraph.gif" /> 4</a>)</dt>
+<dd>The <code>FlightBonus</code> and the <code>GUIConnector</code> teams are both triggered
+  via callin bindings, by which they hook into the underlying system.
+  In the case of the <code>FlightBonusDialog</code> the base classes are roles, too.
+  This means roles are used to intercept events at some other roles.</dd>
+<dt><strong>callout method bindinds</strong> (<a href="guide/otjld/def/callout.html"><img src="images/ot_paragraph.gif" /> 3</a>)</dt>
+<dd>Most roles access features of their base class using callout bindings.</dd>
+<dt><strong>role files</strong> (<a href="guide/otjld/def/team.html#s1.2.5"><img src="images/ot_paragraph.gif" /> 1.2.5</a>)</dt>
+<dd><code>fbapplication.BonusGUI.FlightBonusDialog</code> and 
+    <code>fbapplication.GUIConnector.FlightBonusDialog</code>.
+    Each role file resides in a <strong><code>team package</code></strong>
+    that has the same name as the enclosing team (i.e., a team is a class and a package).</dd>
+<dt><strong>team activation</strong> (<a href="guide/otjld/def/activation.html"><img src="images/ot_paragraph.gif" /> 5</a>)</dt>
+<dd>The 'bootstrap' team <code>GUIConnector</code> is activated via the <strong>launch configuration</strong>
+  (<a href="guide/otjld/def/activation.html#s5.5"><img src="images/ot_paragraph.gif" /> 5.5</a>).
+  By this technique it is possible to adapt the flight booking application without changing
+  a single line of source code.
+  In the sequel the <code>GUIConnector</code> creates instances of <code>FlightBonus</code>
+  and <code>FlightBonusDialog</code>, both of which invoke <strong><code>activate()</code></strong>
+  (<a href="guide/otjld/def/activation.html#s5.2.b"><img src="images/ot_paragraph.gif" /> 5.2(b)</a>) from their constructor in order to enable all callins of contained roles.<br />
+  Roles <code>FlightBonus.Subscriber</code> and <code>BonusGUI.Collector</code> restrict
+  activation to specific instances using a <strong>guard predicate</strong> (<a href="guide/otjld/def/activation.html#s5.4"><img src="images/ot_paragraph.gif" /> 5.4</a>).
+<dt><strong>lifting</strong> (<a href="guide/otjld/def/rolebinding.html#s2.3"><img src="images/ot_paragraph.gif" /> 2.3</a>)</dt>
+<dd>The constructor <code>FlightBonus(Passenger as Subscriber s)</code> uses declared lifting
+  (<a href="guide/otjld/def/rolebinding.html#s2.3.2"><img src="images/ot_paragraph.gif" /> 2.3.2</a>)
+  to force creation of a subscriber role for each passenger to be registered.<br />
+  The constructor <code>FlightBonusDialog(FlightBonus fb)</code> is a lifting constructor,
+  which means it will implicitly be used by the lifting operation, but it can also be
+  invoked explicitly, to create a new role for a given base instance 
+  (cf. method <code>queryRegisterForBonus</code>).
+  </dd>  
+</dl>
+
+</body>
+</html>
