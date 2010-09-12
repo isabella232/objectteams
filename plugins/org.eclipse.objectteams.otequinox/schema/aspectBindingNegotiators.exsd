@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.objectteams.otequinox" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.objectteams.otequinox" id="aspectBindingNegotiators" name="OT/Equinox negotiators for aspect binding requests"/>
+      </appInfo>
+      <documentation>
+         Allow client plugins to participate in negotiation whether aspect binding requests 
+(incl. forced exports) should be denied or granted.
+&lt;p&gt;
+All extensions will be asked whenever an aspect plugin requests an aspect binding 
+or a forced export for which no permission could be found in persistent storage 
+of neither the eclipse installation nor the workspace.
+&lt;ul&gt;
+&lt;li&gt;As soon as any extension DENYs a given request this aspect plugin is blocked.&lt;/li&gt;
+&lt;li&gt;If no extension GRANTs the request the aspect plugin is blocked, too.&lt;/li&gt;
+&lt;li&gt;Only if at least one extension GRANTs the request and no extension DENYs
+the aspect may proceed and will be woven into its base entities.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="negotiator" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="negotiator">
+      <annotation>
+         <documentation>
+            A participant in the protocol for aspect binding negotiation,
+which is able to grant or deny a request by an aspect bundle.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Fully qualified name of the class that shall participate in the negotiation protocol.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.objectteams.otequinox.IAspectRequestNegotiator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         OTDT 1.2.6
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Example of a declaration of a &lt;code&gt;negotiator&lt;/code&gt;:&lt;pre&gt;
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;?eclipse version=&quot;3.2&quot;?&gt;
+&lt;plugin&gt;
+   &lt;extension
+         point=&quot;org.eclipse.objectteams.otequinox.aspectBindingNegotiators&quot;&gt;
+      &lt;negotiator
+            class=&quot;yesser.AspectRequestGranter&quot;&gt;
+      &lt;/negotiator&gt;
+   &lt;/extension&gt;
+&lt;/plugin&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The class named in the &lt;code&gt;class&lt;/code&gt; property must implement the &lt;code&gt;org.eclipse.objectteams.otequinox.IAspectRequestNegotiator&lt;/code&gt; interface.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         &lt;em&gt;
+&lt;p&gt;
+This file is part of &quot;Object Teams Development Tooling&quot;-Software
+&lt;/p&gt;&lt;p&gt;
+Copyright 2009 Technical University Berlin, Germany.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+&lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;
+Please visit &lt;a href=&quot;http://www.objectteams.org&quot;&gt;www.objectteams.org&lt;/a&gt; for updates and contact.
+&lt;/p&gt;&lt;p&gt;
+Contributors:&lt;br&gt;
+Technical University Berlin - Initial API and implementation
+&lt;/p&gt;
+&lt;/em&gt;
+      </documentation>
+   </annotation>
+
+</schema>

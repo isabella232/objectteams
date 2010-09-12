@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <iu id="org.eclipse.objectteams.otdt.feature.group" range="[0.7.0,0.8.0)">
+      <category name="org.eclipse.objectteams.otdt_0.7"/>
+   </iu>
+   <iu id="org.eclipse.objectteams.otequinox.feature.group" range="[0.7.0,0.8.0)">
+      <category name="org.eclipse.objectteams.otdt_0.7"/>
+   </iu>
+   <category-def name="org.eclipse.objectteams.otdt_0.7" label="OTDT 0.7.x (Incubation) based on Eclipse 3.6">
+      <description>
+         The Object Teams Development Tooling versions 0.7.x (Incubation) based on Eclipse 3.6.x
+      </description>
+   </category-def>
+</site>

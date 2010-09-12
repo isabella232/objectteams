@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otequinox"
+      label="%featureName"
+      version="0.7.1.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.objectteams.otequinox"
+      colocation-affinity="org.eclipse.rcp">
+
+   <description url="http://www.eclipse.org/objectteams">
+      This feature enables Equinox to run plugins written in OT/J.
+   </description>
+
+   <copyright>
+      The copyright is held by the Technische Unversität Berlin
+Author: Stephan Herrmann.
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+
+   <url>
+      <update label="Object Teams Updates" url="http://download.eclipse.org/objectteams/updates/0.7"/>
+      <discovery label="Object Teams Updates" url="http://download.eclipse.org/objectteams/updates/0.7"/>
+   </url>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.hook"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.bcel"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.sunjvm"
+         os="linux"
+         download-size="1"
+         install-size="1"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.sunjvm"
+         os="solaris"
+         download-size="1"
+         install-size="1"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.sunjvm"
+         os="win32"
+         download-size="1"
+         install-size="1"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.branding"
+         download-size="10"
+         install-size="10"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.eclipse.monitor"
+         download-size="14"
+         install-size="14"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

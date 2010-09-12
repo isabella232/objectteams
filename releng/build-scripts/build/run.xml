@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<!--
+ Copyright (c) 2010 Stephan Herrmann and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Stephan Herrmann - initial API and implementation
+-->
+<project name="Main Object Teams Build and Test Automation" default="INFO">
+
+	<target name="showGivenProperties" 
+			description="Show values of all properties that should be passed from our caller.">
+		<echo>Properties passed into this script:
+------------------------------------------------------------------------------
+path of eclipse SDK:
+		eclipse-app.tgz  = ${eclipse-app.tgz}
+path of eclipse test framework:
+		eclipse.tests.zip= ${eclipse.tests.zip}
+path of published updates:
+		published.updates= ${published.updates}
+should sources be built (true|false)?
+		do.build.all     = ${do.build.all}
+should test be run (true|false)?
+		do.run.tests     = ${do.run.tests}
+------------------------------------------------------------------------------
+		</echo>
+	</target>
+
+	<target name="setupProperties" depends="showGivenProperties">
+		
+		<dirname property="_toplevelDir" file="${ant.file}"/>
+
+		<!-- main configuration file (version dependent names etc.): -->
+		<loadproperties srcfile="${_toplevelDir}/run.properties" />
+
+		<!-- versions of test plugins, also find org.eclipse.test here: -->
+		<loadproperties srcfile="${_toplevelDir}/test.properties" />
+		
+		<!-- ======== Directories (indentation shows structure): ======== -->
+		<!--    build scripts: -->
+		<property name="OTScriptDir" value="${_toplevelDir}" />
+			<property name="buildfile"          value="${OTScriptDir}/build.xml" />
+			<property name="builder-otcompiler" value="${OTScriptDir}/OT-Compiler" />
+			<property name="builder-otdt"       value="${OTScriptDir}/OTDT-Build" />
+			
+		<!--	directories for the build: -->
+		<property name="build.root.dir" value="${user.dir}/build-root" />
+			<!-- These names are hard coded in pde-build: -->
+			<property name="buildDirectory"		value="${build.root.dir}/src" />
+			<property name="baseLocation"   	value="${build.root.dir}/eclipse" />
+	
+		<!--	directories for testing: -->
+		<property name="test.root.dir" value="${user.dir}/test-root" />
+			<!-- This name is used in individual test.xml of test plugins: -->
+			<property name="test.eclipseDir" value="${test.root.dir}/eclipse" />
+
+		<!--	directories for update sites: -->
+		<property name="otdtUpdatesDir" 		value="${user.dir}/updateSite"/>
+		<property name="testsUpdatesDirBase" 	value="${user.dir}/updateSiteTests"/>
+			<!-- will have sub directories "eclipse" and "otdt" -->
+
+		<!-- ======== More Configuration Details: ======== -->
+		<!-- maybe obsolete: file prefix to distinguish output files. -->
+		<property name="file-id" value="XXX" />
+		
+		<!-- Configure Java for STAGE 1 and STAGE 2 building: -->
+		<property name="vm" value="java" />
+		<property name="vm.args" value="-Xmx912m" />
+		<property name="vm.args2" value="-XX:MaxPermSize=128m" />
+
+		<property name="installmode" value="clean" />
+	
+		<property name="saxon.jar.name" value="saxon8.jar" />
+		<property name="saxon.jar.path" value="${user.home}/.ant/lib/${saxon.jar.name}" />
+		<available file="${saxon.jar.path}" property="_hasSaxon.jar" />
+		
+		<!-- ant's os.arch is slightly different than osgi's arch -->
+		<condition property="arch" value="x86_64"> <!-- HACK: hard coding 64-bit architecture -->
+			<os arch="i386" />
+		</condition>
+		<condition property="arch" value="ppc64"> <!-- HACK: hard coding 64-bit architecture -->
+			<os arch="ppc" />
+		</condition>
+		<condition property="arch" value="x86_64"> <!-- Map ant's arch to OSGi arch -->
+			<os arch="amd64" />
+		</condition>
+		<!-- if not set above, set it to os.arch -->
+		<property name="arch" value="${os.arch}" />
+
+	</target>
+
+
+	<target name="INFO">
+		<echo>Usage:
+	ant -f run.xml ot-junit-all   ->    runs OTDT Build and Testprocess
+	ant -f run.xml ot-junit-build ->    runs just OTDT Buildprocess
+	ant -f run.xml ot-junit-run   ->    runs just OTDT Tests w/o TestSetup
+	</echo>
+	</target>
+
+	<target name="ot-junit-all" depends="setupProperties,checkOS" description="Build all and run all tests.">
+		<echo message="Starting BuildProcess and Testrun in ${build.root.dir}"/>
+		<antcall target="verifyAntInstall"/>
+		<antcall target="setupTests" />
+		<antcall target="runAllTests"/>
+	</target>
+
+	<target name="ot-junit-build" depends="setupProperties,checkOS" description="build everything without running tests">
+		<echo message="Starting BuildProcess in ${build.root.dir}"/>
+		<antcall target="verifyAntInstall"/>
+		<antcall target="createOTDTEclipse"/>
+	</target>
+
+	<target name="ot-junit-run" depends="setupProperties,checkOS" description="Run tests without building">
+		<echo message="Starting Testrun ${test.root.dir}"/>
+		<antcall target="runAllTests" />
+	</target>
+
+	<!-- =================== END Public Targets ==================== -->
+
+	<!-- === Setup Targets: === -->
+	
+	<target name="verifyAntInstall" unless="_hasSaxon.jar">
+		<copy failonerror="true" overwrite="false" file="${OTScriptDir}/${saxon.jar.name}" tofile="${saxon.jar.path}"></copy>
+		<echo message="Needed to copy saxon8.jar to ${saxon.jar.path}. Please restart the build." />
+		<echo message="For an explanation, see http://ant.apache.org/faq.html#delegating-classloader-1.6" />
+		<fail message="See above. Please restart the build."/>
+	</target>
+	
+	<!-- checks on which os ant is run, set ${os} and ${ws} accordingly -->
+	<target name="determineOS">
+		<condition property="os.isWindows">
+			<os family="windows"/>
+		</condition>
+
+		<condition property="os.isLinux">
+			<os name="Linux" />
+		</condition>
+	</target>
+
+	<target name="checkOS" depends="determineOS,windows,linux"/>
+
+	<target name="windows" if="os.isWindows">
+		<echo message="OS is Windows"/>
+		<property name="os" value="win32" />
+		<property name="ws" value="win32" />
+	</target>
+
+	<target name="linux" unless="os.isWindows" >
+		<echo message="OS is Linux"/>
+		<!-- eclipse-app.tgz is already passed from the calling script -->
+		<property name="os" value="linux" />
+		<property name="ws" value="gtk" />
+	</target>
+
+	<target name="setupForCompile" depends="checkOS" unless="_hasCreatedOTDTEclipse">
+		<antcall target="UnzipEclipse"/>
+		<antcall target="AddPluginsToEclipse"/>
+	</target>
+
+	<target name="UnzipEclipse">
+		<echo message="Extracting Eclipse (${eclipse-app.tgz}) in ${build.root.dir}..."/>
+		<mkdir dir="${build.root.dir}"/>
+		<untar compression="gzip" src="${eclipse-app.tgz}" dest="${build.root.dir}"/>
+	</target>
+	
+	<target name="AddPluginsToEclipse" description="Add svn.pde.build plugin to the base Eclipse">
+		<mkdir dir="${baseLocation}/dropins/plugins"/>
+		<copy file="${OTScriptDir}/lib/${svn.pde.build}" todir="${baseLocation}/dropins/plugins" />
+	</target>
+
+	<!-- ==== BUILDING AND RUNNING: ==== -->
+
+	<!-- ==== BUILD STAGE 1: ==== -->
+	<!-- setting an empty inputstring is a workaround for http://issues.apache.org/bugzilla/show_bug.cgi?id=34461 -->
+	<target name="createOTCompilerEclipse" depends="setupForCompile" description="create the bootstrapping Eclipse with OT/J compiler">
+		<echo message="Invoke pdebuild for creating the OT-Compiler"/>
+        <java
+	        inputstring=""
+	        dir="${baseLocation}" 
+	        fork="true" 
+	        classname="org.eclipse.equinox.launcher.Main"
+	        classpath="${baseLocation}/plugins/${org.eclipse.equinox.launcher_jar}">
+	            <arg value="-Dosgi.ws=${ws}"/>
+	            <arg value="-Dosgi.os=${os}"/>
+	            <arg value="-Dosgi.arch=${arch}"/>
+	            <arg value="-application"/>
+	            <arg value="org.eclipse.ant.core.antRunner"/>
+	            <arg value="-buildfile"/>
+	            <arg value="${buildfile}"/>
+	            <arg value="-Dbuild.root.dir=${build.root.dir}"/>
+	            <arg value="-DbaseLocation=${baseLocation}"/>
+	            <arg value="-DOTScriptDir=${OTScriptDir}"/>
+	            <arg value="-Drun.eclipseScriptDir=${run.eclipseScriptDir}"/>
+	            <arg value="-Dbuilder=${builder-otcompiler}"/>
+	            <arg value="-D${installmode}=true"/> <!-- <- obsolete? -->
+		    	<arg value="-Dcomponent.short=OT-Compiler"/>
+	            <arg value="-Dconfigs=*,*,*"/>
+	            <arg value="-Dbaseos=${os}"/>
+	            <arg value="-Dbasews=${ws}"/>
+	            <arg value="-Dbasearch=${arch}"/>
+	            <arg value="-Dtest.root.dir=${test.root.dir}"/>
+	            <arg value="-Dtest.eclipseDir=${test.eclipseDir}"/>
+	            <arg value="-DmapVersionTag=${mapVersionTag}"/>
+	            <arg value="-DpathToMapFile=${pathToMapFile}"/>
+		    	<arg value="-DmapFileName=ot-compiler.map"/>
+		    	<arg value="-Dsvn.repository.url=${svn.repository.url}"/>
+	            <arg value="-Declipse-app.tgz=${eclipse-app.tgz}"/>
+	            <arg value="-Declipse.tests.zip=${eclipse.tests.zip}"/>
+	            <!--arg value="-verbose" /-->
+	            <jvmarg value="${vm.args}"/>
+	            <jvmarg value="${vm.args2}"/>
+        </java>
+		<!-- At this point a zip file containing the new jdt.core-plugin exists in 
+		     ${build.root.dir}/org.eclipse.objectteams.otdt-${buildId}.zip
+		     which has already been installed into ${baseLocation} as to replace the 
+		     original plugin jar of exact same name (see OT-Compiler/customTargets.xml#postBuild)..
+		  -->
+    </target>
+
+	<!-- ==== BUILD STAGE 2: ==== -->
+	<!-- setting an empty inputstring is a workaround for http://issues.apache.org/bugzilla/show_bug.cgi?id=34461 -->
+	<target name="createOTDTEclipse" depends="createOTCompilerEclipse" unless="_hasCreatedOTDTEclipse">
+		
+        <!-- Make org.eclipse.test.performance available while compiling test projects: -->
+        <echo message="Pre-installing Eclipse Test Framework into OTCompilerEclipse..."/>
+        <mkdir dir="${testsUpdatesDirBase}"/>
+        <unzip dest="${testsUpdatesDirBase}" src="${eclipse.tests.zip}"/> <!-- unfolds into "eclipse" subdir -->
+        <ant antfile="${OTScriptDir}/p2helper.xml" target="installFeature" dir="${baseLocation}">
+            <property name="feature" value="org.eclipse.test.feature.group"/>
+            <property name="sourceUpdatesDir" value="${testsUpdatesDirBase}/eclipse"/>
+            <property name="targetEclipseDir" value="${baseLocation}"/>
+        </ant>
+		
+		<!-- pre-load updateSite with published releases: -->
+        <mkdir dir="${otdtUpdatesDir}/plugins"/>
+        <mkdir dir="${otdtUpdatesDir}/features"/>
+        <exec executable="/bin/sh">
+                <arg value="-c"/>
+                <arg value="ln -s ${published.updates}/features/* ${otdtUpdatesDir}/features/"/>
+        </exec>
+        <exec executable="/bin/sh">
+                <arg value="-c"/>
+                <arg value="ln -s ${published.updates}/plugins/* ${otdtUpdatesDir}/plugins/"/>
+        </exec>
+		<!-- pre-load category-less metadata: -->
+		<copy failonerror="false" flatten="true" toDir="${otdtUpdatesDir}">
+	        <fileset dir="${user.dir}/metadata">
+                       <include name="*.xml"/>
+            </fileset>
+    	</copy>
+	
+		<echo message="Invoke pdebuild for creating a full OTDT"/>
+		<java
+			inputstring=""
+			dir="${baseLocation}" 
+			fork="true" 
+			classname="org.eclipse.equinox.launcher.Main"
+			classpath="${baseLocation}/plugins/${org.eclipse.equinox.launcher_jar}">
+				<arg value="-clean"/>
+				<arg value="-Dosgi.ws=${ws}"/>
+				<arg value="-Dosgi.os=${os}"/>
+				<arg value="-Dosgi.arch=${arch}"/>
+				<arg value="-application"/>
+				<arg value="org.eclipse.ant.core.antRunner"/>
+				<arg value="-buildfile"/>
+				<arg value="${buildfile}"/>
+				<arg value="-Dbuild.root.dir=${build.root.dir}"/>
+				<arg value="-DbaseLocation=${baseLocation}"/>
+				<arg value="-Drun.eclipseScriptDir=${run.eclipseScriptDir}"/>
+				<arg value="-DOTScriptDir=${OTScriptDir}"/>
+				<arg value="-Dbuilder=${builder-otdt}"/>
+				<arg value="-D${installmode}=true"/>
+				<arg value="-Dcomponent.short=OTDT-Build"/>
+				<arg value="-DotdtUpdatesDir=${otdtUpdatesDir}"/>
+				<arg value="-DtestsUpdatesDirBase=${testsUpdatesDirBase}"/>
+				<arg value="-Dbaseos=${os}"/>
+				<arg value="-Dbasews=${ws}"/>
+				<arg value="-Dbasearch=${arch}"/>
+				<arg value="-Dtest.root.dir=${test.root.dir}"/>
+				<arg value="-Dtest.eclipseDir=${test.eclipseDir}"/>
+				<arg value="-Dsvn.repository.url=${svn.repository.url}"/>
+				<arg value="-Dsvn.devel.branch=${svn.devel.branch}"/>
+				<arg value="-DmapVersionTag=${mapVersionTag}"/>
+				<arg value="-DpathToMapFile=${pathToMapFile}"/>
+				<arg value="-DmapFileName=otdt.map"/>
+				<arg value="-Ddo.run.tests=${do.run.tests}"/>
+				<arg value="-Ddo.build.all=${do.build.all}"/>
+				<arg value="-Declipse-app.tgz=${eclipse-app.tgz}"/>
+				<arg value="-Declipse.tests.zip=${eclipse.tests.zip}"/>
+				<!--arg value="-verbose" /-->
+				<jvmarg value="${vm.args}"/>
+				<jvmarg value="${vm.args2}"/>
+				<!-- arg value="${verboseAnt}"/ -->
+				<!-- arg value="-debug" / -->
+		</java>
+		<!-- At this point a local update site exists, thanks to p2gathering=true -->
+		
+        <ant antfile="${OTScriptDir}/p2helper.xml" target="patchMetadata" dir="${otdtUpdatesDir}"/>
+		
+		<property name="_hasCreatedOTDTEclipse" value="true" />
+	</target>
+	
+	<!-- TESTING at STAGE 3: -->
+	<target name="setupTests" depends="createOTDTEclipse" description="Install the tests into an fresh OTDT">
+		<available file="${buildDirectory}/label.properties" property="label.properties.exists" />
+		<ant antfile="${OTScriptDir}/test.xml" target="setupTests" dir="${build.root.dir}">
+			<property name="os" value="${os}" />
+			<property name="ws" value="${ws}" />
+			<property name="arch" value="${arch}" />
+			<property name="baseos" value="${os}" />
+			<property name="basews" value="${ws}" />
+			<property name="basearch" value="${arch}" />
+			<property name="eclipse-app.tgz" value="${eclipse-app.tgz}" />
+			<property file="${buildDirectory}/label.properties" />
+			<property name="otdtUpdatesDir" value="${otdtUpdatesDir}" />
+			<property name="testsUpdatesDirBase" value="${testsUpdatesDirBase}" />
+		</ant>
+	</target>
+
+	<target name="runAllTests" description="Delegate to the next level script to perform the actual testing.">
+		<ant antfile="${OTScriptDir}/test.xml" target="all" dir="${build.root.dir}">
+			<property name="os" value="${os}" />
+			<property name="ws" value="${ws}" />
+			<property name="arch" value="${arch}" />
+			<property name="baseos" value="${os}" />
+			<property name="basews" value="${ws}" />
+			<property name="basearch" value="${arch}" />
+			<property name="otdtUpdatesDir" value="${otdtUpdatesDir}" />
+			<property name="testsUpdatesDirBase" value="${testsUpdatesDirBase}" />
+			<property name="vmargs" value="${vmargs}" />
+		</ant>
+	</target>
+
+	<!-- currently unused target name="collectResults">
+		<ant target="collect" antfile="${test.eclipseDir}/plugins/${org.eclipse.test}/library.xml" dir="${otresults}">
+			<property name="includes" value="org.*.xml"/>
+			<property name="output-file" value="AllTestSuites.xml"/>
+		</ant>
+	</target -->
+	
+</project>

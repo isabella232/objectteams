@@ -1,0 +1,45 @@
+/**
+ * contains fixes for IE version < 7
+ * @author mosconi
+ */
+html {
+	height: 100%;
+    max-height: 100%;
+}
+
+#left {
+	position: absolute; /* switched to 'fixed' by javascript dynamically */
+	height: 1000px;
+}
+#left.fixed { /* class applied by javascript dynamically */
+    position: fixed;
+}
+
+/* display content over rounded corner background */
+#content {
+	z-index: 99; /* overwritten by javascript to 1 */
+}
+
+div.boxheadr {
+	margin-right: -4px;
+	overflow: visible;
+}
+div.boxbottomr {
+	margin-right: -4px;
+	overflow: visible;
+}
+div.boxbottomm{
+	height: 13px;
+	overflow: hidden;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+#nav-box li {
+	background: none;
+	list-style: url(../images/arrow-right-trans.png);
+	padding-left: 5px;
+	margin-left: 15px;
+}

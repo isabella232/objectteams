@@ -1,0 +1,16 @@
+#Sun Aug 26 11:11:54 CEST 2007
+eclipse.preferences.version=1
+org.eclipse.objectteams.otdt.compiler.option.joinpoint_queries=disabled
+org.eclipse.objectteams.otdt.compiler.option.scoped_keywords=enabled
+org.eclipse.objectteams.otdt.compiler.problem.abstract_potential_relevant_role=warning
+org.eclipse.objectteams.otdt.compiler.problem.basecall=warning
+org.eclipse.objectteams.otdt.compiler.problem.binding_conventions=error
+org.eclipse.objectteams.otdt.compiler.problem.decapsulation=warning
+org.eclipse.objectteams.otdt.compiler.problem.deprecated_path_syntax=warning
+org.eclipse.objectteams.otdt.compiler.problem.effectless_fieldaccess=warning
+org.eclipse.objectteams.otdt.compiler.problem.fragile_callin=warning
+org.eclipse.objectteams.otdt.compiler.problem.incomplete_build=error
+org.eclipse.objectteams.otdt.compiler.problem.inferred_callout=error
+org.eclipse.objectteams.otdt.compiler.problem.potential_ambiguous_playedby=warning
+org.eclipse.objectteams.otdt.compiler.problem.unsafe_liftctor=warning
+org.eclipse.objectteams.otdt.compiler.problem.unused_parammap=warning

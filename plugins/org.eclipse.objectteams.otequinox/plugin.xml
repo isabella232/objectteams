@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="aspectBindings" name="OT/J Aspect Bindings" schema="schema/aspectBindings.exsd"/>
+   <extension-point id="aspectBindingNegotiators" name="OT/Equinox negotiators for aspect binding requests" schema="schema/aspectBindingNegotiators.exsd"/>
+   <extension-point id="liftingParticipant" name="OT/J Lifting Participant" schema="schema/liftingParticipant.exsd"/>
+</plugin>

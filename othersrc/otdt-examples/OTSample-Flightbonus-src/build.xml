@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flightbonus" default="zip">
+	<property name="zipfile" value="org.eclipse.objectteams.otdt.samples/samples/flightbonus.zip"/>
+	<target name="zip">
+		<delete file="${zipfile}"/>
+		<zip 
+			destfile="${zipfile}"
+			basedir="OTSample-Flightbonus-src/src"
+			includes="Intro0.html,FlightbookingWithBonus.launch,.classpath,.project,sample.properties,src/**,lib/**,.settings/**"/>
+	</target>
+</project>

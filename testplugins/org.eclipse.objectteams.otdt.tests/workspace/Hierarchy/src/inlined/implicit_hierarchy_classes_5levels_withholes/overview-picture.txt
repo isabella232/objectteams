@@ -1,0 +1,40 @@
+
+ The data setting looks like thisinside this package:
+ 
+ EmptyRootTeam
+      /\
+       |
+ SuperSuperTeam
+             R1
+      /\
+       |
+ EmptyTeamBetweenSuperSuperAndSuperTeam
+      /\
+       |
+   SuperTeam
+          R1
+      /\
+       |
+ EmptyTeamBetweenSuperAndATeam
+      /\
+       |
+     ATeam 
+        R1
+      /\ 
+       |''''''''''''''''''''''''''''''''''''''|
+  EmptyTeamBetweenATeamAndSubTeam1         SubTeam2
+      /\                                         R1
+       |
+    SubTeam1            
+          R1                  
+      /\ 
+       |'''''''''''''''''''''|
+ SubSubTeam11  EmptyTeamBetweenSubTeam1AndSubSubTeam12
+           R1                /\
+                              |
+                        SubSubTeam12
+                                  R1
+           
+           
+ 
+ R1 is a role CLASS with the name "R1" inside the above team class.

@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.objectteams.otdt.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.objectteams.otdt.ui" id="updateRulerActionExtenders" name="Update Ruler Action Extenders"/>
+      </appInfo>
+      <documentation>
+         This extension point allows to add an extender to the existing UpdateRulerActions.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="extender"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="extender">
+      <annotation>
+         <documentation>
+            Specifies an extender that hooks into an existing update ruler action of the OTDTUI.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Instantiable class that implements &lt;code&gt;org.eclipse.objectteams.otdt.ui.IUpdateRulerActionExtender&lt;/code&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.objectteams.otdt.ui.IUpdateRulerActionExtender"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="editorClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The fully qualified classname of the editor to which the current extension should be applied.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         0.7.0 (Incubation at Eclipse.org)
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Initial usage is by the &lt;code&gt;org.eclipse.objectteams.otdt.ui.help&lt;/code&gt; plug-in.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         Extensions must implement the interface &lt;code&gt;org.eclipse.objectteams.otdt.ui.IUpdateRulerActionExtender&lt;/code&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         None.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         &lt;em&gt;
+&lt;p&gt;
+This file is part of &quot;Object Teams Development Tooling&quot;-Software
+&lt;/p&gt;&lt;p&gt;
+Copyright 2010 Stephan Herrmann.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+&lt;a href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;
+Please visit &lt;a href=&quot;http://www.objectteams.org&quot;&gt;www.objectteams.org&lt;/a&gt; for updates and contact.
+&lt;/p&gt;&lt;p&gt;
+Contributors:&lt;br&gt;
+Stephan Herrmann - Initial API and implementation
+&lt;/p&gt;
+&lt;/em&gt;
+      </documentation>
+   </annotation>
+
+</schema>

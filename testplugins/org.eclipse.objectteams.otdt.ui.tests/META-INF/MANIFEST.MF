@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OTDT UITests Plug-in
+Bundle-SymbolicName: org.eclipse.objectteams.otdt.ui.tests;singleton:=true
+Bundle-Version: 1.3.0
+Bundle-ClassPath: otdt-uitests.jar
+Bundle-Activator: org.eclipse.objectteams.otdt.ui.tests.TestPlugin
+Bundle-Vendor: The TOPPrax consortium
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.junit,
+ org.eclipse.objectteams.otdt.tests,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.ui.ide,
+ org.eclipse.objectteams.otdt.ui,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.core.tests.compiler,
+ org.eclipse.test.performance,
+ org.eclipse.objectteams.otdt,
+ org.eclipse.jdt.ui.tests,
+ org.eclipse.ui.editors,
+ org.eclipse.objectteams.otequinox,
+ org.eclipse.objectteams.otdt.jdt.ui
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.objectteams.otdt.ui.tests,
+ org.eclipse.objectteams.otdt.ui.tests.callinmarker,
+ org.eclipse.objectteams.otdt.ui.tests.contentprovider,
+ org.eclipse.objectteams.otdt.ui.tests.core,
+ org.eclipse.objectteams.otdt.ui.tests.hierarchy.contentprovider,
+ org.eclipse.objectteams.otdt.ui.tests.typecreator,
+ org.eclipse.objectteams.otdt.ui.tests.util
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

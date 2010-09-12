@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AccumulatedBases Plug-in
+Bundle-SymbolicName: AccumulatedBases;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.debug.ui,
+ org.eclipse.objectteams.otequinox,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.jdt.junit

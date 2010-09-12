@@ -1,0 +1,170 @@
+<!--
+ Copyright (c) 2010 Stephan Herrmann and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Stephan Herrmann - initial API and implementation
+-->
+<project name="Automated Object Teams Testing" default="all"  basedir="." >
+
+	<!--properties file containing the plugin directory name including version number-->
+	<dirname property="_myDir" file="${ant.file}"/>
+	<property file="${_myDir}/test.properties" />
+
+	<!--properties file containing the build information-->
+	<property file="src/label.properties" />
+
+	<target name="readFlags">
+		<condition property="really.build.all">
+			<istrue value="${do.build.all}"/>
+        </condition>
+	</target>
+	
+	<target name="checkFlags" depends="readFlags" unless="really.build.all">
+		<property name="otdt-eclipse.is.setup" value="true"/>
+		<property name="tests.are.setup" value="true"/>
+	</target>
+
+	<target name="setupOTDTEclipse" depends="checkFlags" unless="otdt-eclipse.is.setup"
+		description="Creates the SUT by extracting a fresh Eclipse SDK and installing the OTDT into it"
+	>
+		<echo message="### Build Test Eclipse ###"/>
+		<echo message="Extracting Eclipse..."/>
+		<untar compression="gzip" src="${eclipse-app.tgz}" dest="${test.root.dir}"/>
+
+		<echo message="Installing OTDT..."/>
+		<ant antfile="${OTScriptDir}/p2helper.xml" target="installOTDT" dir="${test.eclipseDir}"/>
+		
+		<property name="otdt-eclipse.is.setup" value="true"/>
+	</target>
+
+	<target name="setupTests" depends="setupOTDTEclipse" unless="tests.are.setup"
+		description="Installes the OTDT-Tests into the OTDT"
+	>
+		<echo message="Setting up tests in ${test.eclipseDir}"/>
+		<!-- do install using p2: -->
+		<ant antfile="${OTScriptDir}/p2helper.xml" target="installTests" dir="${test.eclipseDir}"/>
+
+		<property name="tests.are.setup" value="true"/>
+	</target>
+	
+	<target name="runtests"
+			description="Runs ant on the test.xml for a specified plugin.  
+			 			 Requires a property value setting for testPlugin only if test.properties is not available.
+						 The property testPlugin represents a directory name made up of the plugin id and plugin version.
+						 This directory must contain a valid test.xml."
+	>
+		<ant antfile="plugins/${testPlugin}/test.xml" dir="${test.eclipseDir}">
+			<property name="eclipse-home" value="${test.eclipseDir}" />
+            <property name="extraVMargs" value="-XX:MaxPermSize=320m"/>
+		</ant>
+	</target>
+
+	<target name="otdt_tests" description="Runs the org.eclipse.objectteams.otdt.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.tests}" />
+		</antcall>
+	</target>
+	
+	<target name="jdtcore_compiler_tests" description="Runs the org.eclipse.jdt.core.tests.compiler test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.core.tests.compiler}" />
+		</antcall>
+	</target>
+
+	<target name="jdtcore_model_tests" description="Runs the org.eclipse.jdt.core.tests.model test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.core.tests.model}" />
+		</antcall>
+	</target>	
+	
+	<target name="jdt_builder_tests" description="Runs the org.eclipse.jdt.core.tests.builder test.xml">
+		<property name="library-file"
+		            value="${test.eclipseDir}/plugins/${org.eclipse.test}/library.xml"/>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.core.tests.builder}" />
+		</antcall>
+	</target>
+	
+
+	<target name="otdt_ui_tests" description="Runs the org.eclipse.objectteams.otdt.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.ui.tests}" />
+		</antcall>
+	</target>
+
+	<target name="otdt_dom_tests" description="Runs the org.eclipse.objectteams.otdt.ui.tests.dom test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.ui.tests.dom}" />
+		</antcall>
+	</target>
+
+	<target name="otdt_ref_tests" description="Runs the org.eclipse.objectteams.otdt.ui.tests.refactoring test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.ui.tests.refactoring}" />
+		</antcall>
+	</target>
+
+	<target name="jdt_ui_tests" description="Runs the org.eclipse.jdt.ui.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.ui.tests}" />
+		</antcall>
+	</target>
+	
+	<target name="jdt_ref_tests" description="Runs the org.eclipse.jdt.ui.tests.refactoring test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.ui.tests.refactoring}" />
+		</antcall>
+	</target>
+
+	<target name="jdt_debug_tests" description="Runs the org.eclipse.jdt.debug.tests test.xml">
+		<property name="library-file"
+		            value="${test.eclipseDir}/plugins/${org.eclipse.test}/library.xml"/>
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.jdt.debug.tests}" />
+		</antcall>
+	</target>
+
+	<target name="otdt_debug_tests" description="Runs the org.eclipse.objectteams.otdt.debug.tests test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.debug.tests}" />
+		</antcall>
+	</target>
+
+	<target name="otdt_builder_tests" description="Runs the org.eclipse.objectteams.otdt.test.builder test.xml">
+		<antcall target="runtests">
+			<param name="testPlugin" value="${org.eclipse.objectteams.otdt.test.builder}" />
+		</antcall>
+	</target>
+
+	<target name="all">
+<!-- enable if we want to debug otre/otequinox:
+<property name="extraVMargs" value="-Dot.dump=1 -Dotequinox.debug=OK" />
+-->
+      <!-- debug tests don't like parallelization -->
+      <antcall target="jdt_debug_tests" />
+      <antcall target="otdt_debug_tests" />
+	  <!--parallel threadCount="2"-->
+                <!-- "slow", ui tests come first -->
+                <antcall target="jdt_ref_tests" />
+                <antcall target="jdt_ui_tests" />
+                <antcall target="otdt_ui_tests" />
+                <antcall target="otdt_ref_tests" />
+                <antcall target="otdt_dom_tests" />
+                <antcall target="otdt_tests" />
+       			<antcall target="jdt_builder_tests" />
+                <antcall target="jdtcore_compiler_tests" />
+                <antcall target="jdtcore_model_tests" />
+                <antcall target="otdt_builder_tests" />
+                <!-- antcall target="otdt_metrics_tests" / -->
+	  <!--/parallel-->
+	</target>
+	
+	<target name="onlyone">
+		<antcall target="otdt_ui_tests" />
+	</target>
+
+</project>

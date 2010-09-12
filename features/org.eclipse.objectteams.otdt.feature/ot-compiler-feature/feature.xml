@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otdt"
+      label="Object Teams Development Tooling"
+      version="0.7.0"
+      provider-name="Eclipse Object Teams project"
+      plugin="org.eclipse.objectteams.otdt"
+      image="eclipse_update_75.jpg">
+
+   <description>
+This is a build-time-only feature for Object Teams and the Object Teams Development Tooling.
+   </description>
+
+   <copyright>
+The software &quot;Object Teams Development Tooling&quot; (OTDT) is a result of 
+the joint project TOPPrax and has been developed in collaboration between the 
+Fraunhofer Institut f&#252;r Rechnerarchitektur und Softwaretechnik (FIRST)
+and the Technische Unversit&#228;t Berlin.
+
+The software consists of three distinguishable parts:
+- A compiler for OT/J (Compiler),
+- A graphical user interface (GUI) and
+- A runtime environment for OT/J (Runtime).
+The copyright is held by the Technische Universit&#228;t (Compiler and Runtime)
+and by the Fraunhofer Gesellschaft, M&#252;nchen, Deutschland,
+for its Fraunhofer Institut f&#252;r Rechnerarchitektur und Softwaretechnik
+nik
+(FIRST) (Compiler and GUI) and others.
+
+This software is based on Eclipse and the Java Development Tooling
+(JDT) of which it contains parts.
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+   
+   <requires>
+      <import plugin="org.eclipse.core.resources" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.text"/>
+   </requires>
+
+<!-- bootstrap compiler always has the same version as the plain jdt.core => no OT-version information -->
+   <plugin
+         id="org.eclipse.jdt.core"
+         download-size="4704"
+         install-size="4704"
+         version="3.6.0.v_A58"
+         unpack="false"/>         
+
+</feature>

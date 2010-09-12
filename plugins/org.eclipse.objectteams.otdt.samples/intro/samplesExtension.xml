@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<introContent>
+  <!-- Extension to the SDK Samples Page. -->
+  <extensionContent id="org.eclipse.objectteams.otdt.samples.samplesExtension" 
+  						name="Object Teams Samples"
+  						alt-style="/css/swt.properties"
+  						style="/css/samples.css"
+						path="samples/@">
+	
+	  <anchor id="otSampleAnchor"/>
+      <group label="Object Teams Samples" id="swt" style-id="samples-group">
+      <text style-id="group-description">Explore Object Teams development through code samples.</text>
+      <link label="Object Teams samples" url="http://org.eclipse.ui.intro/showPage?id=otsamples" id="otsamples" style-id="sample-link">
+        <text>A small collection of Object Teams samples
+        </text>
+      </link>
+      </group>
+
+  </extensionContent>
+  
+  <page style="css/samples.css" alt-style="css/swt.properties" id="otsamples" style-id="page">
+    <title style-id="intro-header">Welcome to Eclipse 3.0</title>
+    <group id="background-image" filteredFrom="swt"/>
+    <group id="curve-image" filteredFrom="swt"/>
+    <include path="overview/navigation-links"/>
+    
+	<group id="page-content" >
+	  <group id="content-header" label="Object Teams/Java Samples" filteredFrom="html"></group>
+	  <text style-id="page-title" id="page-title" filteredFrom="swt">Object Teams/Java Samples</text>
+	  <text style-id="page-description" id="page-description">Explore Object Teams by installing some prefabricated samples.</text>
+      <group id="workbench" style-id="samples-group">
+        <link label="OTSample-StopWatch" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.objectteams.otdt.samples&amp;id=org.eclipse.objectteams.otdt.samples.stopwatch" id="stopwatchsample" style-id="sample-link">
+		  <text>This implementation of a simple stop watch demonstrates how the Model-View-Controller pattern can be applied in Object Teams. 
+
+			The example gives a basic overview over these concepts: 
+			   (1) team and role classes, 
+			   (2) method bindings, and
+			   (3) lifting a base object to its role.</text></link>
+        <link label="OTSample-Observer" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.objectteams.otdt.samples&amp;id=org.eclipse.objectteams.otdt.samples.observer" id="observersample" style-id="sample-link">
+		  <text>A reusable implementation of the standard Observer pattern with two applications.
+					  
+			A fine point in this example is the temporary deactivation of a team to avoid the "jumping aspects" problem.</text></link>		  
+		<link label="OTSample-Flightbonus" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.objectteams.otdt.samples&amp;id=org.eclipse.objectteams.otdt.samples.flightbooking" id="flightbonussample" style-id="sample-link">
+          <text>This examples demonstrates, how a reusable collaboration for collecting bonus points 
+			can be integrated into an existing application for flight booking.
+			
+			It shows a typical decomposition into three parts: 
+			   (1) a core application, 
+			   (2) an abstract collaboration, and
+			   (3) a connector which combines the other two modules.</text></link>	
+        <link label="OTSample-Ordersystem" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.objectteams.otdt.samples&amp;id=org.eclipse.objectteams.otdt.samples.ordersystem" id="ordersystemsample" style-id="sample-link">        
+        	<text>A comprehensive example showing different patterns of applying Object Teams.
+			It implements three components: a storage, reservation of items, and orders.</text></link>
+        <link label="OTSample-ATM" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.objectteams.otdt.samples&amp;id=org.eclipse.objectteams.otdt.samples.atm" id="atmsample" style-id="sample-link">        
+    	    <text>An example showing the use of guard predicates in Object Teams. 
+    	    
+        	It implements a simple ATM that adds specific behaviour to specific groups of accounts:
+        	   (1) Foreign accounts are charged additional fees,
+        	   (2) The balance of foreign cannot be queried,
+        	   (3) Subscribed accounts receive a gratification for each crediting operation performed at the ATM.</text></link>
+     </group>        
+	</group>
+  </page>
+</introContent>
+	
+						

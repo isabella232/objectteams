@@ -1,0 +1,26 @@
+The data setting looks like this inside this package:
+
+package teamhierarchy:
+
+		Team1
+		^	-R1
+		|	-R2
+		|
+		Team2
+		^
+		|
+		|
+		Team3
+		^	-R1
+		|	-R3
+		|
+		Team4
+		^	-R1
+		|	-R2
+		|
+		Team5
+			-R1
+			
+Ri is a role CLASS with the name "Ri" inside the above team class.
+
+

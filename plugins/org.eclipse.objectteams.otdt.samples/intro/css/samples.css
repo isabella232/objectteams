@@ -1,0 +1,16 @@
+
+a#stopwatchsample img { background-image : url('graphics/otapp_obj.gif'); }
+a#stopwatchsample:hover img { background-image : url('graphics/otapphov_obj.png'); }
+
+a#observersample img { background-image : url('graphics/otapp_obj.gif'); }
+a#observersample:hover img { background-image : url('graphics/otapphov_obj.png'); }
+
+a#flightbonussample img { background-image : url('graphics/otapp_obj.gif'); }
+a#flightbonussample:hover img { background-image : url('graphics/otapphov_obj.png'); }
+
+a#ordersystemsample img { background-image : url('graphics/otapp_obj.gif'); }
+a#ordersystemsample:hover img { background-image : url('graphics/otapphov_obj.png'); }
+
+a#atmsample img { background-image : url('graphics/otapp_obj.gif'); }
+a#atmsample:hover img { background-image : url('graphics/otapphov_obj.png'); }
+

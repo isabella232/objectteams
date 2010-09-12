@@ -1,0 +1,18 @@
+#Fri Jun 11 01:20:02 CEST 2010
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
+org.eclipse.jdt.core.compiler.compliance=1.5
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
+org.eclipse.jdt.core.compiler.source=1.5
+org.eclipse.objectteams.otdt.compiler.option.scoped_keywords=enabled
+org.eclipse.objectteams.otdt.compiler.problem.abstract_potential_relevant_role=warning
+org.eclipse.objectteams.otdt.compiler.problem.basecall=warning
+org.eclipse.objectteams.otdt.compiler.problem.binding_conventions=error
+org.eclipse.objectteams.otdt.compiler.problem.decapsulation=warning
+org.eclipse.objectteams.otdt.compiler.problem.deprecated_path_syntax=warning
+org.eclipse.objectteams.otdt.compiler.problem.fragile_callin=warning
+org.eclipse.objectteams.otdt.compiler.problem.inferred_callout=warning
+org.eclipse.objectteams.otdt.compiler.problem.potential_ambiguous_playedby=warning
+org.eclipse.objectteams.otdt.compiler.problem.unsafe_role_instantiation=warning
+org.eclipse.objectteams.otdt.compiler.problem.weave_into_system_class=warning

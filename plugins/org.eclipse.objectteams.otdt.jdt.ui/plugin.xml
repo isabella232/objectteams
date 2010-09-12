@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+<!-- Object Teams code assist: -->
+   <extension
+         point="org.eclipse.jdt.ui.quickFixProcessors"
+         id="org.eclipse.objectteams.otdt.ui.text.correction.QuickFixes"
+         name="OT/J Quick Fixes">
+      <quickFixProcessor
+            name="OT/J Quick Fix Processor"
+            class="org.eclipse.objectteams.otdt.internal.ui.text.correction.QuickFixProcessor"
+            id="org.eclipse.objectteams.otdt.ui.text.correction.QuickFixProcessor">
+      </quickFixProcessor>
+   </extension>
+
+<!-- OT/Equinox aspect relationships. -->
+   <extension
+         point="org.eclipse.objectteams.otequinox.aspectBindings">
+
+      <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin 
+              icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+              id="org.eclipse.jface"/>
+         <team
+               activation="NONE"
+               class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.JFaceDecapsulator"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <!-- decapsulation only; only the sub-team ViewAdaptor is activated -->
+      </aspectBinding>
+      <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin 
+              icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+              id="org.eclipse.jface.text"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.assist.LinkedModeAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif" />
+      </aspectBinding>
+	  <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin 
+              icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+              id="org.eclipse.jdt.ui"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.assist.OTQuickFixes"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.assist.CompletionAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.search.FindActionAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+     	 <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.ViewAdaptor"
+               superclass="org.eclipse.objectteams.otdt.internal.ui.viewsupport.JFaceDecapsulator"
+			   icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+     	 <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.JavaElementAdaptation"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.corext.RoleFileAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.corext.BindingHierarchyAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.corext.DOMAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.corext.CallHierarchyAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.corext.CodeManipulationAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <!-- no activation due to https://bugs.eclipse.org/bugs/show_bug.cgi?id=142299 -->
+         <team
+               activation="NONE"
+               class="org.eclipse.objectteams.otdt.internal.ui.text.OutlineAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.javaeditor.HighlightingAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.javaeditor.AnnotationAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.packageview.PackageExplorerAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.javaeditor.JavaOutlinePageAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.assist.CorrectionAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.internal.ui.search.SearchAdaptor"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+		<team
+              activation="ALL_THREADS"
+              class="org.eclipse.objectteams.otdt.internal.ui.util.HierarchyUtilAdaptor"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+        <team
+              activation="ALL_THREADS"
+              class="org.eclipse.objectteams.otdt.internal.ui.typehierarchy.TypeHierarchyViewAdaptor"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+        <team
+              activation="ALL_THREADS"
+              class="org.eclipse.objectteams.otdt.internal.ui.javaeditor.JavaEditorAdaptor"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+        </team>
+        <team
+              activation="NONE"
+              class="org.eclipse.objectteams.otdt.internal.ui.util.OTStubUtility"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+        </team>
+        <team
+              activation="NONE"
+              class="org.eclipse.objectteams.otdt.internal.ui.assist.CompletionAdaptor.CreateMethodMappingCompletionProposal"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+        </team>
+     </aspectBinding>   
+     <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+	     <basePlugin 
+              icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+              id="org.eclipse.ui.workbench" />
+     	 <team
+             activation="ALL_THREADS"
+             class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.DecoratorManagerAdaptor"
+             icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+     </aspectBinding>
+     <aspectBinding icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+        <basePlugin 
+              icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+              id="org.eclipse.jdt.core"/>
+        <team
+              activation="ALL_THREADS"
+              class="org.eclipse.objectteams.otdt.internal.ui.assist.BaseImportRewriting"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+        <team
+              activation="NONE"
+              class="org.eclipse.objectteams.otdt.internal.ui.assist.QuickFixCoreAdaptor"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif"/>
+        <team
+              activation="NONE"
+              class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.PretendAllRoleFilesArePublic"
+              icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+        </team>
+     </aspectBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.DummyDecorator"
+            id="org.eclipse.objectteams.otdt.jdt.ui.overridingRoleDecorator"
+            label="OT/J Role Override Indicator"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+            <description>
+            	%OverridingRoleDecorator_description
+            </description>
+      </decorator>
+      <decorator
+            class="org.eclipse.objectteams.otdt.internal.ui.viewsupport.DummyDecorator"
+            id="org.eclipse.objectteams.otdt.jdt.ui.boundRoleDecorator"
+            label="OT/J Bound Role Indicator"
+            lightweight="true"
+            location="TOP_RIGHT"
+            state="true">
+            <description>
+            	%BoundRoleDecorator_description
+            </description>
+      </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.ui.quickAssistProcessors">
+      <quickAssistProcessor
+            class="org.eclipse.objectteams.otdt.internal.ui.text.correction.QuickAssistProcessor"
+            id="org.eclipse.objectteams.otdt.ui.text.correction.QuickAssitProcessor"
+            name="OT/J Quick Assit Processor">
+      </quickAssistProcessor>
+   </extension>
+
+</plugin>

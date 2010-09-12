@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Trac304b
+Bundle-SymbolicName: Trac304b
+Bundle-Version: 1.0.0
+Bundle-Activator: trac304b.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: trac304b

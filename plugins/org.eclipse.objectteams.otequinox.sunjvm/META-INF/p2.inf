@@ -1,0 +1,6 @@
+instructions.install = \
+	addJvmArg(jvmArg:-XX:+UnlockDiagnosticVMOptions); \
+	addJvmArg(jvmArg:-XX:+UnsyncloadClass);
+instructions.uninstall = \
+	removeJvmArg(jvmArg:-XX:+UnlockDiagnosticVMOptions); \
+	removeJvmArg(jvmArg:-XX:+UnsyncloadClass);

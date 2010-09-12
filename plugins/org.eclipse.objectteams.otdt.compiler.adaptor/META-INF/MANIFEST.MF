@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.objectteams.otdt.compiler.adaptor;singleton:=true
+Bundle-Version: 0.7.0.qualifier
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.jdt.core;bundle-version="[3.6.0.v_OTDT_r070,3.6.0.v_OTDT_r080)",
+ org.eclipse.objectteams.otequinox,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.pde.core,
+ org.eclipse.objectteams.otdt
+Export-Package: org.eclipse.objectteams.otdt.internal.compiler.adaptor
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy

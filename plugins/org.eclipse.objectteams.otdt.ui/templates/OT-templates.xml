@@ -1,0 +1,25 @@
+<templates>
+  <template name="with"
+            id="org.eclipse.objectteams.otdt.ui.templates.callin_with"
+  			description="%Templates.with.callin.parametermappings"            
+            context="java"
+            enabled="true">with { ${callin_parameter_name} &lt;- ${Expression}${cursor} }
+  </template>
+
+  <template name="with"
+  			id="org.eclipse.objectteams.otdt.ui.templates.callout_with"
+  			description="%Templates.with.callout.parametermappings"  			
+            context="java"
+            enabled="true">with { ${Expression} -&gt; ${callout_parameter_name}${cursor} }
+  </template>
+
+  <template name="within"
+   			id="org.eclipse.objectteams.otdt.ui.templates.within"
+  			description="%Templates.within"
+            context="java"
+            enabled="true">within (${TeamExpression})
+                           {
+                           
+                           }
+  </template>      
+</templates>

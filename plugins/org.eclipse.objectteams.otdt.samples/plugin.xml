@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension point="org.eclipse.pde.ui.samples">
+      <!-- the launchTarget attribute is not specified in the XML schema extension point description, however it is used in the code :-/ -->
+      <sample
+            launchTarget="org.eclipse.objectteams.stopwatch.Main"
+            name="%sample.stopwatch.name"
+            perspectiveId="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"
+            targetViewId="org.eclipse.jdt.ui.PackageExplorer"
+            launcher="org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut"
+            id="org.eclipse.objectteams.otdt.samples.stopwatch">
+         <description>%sample.stopwatch.desc
+         </description>
+         <project
+               name="OTSample-StopWatch"
+               archive="samples/stopwatch.zip"
+               selectReveal="Main.java">
+         </project>
+         <activity id="org.eclipse.javaDevelopment"/>
+         <activity id="org.eclipse.debugging"/>
+      </sample>
+      <sample
+            name="%sample.observer.name"
+            perspectiveId="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"
+            targetViewId="org.eclipse.jdt.ui.PackageExplorer"
+            launcher="org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut"
+            id="org.eclipse.objectteams.otdt.samples.observer">
+         <description>%sample.observer.desc
+         </description>
+         <activity id="org.eclipse.javaDevelopment"/>
+         <activity id="org.eclipse.debugging"/>
+         <project
+               name="OTSample-Observer"
+               archive="samples/observer.zip"
+               selectReveal="pattern/ObserverPattern.java">
+         </project>
+      </sample>
+      <!-- the launchTarget attribute is not specified in the XML schema extension point description, however it is used in the code :-/ -->
+      <sample
+            launchTarget="org.eclipse.objectteams.flightbooking.Main"
+            name="%sample.flightbooking.name"
+            perspectiveId="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"
+            targetViewId="org.eclipse.jdt.ui.PackageExplorer"
+            launcher="org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut"
+            id="org.eclipse.objectteams.otdt.samples.flightbooking">
+         <description>%sample.flightbooking.desc
+         </description>
+         <activity id="org.eclipse.javaDevelopment"/>
+         <activity id="org.eclipse.debugging"/>
+         <project
+               name="OTSample-Flightbonus"
+               archive="samples/flightbonus.zip"
+               selectReveal="Intro0.html"> <!-- will be converted to Intro.html -->
+         </project>
+      </sample>    
+      <sample
+            name="%sample.ordersystem.name"
+            perspectiveId="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"
+            targetViewId="org.eclipse.jdt.ui.PackageExplorer"
+            launcher="org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut"
+            id="org.eclipse.objectteams.otdt.samples.ordersystem">
+         <description>%sample.ordersystem.desc
+         </description>
+         <activity id="org.eclipse.javaDevelopment"/>
+         <activity id="org.eclipse.debugging"/>
+         <project
+               name="OTSample-Ordersystem"
+               archive="samples/ordersystem.zip"
+               selectReveal="Intro0.html"> <!-- will be converted to Intro.html -->
+         </project>
+      </sample>
+      <sample
+            name="%sample.atm.name"
+            perspectiveId="org.eclipse.objectteams.otdt.ui.OTJavaPerspective"
+            targetViewId="org.eclipse.jdt.ui.PackageExplorer"
+            launcher="org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut"
+            id="org.eclipse.objectteams.otdt.samples.atm">
+         <description>%sample.atm.desc
+         </description>
+         <activity id="org.eclipse.javaDevelopment"/>
+         <activity id="org.eclipse.debugging"/>
+         <project
+               name="OTSample-ATM"
+               archive="samples/atm.zip"
+               selectReveal="src/Main.java">
+         </project>
+      </sample>
+
+   </extension>   
+
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="%category.objectteams"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.objectteams.otdt.samples">
+      </category>
+      <wizard
+            category="org.eclipse.ui.Examples/org.eclipse.objectteams.otdt.samples"
+            class="org.eclipse.pde.internal.ui.samples.SampleWizard:org.eclipse.objectteams.otdt.samples.flightbooking"
+            icon="graphics/icons/newprj_wiz.gif"
+            id="org.eclipse.objectteams.otdt.samples.samples.flightbooking"
+            name="%sample.flightbooking.name"
+            project="true">
+         <description>%sample.flightbooking.desc
+         </description>
+      </wizard>      
+      <wizard
+            category="org.eclipse.ui.Examples/org.eclipse.objectteams.otdt.samples"
+            class="org.eclipse.pde.internal.ui.samples.SampleWizard:org.eclipse.objectteams.otdt.samples.observer"
+            icon="graphics/icons/newprj_wiz.gif"
+            id="org.eclipse.objectteams.otdt.samples.samples.observer"
+            name="%sample.observer.name"
+            project="true">
+         <description>%sample.observer.desc
+         </description>
+      </wizard>      
+      <wizard
+            category="org.eclipse.ui.Examples/org.eclipse.objectteams.otdt.samples"
+            class="org.eclipse.pde.internal.ui.samples.SampleWizard:org.eclipse.objectteams.otdt.samples.stopwatch"
+            icon="graphics/icons/newprj_wiz.gif"
+            id="org.eclipse.objectteams.otdt.samples.samples.stopwatch"
+            name="%sample.stopwatch.name"
+            project="true">
+         <description>%sample.stopwatch.desc
+         </description>
+      </wizard>      
+      <wizard
+            category="org.eclipse.ui.Examples/org.eclipse.objectteams.otdt.samples"
+            class="org.eclipse.pde.internal.ui.samples.SampleWizard:org.eclipse.objectteams.otdt.samples.ordersystem"
+            icon="graphics/icons/newprj_wiz.gif"
+            id="org.eclipse.objectteams.otdt.samples.samples.ordersystem"
+            name="%sample.ordersystem.name"
+            project="true">
+         <description>%sample.ordersystem.desc
+         </description>
+      </wizard>
+      <wizard
+            category="org.eclipse.ui.Examples/org.eclipse.objectteams.otdt.samples"
+            class="org.eclipse.pde.internal.ui.samples.SampleWizard:org.eclipse.objectteams.otdt.samples.atm"
+            icon="graphics/icons/newprj_wiz.gif"
+            id="org.eclipse.objectteams.otdt.samples.samples.atm"
+            name="%sample.atm.name"
+            project="true">
+         <description>%sample.atm.desc
+         </description>
+      </wizard>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/samplesExtensionContentOT.xml"/>
+   </extension>
+
+<!--  -->
+   <extension
+         point="org.eclipse.objectteams.otequinox.aspectBindings">
+      <aspectBinding>
+         <team class="org.eclipse.objectteams.otdt.internal.samples.SamplesAdapter" activation="ALL_THREADS"/>
+         <basePlugin id="org.eclipse.pde.ui"/>
+      </aspectBinding>
+   </extension>
+<!-- -->
+</plugin>

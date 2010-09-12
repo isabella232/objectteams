@@ -1,0 +1,12 @@
+instructions.install = \
+	removeProgramArg(programArg:-showsplash); \
+	removeProgramArg(programArg:org.eclipse.platform); \
+	addProgramArg(programArg:-showsplash); \
+	addProgramArg(programArg:org.eclipse.objectteams.otdt); \
+	setProgramProperty(propName:osgi.splashPath,propValue:platform\:/base/plugins/org.eclipse.objectteams.otdt);
+instructions.uninstall = \
+	removeProgramArg(programArg:-showsplash); \
+	removeProgramArg(programArg:org.eclipse.objectteams.otdt); \
+	addProgramArg(programArg:-showsplash); \
+	addProgramArg(programArg:org.eclipse.platform); \
+	setProgramProperty(propName:osgi.splashPath,propValue:platform\:/base/plugins/org.eclipse.platform);

@@ -1,0 +1,84 @@
+<!--
+ Copyright (c) 2010 Stephan Herrmann and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Stephan Herrmann - initial API and implementation
+-->
+<project name="p2.helper">
+
+    <target name="patchMetadata">
+        <echo message="Patching metadata in ${otdtUpdatesDir} to relax version requirement of our patch feature"/>
+
+		<!-- patch feature version in content.xml -->
+		<property name="patch-content.xsltFile" value="${OTScriptDir}/patch-content-xml.xsl" />
+		<property name="content.origFile" value="content.xml" />
+        <property name="content.transFile" value="content-patched.xml" />
+        <xslt basedir="${otdtUpdatesDir}" destdir="${otdtUpdatesDir}" includes="${content.origFile}" style="${patch-content.xsltFile}" force="true">
+                <outputproperty name="method" value="xml"/>
+                <outputproperty name="encoding" value="UTF-8"/>
+                <outputproperty name="indent" value="yes"/>
+        		<param name="version" expression="${jdt.feature.version}"/>
+        		<param name="versionnext" expression="${jdt.feature.version.next}"/>
+                <mapper type="glob" from="${content.origFile}" to="${content.transFile}"/>
+        </xslt>
+        <move file="${otdtUpdatesDir}/${content.transFile}" tofile="${otdtUpdatesDir}/${content.origFile}" overwrite="yes"/>	
+    </target>
+
+    <target name="installFeature">
+        <echo message="Installing ${feature} from ${sourceUpdatesDir} to ${targetEclipseDir}"/>
+        <java
+                inputstring=""
+                dir="${targetEclipseDir}"
+                fork="true"
+                classname="org.eclipse.equinox.launcher.Main"
+                classpath="${targetEclipseDir}/plugins/${org.eclipse.equinox.launcher_jar}">
+            <jvmarg value="-Declipse.p2.MD5Check=false" />
+            <arg value="-consoleLog"/>
+            <arg value="-application"/>
+            <arg value="org.eclipse.equinox.p2.director"/>
+            <arg value="-metadataRepository" />
+            <arg value="file:${sourceUpdatesDir}" />
+            <arg value="-artifactRepository" />
+            <arg value="file:${sourceUpdatesDir}" />
+            <arg value="-installIU" />
+            <arg value="${feature}" />
+        </java>
+    </target>
+
+    <target name="installOTDT">
+    	<echo message="Installing the OTDT from ${otdtUpdatesDir} into ${test.eclipseDir}"/>
+        <antcall target="installFeature">
+            <param name="feature" value="org.eclipse.objectteams.otequinox.feature.group"/>
+            <param name="sourceUpdatesDir" value="${otdtUpdatesDir}"/>
+            <param name="targetEclipseDir" value="${test.eclipseDir}"/>
+        </antcall>
+        <antcall target="installFeature">
+            <param name="feature" value="org.eclipse.objectteams.otdt.feature.group"/>
+            <param name="sourceUpdatesDir" value="${otdtUpdatesDir}"/>
+            <param name="targetEclipseDir" value="${test.eclipseDir}"/>
+        </antcall>
+		<echo message="Generating accumulating metadata in ${otdtUpdatesDir}" />
+		<!-- existing meta data are pre-loaded from build.xml -->
+    </target>
+
+    <target name="installTests">
+        <echo message="Installing the Tests from ${testsUpdatesDirBase} into ${test.eclipseDir}"/>
+        <!-- eclipse tests have been expanded into "eclipse", don't have meta data -->
+        <antcall target="installFeature">
+            <param name="feature" value="org.eclipse.test.feature.group"/>
+            <param name="sourceUpdatesDir" value="${testsUpdatesDirBase}/eclipse"/>
+            <param name="targetEclipseDir" value="${test.eclipseDir}"/>
+        </antcall>
+        <!-- otdt tests have been gathered into "otdt", have and need meta data -->
+        <antcall target="installFeature">
+            <param name="feature" value="org.eclipse.objectteams.otdt-tests.feature.group"/>
+            <param name="sourceUpdatesDir" value="${testsUpdatesDirBase}/otdt"/>
+            <param name="targetEclipseDir" value="${test.eclipseDir}"/>
+        </antcall>
+    </target>
+
+</project>

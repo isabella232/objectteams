@@ -1,0 +1,20 @@
+The data setting looks like this inside this package:
+
+package rolehierarchy:
+		Team1
+		^	-R1 / m1(), m2(String)
+		|
+		Team2
+		^
+		|
+		Team3
+		^	-R1 / m2(Integer), m3()
+		|
+		Team4
+		^	-R1 / m1(), m2(Integer)
+		|
+		Team5
+			-R1 / m1()
+				
+R1, R2: Roles
+m1(), m2(), m3(): Methods

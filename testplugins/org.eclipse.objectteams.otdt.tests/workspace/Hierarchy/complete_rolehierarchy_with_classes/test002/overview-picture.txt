@@ -1,0 +1,24 @@
+ The testdata setting inside this package looks like this:
+                                                                               
+  SuperSuperTeam
+              R1                                             SuperClass
+       /\                                                       /\
+        |                                                        |
+    SuperTeam                                                    |
+           R1------------------------------------------------> AClass
+       /\                      explicit inheritance             /\
+        |                      ~~~~~~~~~~~~~~~~~~~~              |'''''''''''''''''|
+      ATeam                                                      |                 |
+         R1                                                  SubClass1         SubClass2
+       /\                                                       /\                /\
+        |'''''''''''''''''''|                |''''''''''''|'''''''''''''|          |
+     SubTeam1            SubTeam2            |            |             |          |
+           R1                  R1------------------>SubSubClass11 SubSubClass12    |
+       /\                                    |                                     | 
+        |'''''''''''|                        |                                     |
+  SubSubTeam11  SubSubTeam12                 |                                     |
+            R1            R1-----------------|                                     |
+             |                                                                     |
+             |---------------------------------------------------------------------|
+  
+ Each R1 is a role class and belongs to the team class above.

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+
+
+<plugin>
+	<!-- Note that the nature and builder definitions appear here mainly
+	     because they should have an ID starting with org.eclipse.objectteams.otdt, 
+	     rather than org.eclipse.jdt, allthough they are defined in jdt.core -->
+	     
+	<!-- objectteams project nature -->
+	<extension
+	    point="org.eclipse.core.resources.natures"
+	    id="OTJavaNature"
+	    name="%otNatureName">
+	    <runtime>
+	       <run class="org.eclipse.objectteams.otdt.core.ext.OTJavaNature">
+	       </run>
+	    </runtime>
+	    <builder
+	       id="org.eclipse.objectteams.otdt.builder.OTJBuilder">
+	    </builder>
+	<!-- run and configure our nature AFTER the java-nature has been configured -->
+	    <requires-nature
+	            id="org.eclipse.jdt.core.javanature">
+	    </requires-nature>
+	</extension>
+	
+	<!-- OT/J Builder: -->
+	<extension
+	    point="org.eclipse.core.resources.builders"
+	    id="builder.OTJBuilder"
+		name="%otjBuilderName">
+	    <builder hasNature="true">
+	       <run class="org.eclipse.objectteams.otdt.internal.core.builder.OTJBuilder">
+	       </run>
+	    </builder>
+	</extension>
+
+   <extension point="org.eclipse.jdt.core.classpathVariableInitializer">
+      <classpathVariableInitializer 
+         	variable="OTDT_INSTALLDIR" 
+         	class="org.eclipse.objectteams.otdt.core.ext.OTVariableInitializer"/> 
+   </extension>
+   
+   <extension 
+   		point="org.eclipse.jdt.core.classpathContainerInitializer"
+        id="org.eclipse.objectteams.otdt.otreContainerInitializer">
+      <classpathContainerInitializer
+	 		id="OTRE"
+            class="org.eclipse.objectteams.otdt.core.ext.OTREContainerInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.objectteams.otequinox.aspectBindings">
+      <aspectBinding
+            icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/calloutbinding_obj.gif">
+         <basePlugin
+               icon="platform:/plugin/org.eclipse.pde.ui/icons/obj16/plugin_obj.gif"
+               id="org.eclipse.jdt.core">
+         </basePlugin>
+         <team
+               activation="ALL_THREADS"
+               class="org.eclipse.objectteams.otdt.core.hierarchy.OTTypeHierarchies"
+               icon="platform:/plugin/org.eclipse.objectteams.otdt.ui/icons/ot/team_obj.gif">
+         </team>
+      </aspectBinding>
+   </extension>
+</plugin>

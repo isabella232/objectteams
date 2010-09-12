@@ -1,0 +1,74 @@
+!***************  OTDT CONTRIBUTION  ******************************************************** 
+
+!-- Don't set version numbers for features, otherwise pdebuild would complain about a non-existent Basedir: -- 
+feature@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.feature
+feature@org.eclipse.objectteams.otdt.core.patch=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.core.patch
+feature@org.eclipse.objectteams.otequinox=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otequinox.feature
+
+!-- Also don't use version numbers for those plugins that hold the various otre jars: --
+plugin@org.eclipse.jdt.core,3.6.0.v_OTDT_r071_qualifier=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.jdt.core
+plugin@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt
+plugin@org.eclipse.objectteams.otdt.debug,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug
+plugin@org.eclipse.objectteams.otdt.debug.ui,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.ui
+plugin@org.eclipse.objectteams.otdt.ui,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.ui
+plugin@org.eclipse.objectteams.otdt.metrics,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.metrics
+
+plugin@org.eclipse.objectteams.runtime=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.runtime
+fragment@org.eclipse.objectteams.otequinox.hook,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.hook
+fragment@org.eclipse.objectteams.otequinox.sunjvm,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.sunjvm,tag=tags/builds/201006211729
+!the following is also referenced in otdt.ui.help/buildDoc.xml (plugin-name without version):
+plugin@org.eclipse.objectteams.otequinox=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox
+plugin@org.eclipse.objectteams.eclipse.monitor,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.eclipse.monitor,tag=tags/builds/201006211729
+
+!not currently maintained:
+!plugin@org.eclipse.objectteams.otdt.earlyui=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.earlyui
+!plugin@org.eclipse.objectteams.otdt.metrics.export=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.metrics.export
+
+!** OT/J Plugins **!
+plugin@org.eclipse.objectteams.otequinox.branding,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=tags/builds/201006211729
+plugin@org.eclipse.objectteams.otdt.jdt.ui,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.jdt.ui
+plugin@org.eclipse.objectteams.otdt.ui.help,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.ui.help
+plugin@org.eclipse.objectteams.otdt.apt,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.apt
+plugin@org.eclipse.objectteams.otdt.compiler.adaptor,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.compiler.adaptor,tag=tags/builds/201006211729
+plugin@org.eclipse.objectteams.otdt.debug.adaptor,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.adaptor
+plugin@org.eclipse.objectteams.otdt.refactoring,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.refactoring
+plugin@org.eclipse.objectteams.otdt.pde.ui,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.pde.ui,tag=tags/builds/201006211729
+plugin@org.eclipse.objectteams.otdt.samples,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.samples,tag=tags/builds/201006211729
+
+!** Consume BCEL from Orbit: **!
+plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository
+! existing files on build.eclipse.org:
+!/home/data/httpd/download.eclipse.org/tools/orbit/downloads/drops/S20100308015149/drops/bundles/org.apache.bcel_5.2.0.v200803061811.jar
+!/home/data/httpd/download.eclipse.org/tools/orbit/downloads/drops/S20100519200754/repository/plugins/org.apache.bcel_5.2.0.v201005080400.jar
+
+!***************  OTDT Test CONTRIBUTION  ******************************************************** 
+
+
+feature@org.eclipse.objectteams.otdt-tests=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature
+
+plugin@org.eclipse.jdt.core.tests.compiler,3.3.100=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.compiler
+plugin@org.eclipse.jdt.core.tests.model,3.3.100=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.model
+plugin@org.eclipse.jdt.ui.tests,3.6.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.ui.tests
+plugin@org.eclipse.jdt.ui.tests.refactoring,3.6.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.ui.tests.refactoring
+plugin@org.eclipse.objectteams.otdt.tests,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.tests
+plugin@org.eclipse.objectteams.otdt.ui.tests.dom,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.dom
+plugin@org.eclipse.objectteams.otdt.debug.tests,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.debug.tests
+plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring
+!--no longer used from OT-branch ...
+!plugin@org.eclipse.test.performance=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.test.performance
+!plugin@org.eclipse.jdt.core.tests.builder=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.builder
+!plugin@org.eclipse.jdt.debug.tests=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.debug.tests
+
+!-- .. but from original CVS:
+plugin@org.eclipse.jdt.core.tests.builder=v_A58,/cvsroot/eclipse,
+plugin@org.eclipse.jdt.debug.tests=v20100526,/cvsroot/eclipse,
+
+!-- not compiled but taken from org.eclipse.test:
+!plugin@org.eclipse.test.performance=v20100122,/cvsroot/eclipse,
+!plugin@org.eclipse.ant.optional.junit=v20080717,/cvsroot/eclipse,
+
+
+
+!** OT/J Test Plugins **!
+plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.test.builder
+plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests

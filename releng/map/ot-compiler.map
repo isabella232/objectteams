@@ -1,0 +1,5 @@
+!***************  OT/J COMPILER CONTRIBUTION  ******************************************************** 
+
+feature@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.feature/ot-compiler-feature
+
+plugin@org.eclipse.jdt.core=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=plugins/org.eclipse.jdt.core

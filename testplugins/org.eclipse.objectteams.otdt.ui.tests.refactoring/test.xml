@@ -1,0 +1,166 @@
+<project name="testsuite" default="run" basedir=".">
+
+	<property name="otdt-tests-workspace" value="${test.eclipseDir}/otdt-tests-workspace"/>
+
+	<!-- sets the properties eclipseTest-home, and library-file -->
+	<property name="plugin-name" value="org.eclipse.objectteams.otdt.ui.tests.refactoring"/>
+
+	<!-- library.xml need these properties-->
+	<property name="eclipse-home" value="${test.eclipseDir}"/>
+	
+	<property name="library-file" value="${test.eclipseDir}/plugins/${org.eclipse.test}/library.xml"/>
+
+	<!-- This target holds all initialization code that needs to be done for -->
+	<!-- all tests that are to be run. Initialization for individual tests -->
+	<!-- should be done within the body of the suite target. -->
+	<target name="init">
+		<tstamp/>
+		<delete>
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.AllTests.xml,${plugin-name}..${file-id}.xml"/>
+<!--
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.extractmethod.AllTests.xml,${plugin-name}.extractmethod.${file-id}.xml"/>
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.move.AllTests.xml,${plugin-name}.move.${file-id}.xml"/>
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.rename.AllTests.xml,${plugin-name}.rename.${file-id}.xml"/>
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.reorg.AllTests.xml,${plugin-name}.reorg.${file-id}.xml"/>
+			<fileset dir="${test.eclipseDir}" includes="${plugin-name}.util.AllTests.xml,${plugin-name}.util.${file-id}.xml"/>
+-->
+		</delete>
+	</target>
+
+	<!-- This target defines the tests that need to be run. -->
+	<target name="suite">
+
+		<!-- All OTDT Refactoring tests -->
+		<property name="otdt-allrefactorings-folder" 
+              value="${otdt-tests-workspace}/otdt-allrefactorings-folder"/>
+		<delete dir="${otdt-allrefactorings-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-allrefactorings-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.AllTests"/>
+		</ant>
+
+<!--
+		<property name="otdt-extractmethod-folder" 
+              value="${otdt-tests-workspace}/otdt-extractmethod-folder"/>
+		<delete dir="${otdt-extractmethod-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-extractmethod-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.extractmethod.AllTests"/>
+		</ant>
+-->
+		<!-- OTDT Move Refactoring tests -->
+<!--
+		<property name="otdt-move-folder" 
+              value="${otdt-tests-workspace}/otdt-move-folder"/>
+		<delete dir="${otdt-move-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-move-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.move.AllTests"/>
+		</ant>
+-->
+		<!-- OTDT Rename Refactoring tests -->
+<!--
+		<property name="otdt-rename-folder" 
+              value="${otdt-tests-workspace}/otdt-rename-folder"/>
+		<delete dir="${otdt-rename-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-rename-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.rename.AllTests"/>
+		</ant>
+-->
+		
+		<!-- OTDT Reorg Refactoring tests -->
+<!--
+		<property name="otdt-reorg-folder" 
+              value="${otdt-tests-workspace}/otdt-reorg-folder"/>
+		<delete dir="${otdt-reorg-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-reorg-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.reorg.AllTests"/>
+		</ant>
+-->
+		
+		<!-- OTDT Util Refactoring tests -->
+<!--
+		<property name="otdt-util-folder" 
+              value="${otdt-tests-workspace}/otdt-util-folder"/>
+		<delete dir="${otdt-util-folder}" quiet="true"/>
+
+		<ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="data-dir" value="${otdt-util-folder}"/>
+			<property name="plugin-name" value="${plugin-name}"/>
+			<property name="classname" 
+                value="${plugin-name}.util.AllTests"/>
+		</ant>
+-->
+	</target>
+
+
+
+	<target name="checkOS">
+		<condition property="os.isWindows">
+			<os family="windows"/>
+		</condition>
+	</target>
+
+	<!-- This target holds code to cleanup the testing environment after -->
+	<!-- after all of the tests have been run. You can use this target to -->
+	<!-- delete temporary files that have been created. -->
+	<target name="cleanup">
+
+	</target>
+
+	<!-- This target runs the test suite. Any actions that need to happen -->
+	<!-- after all the tests have been run should go here. -->
+	<target name="run" depends="init,suite,cleanup">
+
+<!--
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.${file-id}.xml"/>
+		</ant>
+-->		
+<!--
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.extractmethod.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.extractmethod.${file-id}.xml"/>
+		</ant>
+
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.move.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.move.${file-id}.xml"/>
+		</ant>
+
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.rename.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.rename.${file-id}.xml"/>
+		</ant>
+		
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.reorg.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.reorg.${file-id}.xml"/>
+		</ant>
+
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="${plugin-name}.util.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.util.${file-id}.xml"/>
+		</ant>
+-->
+	</target>
+
+</project>

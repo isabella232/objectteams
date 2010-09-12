@@ -1,0 +1,86 @@
+<!--
+ Copyright (c) 2010 Stephan Herrmann and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Stephan Herrmann - initial API and implementation
+-->
+<project default="main">
+	
+	<!--
+		Expected args:
+		
+		component.short:what's building? Defined by where build.properties and customTargets.xml are found
+		
+		OTScriptDir:	where most build scripts are found (build)
+		
+		build.root.dir:	(testrun/build-root)
+		baseLocation:	from where eclipse is running (testrun/build-root/eclipse)
+		run.eclipseScriptDir: relative location of pde.build's scripts
+		buildDirectory:	where sources shall be built (testrun/build-root/src)
+			
+		configs:		what to build
+		baseos, basews, basearch: what platform we're on
+		
+	-->
+	<loadproperties srcfile="${OTScriptDir}/buildVersions.properties" />
+	<loadproperties srcfile="${builder}/build.properties" />
+
+	<target name="main">
+		<!--Default values for required properties-->
+		<property name="buildDirectory" value="${build.root.dir}/src" />
+		<echo message="BUILDDIR: ${buildDirectory}" />
+		<delete failonerror="true" dir="${buildDirectory}" />
+		<antcall target="create.label.properties" />
+		<property file="${buildDirectory}/label.properties" />
+
+		<!--fetch the HEAD stream of all projects if build type specified as N-->
+		<condition property="fetchTag" value="HEAD">
+			<equals arg1="${buildType}" arg2="N" />
+		</condition>
+		<property name="fetchTag" value="" />
+
+		<!--set the compiler and compiler arguments-->
+		<!--the default compiler is set to the one used by eclipse rel. eng. -->
+		<loadproperties srcfile="${OTScriptDir}/compiler.${component.short}.properties" />
+
+		<!--this property required as of Eclipse 3.0 stream builds > 20031126 -->
+		<property name="buildingOSGi" value="true" />
+
+		<!--run the pde-build for the specified ${builder} (OT-Compiler or OTDT-Build) -->
+		<ant antfile="build.xml" dir="${baseLocation}/${run.eclipseScriptDir}" />
+		
+	</target>
+	
+	<target name="create.label.properties" unless="label.properties.exists">
+			<mkdir dir="${buildDirectory}" />
+			<tstamp/>
+			<property name="date" value="${DSTAMP}" />
+			<property name="time" value="${TSTAMP}" />
+			<property name="timestamp" value="${date}${time}" />
+			<property name="buildId" value="${buildType}${date}" />
+
+			<!--this naming convention used by php scripts on download server-->
+			<property name="buildLabel" value="${buildType}-${buildId}-${timestamp}" />
+
+			<!--store the build label information in a file-->
+			<echo file="${buildDirectory}/label.properties" append="true" >
+			buildType=${buildType}
+			</echo>
+			<echo file="${buildDirectory}/label.properties" append="true" >
+			buildId=${buildId}
+			</echo>
+			<echo file="${buildDirectory}/label.properties" append="true" >
+			timestamp=${timestamp}
+			</echo>
+			<echo file="${buildDirectory}/label.properties" append="true" >
+			buildLabel=${buildLabel}
+			</echo>
+
+			<available file="${buildDirectory}/label.properties" property="label.properties.exists" />
+		</target>
+
+</project>

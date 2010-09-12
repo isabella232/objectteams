@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="org.eclipse.objectteams.otdt.samples/samples/observer.zip"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/OTSample-Observer-src/observer-zip.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="true"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <selectedElements exportClassFiles="false" exportJavaFiles="true" exportOutputFolder="false">
+        <file path="/OTSample-Observer-src/.classpath"/>
+        <javaElement handleIdentifier="=OTSample-Observer-src/src"/>
+        <file path="/OTSample-Observer-src/.project"/>
+    </selectedElements>
+</jardesc>

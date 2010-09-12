@@ -1,0 +1,26 @@
+The data setting looks like this inside this package:
+
+package rolehierarchy3:
+
+		 C1 { m1(), m2() }
+		 ^
+	T1	 |
+	^	-R1 { m3() }
+	|
+	|
+	T2
+	^	-R2 { m3() }
+	|	-R1 { m1() }
+	|
+	|
+	T3
+		-R1
+		 ^
+		 |
+		-R2
+		
+		
+T1, T2, T3 are teams
+R1, R2 are roles
+m1, m2, m3 are methods
+C1 is a class

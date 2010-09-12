@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Trac213b1 Plug-in
+Bundle-SymbolicName: Trac213b1
+Bundle-Version: 1.0.0
+Bundle-Activator: trac213b1.Activator1
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: trac213b1

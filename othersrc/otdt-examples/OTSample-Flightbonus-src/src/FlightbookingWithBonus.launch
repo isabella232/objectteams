@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/OTSample-Flightbonus/lib/booking.jar"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.objectteams.example.flightbooking.Main"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="OTSample-Flightbonus"/>
+<booleanAttribute key="org.eclipse.objectteams.launch" value="true"/>
+<booleanAttribute key="org.eclipse.objectteams.otdt.debug.TEAMCONFIG_ACTIVE_ATTR" value="true"/>
+<listAttribute key="org.eclipse.objectteams.otdt.debug.TEAMCONFIG_ATTR">
+<listEntry value="=OTSample-Flightbonus/src&lt;org.eclipse.objectteams.example.fbapplication{GUIConnector.java[GUIConnector"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.objectteams.otdt.debug.USE_JPLIS" value="true"/>
+</launchConfiguration>

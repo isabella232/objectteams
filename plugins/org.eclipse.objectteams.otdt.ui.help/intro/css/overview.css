@@ -1,0 +1,4 @@
+
+/* ot-overview is the id of the link defined in overviewExtensionContent.xml */
+a#ot-overview img { background-image : url(	'graphics/obj_48/ot_obj.gif'); }
+a#ot-overview:hover img { background-image : url('graphics/obj_48/othov_obj.gif'); }

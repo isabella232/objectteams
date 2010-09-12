@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.objectteams.otdt.debug.ui.views.TeamView"
+            icon="icons/tm.gif"
+            name="Team Monitor"
+            category="org.eclipse.objectteams.otdt.ui"
+            id="org.eclipse.objectteams.otdt.debug.ui.views.team">
+         <description>
+            Debug view showing all team instances.
+Supports drill in and interactive (de)activation of teams.
+         </description>
+      </view>
+   </extension>
+   
+
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.objectteams.otdt.ui.OTJavaPerspective">
+         <actionSet
+               id="org.eclipse.debug.ui.breakpointActionSet">
+         </actionSet>
+         <actionSet
+               id="org.eclipse.jdt.debug.ui.JDTDebugActionSet">
+         </actionSet>
+         <viewShortcut
+               id="org.eclipse.objectteams.otdt.debug.ui.views.team">
+         </viewShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+         <viewShortcut id="org.eclipse.objectteams.otdt.debug.ui.views.team"/>
+      </perspectiveExtension>
+   </extension>
+   
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         
+         <!-- General Object Teams configuration options -->
+         <page
+               id="org.eclipse.objectteams.otdt.debug.ui.preferences.PreferencePage"
+               name="Debug"
+               class="org.eclipse.objectteams.otdt.debug.ui.internal.preferences.OTDebugPreferencePage"
+               category="org.eclipse.objectteams.otdt.ui.preferences.GeneralPreferencePage">
+         </page>
+         
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.objectteams.otdt.debug.ui.internal.preferences.OTDebugPreferences">
+      </initializer>
+   </extension>
+
+</plugin>

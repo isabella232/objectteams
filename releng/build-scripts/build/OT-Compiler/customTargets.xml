@@ -1,0 +1,146 @@
+<!--
+ Copyright (c) 2010 Stephan Herrmann and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Stephan Herrmann - initial API and implementation
+-->
+<project name="Build specific targets and properties" default="noDefault" >
+
+
+	<condition property="isNightlyBuild">
+		<equals arg1="${buildType}" arg2="N"/>
+	</condition>
+	<property file="${buildDirectory}/version.properties"/>
+	<property name="buildLabel" value="${buildType}-${featureVersion}"/>
+	<property name="buildId" value="${featureVersion}"/>	
+	
+	
+	<!-- ===================================================================== -->
+	<!-- Run a given ${target} on all elements being built -->
+	<!-- Add on <ant> task for each top level element being built. -->
+	<!-- ===================================================================== -->
+	<target name="allElements">
+
+		<ant antfile="${genericTargets}" target="${target}" >
+			<property name="type" value="feature" />
+			<property name="id" value="org.eclipse.objectteams.otdt" />
+		</ant>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Targets to assemble the built elements for particular configurations  -->
+	<!-- These generally call the generated assemble scripts (named in -->
+	<!-- ${assembleScriptName}) but may also add pre and post processing -->
+	<!-- Add one target for each root element and each configuration -->
+	<!-- ===================================================================== -->
+	<target name="assemble.org.eclipse.objectteams.otdt">
+		<ant antfile="${assembleScriptName}" dir="${buildDirectory}">
+			<property name="zipargs" value="" />
+		</ant>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Check out map files from correct repository -->
+	<!-- Replace values for cvsRoot, package and mapVersionTag as desired. -->
+	<!-- ===================================================================== -->
+	<target name="getMapFiles">
+		<mkdir dir="${buildDirectory}/maps"/>
+		<property name="svn.map.url" value="${svn.repository.url}/${mapVersionTag}/${pathToMapFile}/${mapFileName}" />
+
+		<svn command="export" url="${svn.map.url}" dest="${buildDirectory}/maps/${mapFileName}" />
+	</target>
+	
+	<!-- ===================================================================== -->
+	<!-- Steps to do before setup -->
+	<!-- ===================================================================== -->
+	<target name="preSetup">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after setup but before starting the build proper -->
+	<!-- ===================================================================== -->
+	<target name="postSetup">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before fetching the build elements -->
+	<!-- ===================================================================== -->
+	<target name="preFetch">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after fetching the build elements -->
+	<!-- ===================================================================== -->
+	<target name="postFetch">
+		<property name="meta.dir" value="${buildDirectory}/plugins/org.eclipse.jdt.core/META-INF"/>
+		<echo message="### Use Bootstrap_MANIFEST.MF in ${meta.dir} ###" />
+		<move file="${meta.dir}/Bootstrap_MANIFEST.MF" tofile="${meta.dir}/MANIFEST.MF" overwrite="yes" />
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before generating the build scripts. -->
+	<!-- ===================================================================== -->
+	<target name="preGenerate">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after generating the build scripts. -->
+	<!-- ===================================================================== -->
+	<target name="postGenerate">
+	</target>
+
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before running the build.xmls for the elements being built. -->
+	<!-- ===================================================================== -->
+	<target name="preProcess">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after running the build.xmls for the elements being built. -->
+	<!-- ===================================================================== -->
+	<target name="postProcess">
+	</target>
+
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do before running assemble. -->
+	<!-- ===================================================================== -->
+	<target name="preAssemble">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after  running assemble. -->
+	<!-- ===================================================================== -->
+	<target name="postAssemble">
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do after the build is done. -->
+	<!-- ===================================================================== -->
+	<target name="postBuild">
+		<copy file="${buildDirectory}/${buildLabel}/org.eclipse.objectteams.otdt-${buildId}.zip" tofile="${build.root.dir}/org.eclipse.objectteams.otdt-${buildId}.zip" />
+
+		<echo message="### Insert OT Compiler in ${baseLocation} ###"/>
+		<unzip src="${build.root.dir}/org.eclipse.objectteams.otdt-${buildId}.zip" dest="${baseLocation}"/>
+	</target>
+
+	<!-- ===================================================================== -->
+	<!-- Steps to do to publish the build results -->
+	<!-- ===================================================================== -->
+	<target name="publish">
+	</target>
+
+
+	<!-- ===================================================================== -->
+	<!-- Default target                                                        -->
+	<!-- ===================================================================== -->
+	<target name="noDefault">
+		<echo message="You must specify a target when invoking this file" />
+	</target>
+
+</project>

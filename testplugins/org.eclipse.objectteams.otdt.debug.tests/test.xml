@@ -1,0 +1,61 @@
+<project name="testsuite" default="run" basedir=".">
+
+	<property name="otdt-tests-workspace" value="${test.eclipseDir}/otdt-tests-workspace"/>
+
+	<!-- sets the properties eclipseTest-home, and library-file -->
+	<property name="plugin-name" value="org.eclipse.objectteams.otdt.debug.tests"/>
+
+	<!-- library.xml need these properties-->
+	<property name="eclipse-home" value="${test.eclipseDir}"/>
+	<property name="test.target" value="performance"/>	
+	
+	<property name="library-file" value="${test.eclipseDir}/plugins/${org.eclipse.test}/library.xml"/>
+
+	<!-- This target holds all initialization code that needs to be done for -->
+	<!-- all tests that are to be run. Initialization for individual tests -->
+	<!-- should be done within the body of the suite target. -->
+	<target name="init">
+		<tstamp/>
+		<delete quiet="true">
+			<fileset dir="${test.eclipseDir}" includes="org.eclipse.objectteams.otdt.debug.tests.AllTests.xml,${plugin-name}.${file-id}.xml"/>
+		</delete>
+	</target>
+
+	<!-- This target defines the tests that need to be run. -->
+	<target name="suite">
+	    <property name="otdt-debug-folder" 
+	              value="${otdt-tests-workspace}/otdt-debug-folder"/>
+	    <delete dir="${otdt-debug-folder}" quiet="true"/>
+	    <ant target="ui-test" antfile="${library-file}" dir="${test.eclipseDir}">
+	      <property name="data-dir" value="${otdt-debug-folder}"/>
+	      <property name="plugin-name" value="${plugin-name}"/>
+	      <property name="classname" 
+	                value="org.eclipse.objectteams.otdt.debug.tests.AllTests"/>
+	    </ant>
+	</target>
+
+	<target name="checkOS">
+		<condition property="os.isWindows">
+			<os family="windows"/>
+		</condition>
+	</target>
+
+	<!-- This target holds code to cleanup the testing environment after -->
+	<!-- after all of the tests have been run. You can use this target to -->
+	<!-- delete temporary files that have been created. -->
+	<target name="cleanup">
+
+	</target>
+
+	<!-- This target runs the test suite. Any actions that need to happen -->
+	<!-- after all the tests have been run should go here. -->
+	<target name="run" depends="init,suite,cleanup">
+<!--
+		<ant target="collect" antfile="${library-file}" dir="${test.eclipseDir}">
+			<property name="includes" value="org.eclipse.objectteams.otdt.debug.tests.AllTests.xml"/>
+			<property name="output-file" value="${plugin-name}.${file-id}.xml"/>
+		</ant>
+-->
+	</target>
+
+</project>

@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta name="copyright" content="Copyright Technical University Berlin and others 2004, 2010. This page is made available under the Eclipse Public License v1.0. For full details see http://www.eclipse.org/legal/epl-v10.html" />
+	<link rel=stylesheet type="text/css" href="../css/book.css">
+	<link rel=stylesheet type="text/css" href="otjld/css/ot.css">
+	<style type="text/css">
+		body { margin:10px; }
+		.high { background-color:#a5b7bd;color:white; }
+		.low { background-color:#fff0c8; padding:2px; }
+		.caption { text-decoration:underline; vertical-align:top;position:relative;top:20px; margin-top:10px;}
+	</style>
+    <title>Call hierarchy extended for OT/J</title>
+    <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  </head>
+  <body>
+	<h1 align="center">Call hierarchy extended for OT/J<a name="callhierarchy"></a></h1>
+      <p>
+         The purpose of the Java call hierarchy view is to statically display all potential
+         control flows originating from or leading to a specific program element.
+         Since callout and callin method bindings in OT/J introduce new kinds of control flows,
+         it is only appropriate to also visualize the control flows induced by such method bindings.
+      </p>
+      <p>
+      	Whenever a given method can be invoked via a <b>callout method binding</b>,
+      	the call hierarchy shows a <img src="../images/calloutbinding_obj.gif"> callout node.
+      	Here all calls to the corresponding role method will be forwarded to the base method.
+      </p>
+      <p>
+      	Whenever a <b>callin method binding</b> may intercept a given control flow,
+      	a <img src="../images/callinbindingreplace_obj.gif"> callin node is shown.
+      	Note, that a callin control flow is only taken at runtime, 
+      	if the enclosing team is active and no guard predicate evaluates to false.
+      </p>
+      <img src="images/screenshots/CallHierarchy.png"
+	  	   alt="Call hierarchy showing Object Teams method bindings">
+   </body>
+</html>
