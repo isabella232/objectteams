@@ -283,7 +283,6 @@ should test be run (true|false)?
 				<arg value="-Dtest.root.dir=${test.root.dir}"/>
 				<arg value="-Dtest.eclipseDir=${test.eclipseDir}"/>
 				<arg value="-Dsvn.repository.url=${svn.repository.url}"/>
-				<arg value="-Dsvn.devel.branch=${svn.devel.branch}"/>
 				<arg value="-DmapVersionTag=${mapVersionTag}"/>
 				<arg value="-DpathToMapFile=${pathToMapFile}"/>
 				<arg value="-DmapFileName=otdt.map"/>
