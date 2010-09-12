@@ -6,7 +6,7 @@ feature@org.eclipse.objectteams.otdt.core.patch=SVN,url=svn://localhost/svnroot/
 feature@org.eclipse.objectteams.otequinox=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otequinox.feature
 
 !-- Also don't use version numbers for those plugins that hold the various otre jars: --
-plugin@org.eclipse.jdt.core,3.6.0.v_OTDT_r071_qualifier=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.jdt.core
+plugin@org.eclipse.jdt.core,3.6.1.v_OTDT_r071_qualifier=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.jdt.core
 plugin@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt
 plugin@org.eclipse.objectteams.otdt.debug,0.7.1=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug
 plugin@org.eclipse.objectteams.otdt.debug.ui,0.7.0=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.ui
