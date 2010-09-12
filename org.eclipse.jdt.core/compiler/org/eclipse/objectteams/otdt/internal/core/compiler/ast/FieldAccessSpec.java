@@ -64,6 +64,10 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.util.TypeAnalyzer;
  *
  * What: Delegate some access to resolvedField
  * Which: resolvedType(), isValid(), problemId()
+ * 
+ * What: Check and report decapsulation
+ * How:  ask the field whether it can be seen from us 
+ *       (that's why we implement InvocationSite)
  *
  * @author stephan
  * @version $Id: FieldAccessSpec.java 23401 2010-02-02 23:56:05Z stephan $
@@ -384,5 +388,9 @@ public class FieldAccessSpec extends MethodSpec implements InvocationSite {
 
 	public void setFieldIndex(int depth) {
 		// ignored
+	}
+	
+	public TypeBinding expectedType() {
+		return null; // not relevant for determining visibility
 	}
 }

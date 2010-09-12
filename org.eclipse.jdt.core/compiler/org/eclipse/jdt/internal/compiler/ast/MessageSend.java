@@ -1075,6 +1075,9 @@ public void setExpectedType(TypeBinding expectedType) {
 public void setFieldIndex(int depth) {
 	// ignore for here
 }
+public TypeBinding expectedType() {
+	return this.expectedType;
+}
 
 public void traverse(ASTVisitor visitor, BlockScope blockScope) {
 	if (visitor.visit(this, blockScope)) {

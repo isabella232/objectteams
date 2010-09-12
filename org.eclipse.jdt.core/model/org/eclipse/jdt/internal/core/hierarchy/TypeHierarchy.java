@@ -327,7 +327,7 @@ public boolean contains(IType type) {
 	return false;
 }
 /**
- * Determines if the change effects this hierarchy, and fires
+ * Determines if the change affects this hierarchy, and fires
  * change notification if required.
  */
 public void elementChanged(ElementChangedEvent event) {
@@ -842,7 +842,7 @@ public synchronized boolean isAffected(IJavaElementDelta delta, int eventType) {
 /**
  * Returns true if any of the children of a project, package
  * fragment root, or package fragment have changed in a way that
- * effects this type hierarchy.
+ * affects this type hierarchy.
  * @param eventType TODO
  */
 private boolean isAffectedByChildren(IJavaElementDelta delta, int eventType) {

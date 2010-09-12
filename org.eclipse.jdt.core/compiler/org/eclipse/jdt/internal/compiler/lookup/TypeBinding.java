@@ -307,7 +307,7 @@ public TypeBinding findSuperTypeOriginatingFrom(TypeBinding otherType) {
 			int nextPosition = 0;
 			do {
 				ReferenceBinding[] itsInterfaces = currentType.superInterfaces();
-				if (itsInterfaces != Binding.NO_SUPERINTERFACES) {
+				if (itsInterfaces != null && itsInterfaces != Binding.NO_SUPERINTERFACES) {
 					if (interfacesToVisit == null) {
 						interfacesToVisit = itsInterfaces;
 						nextPosition = interfacesToVisit.length;
@@ -332,7 +332,7 @@ public TypeBinding findSuperTypeOriginatingFrom(TypeBinding otherType) {
 				if (currentType.original() == otherType)
 					return currentType;
 				ReferenceBinding[] itsInterfaces = currentType.superInterfaces();
-				if (itsInterfaces != Binding.NO_SUPERINTERFACES) {
+				if (itsInterfaces != null && itsInterfaces != Binding.NO_SUPERINTERFACES) {
 					int itsLength = itsInterfaces.length;
 					if (nextPosition + itsLength >= interfacesToVisit.length)
 						System.arraycopy(interfacesToVisit, 0, interfacesToVisit = new ReferenceBinding[nextPosition + itsLength + 5], 0, nextPosition);

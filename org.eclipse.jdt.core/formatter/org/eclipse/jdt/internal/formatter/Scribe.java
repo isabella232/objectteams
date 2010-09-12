@@ -884,6 +884,7 @@ public class Scribe implements IJavaDocTagConstants {
 	}
 
 	int getCurrentIndentation(char[] whitespaces, int offset) {
+		if (whitespaces == null) return offset;
 		int length = whitespaces.length;
 		if (this.tabLength == 0) return length;
 		int indentation = offset;
@@ -2372,7 +2373,6 @@ public class Scribe implements IJavaDocTagConstants {
 			boolean hasLineComment = false;
 			boolean hasWhitespaces = false;
 			int lines = 0;
-			int previousFoundTaskCount = this.scanner.foundTaskCount;
 			while ((this.currentToken = this.scanner.getNextToken()) != TerminalTokens.TokenNameEOF) {
 				int foundTaskCount = this.scanner.foundTaskCount;
 				switch(this.currentToken) {
@@ -2497,15 +2497,14 @@ public class Scribe implements IJavaDocTagConstants {
 						currentTokenStartPosition = this.scanner.currentPosition;
 						break;
 					case TerminalTokens.TokenNameCOMMENT_LINE :
-						if (this.useTags && this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 							if (!this.editsEnabled && this.editsIndex > 1) {
 								OptimizedReplaceEdit currentEdit = this.edits[this.editsIndex-1];
 								if (this.scanner.startPosition == currentEdit.offset+currentEdit.length) {
 									printNewLinesBeforeDisablingComment();
 								}
 							}
-							previousFoundTaskCount = foundTaskCount;
 						}
 						if (rejectLineComment) break;
 						if (lines >= 1) {
@@ -2522,20 +2521,19 @@ public class Scribe implements IJavaDocTagConstants {
 						currentTokenStartPosition = this.scanner.currentPosition;
 						hasLineComment = true;
 						lines = 0;
-						if (this.useTags && !this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && !this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 						}
 						break;
 					case TerminalTokens.TokenNameCOMMENT_BLOCK :
-						if (this.useTags && this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 							if (!this.editsEnabled && this.editsIndex > 1) {
 								OptimizedReplaceEdit currentEdit = this.edits[this.editsIndex-1];
 								if (this.scanner.startPosition == currentEdit.offset+currentEdit.length) {
 									printNewLinesBeforeDisablingComment();
 								}
 							}
-							previousFoundTaskCount = foundTaskCount;
 						}
 						if (trailing > NO_TRAILING_COMMENT && lines >= 1) {
 							// a block comment on next line means that there's no trailing comment
@@ -2559,20 +2557,19 @@ public class Scribe implements IJavaDocTagConstants {
 						hasLineComment = false;
 						hasComment = true;
 						lines = 0;
-						if (this.useTags && !this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && !this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 						}
 						break;
 					case TerminalTokens.TokenNameCOMMENT_JAVADOC :
-						if (this.useTags && this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 							if (!this.editsEnabled && this.editsIndex > 1) {
 								OptimizedReplaceEdit currentEdit = this.edits[this.editsIndex-1];
 								if (this.scanner.startPosition == currentEdit.offset+currentEdit.length) {
 									printNewLinesBeforeDisablingComment();
 								}
 							}
-							previousFoundTaskCount = foundTaskCount;
 						}
 						if (trailing > NO_TRAILING_COMMENT) {
 							// a javadoc comment should not be considered as a trailing comment
@@ -2596,8 +2593,8 @@ public class Scribe implements IJavaDocTagConstants {
 						} else {
 							printBlockComment(true);
 						}
-						if (this.useTags && !this.editsEnabled && foundTaskCount > previousFoundTaskCount) {
-							setEditsEnabled(foundTaskCount, previousFoundTaskCount);
+						if (this.useTags && !this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
 						}
 						printNewLine();
 						currentTokenStartPosition = this.scanner.currentPosition;
@@ -2611,7 +2608,6 @@ public class Scribe implements IJavaDocTagConstants {
 						this.scanner.resetTo(currentTokenStartPosition, this.scannerEndPosition - 1);
 						return;
 				}
-				previousFoundTaskCount = foundTaskCount;
 			}
 		} catch (InvalidInputException e) {
 			throw new AbortFormatting(e);
@@ -2686,8 +2682,7 @@ public class Scribe implements IJavaDocTagConstants {
 					if (this.tabLength == 0) {
 						similarCommentsIndentation = relativeIndentation == 0;
 					} else if (relativeIndentation > -this.tabLength) {
-						similarCommentsIndentation = this.formatter.preferences.comment_format_line_comment_starting_on_first_column ||
-							(currentCommentIndentation != 0 && this.lastLineComment.currentIndentation != 0);
+						similarCommentsIndentation = relativeIndentation == 0 || currentCommentIndentation != 0 && this.lastLineComment.currentIndentation != 0;
 					}
 					if (similarCommentsIndentation && this.lastLineComment.indentation != this.indentationLevel) {
 						int currentIndentationLevel = this.indentationLevel;
@@ -4441,6 +4436,7 @@ public class Scribe implements IJavaDocTagConstants {
 			boolean hasComment = false;
 			boolean hasModifiers = false;
 			while ((this.currentToken = this.scanner.getNextToken()) != TerminalTokens.TokenNameEOF) {
+				int foundTaskCount = this.scanner.foundTaskCount;
 				switch(this.currentToken) {
 					case TerminalTokens.TokenNamepublic :
 					case TerminalTokens.TokenNameprotected :
@@ -4508,17 +4504,37 @@ public class Scribe implements IJavaDocTagConstants {
 						currentTokenStartPosition = this.scanner.currentPosition;
 						break;
 					case TerminalTokens.TokenNameCOMMENT_BLOCK :
-						printBlockComment(false);
-						currentTokenStartPosition = this.scanner.currentPosition;
-						hasComment = true;
-						break;
 					case TerminalTokens.TokenNameCOMMENT_JAVADOC :
-						printBlockComment(true);
+						if (this.useTags && this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
+							if (!this.editsEnabled && this.editsIndex > 1) {
+								OptimizedReplaceEdit currentEdit = this.edits[this.editsIndex-1];
+								if (this.scanner.startPosition == currentEdit.offset+currentEdit.length) {
+									printNewLinesBeforeDisablingComment();
+								}
+							}
+						}
+						printBlockComment(this.currentToken == TerminalTokens.TokenNameCOMMENT_JAVADOC);
+						if (this.useTags && !this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
+						}
 						currentTokenStartPosition = this.scanner.currentPosition;
 						hasComment = true;
 						break;
 					case TerminalTokens.TokenNameCOMMENT_LINE :
+						if (this.useTags && this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
+							if (!this.editsEnabled && this.editsIndex > 1) {
+								OptimizedReplaceEdit currentEdit = this.edits[this.editsIndex-1];
+								if (this.scanner.startPosition == currentEdit.offset+currentEdit.length) {
+									printNewLinesBeforeDisablingComment();
+								}
+							}
+						}
 						printLineComment();
+						if (this.useTags && !this.editsEnabled && foundTaskCount > 0) {
+							setEditsEnabled(foundTaskCount);
+						}
 						currentTokenStartPosition = this.scanner.currentPosition;
 						break;
 					case TerminalTokens.TokenNameWHITESPACE :
@@ -4974,8 +4990,8 @@ public class Scribe implements IJavaDocTagConstants {
 	 * disabling/enabling tags in a comment, hence the last one will be the one really
 	 * changing the formatter behavior...
 	 */
-	private void setEditsEnabled(int count, int previous) {
-		for (int i=previous; i<count; i++) {
+	private void setEditsEnabled(int count) {
+		for (int i=0; i<count; i++) {
 			if (this.disablingTag != null && CharOperation.equals(this.scanner.foundTaskTags[i], this.disablingTag)) {
 				this.editsEnabled = false;
 			}

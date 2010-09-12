@@ -73,6 +73,7 @@ import org.eclipse.jdt.internal.core.BinaryTypeConverter;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
 import org.eclipse.jdt.internal.core.SourceTypeElementInfo;
 import org.eclipse.jdt.internal.core.search.matching.JavaSearchNameEnvironment;
+import org.eclipse.jdt.internal.core.search.matching.MatchLocator;
 import org.eclipse.jdt.internal.core.util.Messages;
 import org.eclipse.objectteams.otdt.core.IOTType;
 import org.eclipse.objectteams.otdt.core.OTModelManager;
@@ -530,6 +531,8 @@ public final class CompletionEngine
 	private final static int SUPERTYPE = 1;
 	private final static int SUBTYPE = 2;
 	
+	private final static char[] DOT_ENUM = ".enum".toCharArray(); //$NON-NLS-1$
+	
 	int expectedTypesPtr = -1;
 	TypeBinding[] expectedTypes = new TypeBinding[1];
 	int expectedTypesFilter;
@@ -650,6 +653,7 @@ public final class CompletionEngine
 		public void setFieldIndex(int depth){/* empty */}
 		public int sourceEnd() { return 0; 	}
 		public int sourceStart() { return 0; 	}
+		public TypeBinding expectedType() { return null; }
 	};
 
 	private int foundTypesCount;
@@ -12486,6 +12490,14 @@ public final class CompletionEngine
 				}
 			}
 		}
+		
+		// filter packages ending with enum for projects above 1.5 
+		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=317264
+		if (MatchLocator.SHOULD_FILTER_ENUM && this.compilerOptions.sourceLevel >= ClassFileConstants.JDK1_5 &&
+				CharOperation.endsWith(givenPkgName, DOT_ENUM)) { //note: it should be .enum and not just enum
+				return true;
+		}
+		
 		return false;
 	}
 
@@ -13047,6 +13059,7 @@ public final class CompletionEngine
 				break;
 		}
 	}
+
 	private void proposeNewMethod(char[] token, ReferenceBinding reference) {
 		if(!this.requestor.isIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION)) {
 			int relevance = computeBaseRelevance();
@@ -13375,9 +13388,9 @@ public final class CompletionEngine
 		if (qualifiedBinding == null) {
 			// no base class? can't proceed
 		} else  if (!this.requestor.isIgnored(CompletionProposal.METHOD_REF)) {
-			TypeBinding returnType = null;
-			if (methodSpec.returnType != null)
-				returnType = methodSpec.returnType.resolvedType;
+			final TypeBinding returnType = (methodSpec.returnType != null)
+											? methodSpec.returnType.resolvedType
+											: null;
 			// soft filter: inspect the role method for expected return type:
 			AbstractMethodMappingDeclaration mapping = null;
 			if (scope instanceof CallinCalloutScope)
@@ -13402,6 +13415,7 @@ public final class CompletionEngine
 							public void setFieldIndex(int depth) {}
 							public int sourceEnd() { return end; }
 							public int sourceStart() { return start; }
+							public TypeBinding expectedType() { return returnType; }
 						};
 			try {
 				this.currentMethodMapping = mapping;
@@ -13507,22 +13521,26 @@ public final class CompletionEngine
 		AbstractMethodMappingDeclaration callout = null;
 		if (scope instanceof CallinCalloutScope)
 			callout = (AbstractMethodMappingDeclaration)scope.referenceContext();
+		TypeBinding expectedType = null;
 		if (callout != null) {
 			// soft filter: inspect the role method for expected field type:
 			this.expectedTypesFilter = SUBTYPE;
 			if (fieldAccessKind == TerminalTokens.TokenNameset) {
 				TypeBinding[] parameters = callout.roleMethodSpec.parameters;
 				if (parameters != null && parameters.length == 1)
-					addExpectedType(parameters[0], scope);
+					expectedType = parameters[0];
 			} else if (fieldAccessKind == TerminalTokens.TokenNameget) {
 				TypeReference returnType = callout.roleMethodSpec.returnType;
 				if (returnType != null)
-					addExpectedType(returnType.resolvedType, scope);
+					expectedType = returnType.resolvedType;
 			}
+			if (expectedType != null)
+				addExpectedType(expectedType, scope);
 		}
 		// treating FieldAccessSpec(long) like a field access, we need a fake InvocationSite:
 		InvocationSite site = null;
-		if (hasSignature)
+		if (hasSignature) {
+			final TypeBinding theExpectedType = expectedType;
 			site = new InvocationSite() {
 						public TypeBinding[] genericTypeArguments() { return null; }
 						public boolean isSuperAccess() { return false; }
@@ -13534,7 +13552,9 @@ public final class CompletionEngine
 						public void setFieldIndex(int depth) {}
 						public int sourceEnd() { return end; }
 						public int sourceStart() { return start; }
+						public TypeBinding expectedType() { return theExpectedType; }
 					};
+		}
 		ObjectVector fieldsFound = new ObjectVector();
 		findFields(
 				this.completionToken,
