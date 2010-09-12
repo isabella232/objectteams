@@ -1,5 +1,5 @@
 !***************  OT/J COMPILER CONTRIBUTION  ******************************************************** 
 
-feature@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/branches/maintenance/Eclipse_3.6_OTDT_0.7,path=features/org.eclipse.objectteams.otdt.feature/ot-compiler-feature
+feature@org.eclipse.objectteams.otdt=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.feature/ot-compiler-feature,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
 
-plugin@org.eclipse.jdt.core=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/branches/maintenance/Eclipse_3.6_OTDT_0.7,path=plugins/org.eclipse.jdt.core
+plugin@org.eclipse.jdt.core=SVN,url=svn://localhost/svnroot/tools/org.eclipse.objectteams/,path=plugins/org.eclipse.jdt.core,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
