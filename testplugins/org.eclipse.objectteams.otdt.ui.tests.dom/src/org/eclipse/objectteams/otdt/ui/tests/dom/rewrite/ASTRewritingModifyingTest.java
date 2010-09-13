@@ -64,8 +64,10 @@ public class ASTRewritingModifyingTest
 		return (CompilationUnit) result;
 	}
 
-	protected IJavaProject createJavaProject(String projectName, String[] sourceFolders, String output) throws CoreException {
-		IJavaProject javaProject = super.createJavaProject(projectName, sourceFolders, output);
+	protected IJavaProject createJavaProject(String projectName, String[] sourceFolders, String[] libraries, String output, String compliance) 
+			throws CoreException
+	{
+		IJavaProject javaProject = super.createJavaProject(projectName, sourceFolders, libraries, output, compliance);
 		IProject project = javaProject.getProject();
 		IProjectDescription description = project.getDescription();
 		description.setNatureIds(OTDTPlugin.createProjectNatures(description));
