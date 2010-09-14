@@ -20,9 +20,9 @@
  **********************************************************************/
 package org.eclipse.objectteams.otdt.internal.core.compiler.model;
 
-import static org.eclipse.jdt.internal.compiler.lookup.ExtraCompilerModifiers.AccOverriding;
 import static org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants.AccInterface;
 import static org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants.AccSynthetic;
+import static org.eclipse.jdt.internal.compiler.lookup.ExtraCompilerModifiers.AccOverriding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -592,10 +592,15 @@ public class RoleModel extends TypeModel
 
     public TeamModel getTeamModel() {
         if (this._teamModel == null) {
-            if (this._binding != null)
-            	this._teamModel = TeamModel.getEnclosingTeam(this._binding).getTeamModel();
-            else // ROFI: fallback if team model is required before a binding is created:
-            	this._teamModel = this._ast.enclosingType.getTeamModel();
+        	try {
+        		if (this._binding != null)
+        			this._teamModel = TeamModel.getEnclosingTeam(this._binding).getTeamModel();
+        		else // ROFI: fallback if team model is required before a binding is created:
+        			this._teamModel = this._ast.enclosingType.getTeamModel();
+        	} catch (NullPointerException npe) {
+        		throw new InternalCompilerError("Missing enclosing team for "+this+"\n" //$NON-NLS-1$ //$NON-NLS-2$
+        									     +(this._ast != null ? this._ast : this._binding));
+        	}
         }
         return this._teamModel;
     }
