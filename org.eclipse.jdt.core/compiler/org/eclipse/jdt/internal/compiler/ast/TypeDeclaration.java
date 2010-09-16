@@ -918,7 +918,7 @@ public void generateCode(ClassFile enclosingClassFile) {
 		}
 		// if source type found then generate
 		if (currentSuper != null && !prevSuper.isBinaryBinding()) {
-			TypeDeclaration superType = ((SourceTypeBinding)prevSuper).scope.referenceContext;
+			TypeDeclaration superType = ((SourceTypeBinding)prevSuper.erasure()).scope.referenceContext;
 			superType.generateCode((ClassScope)null, enclosingSuperClassFile);
 		}
 	}

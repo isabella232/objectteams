@@ -447,7 +447,7 @@ public abstract class Scope {
 				if (substitutedArguments != originalArguments || substitutedEnclosing != originalEnclosing) {
 //{ObjectTeams: combination role & parameterized:
 					if (RoleTypeBinding.isRoleType(originalParameterizedType)) {
-						RoleTypeBinding originalRole = (RoleTypeBinding) originalParameterizedType;
+						DependentTypeBinding originalRole = (DependentTypeBinding) originalParameterizedType;
 						return originalParameterizedType.environment.createParameterizedType(
 							originalParameterizedType.genericType(), substitutedArguments, originalRole._teamAnchor, originalRole._valueParamPosition, substitutedEnclosing);
 					}
