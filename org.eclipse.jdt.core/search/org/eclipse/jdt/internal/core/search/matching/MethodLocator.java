@@ -868,12 +868,6 @@ protected int resolveLevelAsSubtype(char[] qualifiedPattern, ReferenceBinding ty
 		if (((method != null && !method.isAbstract()) || !type.isAbstract()) && !type.isInterface()) { // if concrete, then method is overridden
 			level |= OVERRIDDEN_METHOD_FLAVOR;
 		}
-//{ObjectTeams: attempt re https://bugs.eclipse.org/bugs/show_bug.cgi?id=221065
-		else if (!type.isInterface()) {
-			if (!pattern.focusIsAbstract())
-				level |= OVERRIDDEN_METHOD_FLAVOR;
-		}
-// SH}
 		return level;
 	}
 

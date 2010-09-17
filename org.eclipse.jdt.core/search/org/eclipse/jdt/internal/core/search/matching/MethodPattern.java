@@ -476,14 +476,4 @@ public int resolveLevelForType(String typeName, int declaringLevel) {
 	return PatternLocator.IMPOSSIBLE_MATCH;
 }
 // SH}
-
-//{ObjectTeams: attempt re https://bugs.eclipse.org/bugs/show_bug.cgi?id=221065
-public boolean focusIsAbstract() {
-	if (this.focus != null)
-		try {
-			return Flags.isAbstract(((IMethod)this.focus).getFlags());
-		} catch (JavaModelException e) { /* assume not abstract. */ }
-	return false;
-}
-// SH}
 }
