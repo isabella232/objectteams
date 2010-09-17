@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -45,7 +44,6 @@ import org.eclipse.jdt.core.compiler.ITerminalSymbols;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
 import org.eclipse.jdt.internal.compiler.problem.AbortCompilation;
-import org.eclipse.jdt.internal.core.Annotation;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.SourceMethod;
 import org.eclipse.jdt.internal.core.SourceType;
@@ -753,15 +751,6 @@ public abstract class MethodMapping extends OTJavaElement implements IMethodMapp
 	}
 
 	public abstract OTJavaElement resolved(char[] uniqueKey);
-	
-	
-	public IAnnotation getAnnotation(String name) {
-		return new Annotation((JavaElement)this.getCorrespondingJavaElement(), name);
-	}
-	
-	public IAnnotation[] getAnnotations() throws JavaModelException {
-		return getIMethod().getAnnotations();
-	}
 
 	@Override
 	protected char getHandleMementoDelimiter() {

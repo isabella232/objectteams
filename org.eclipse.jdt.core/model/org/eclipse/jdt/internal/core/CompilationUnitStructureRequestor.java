@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.compiler.CategorizedProblem;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.internal.compiler.ISourceElementRequestor;
+import org.eclipse.jdt.internal.compiler.ast.ASTNode;
 import org.eclipse.jdt.internal.compiler.ast.ArrayInitializer;
 import org.eclipse.jdt.internal.compiler.ast.ClassLiteralAccess;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
@@ -42,12 +43,12 @@ import org.eclipse.jdt.internal.compiler.util.HashtableOfObject;
 import org.eclipse.jdt.internal.compiler.util.HashtableOfObjectToInt;
 import org.eclipse.jdt.internal.core.util.ReferenceInfoAdapter;
 import org.eclipse.jdt.internal.core.util.Util;
-import org.eclipse.jdt.internal.compiler.ast.ASTNode;
 import org.eclipse.objectteams.otdt.core.IMethodMapping;
 import org.eclipse.objectteams.otdt.core.OTModelManager;
 import org.eclipse.objectteams.otdt.core.util.FieldData;
 import org.eclipse.objectteams.otdt.core.util.MethodData;
 import org.eclipse.objectteams.otdt.internal.core.MappingElementInfo;
+import org.eclipse.objectteams.otdt.internal.core.MethodMapping;
 import org.eclipse.objectteams.otdt.internal.core.SourceMethodMappingInfo;
 
 /**
@@ -841,7 +842,7 @@ public void exitCalloutToFieldMapping(int sourceEnd, int declarationSourceEnd)
 }
 
 private SourceMethodMappingInfo createMappingInfo(MappingElementInfo mappingInfo, IMethodMapping handle) {
-	// TODO(SH): handle annotations and nested elements (anonymous type in parameter mapping??)
+	// TODO(SH): handle nested elements (anonymous type in parameter mapping??)
 	SourceMethodMappingInfo info = new SourceMethodMappingInfo();
 	info.setSourceRangeStart(mappingInfo.getDeclarationSourceStart());
 	int flags = mappingInfo.getDeclaredModifiers();
@@ -896,14 +897,14 @@ private SourceMethodMappingInfo createMappingInfo(MappingElementInfo mappingInfo
 //			acceptTypeParameter(typeParameterInfo, info);
 //		}
 //	}
-//	if (mappingInfo.annotations != null) {
-//		int length = mappingInfo.annotations.length;
-//		this.unitInfo.annotationNumber += length;
-//		for (int i = 0; i < length; i++) {
-//			org.eclipse.jdt.internal.compiler.ast.Annotation annotation = mappingInfo.annotations[i];
-//			acceptAnnotation(annotation, info, handle);
-//		}
-//	}
+	if (mappingInfo.annotations != null) {
+		int length = mappingInfo.annotations.length;
+		this.unitInfo.annotationNumber += length;
+		for (int i = 0; i < length; i++) {
+			org.eclipse.jdt.internal.compiler.ast.Annotation annotation = mappingInfo.annotations[i];
+			acceptAnnotation(annotation, info, (MethodMapping)handle);
+		}
+	}
 	return info;
 }
 
@@ -921,6 +922,7 @@ public void enterCalloutMapping(ISourceElementRequestor.CalloutInfo calloutInfo)
 	info.setHasSignature(calloutInfo.hasSignature);
 	info.setOverride(calloutInfo.isOverride);
 	info.setDeclaredModifiers(calloutInfo.declaredModifiers);
+	info.annotations = calloutInfo.annotations;
 
 	if (calloutInfo.left != null && calloutInfo.left.selector != null) {
 		MethodData roleMethod;
@@ -964,6 +966,7 @@ public void enterCalloutToFieldMapping(ISourceElementRequestor.CalloutToFieldInf
 	info.setHasSignature(calloutInfo.hasSignature);
 	info.setOverride(calloutInfo.isOverride);
 	info.setDeclaredModifiers(calloutInfo.declaredModifiers);
+	info.annotations = calloutInfo.annotations;
 
     if (calloutInfo.left != null && calloutInfo.left.selector != null) {
     	MethodData roleMethod;
@@ -1008,6 +1011,7 @@ public void enterCallinMapping(ISourceElementRequestor.CallinInfo callinInfo)
 	info.setDeclarationStart(callinInfo.declarationSourceStart);
 	info.setSourceStart(callinInfo.sourceStart);
 	info.setHasSignature(callinInfo.hasSignature);
+	info.annotations = callinInfo.annotations;
 
 	if (callinInfo.left != null && callinInfo.left.selector != null) {
 		MethodData roleMethodData;
@@ -1028,16 +1032,6 @@ public void enterCallinMapping(ISourceElementRequestor.CallinInfo callinInfo)
 			}
 		} else
 			roleMethodData = new MethodData(new String(callinInfo.left.selector), false/*isDeclaration*/);
-
-// FIXME(SH): would this need to be added? (callinInfo has no field annotations, yet)		
-//		if (callinInfo.annotations != null) {
-//			int length = callinInfo.annotations.length;
-//			this.unitInfo.annotationNumber += length;
-//			for (int i = 0; i < length; i++) {
-//				org.eclipse.jdt.internal.compiler.ast.Annotation annotation = callinInfo.annotations[i];
-//				acceptAnnotation(annotation, info, roleMethodData); // would need to relax this method's signature
-//			}
-//		}
 
 		info.setRoleMethod(roleMethodData);
 	}

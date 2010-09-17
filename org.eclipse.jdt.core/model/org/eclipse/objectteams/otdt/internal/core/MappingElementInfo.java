@@ -20,6 +20,7 @@
  **********************************************************************/
 package org.eclipse.objectteams.otdt.internal.core;
 
+import org.eclipse.jdt.internal.compiler.ast.Annotation;
 import org.eclipse.objectteams.otdt.core.util.FieldData;
 import org.eclipse.objectteams.otdt.core.util.MethodData;
 
@@ -46,6 +47,7 @@ public class MappingElementInfo
 	private boolean      _isOverride; // callout override.
 	private int			 _declaredModifiers;
 	char[][] 			 _categories;
+	public Annotation[] annotations;
 	
     
     public MethodData getRoleMethod()

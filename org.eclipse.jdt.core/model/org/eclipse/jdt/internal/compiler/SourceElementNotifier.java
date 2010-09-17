@@ -466,6 +466,8 @@ private char[] returnTypeName(MethodSpec spec) {
     				info.rightSelector= baseSelector;
     				info.rightReturnType= baseReturnTypeName;
 
+    				info.annotations = mapping.annotations;
+
 					this.requestor.enterCalloutToFieldMapping(info);
                 	visitIfNeeded(callout);
                 } else {
@@ -486,6 +488,8 @@ private char[] returnTypeName(MethodSpec spec) {
     				baseInfo.parameterTypes= argumentTypes(callout.baseMethodSpec);
     				baseInfo.parameterNames= argumentNames(callout.baseMethodSpec);
     				info.right= baseInfo;
+
+    				info.annotations = mapping.annotations;
 
     				this.requestor.enterCalloutMapping(info);
     				visitIfNeeded(callout);
@@ -534,6 +538,9 @@ private char[] returnTypeName(MethodSpec spec) {
 				}
 				info.right= baseInfos;
 				info.covariantReturn= callinDecl.hasCovariantReturn();
+
+				info.annotations = mapping.annotations;
+
 				this.requestor.enterCallinMapping(info);
 				visitIfNeeded(callinDecl);
 			}

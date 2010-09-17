@@ -209,6 +209,7 @@ public interface ISourceElementRequestor {
 		public int declarationSourceStart, sourceStart;
 		public MethodSpecInfo left;
 		public boolean hasSignature;
+		public Annotation[] annotations;
 	}
 	public static class CalloutInfo extends MappingInfo {
 		public MethodSpecInfo right;
