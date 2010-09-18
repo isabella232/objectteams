@@ -85,6 +85,8 @@ public class ImportReference extends ASTNode {
 			output.append("static "); //$NON-NLS-1$
 		else if (isBase())
 			output.append("base "); //$NON-NLS-1$
+		else if (isTeam())
+			output.append("team "); //$NON-NLS-1$ // for package declaration
 // SH}
 		/* when withOnDemand is false, only the name is printed */
 		for (int i = 0; i < this.tokens.length; i++) {
