@@ -993,7 +993,16 @@ public RecoveredElement buildInitialRecoveryState(){
 		/* ignore current stack state, since restarting from the beginnning
 		   since could not trust simple brace count */
 		// restart recovery from scratch
+//{ObjectTeams: do not discard package declaration if it should still be needed 
+//  			for role file linking:
+	  if (   (this.firstToken == TokenNamePLUS_PLUS) // compilation unit
+		  || (this.firstToken == TokenNameQUESTION)) // package declaration
+	  {
+// orig:		  
 		this.compilationUnit.currentPackage = null;
+// :giro
+	  }
+// SH}
 		this.compilationUnit.imports = null;
 		this.compilationUnit.types = null;
 		this.currentToken = 0;
