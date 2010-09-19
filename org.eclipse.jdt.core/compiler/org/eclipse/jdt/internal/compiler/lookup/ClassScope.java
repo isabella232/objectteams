@@ -1650,6 +1650,11 @@ public class ClassScope extends Scope {
 
 	public boolean connectBaseclass() {
 		SourceTypeBinding sourceType = this.referenceContext.binding;
+		if (!this.referenceContext.isDirectRole()) {
+			if (this.referenceContext.baseclass != null)
+				problemReporter().playedByInRegularClass(sourceType, this.referenceContext.baseclass);
+			return true;
+		}
 		if (sourceType.isSynthInterface())
 			return true; // will transfer baseclass to the ifc part in Dependencies.linkBaseclass
         if (this.referenceContext.baseclass == null) {
@@ -1742,8 +1747,6 @@ public class ClassScope extends Scope {
 						if (baseclassRef.getBaseclassDecapsulation() != DecapsulationState.CONFINED) //=> decaps confined already reported
 							problemReporter().invalidType(this.referenceContext.baseclass, baseclass);
 					}
-				} else if (!sourceType.isDirectRole()) {
-					problemReporter().playedByInRegularClass(sourceType, this.referenceContext.baseclass);
 				} else if (sourceType.id == TypeIds.T_JavaLangObject) {
 					// can only happen if Object extends another type... will never happen unless we're testing for it.
 					sourceType.tagBits |= TagBits.HierarchyHasProblems;
