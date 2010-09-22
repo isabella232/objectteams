@@ -32,7 +32,7 @@ public interface IOTConstants
 	// ============ VERSION: ==============
 	public static final int    OT_VERSION_MAJOR = 1;
     public static final int    OT_VERSION_MINOR = 5;
-    public static final int    OT_REVISION = 0;
+    public static final int    OT_REVISION = 1;
     public static final int    OT_COMPILER_VERSION_MIN = (1<<9)+(4<<5)+1; // byte code incompatibility introduced in internal version 1.4.1 (OTDT 1.4.0M3)
 
     // These keywords are allowed in std-Java files (even if compiled by the OTDT):
