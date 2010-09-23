@@ -40,14 +40,14 @@ public class DummyDecorator implements ILightweightLabelDecorator {
 		// nop, work is done by the ViewAdaptor.
 	}
 
-	public void addListener(ILabelProviderListener listener) {}
+	public void addListener(ILabelProviderListener listener) { /* empty */ }
 
-	public void dispose() { }
+	public void dispose() { /* empty */ }
 
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
 	}
 
-	public void removeListener(ILabelProviderListener listener) { }
+	public void removeListener(ILabelProviderListener listener) { /* empty */ }
 
 }

@@ -41,7 +41,7 @@ public class JavadocProposalSubProcessor
 {
 	private static final String TAG_ROLE = "@role"; //$NON-NLS-1$
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static CUCorrectionProposal addRoleTag(ICompilationUnit cu,
 												  String[]         problemArguments, 
 												  TypeDeclaration  teamType) 

@@ -30,7 +30,7 @@ import base org.eclipse.jdt.ui.actions.FindReferencesAction;
  * 
  * @author stephan
  */
-@SuppressWarnings({"restriction", "unchecked"}) // using raw type 'Class' 
+@SuppressWarnings({"restriction", "rawtypes"}) // using raw type 'Class' 
 public team class FindActionAdaptor 
 {
 	protected class FindAction playedBy FindAction 

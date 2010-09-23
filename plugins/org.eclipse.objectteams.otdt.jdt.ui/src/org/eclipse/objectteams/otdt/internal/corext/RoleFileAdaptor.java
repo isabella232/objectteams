@@ -56,7 +56,7 @@ public team class RoleFileAdaptor
 		 * Unfortunately the dom does not give direct access from a role file
 		 * to its enclosing team. 
 		 */
-		@SuppressWarnings({"unchecked","basecall"}) // base call not issued if replacing behaviour executes
+		@SuppressWarnings({"rawtypes","basecall"}) // base call not issued if replacing behaviour executes
 		static callin ITypeBinding getBindingOfParentType(ASTNode node) 
 		{
 			if (node.getNodeType() == ASTNode.COMPILATION_UNIT) {

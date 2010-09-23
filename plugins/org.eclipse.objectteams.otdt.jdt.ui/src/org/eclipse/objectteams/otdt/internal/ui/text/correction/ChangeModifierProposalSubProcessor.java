@@ -96,7 +96,7 @@ public class ChangeModifierProposalSubProcessor
 	}
 	
 	/* Helper */
-	@SuppressWarnings("unchecked") // AST does not declare type parameters
+	@SuppressWarnings("rawtypes") // AST does not declare type parameters
 	private static int findTeamModifierIndex(TypeDeclaration typeDeclaration) {
 		List modifiers = typeDeclaration.modifiers();
 		if (modifiers == null)

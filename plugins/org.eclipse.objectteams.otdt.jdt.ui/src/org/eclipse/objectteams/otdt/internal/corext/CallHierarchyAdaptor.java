@@ -260,16 +260,18 @@ public team class CallHierarchyAdaptor
 			String selector = member.getElementName();
 			if (selector.startsWith(String.valueOf(IOTConstants.PREDICATE_METHOD_NAME))) {
 				// regular guard
-				if (selector.length() == IOTConstants.PREDICATE_METHOD_NAME.length) 
-					; // no suffix
-				else
+				if (selector.length() == IOTConstants.PREDICATE_METHOD_NAME.length) {
+					// no suffix
+				} else {
 					suffix = selector.substring(IOTConstants.PREDICATE_METHOD_NAME.length);
+				}
 			} else if (selector.equals(String.valueOf(IOTConstants.BASE_PREDICATE_PREFIX))) {
 				// base guard
-				if (selector.length() == IOTConstants.BASE_PREDICATE_PREFIX.length)
-					; // no suffix
-				else
+				if (selector.length() == IOTConstants.BASE_PREDICATE_PREFIX.length) {
+					// no suffix
+				} else {
 					suffix = selector.substring(IOTConstants.BASE_PREDICATE_PREFIX.length);
+				}
 			}
 			if (suffix == null) {
 				// class level predicate
@@ -292,7 +294,7 @@ public team class CallHierarchyAdaptor
 						result.add(m);
 				return result.toArray(new IMember[result.size()]);
 			} else {
-				StringTokenizer tokens = new StringTokenizer(suffix, "$");
+				StringTokenizer tokens = new StringTokenizer(suffix, "$"); //$NON-NLS-1$
 				ArrayList<IMember> mList = new ArrayList<IMember>();
 				switch (tokens.countTokens()) {
 				case 1: // role method guard

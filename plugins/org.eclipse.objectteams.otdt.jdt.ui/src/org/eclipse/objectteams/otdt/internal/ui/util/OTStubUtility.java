@@ -47,9 +47,9 @@ import base org.eclipse.jdt.internal.corext.codemanipulation.StubUtility2;
 
 /**
  * OT-Extension for {@link org.eclipse.jdt.internal.corext.codemanipulation.StubUtility2}.
- * @since 0.7.0 (previously these methdds resided in {@link org.eclipse.objectteams.otdt.internal.ui.assist.CompletionAdaptor.StubUtility2})
+ * @since 0.7.0 (previously these methods resided in {@link org.eclipse.objectteams.otdt.internal.ui.assist.CompletionAdaptor.StubUtility2})
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({"restriction", "rawtypes", "unchecked"})
 public team class OTStubUtility {
 
 	private static OTStubUtility instance;
@@ -57,7 +57,6 @@ public team class OTStubUtility {
 	@SuppressWarnings("decapsulation")
 	protected class StubUtility2 playedBy StubUtility2 {
 
-		@SuppressWarnings("rawtypes")
 		protected List createParameters(IJavaProject project, ImportRewrite imports,
 				ImportRewriteContext context, AST ast, IMethodBinding binding,
 				MethodDeclaration decl)
@@ -72,7 +71,6 @@ public team class OTStubUtility {
 			instance = new OTStubUtility();
 		return instance;
 	}
-	@SuppressWarnings("rawtypes")
 	List createParameters(IJavaProject project, ImportRewrite imports,
 			ImportRewriteContext context, AST ast, IMethodBinding binding,
 			MethodDeclaration decl)

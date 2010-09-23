@@ -480,7 +480,7 @@ public class MappingProposalSubProcessor {
 	 * @param proposals 	  list of proposals to which to add the new proposal
 	 * @throws CoreException  if some compilation unit could not be found
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void addUnresolvedMethodSpecProposals(ASTNode selectedNode, 
 														TypeDeclaration enclosingType, 
 														IInvocationContext context, 
@@ -583,7 +583,7 @@ public class MappingProposalSubProcessor {
 		}
 	}
 	/** Replace the parameter part in a display name with types from the MethodSpec */
-	@SuppressWarnings("unchecked") // methodSpec.parameters is raw type 
+	@SuppressWarnings("rawtypes") // methodSpec.parameters is raw type 
 	private static String updateDisplayName(MethodSpec methodSpec, String displayString) {
 		String head= displayString.substring(0, displayString.indexOf('(')+1);
 		String tail= displayString.substring(displayString.indexOf(')')); 

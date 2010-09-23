@@ -123,12 +123,12 @@ public team class OTQuickFixes  {
 	 */
 	protected class QuickFixProcessor playedBy QuickFixProcessor 
 	{
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		void filterNulls(Collection proposals)
 		<-  after void process(IInvocationContext context, IProblemLocation problem, Collection proposals)
 			with { proposals <- proposals }
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		void filterNulls(Collection proposals) {
 			if ((proposals instanceof List)) {
 				List list = (List)proposals;
@@ -489,7 +489,7 @@ public team class OTQuickFixes  {
 	 * @param problem   the problem that triggered this assist
 	 * @param proposals list of proposals to which the new proposal should be added.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addOverrideAnnotationProposal(IInvocationContext context, IProblemLocation problem, Collection proposals) {
 		// avoid calling Java50Fix.createAddOverrideAnnotationFix, which expects a specific problemID
 		IProposableFix fix= Java50Fix.createFix(context.getASTRoot(), problem, "Override", FixMessages.Java50Fix_AddOverride_description); //$NON-NLS-1$

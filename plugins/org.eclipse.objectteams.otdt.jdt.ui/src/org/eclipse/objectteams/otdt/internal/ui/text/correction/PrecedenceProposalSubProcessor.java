@@ -183,7 +183,7 @@ public class PrecedenceProposalSubProcessor {
 				Messages.format(CorrectionMessages.OTQuickfix_addbindingprecedence_description,
 						new String[]{roleType.getName().getIdentifier()}), 
 				callin1, callin2,
-				Modifier.isAfter(mapping1.getCallinModifier()),
+				mapping1 != null && Modifier.isAfter(mapping1.getCallinModifier()),
 			 	name1 != null, name2 != null);
 
 		// create new, editable labels (linked to their mentioning within the precedence declaration):

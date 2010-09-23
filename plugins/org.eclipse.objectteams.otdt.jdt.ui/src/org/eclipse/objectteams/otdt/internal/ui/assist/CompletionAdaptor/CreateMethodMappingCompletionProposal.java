@@ -171,12 +171,12 @@ protected team class CreateMethodMappingCompletionProposal extends MethodMapping
 			// return type:
 			ITrackedNodePosition returnTypePosition = null;
 			ITypeBinding returnType = method.getReturnType();
-			if (!(returnType.isPrimitive() && "void".equals(returnType.getName()))) {
+			if (!(returnType.isPrimitive() && "void".equals(returnType.getName()))) { //$NON-NLS-1$
 				returnTypePosition = rewrite.track(roleMethodSpec.getReturnType2());
 				addLinkedPosition(returnTypePosition, true, ROLEMETHODRETURN_KEY);
 				LinkedProposalPositionGroup group1 = getLinkedProposalModel().getPositionGroup(ROLEMETHODRETURN_KEY, true);
-				group1.addProposal(new MyJavaLinkedModeProposal(iCU, method.getReturnType(), 13)); //$NON-NLS-1$
-				group1.addProposal("void", null, 13); //$NON-NLS-1$
+				group1.addProposal(new MyJavaLinkedModeProposal(iCU, method.getReturnType(), 13));
+				group1.addProposal("void", null, 13);  //$NON-NLS-1$
 			}
 			
 			// role method name:
@@ -190,12 +190,12 @@ protected team class CreateMethodMappingCompletionProposal extends MethodMapping
 			addLinkedPosition(rewrite.track(stub.bindingOperator()), false, BINDINGKIND_KEY);
 			LinkedProposalPositionGroup group2= getLinkedProposalModel().getPositionGroup(BINDINGKIND_KEY, true);
 			if (!this.fIsOnlyCallin) {
-				String calloutToken = "->";
+				String calloutToken = "->"; //$NON-NLS-1$
 				if (this.fIsOverride) {
-					calloutToken = "=>";
+					calloutToken = "=>"; //$NON-NLS-1$
 					stub.bindingOperator().setBindingKind(MethodBindingOperator.KIND_CALLOUT_OVERRIDE);
 				}
-				group2.addProposal(calloutToken, Images.getImage(CALLOUTBINDING_IMG), 13);         //$NON-NLS-1$
+				group2.addProposal(calloutToken, Images.getImage(CALLOUTBINDING_IMG), 13);
 			}
 			group2.addProposal(makeBeforeAfterBindingProposal("<- before", Images.getImage(CALLINBINDING_BEFORE_IMG), returnTypePosition));  //$NON-NLS-1$
 			group2.addProposal("<- replace", Images.getImage(CALLINBINDING_REPLACE_IMG), 13); //$NON-NLS-1$
@@ -212,7 +212,7 @@ protected team class CreateMethodMappingCompletionProposal extends MethodMapping
 			{
 				MultiTextEdit edits = new MultiTextEdit();
 				if (returnTypePosition != null)
-					edits.addChild(new ReplaceEdit(returnTypePosition.getStartPosition(), returnTypePosition.getLength(), "void"));
+					edits.addChild(new ReplaceEdit(returnTypePosition.getStartPosition(), returnTypePosition.getLength(), "void")); //$NON-NLS-1$
 				edits.addChild(super.computeEdits(offset, position, trigger, stateMask, model));
 				return edits;
 			}

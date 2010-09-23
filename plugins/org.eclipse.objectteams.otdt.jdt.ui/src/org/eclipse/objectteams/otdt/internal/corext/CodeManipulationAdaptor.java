@@ -178,7 +178,7 @@ public team class CodeManipulationAdaptor
 	 */
 	protected class OrganizeImports playedBy OrganizeImportsOperation {
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		void collectRoFiBaseReferences(CompilationUnit astRoot, List<SimpleName> typeReferences) 
 			<- after boolean collectReferences(CompilationUnit astRoot, List typeReferences, List staticReferences, Set oldSingleImports, Set oldDemandImports)
 			base when (result);

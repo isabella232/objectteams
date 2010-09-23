@@ -152,7 +152,7 @@ public class TypeProposalSubProcessor {
 	 * Find all local variables within block prior to current that match typeToMatch.
 	 * Return the variables' names. 
 	 */
-	@SuppressWarnings("unchecked") // block.statements() is raw type
+	@SuppressWarnings("rawtypes") // block.statements() is raw type
 	private static ArrayList<String> getMatchingLocalsPriorTo(Block   block,
 															  String  enclosingTeamName, 
 															  ASTNode current) 
@@ -174,7 +174,7 @@ public class TypeProposalSubProcessor {
 	}
 
 	/** If typeNode matches typeToMatch add the names of all fragments to result. */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static void addFragmentsIfMatch(Type typeNode, String enclosingTeamName, List fragments, List<String> result) 
 	{
 		if (   typeNode.isSimpleType()
