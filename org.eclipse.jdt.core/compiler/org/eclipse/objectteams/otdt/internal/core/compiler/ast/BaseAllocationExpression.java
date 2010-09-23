@@ -329,8 +329,13 @@ public class BaseAllocationExpression extends Assignment {
     		&& enclType.isDirectRole()
 			&& StateHelper.hasState(enclType.binding, ITranslationStates.STATE_LENV_DONE_FIELDS_AND_METHODS))
     	{
-	    	if (checkGenerate(scope)) // only if successful:
-	    		super.traverse(visitor, scope);
+	    	if (checkGenerate(scope)) { // only if successful:
+	    		// when called from createAst->isArgOfOtherCtor we don't yet have the expression generated
+	    		if (this.isExpression && this.expression != null)
+	    			this.expression.traverse(visitor, scope);
+	    		else
+	    			super.traverse(visitor, scope);
+	    	}
     	} else {
     		if (this.expression != null)
     			super.traverse(visitor, scope);
