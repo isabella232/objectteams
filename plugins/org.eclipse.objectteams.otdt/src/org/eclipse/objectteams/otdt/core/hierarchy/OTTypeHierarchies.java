@@ -425,13 +425,9 @@ public team class OTTypeHierarchies {
 		// binding binary variant of IType
 		protected class ConnectedPhantomType extends ConnectedType playedBy PhantomType { /* mainly class binding */
 			/** Create a new phantom type (role and base) */
-			protected ConnectedPhantomType(IType enclosingTeam, IType realTSuper) {
-				// super(base(enclosingTeam, realTSuper)); // FIXME(SH): syntax err??
-				super(new org.eclipse.objectteams.otdt.core.PhantomType(enclosingTeam, realTSuper));
+			protected ConnectedPhantomType(ConnectedType original) throws JavaModelException {
+				super(base(original.getParent(), original.getRealTSuper()));
 			}
-//			protected ConnectedPhantomType(ConnectedType original) throws JavaModelException { // FIXME(SH): ctor cannot declare exception
-//				this(original.getParent(), original.getRealTSuper());
-//			}
 		}
 
 		// binding binary variant of IType
@@ -612,7 +608,7 @@ public team class OTTypeHierarchies {
 			if (!type.isPhantom || (type instanceof ConnectedPhantomType))
 				return type;
 			try {
-				return new ConnectedPhantomType(type.getParent(), type.getRealTSuper());
+				return new ConnectedPhantomType(type);
 			} catch (JavaModelException e) {
 				OTDTPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, OTDTPlugin.PLUGIN_ID, "Failed to find original tsuper role.", e)); //$NON-NLS-1$
 				return null;
