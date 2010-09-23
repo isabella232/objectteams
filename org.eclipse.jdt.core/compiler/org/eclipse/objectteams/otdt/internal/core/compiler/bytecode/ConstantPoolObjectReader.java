@@ -59,8 +59,6 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.model.RoleModel;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.TypeModel;
 
 /**
- * MIGRATION_STATE: complete.
- *
  * Reads BinaryTypeBinding ConstantPool Entrys
  * and returns the Binding/Object at the specific ConstantPoolOffset
  *
@@ -278,7 +276,7 @@ public class ConstantPoolObjectReader extends ClassFileStruct implements ClassFi
 		char[] type = nameandtype[1];
 		FieldBinding fb = null;
 		if (!class_rb.isBinaryBinding()) {
-			SourceTypeBinding sourceType = (SourceTypeBinding)class_rb;
+			SourceTypeBinding sourceType = (SourceTypeBinding)class_rb.erasure();
 			// can't find synthetics in 'fields'.
 			if (CharOperation.prefixEquals(TypeConstants.SYNTHETIC_OUTER_LOCAL_PREFIX, name))
 				return sourceType.getSyntheticOuterLocal(name);
@@ -428,7 +426,7 @@ public class ConstantPoolObjectReader extends ClassFileStruct implements ClassFi
 				//           requires a synth.method, than this method will be missing!
 				return null;
 			}
-			SourceTypeBinding stb = (SourceTypeBinding)class_rb;
+			SourceTypeBinding stb = (SourceTypeBinding)class_rb.erasure();
 			SyntheticMethodBinding[] accessMethods = stb.syntheticMethods();
 			if (accessMethods != null) {
 				for (int i=0; i<accessMethods.length; i++) {
@@ -440,7 +438,7 @@ public class ConstantPoolObjectReader extends ClassFileStruct implements ClassFi
 		if (SyntheticRoleFieldAccess.isRoleFieldAccess(AccSynthetic, name)) {
 			if (class_rb.isBinaryBinding())
 				return null; // should have been found within methods
-			SourceTypeBinding sourceType = (SourceTypeBinding)class_rb;
+			SourceTypeBinding sourceType = (SourceTypeBinding)class_rb.erasure();
 			SyntheticMethodBinding[] synthetics = sourceType.syntheticMethods();
 			if (synthetics == null)
 				return null;
