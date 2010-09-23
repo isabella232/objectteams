@@ -9,7 +9,7 @@ feature@org.eclipse.objectteams.otequinox=SVN,url=file://localhost/svnroot/tools
 plugin@org.eclipse.jdt.core,3.6.1.v_OTDT_r071_qualifier=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.jdt.core,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
 plugin@org.eclipse.objectteams.otdt=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
 plugin@org.eclipse.objectteams.otdt.debug,0.7.1=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
-plugin@org.eclipse.objectteams.otdt.debug.ui,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=tags/builds/201006211729
+plugin@org.eclipse.objectteams.otdt.debug.ui,0.7.1=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
 plugin@org.eclipse.objectteams.otdt.ui,0.7.1=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.ui,tag=branches/maintenance/Eclipse_3.6_OTDT_0.7
 plugin@org.eclipse.objectteams.otdt.metrics,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.metrics
 
