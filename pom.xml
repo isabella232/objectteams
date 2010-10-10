@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>org.eclipse</groupId>
+	<artifactId>objectteams-parent-pom</artifactId>
+	<version>0.8.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>Objectteams parent pom</name>
+
+	<url>http://www.eclipse.org/objectteams</url>
+
+	<description>
+	This is the parent pom for Object Teams Maven3 projects,
+	specifying the core dependencies and configurations for building and
+	executing Object Teams code using Maven.
+	</description>
+
+	<licenses>
+		<license>
+			<name>Eclipse Public License Version 1.0</name>
+			<comments>
+				This file is part of "Object Teams Development Tooling"-Software
+
+				Copyright 2010 GK Software AG
+				All rights reserved. This program and the accompanying materials
+				are made available under the terms of the Eclipse Public License v1.0
+				which accompanies this distribution, and is available at
+				http://www.eclipse.org/legal/epl-v10.html
+
+				Please visit http://www.eclipse.org/objectteams for updates and contact.
+
+				Contributors:
+					Stephan Herrmann - Initial API and implementation
+					Olaf Otto - Initil concept
+			</comments>
+		</license>
+	</licenses>
+
+    <repositories>
+		<repository>
+			<id>ObjectTeamsRepository</id>
+			<name>Object Teams Repository</name>
+			<url>http://download.eclipse.org/objectteams/maven/3/repository</url>
+		</repository>
+    </repositories>
+
+    
+    <pluginRepositories>
+		<pluginRepository>
+			<id>ObjectTeamsPluginRepository</id>
+			<name>Object Teams Plugin Repository</name>
+			<url>http://download.eclipse.org/objectteams/maven/3/repository</url>
+		</pluginRepository>
+    </pluginRepositories>
+    
+    
+    <!-- Required property from settings.xml: 								-->
+    <!-- 	settings.localRepository	path to the local Maven repository.	-->
+    <properties>
+		<!-- Our Version: -->
+		<otj.version>0.8.0-SNAPSHOT</otj.version>
+
+		<!-- Versions of dependencies: -->
+		<bcel.version>5.2</bcel.version>
+		<tycho.version>0.9.0</tycho.version>
+		
+		<!-- Absolut paths for providing startup arguments to the JVM -->
+		<otj.otre.location>${settings.localRepository}/org/eclipse/objectteams-runtime/${otj.version}/objectteams-runtime-${otj.version}.jar</otj.otre.location>
+		<otj.agent.location>${settings.localRepository}/org/eclipse/objectteams-otre-agent/${otj.version}/objectteams-otre-agent-${otj.version}-nodep.jar</otj.agent.location>
+		<otj.bcel.location>${settings.localRepository}/org/apache/bcel/bcel/${bcel.version}/bcel-${bcel.version}.jar</otj.bcel.location>
+
+		<!-- Bootclasspath -->
+		<otj.bootcp.arg>-Xbootclasspath/a:${otj.otre.location}:${otj.bcel.location}:${otj.agent.location}</otj.bootcp.arg>
+		<!-- Object teams JPLIS agent -->
+		<otj.agent.arg>-javaagent:${otj.agent.location}</otj.agent.arg>
+		<!--
+			Default arguments for running OT/J programs.
+				-Dot.debug facilitates (remote) debugging.
+				Xmx / Xms are required for reproducable build results, as ltw uses a
+				significant amount of memory during startup.
+		-->
+		<surefire.argline>${otj.bootcp.arg} ${otj.agent.arg} -Dot.debug -Xms128m -Xmx512m</surefire.argline>
+    </properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<!--
+						Use compiler plugin with tycho as the adapter to the OT/J compiler.
+						Using java 1.6 language level is recommended, default is 1.3, OT/J needs 1.5 minimum
+					-->
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<compilerId>jdt</compilerId>
+					</configuration>
+					<dependencies>
+						<!-- compile time only dependencies: -->
+					    <dependency>
+							<groupId>org.sonatype.tycho</groupId>
+							<artifactId>tycho-compiler-jdt</artifactId>
+							<version>${tycho.version}</version>
+							<exclusions>
+								<!-- Exclude the original JDT/Core to be replaced by the OT/J variant: -->
+								<exclusion>
+									<groupId>org.sonatype.tycho</groupId>
+									<artifactId>org.eclipse.jdt.core</artifactId>
+								</exclusion>
+							</exclusions>
+					    </dependency>
+						<dependency>
+							<!-- plug the OT/J compiler into the tycho-compiler-jdt plug-in: -->
+							<groupId>org.eclipse</groupId>
+							<artifactId>objectteams-otj-compiler</artifactId>
+							<version>${otj.version}</version>
+					    </dependency>
+					</dependencies>
+				</plugin>
+				<!-- See http://maven.apache.org/plugins/maven-surefire-plugin/ -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<!--
+							The following must be within one line of code, linebreaks will
+							cause surefire execution to fail.
+						-->
+						<argLine>${surefire.argline}</argLine>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<!-- runtime-only dependency: -->
+							<groupId>org.eclipse</groupId>
+							<artifactId>objectteams-otre-agent</artifactId>
+							<classifier>nodep</classifier>
+							<version>${otj.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>1.0-beta-6</version>
+			</extension>
+		</extensions>
+	</build>
+
+	<!-- Required for compiling and running: -->
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>objectteams-runtime</artifactId>
+			<version>${otj.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+
+	<!-- for deployment of this pom: -->
+	<distributionManagement>
+		<repository>
+			<id>ObjectTeamsRepository</id>
+			<uniqueVersion>false</uniqueVersion>
+			<name>Public Object Teams distribution repository</name>
+			<!--
+				most values are fed from settings.xml
+			-->
+			<url>scpexe://${ot.host}:${ot.maven.repository.path}</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
+
+</project>
