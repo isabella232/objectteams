@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schmaLocation="http://maven.apache.org/maven-1.x/plugins/xdoc/maven-navigation.xsd"
+	name="Object Teams Parent POM">
+	<bannerLeft>
+		<name>Object Teams</name>
+		<href>http://www.eclipse.org/objectteams/</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>Object Teams</name>
+		<href>http://www.eclipse.org/objectteams/</href>
+		<src>http://www.eclipse.org/objectteams/images/ot_64n.png</src>
+	</bannerRight>
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-default-skin</artifactId>
+		<version>1.0</version>
+	</skin>
+	<publishDate format="dd MMM yyyy" />
+	<version position="left"/>
+	<body>
+		<links>
+			<item name="Object Teams" href="http://www.eclipse.org/objectteams" />
+		</links>
+		<menu name="Overview">
+			<item name="Usage" href="./usage.html" />
+		</menu>
+		<menu ref="reports"/>
+	</body>
+</project>
