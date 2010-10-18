@@ -6,6 +6,28 @@
   <artifactId>objectteams-runtime</artifactId>
   <version>0.8.0-SNAPSHOT</version>
   <description>The OT/J Runtime Library</description>
+
+  <licenses>
+	<license>
+		<name>Eclipse Public License Version 1.0</name>
+		<comments>
+			This file is part of "Object Teams Development Tooling"-Software
+
+			Copyright 2010 GK Software AG and others.
+			All rights reserved. This program and the accompanying materials
+			are made available under the terms of the Eclipse Public License v1.0
+			which accompanies this distribution, and is available at
+			http://www.eclipse.org/legal/epl-v10.html
+
+			Please visit http://www.eclipse.org/objectteams for updates and contact.
+
+			Contributors:
+				Olaf Otto - Initial concept
+				Stephan Herrmann - Initial API and implementation
+		</comments>
+	</license>
+  </licenses>
+
   <dependencies>
 	<dependency>
 		<groupId>org.apache.bcel</groupId>
