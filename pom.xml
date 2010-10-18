@@ -79,7 +79,7 @@
     <!-- 	settings.localRepository	path to the local Maven repository.	-->
     <properties>
     	<!-- Repository path of this module within the Object Teams svn: -->
-    	<project.repository.path>trunk/maven/infrastructure/parent-pom</project.repository.path>
+    	<project-repository-path>trunk/maven/infrastructure/parent-pom</project-repository-path>
 
 		<!-- Our Version: -->
 		<otj.version>0.8.0-SNAPSHOT</otj.version>
@@ -107,9 +107,9 @@
     </properties>
 
 	<scm>
-	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project.repository.path}</connection>
-	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project.repository.path}</developerConnection>
-	    <url>http://dev.eclipse.org/viewcvs/index.cgi/${project.repository.path}?root=TOOLS_OBJECTTEAMS</url>
+	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</connection>
+	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</developerConnection>
+	    <url>http://dev.eclipse.org/viewcvs/index.cgi/${project-repository-path}?root=TOOLS_OBJECTTEAMS</url>
 	</scm>
 	
 	<reporting>
