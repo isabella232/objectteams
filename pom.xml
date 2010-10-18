@@ -59,14 +59,14 @@
 	    <otre-agent.jar.file>${otdt.lib.dir}/otre_agent.jar</otre-agent.jar.file>
 	    
     	<!-- Repository path of this module within the Object Teams svn: -->
-    	<project.repository.path>trunk/maven/infrastructure/artifacts-deployer</project.repository.path>
+    	<project-repository-path>trunk/maven/infrastructure/artifacts-deployer</project-repository-path>
 	</properties>
 
-    <!-- Override inherited declaration (redefining relative.repository.path is not picked up by the inherited declaration): -->
+    <!-- Override inherited declaration, otherwise Maven appends the artifactId to the path -->
 	<scm>
-	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project.repository.path}</connection>
-	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project.repository.path}</developerConnection>
-	    <url>http://dev.eclipse.org/viewcvs/index.cgi/${project.repository.path}?root=TOOLS_OBJECTTEAMS</url>
+	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</connection>
+	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</developerConnection>
+	    <url>http://dev.eclipse.org/viewcvs/index.cgi/${project-repository-path}?root=TOOLS_OBJECTTEAMS</url>
 	</scm>
 	
 	<!-- simply repeat this declaration from the parent pom, otherwise Maven duplicates the artifactId in the path -->
@@ -94,7 +94,7 @@
 						<configuration>
 							<repositoryId>otEclipseRepo</repositoryId>
 							<packaging>jar</packaging>
-							<url>scpexe://${ot.host}:${ot.maven.repository.path}</url>
+							<url>scpexe://${ot.host}:${ot.maven.repository.basepath}/repository</url>
 							<!-- The file to be deployed -->
 							<file>${otre.jar.file}</file>
 							<groupId>${project.groupId}</groupId>
@@ -112,7 +112,7 @@
 						<configuration>
 							<repositoryId>otEclipseRepo</repositoryId>
 							<packaging>jar</packaging>
-							<url>scpexe://${ot.host}:${ot.maven.repository.path}</url>
+							<url>scpexe://${ot.host}:${ot.maven.repository.basepath}/repository</url>
 							<!-- The file to be deployed -->
 							<file>${otre-agent.jar.file}</file>
 							<groupId>${project.groupId}</groupId>
@@ -131,7 +131,7 @@
 						<configuration>
 							<repositoryId>otEclipseRepo</repositoryId>
 							<packaging>jar</packaging>
-							<url>scpexe://${ot.host}:${ot.maven.repository.path}</url>
+							<url>scpexe://${ot.host}:${ot.maven.repository.basepath}/repository</url>
 							<!-- The file to be deployed -->
 							<file>${ecotj.jar.file}</file>
 							<groupId>${project.groupId}</groupId>
