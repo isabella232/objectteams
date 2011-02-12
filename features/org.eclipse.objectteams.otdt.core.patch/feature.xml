@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.objectteams.otdt.core.patch"
       label="%featureName"
-      version="0.7.1.qualifier"
+      version="0.7.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jdt.core">
 
@@ -59,14 +59,14 @@ Project Leader:
    </url>
 
    <requires>
-      <import feature="org.eclipse.jdt" version="3.6.1.r361_v20100714-0800-7z8XFUSFLFlmgLc5z-Bvrt8-HVkH" patch="true"/>
+      <import feature="org.eclipse.jdt" version="3.6.2.r362_v20101117-0800-7z8XFW6FLFlmjHcvz-7jwhFBLS_F" patch="true"/>
    </requires>
 
    <plugin
          id="org.eclipse.jdt.core"
          download-size="5614"
          install-size="5614"
-         version="3.6.1.v_OTDT_r071_qualifier"
+         version="3.6.2.v_OTDT_r072_qualifier"
          unpack="false"/>
 
 </feature>
