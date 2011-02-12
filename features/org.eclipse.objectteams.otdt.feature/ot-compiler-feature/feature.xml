@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.objectteams.otdt"
       label="Object Teams Development Tooling"
-      version="0.7.1"
+      version="0.7.2"
       provider-name="Eclipse Object Teams project"
       plugin="org.eclipse.objectteams.otdt"
       image="eclipse_update_75.jpg">
@@ -47,7 +47,7 @@ This software is based on Eclipse and the Java Development Tooling
          id="org.eclipse.jdt.core"
          download-size="4704"
          install-size="4704"
-         version="3.6.1.v_A68_R36x"
+         version="3.6.2.v_A76_R36x"
          unpack="false"/>         
 
 </feature>
