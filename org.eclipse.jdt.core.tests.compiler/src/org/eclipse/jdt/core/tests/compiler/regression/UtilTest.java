@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.File;
 //import org.apache.tools.ant.types.selectors.SelectorUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.compiler.CharOperation;
+import org.eclipse.jdt.internal.core.util.Util;
 
 //import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -737,6 +738,20 @@ public void test73b() { // previous test cases but with 3.3 behavior
 	assertCamelCase("HashMap", "HashMapEntry", true /*should match*/);
 	// Verify that there were no unexpected results
     assertTrue(this.camelCaseErrors.toString(), this.camelCaseErrors.length()==0);
+}
+
+// test org.eclipse.jdt.internal.compiler.util.Util.prefixEquals(char[], char[], boolean, int)
+public void test074() {
+	char[] name = new char[] {  'a' , 'b', 'c', 'a', 'a' };
+	char[] prefix = new char[] { 'c', 'a', 'a' };
+	assertTrue(Util.prefixEquals(prefix, name, false, 2));
+	prefix = new char[] { 'c', 'a', 'a', 'a' };
+	assertFalse(Util.prefixEquals(prefix, name, false, 2));
+	prefix = new char[] { 'c', 'a', 'A' };
+	assertFalse(Util.prefixEquals(prefix, name, true, 2));
+	prefix = new char[] { 'b', 'c' };
+	assertFalse(Util.prefixEquals(prefix, name, false, 2));
+	assertTrue(Util.prefixEquals(prefix, name, false, 1));
 }
 public static Class testClass() {
 	return UtilTest.class;
