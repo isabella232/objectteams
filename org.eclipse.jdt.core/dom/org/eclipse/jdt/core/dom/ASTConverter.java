@@ -3776,16 +3776,13 @@ public BaseConstructorInvocation convert(
 				case AST.JLS3 :
 					if (modifiers == ClassFileConstants.AccStatic) {
 						importDeclaration.setStatic(true);
-					} else {
-						importDeclaration.setFlags(importDeclaration.getFlags() | ASTNode.MALFORMED);
-					}
 //{ObjectTeams: base imports:
-					if (modifiers == ExtraCompilerModifiers.AccBase) {
+					} else if (modifiers == ExtraCompilerModifiers.AccBase) {
 						importDeclaration.setBase(true);
+// SH}
 					} else {
 						importDeclaration.setFlags(importDeclaration.getFlags() | ASTNode.MALFORMED);
 					}
-// SH}
 			}
 		}
 		if (this.resolveBindings) {
