@@ -3407,7 +3407,6 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 				default :
 					return TokenNameIdentifier;
 			}
-
 		case 'l' : //long
 			if (length == 4) {
 				if ((data[++index] == 'o')
@@ -3668,18 +3667,22 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 					else
 						return TokenNameIdentifier;
 				case 6 :
+//{ObjectTeams: check for tsuper keyword
+/* orig:
 					if ((data[++index] == 'h')
 						&& (data[++index] == 'r')
+ :giro */
+				  if ((data[++index] == 'h')) {
+					if ((data[++index] == 'r')
+// orig:
 						&& (data[++index] == 'o')
 						&& (data[++index] == 'w')
 						&& (data[++index] == 's'))
 						return TokenNamethrows;
 					else
-//{ObjectTeams: check for tsuper keyword
-/* @original
 						return TokenNameIdentifier;
- */
- 					{
+// :giro
+				  } else {
 					if (   this._isOTSource
 						&& (data[index] == 's')
 						&& (data[++index] == 'u')
@@ -3689,7 +3692,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 							return TokenNametsuper;
 					else
 						return TokenNameIdentifier;
-					}
+				  }
 //Markus Witte}
 				case 9 :
 					if ((data[++index] == 'r')

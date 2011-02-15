@@ -26,7 +26,7 @@ import org.eclipse.jdt.internal.compiler.util.Util;
  * Added keywords: base tsuper callin within playedBy precedence readonly with team as when
  *
  * Contextual keywords: replace after before get set
- * 		These are recoknized as keywords only after the corresponding symbol <- or ->.
+ * 		These are recognized as keywords only after the corresponding symbol <- or ->.
  *
  * IMPORTANT NOTE: Internal Scanner implementation. It is mirrored in
  * org.eclipse.jdt.core.compiler public package where it is API.
@@ -3442,7 +3442,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 	switch (data[index]) {
 		case 'a' :
 			switch(length) {
-//{ObjectTeams
+//{ObjectTeams: keyword 'as':
 				case 2: //as
 					if (   this._isOTSource
 						&& (data[++index] == 's')) {
@@ -4082,18 +4082,22 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 					else
 						return TokenNameIdentifier;
 				case 6 :
+//{ObjectTeams: check for tsuper keyword
+/* orig:
 					if ((data[++index] == 'h')
 						&& (data[++index] == 'r')
+ :giro */
+				  if ((data[++index] == 'h')) {
+					if ((data[++index] == 'r')
+// orig:
 						&& (data[++index] == 'o')
 						&& (data[++index] == 'w')
 						&& (data[++index] == 's'))
 						return TokenNamethrows;
 					else
-//{ObjectTeams: check for tsuper keyword
-/* @original
 						return TokenNameIdentifier;
- */
- 					{
+// :giro
+				  } else {
 					if (   this._isOTSource
 						&& (data[index] == 's')
 						&& (data[++index] == 'u')
@@ -4103,7 +4107,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 							return TokenNametsuper;
 					else
 						return TokenNameIdentifier;
-					}
+				  }
 //Markus Witte}
 				case 9 :
 					if ((data[++index] == 'r')
