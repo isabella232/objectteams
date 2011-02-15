@@ -295,4 +295,10 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
 		
 		return resolvedHandle;
 	}
+	
+	// disable method that does not apply to c-t-f:
+	@Override
+	public String[] getExceptionTypes() throws JavaModelException {
+		return new String[0];
+	}
 }
