@@ -205,6 +205,12 @@
 			<version>${otj.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.bcel</groupId>
+			<artifactId>bcel</artifactId>
+			<version>${bcel.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	
 
