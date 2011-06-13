@@ -5,13 +5,11 @@
 	<parent>
 		<groupId>org.eclipse</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 		<relativePath>../parent-pom</relativePath>
 	</parent>
 
-	<groupId>org.eclipse</groupId>
 	<artifactId>objectteams-artifact-deployer</artifactId>
-	<version>${otj.version}</version>
 		
 	<packaging>pom</packaging>
 
@@ -26,7 +24,7 @@
 			<comments>
 				This file is part of "Object Teams Development Tooling"-Software
 
-				Copyright 2010 GK Software AG and others.
+				Copyright 2010, 2011 GK Software AG and others.
 				All rights reserved. This program and the accompanying materials
 				are made available under the terms of the Eclipse Public License v1.0
 				which accompanies this distribution, and is available at
@@ -40,23 +38,28 @@
 			</comments>
 		</license>
 	</licenses>
-	
-	<!--  NOTE: Run this from the command line, eclipse launch throws NPE!!!          -->
-	
-	<!--  the follogin properties are required to be defined by an active profile:    -->
+
+	<!--  the follogin properties should be defined by an active profile:    		  -->
 	<!--  REMOTE:																	  -->
 	<!--  ot.host : user@host for the object teams repository server                  -->
 	<!--  ot.maven.repository.path : absolute path to the maven repository on ot.host -->
 	<!--  LOCAL:																	  -->
-	<!--  otre.export.dir : directory where exported								  -->
-	<!--					org.eclipse.objectteams.runtime-head.jar is located.	  -->
+	<!--  otre.export.dir : directory where exported otre jars are located:			  -->
+	<!--					org.eclipse.objectteams.runtime_${otre.version}.jar 	  -->
+	<!-- 					otre_min.jar, otre_agent.jar							  -->
 	<!--  ecj.export.dir : directory where the batch compiler jar is located          -->
 
 	<properties>
+		<!-- Object Teams versions, update manually: 					-->
+		<!--   version of the ecotj jar file:			 				-->
+		<ecotj.version>R-2.0.0-201106070718</ecotj.version> 
+		<!--   version of the org.eclipse.objectteams.runtime plugin:	-->
+		<otre.version>2.0.0.201106070730</otre.version> 	
+		
 		<!-- locate the jar files to install/deploy: -->
-	    <ecotj.jar.file>${ecj.export.dir}/ecotj-head.jar</ecotj.jar.file>
-	    <otre.jar.file>${otre.export.dir}/org.eclipse.objectteams.runtime-head.jar</otre.jar.file>
-	    <otre-agent.jar.file>${otdt.lib.dir}/otre_agent.jar</otre-agent.jar.file>
+	    <ecotj.jar.file>${ecj.export.dir}/ecotj-${ecotj.version}.jar</ecotj.jar.file>
+	    <otre.jar.file>${otre.export.dir}/org.eclipse.objectteams.runtime_${otre.version}.jar</otre.jar.file>
+	    <otre-agent.jar.file>${otre.export.dir}/otre_agent.jar</otre-agent.jar.file>
 	    
     	<!-- Repository path of this module within the Object Teams svn: -->
     	<project-repository-path>trunk/maven/infrastructure/artifacts-deployer</project-repository-path>
