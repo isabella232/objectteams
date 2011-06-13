@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>objectteams-artifact-deployer</artifactId>
-  <version>2.0.0</version>
 		
 	<packaging>pom</packaging>
 
@@ -69,7 +68,7 @@
     <!-- Override inherited declaration, otherwise Maven appends the artifactId to the path -->
 	<scm>
 	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/mvn-releases/objectteams-artifact-deployer-2.0.0</connection>
-	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/mvn-releases/objectteams-artifact-deployer-2.0.0</developerConnection>
+	    <developerConnection>scm:svn:svn+ssh://${username}@dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/mvn-releases/objectteams-artifact-deployer-2.0.0</developerConnection>
 	    <url>http://dev.eclipse.org/viewcvs/index.cgi/tags/mvn-releases?root=TOOLS_OBJECTTEAMS/objectteams-artifact-deployer-2.0.0</url>
 	</scm>
 	
