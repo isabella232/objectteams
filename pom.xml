@@ -4,7 +4,7 @@
 	
 	<groupId>org.eclipse</groupId>
 	<artifactId>objectteams-parent-pom</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Object Teams parent pom</name>
@@ -107,9 +107,9 @@
     </properties>
 
 	<scm>
-	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/objectteams-parent-pom-2.0.0</connection>
-	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/objectteams-parent-pom-2.0.0</developerConnection>
-	    <url>http://dev.eclipse.org/viewcvs/index.cgi/tags/objectteams-parent-pom-2.0.0?root=TOOLS_OBJECTTEAMS</url>
+	    <connection>scm:svn:svn://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</connection>
+	    <developerConnection>scm:svn:svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/${project-repository-path}</developerConnection>
+	    <url>http://dev.eclipse.org/viewcvs/index.cgi/${project-repository-path}?root=TOOLS_OBJECTTEAMS</url>
 	</scm>
 	
 	<reporting>
@@ -187,6 +187,13 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.0-beta-2</version>
 				</plugin>
+				<plugin>
+	        		<groupId>org.apache.maven.plugins</groupId>
+	        		<artifactId>maven-release-plugin</artifactId>
+	        		<configuration>
+	          			<tagBase>svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/mvn-releases</tagBase>
+	        		</configuration>
+	      		</plugin>
 			</plugins>
 		</pluginManagement>
 		<extensions>
