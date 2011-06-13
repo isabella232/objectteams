@@ -203,13 +203,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-release-plugin</artifactId>
-        		<configuration>
-          			<tagBase>svn+ssh://dev.eclipse.org/svnroot/tools/org.eclipse.objectteams/tags/mvn-releases</tagBase>
-        		</configuration>
-      		</plugin>
 		</plugins>
 	</build>
 </project>
