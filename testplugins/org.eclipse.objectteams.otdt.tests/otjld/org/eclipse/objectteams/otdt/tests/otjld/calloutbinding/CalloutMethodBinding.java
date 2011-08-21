@@ -436,7 +436,7 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
  			    "\n" +
  			    "public class T311acb8Main {\n" +
  			    "    public static void main(String[] args) {\n" +
- 			    "        Team311acb2 t = new Team311acb2();\n" +
+ 			    "        Team311acb8_2 t = new Team311acb8_2();\n" +
  			    "        T311acb8_1  o = new T311acb8_1();\n" +
  			    "\n" +
  			    "        System.out.print(t.getValue(o));\n" +
@@ -454,9 +454,9 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
  			    "    }\n" +
  			    "}\n" +
  			    "    \n",
-	    "Team311acb2.java",
+	    "Team311acb8_2.java",
  			    "\n" +
- 			    "public team class Team311acb2 extends Team311acb8 {\n" +
+ 			    "public team class Team311acb8_2 extends Team311acb8_1 {\n" +
  			    "    @Override\n" +
  			    "    public class Role311acb8 playedBy T311acb8_1 {\n" +
  			    "        getValue -> getValue;\n" +
@@ -466,9 +466,9 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
  			    "        return obj.getValueInternal();\n" +
  			    "    }\n" +
  			    "}\n",
- 		"Team311acb8.java",
+ 		"Team311acb8_1.java",
  			    "\n" +
- 			    "public abstract team class Team311acb8 {\n" +
+ 			    "public abstract team class Team311acb8_1 {\n" +
  			    "\n" +
  			    "    public abstract class Role311acb8 {\n" +
  			    "        public abstract String getValue();\n" +
@@ -478,11 +478,65 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
  			    "}\n",
              },
             "----------\n" + 
-			"1. ERROR in Team311acb2.java (at line 1)\n" + 
+			"1. ERROR in Team311acb8_2.java (at line 4)\n" + 
+			"	public class Role311acb8 playedBy T311acb8_1 {\n" + 
+			"	             ^^^^^^^^^^^\n" + 
+			"Inherited abstract method getValueInternal() is implicitly bound as an inferred callout (OTJLD 3.1(j)).\n" + 
+			"----------\n");
+     }
+    // Bug 355314 - abstract method error may be masked by callout binding
+    public void test311_abstractCalloutBinding8a() {
+        
+        runNegativeTest(
+             new String[] {
+ 		"T311acb8aMain.java",
+ 			    "\n" +
+ 			    "public class T311acb8aMain {\n" +
+ 			    "    public static void main(String[] args) {\n" +
+ 			    "        Team311acb8a_2 t = new Team311acb8a_2();\n" +
+ 			    "        T311acb8a_1  o = new T311acb8a_1();\n" +
+ 			    "\n" +
+ 			    "        System.out.print(t.getValue(o));\n" +
+ 			    "    }\n" +
+ 			    "}\n" +
+ 			    "    \n",
+ 		"T311acb8a_1.java",
+ 			    "\n" +
+ 			    "public class T311acb8a_1 {\n" +
+ 			    "    public String getValue() {\n" +
+ 			    "        return \"OK\";\n" +
+ 			    "    }\n" +
+ 			    "}\n" +
+ 			    "    \n",
+	    "Team311acb8a_2.java",
+ 			    "\n" +
+ 			    "public team class Team311acb8a_2 extends Team311acb8a_1 {\n" +
+ 			    "    @Override\n" +
+ 			    "    public class Role311acb8a playedBy T311acb8a_1 {\n" +
+ 			    "        getValue -> getValue;\n" +
+ 			    "    }\n" +
+ 			    "\n" +
+ 			    "    public String getValue(T311acb8a_1 as Role311acb8a obj) {\n" +
+ 			    "        return obj.getValueInternal();\n" +
+ 			    "    }\n" +
+ 			    "}\n",
+ 		"Team311acb8a_1.java",
+ 			    "\n" +
+ 			    "public abstract team class Team311acb8a_1 {\n" +
+ 			    "\n" +
+ 			    "    public abstract class Role311acb8a {\n" +
+ 			    "        public abstract String getValue();\n" +
+ 			    "        public abstract String getValueInternal();\n" +
+ 			    "    }\n" +
+ 			    "\n" +
+ 			    "}\n",
+             },
+            "----------\n" + 
+			"1. ERROR in Team311acb8a_2.java (at line 1)\n" + 
 			"	\n" + 
-			"public team class Team311acb2 extends Team311acb8 {\n" + 
+			"public team class Team311acb8a_2 extends Team311acb8a_1 {\n" + 
 			"	^\n" + 
-			"The abstract method getValueInternal in type Role311acb8 can only be defined by an abstract class\n" + 
+			"The abstract method getValueInternal in type Role311acb8a can only be defined by an abstract class\n" + 
 			"----------\n");
      }
 
@@ -2800,6 +2854,53 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
 			    "    }\n" +
 			    "    public static void main(String[] args) {\n" +
 			    "        new Team3117ic11();\n" +
+			    "    }\n" +
+			    "}\n" +
+			    "    \n",
+		"T3117ic11.java",
+			    "\n" +
+			    "public class T3117ic11 {\n" +
+			    "    public void test() {\n" +
+			    "        System.out.print(\"OK\");\n" +
+			    "    }\n" +
+			    "}\n" +
+			    "    \n"
+            },
+            "OK",
+            null/*classLibraries*/,
+            true/*shouldFlushOutputDirectory*/,
+            null/*vmArguments*/,
+            customOptions,
+            null/*no custom requestor*/);
+    }
+
+    // Bug 355313 - inferred callout not working for implicitly inherited method
+    public void test3117_inferredCallout12() {
+       Map customOptions = getCompilerOptions();
+       customOptions.put(CompilerOptions.OPTION_ReportInferredCallout, CompilerOptions.WARNING);
+       
+       runConformTest(
+            new String[] {
+		"Team3117ic11_2.java",
+			    "\n" +
+			    "public team class Team3117ic11_2 extends Team3117ic11_1 {\n" +
+			    "    @Override\n" +
+			    "    @SuppressWarnings(\"inferredcallout\")\n" +
+			    "    protected class R playedBy T3117ic11 {\n" +
+			    "    }\n" +
+			    "    Team3117ic11_2() {\n" +
+			    "        new R(new T3117ic11()).test();\n" +
+			    "    }\n" +
+			    "    public static void main(String[] args) {\n" +
+			    "        new Team3117ic11_2();\n" +
+			    "    }\n" +
+			    "}\n" +
+			    "    \n",
+		"Team3117ic11_1.java",
+			    "\n" +
+			    "public abstract team class Team3117ic11_1 {\n" +
+			    "    protected abstract class R {\n" +
+			    "        abstract protected void test();\n" +
 			    "    }\n" +
 			    "}\n" +
 			    "    \n",
