@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2010 IT Service Omikron GmbH and others.
+ * Copyright 2004, 2011 IT Service Omikron GmbH and others.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -427,6 +427,64 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
             },
             "OK");
     }
+    // Bug 355314 - abstract method error may be masked by callout binding
+    public void test311_abstractCalloutBinding8() {
+        
+        runNegativeTest(
+             new String[] {
+ 		"T311acb8Main.java",
+ 			    "\n" +
+ 			    "public class T311acb8Main {\n" +
+ 			    "    public static void main(String[] args) {\n" +
+ 			    "        Team311acb2 t = new Team311acb2();\n" +
+ 			    "        T311acb8_1  o = new T311acb8_1();\n" +
+ 			    "\n" +
+ 			    "        System.out.print(t.getValue(o));\n" +
+ 			    "    }\n" +
+ 			    "}\n" +
+ 			    "    \n",
+ 		"T311acb8_1.java",
+ 			    "\n" +
+ 			    "public class T311acb8_1 {\n" +
+ 			    "    public String getValue() {\n" +
+ 			    "        return getValueInternal();\n" +
+ 			    "    }\n" +
+ 			    "    public String getValueInternal() {\n" +
+ 			    "        return \"OK\";\n" +
+ 			    "    }\n" +
+ 			    "}\n" +
+ 			    "    \n",
+	    "Team311acb2.java",
+ 			    "\n" +
+ 			    "public team class Team311acb2 extends Team311acb8 {\n" +
+ 			    "    @Override\n" +
+ 			    "    public class Role311acb8 playedBy T311acb8_1 {\n" +
+ 			    "        getValue -> getValue;\n" +
+ 			    "    }\n" +
+ 			    "\n" +
+ 			    "    public String getValue(T311acb8_1 as Role311acb8 obj) {\n" +
+ 			    "        return obj.getValueInternal();\n" +
+ 			    "    }\n" +
+ 			    "}\n",
+ 		"Team311acb8.java",
+ 			    "\n" +
+ 			    "public abstract team class Team311acb8 {\n" +
+ 			    "\n" +
+ 			    "    public abstract class Role311acb8 {\n" +
+ 			    "        public abstract String getValue();\n" +
+ 			    "        public abstract String getValueInternal();\n" +
+ 			    "    }\n" +
+ 			    "\n" +
+ 			    "}\n",
+             },
+            "----------\n" + 
+			"1. ERROR in Team311acb2.java (at line 1)\n" + 
+			"	\n" + 
+			"public team class Team311acb2 extends Team311acb8 {\n" + 
+			"	^\n" + 
+			"The abstract method getValueInternal in type Role311acb8 can only be defined by an abstract class\n" + 
+			"----------\n");
+     }
 
     // an abstract role method is callout-bound via -> and the signature to a method but the parameter names are missing
     // 3.1.2-otjld-missing-parameter-names-1
@@ -2714,6 +2772,47 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
     			"	}\n" + 
     			"}\n",
     		}, "OK(23)",
+            null/*classLibraries*/,
+            true/*shouldFlushOutputDirectory*/,
+            null/*vmArguments*/,
+            customOptions,
+            null/*no custom requestor*/);
+    }
+
+    // Bug 355315 - callout inferred to implement protected method causes IllegalAccessError
+    public void test3117_inferredCallout11() {
+       Map customOptions = getCompilerOptions();
+       customOptions.put(CompilerOptions.OPTION_ReportInferredCallout, CompilerOptions.WARNING);
+       
+       runConformTest(
+            new String[] {
+		"Team3117ic11.java",
+			    "\n" +
+			    "public team class Team3117ic11 {\n" +
+			    "    @SuppressWarnings(\"inferredcallout\")\n" +
+			    "    protected class R1 extends R0 playedBy T3117ic11 {\n" +
+			    "    }\n" +
+			    "    protected abstract class R0 {\n" +
+			    "        abstract protected void test();\n" +
+			    "    }\n" +
+			    "    Team3117ic11() {\n" +
+			    "        new R1(new T3117ic11()).test();\n" +
+			    "    }\n" +
+			    "    public static void main(String[] args) {\n" +
+			    "        new Team3117ic11();\n" +
+			    "    }\n" +
+			    "}\n" +
+			    "    \n",
+		"T3117ic11.java",
+			    "\n" +
+			    "public class T3117ic11 {\n" +
+			    "    public void test() {\n" +
+			    "        System.out.print(\"OK\");\n" +
+			    "    }\n" +
+			    "}\n" +
+			    "    \n"
+            },
+            "OK",
             null/*classLibraries*/,
             true/*shouldFlushOutputDirectory*/,
             null/*vmArguments*/,
