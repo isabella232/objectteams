@@ -1811,7 +1811,7 @@ public void duplicateInitializationOfFinalLocal(LocalVariableBinding local, ASTN
 		nodeSourceStart(local, location),
 		nodeSourceEnd(local, location));
 }
-public void duplicateMethodInType(SourceTypeBinding type, AbstractMethodDeclaration methodDecl, boolean equalParameters) {
+public void duplicateMethodInType(SourceTypeBinding type, AbstractMethodDeclaration methodDecl, boolean equalParameters, int severity) {
     MethodBinding method = methodDecl.binding;
     if (equalParameters) {
 		this.handle(
@@ -1824,6 +1824,7 @@ public void duplicateMethodInType(SourceTypeBinding type, AbstractMethodDeclarat
 				new String(methodDecl.selector),
 				new String(method.declaringClass.shortReadableName()),
 				typesAsString(method, true)},
+			severity,
 			methodDecl.sourceStart,
 			methodDecl.sourceEnd);
     } else {
@@ -1844,6 +1845,7 @@ public void duplicateMethodInType(SourceTypeBinding type, AbstractMethodDeclarat
 				new String(method.declaringClass.shortReadableName()),
 				typesAsString(method, true),
 				typesAsString(method, erasures, true) },
+			severity,
 			methodDecl.sourceStart,
 			methodDecl.sourceEnd);
     }
@@ -5691,7 +5693,7 @@ public void methodMustOverride(AbstractMethodDeclaration method, long compliance
 		method.sourceEnd);
 }
 
-public void methodNameClash(MethodBinding currentMethod, MethodBinding inheritedMethod) {
+public void methodNameClash(MethodBinding currentMethod, MethodBinding inheritedMethod, int severity) {
 	this.handle(
 		IProblem.MethodNameClash,
 		new String[] {
@@ -5708,6 +5710,7 @@ public void methodNameClash(MethodBinding currentMethod, MethodBinding inherited
 			typesAsString(inheritedMethod, true),
 			new String(inheritedMethod.declaringClass.shortReadableName()),
 		 },
+		severity,
 		currentMethod.sourceStart(),
 		currentMethod.sourceEnd());
 }

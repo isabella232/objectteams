@@ -25,17 +25,18 @@ import org.eclipse.jdt.internal.compiler.ast.ASTNode;
 import org.eclipse.jdt.internal.compiler.ast.AbstractMethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.AbstractVariableDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.Argument;
+import org.eclipse.jdt.internal.compiler.ast.Expression.DecapsulationState;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.MethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeParameter;
 import org.eclipse.jdt.internal.compiler.ast.TypeReference;
-import org.eclipse.jdt.internal.compiler.ast.Expression.DecapsulationState;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.parser.Parser;
-import org.eclipse.jdt.internal.compiler.util.Util;
+import org.eclipse.jdt.internal.compiler.problem.ProblemSeverities;
 import org.eclipse.jdt.internal.compiler.util.SimpleLookupTable;
+import org.eclipse.jdt.internal.compiler.util.Util;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
 import org.eclipse.objectteams.otdt.core.compiler.OTNameUtils;
 import org.eclipse.objectteams.otdt.core.exceptions.InternalCompilerError;
@@ -48,8 +49,10 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.AnchorMapping;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticBaseCallSurrogate;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticRoleBridgeMethodBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticRoleFieldAccess;
-import org.eclipse.objectteams.otdt.internal.core.compiler.model.*;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.FieldModel;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.MethodModel;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.MethodModel.FakeKind;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.TeamModel;
 import org.eclipse.objectteams.otdt.internal.core.compiler.statemachine.copyinheritance.CopyInheritance;
 import org.eclipse.objectteams.otdt.internal.core.compiler.statemachine.transformer.MethodSignatureEnhancer;
 import org.eclipse.objectteams.otdt.internal.core.compiler.statemachine.transformer.PredicateGenerator;
@@ -1759,13 +1762,16 @@ public MethodBinding[] methods() {
 // SH}
 
 		// find & report collision cases
-		boolean complyTo15 = this.scope.compilerOptions().sourceLevel >= ClassFileConstants.JDK1_5;
+		boolean complyTo15OrAbove = this.scope.compilerOptions().sourceLevel >= ClassFileConstants.JDK1_5;
+		boolean compliance16 = this.scope.compilerOptions().complianceLevel == ClassFileConstants.JDK1_6;
+
 //{ObjectTeams: this.methods may have changed size, use the appropriate length:
 /* orig:
 		for (int i = 0, length = this.methods.length; i < length; i++) {
   :giro */
 		for (int i = 0, length = resolvedMethods.length; i < length; i++) {
 // SH}
+			int severity = ProblemSeverities.Error;
 			MethodBinding method = resolvedMethods[i];
 			if (method == null)
 				continue;
@@ -1778,11 +1784,29 @@ public MethodBinding[] methods() {
 				if (!CharOperation.equals(selector, method2.selector))
 					break nextSibling; // methods with same selector are contiguous
 
-				if (complyTo15 ? !method.areParameterErasuresEqual(method2) : !method.areParametersEqual(method2))
-					continue nextSibling; // otherwise duplicates / name clash
+				if (complyTo15OrAbove) {
+					if (method.areParameterErasuresEqual(method2)) {
+						// we now ignore return types in 1.7 when detecting duplicates, just as we did before 1.5 
+						// Only in 1.6, we have to make sure even return types are different
+						// https://bugs.eclipse.org/bugs/show_bug.cgi?id=317719
+						if (compliance16 && method.returnType != null && method2.returnType != null) {
+							if (method.returnType.erasure() != method2.returnType.erasure()) {
+								severity = ProblemSeverities.Warning;
+							}
+							// else return types also equal. All conditions satisfied
+							// to give error in 1.6 compliance as well.
+						}
+					} else {
+						continue nextSibling;
+					}
+				} else if (!method.areParametersEqual(method2)) {
+					// prior to 1.5, parameters identical meant a collision case
+					continue nextSibling;
+				}
+				// otherwise duplicates / name clash
 				boolean isEnumSpecialMethod = isEnum() && (CharOperation.equals(selector,TypeConstants.VALUEOF) || CharOperation.equals(selector,TypeConstants.VALUES));
 				// report duplicate
-				boolean removeMethod2 = true;
+				boolean removeMethod2 = (severity == ProblemSeverities.Error) ? true : false; // do not remove if in 1.6 and just a warning given
 				if (methodDecl == null) {
 					methodDecl = method.sourceMethod(); // cannot be retrieved after binding is lost & may still be null if method is special
 					if (methodDecl != null && methodDecl.binding != null) { // ensure its a valid user defined method
@@ -1792,7 +1816,7 @@ public MethodBinding[] methods() {
 							// remove user defined methods & keep the synthetic
 							removeMethod = true;
 						} else {
-							this.scope.problemReporter().duplicateMethodInType(this, methodDecl, method.areParametersEqual(method2));
+							this.scope.problemReporter().duplicateMethodInType(this, methodDecl, method.areParametersEqual(method2), severity);
 						}
 						if (removeMethod) {
 							removeMethod2 = false;
@@ -1811,7 +1835,7 @@ public MethodBinding[] methods() {
 						this.scope.problemReporter().duplicateEnumSpecialMethod(this, method2Decl);
 						removeMethod2 = true;
 					} else {
-						this.scope.problemReporter().duplicateMethodInType(this, method2Decl, method.areParametersEqual(method2));
+						this.scope.problemReporter().duplicateMethodInType(this, method2Decl, method.areParametersEqual(method2), severity);
 					}
 					if (removeMethod2) {
 						method2Decl.binding = null;
