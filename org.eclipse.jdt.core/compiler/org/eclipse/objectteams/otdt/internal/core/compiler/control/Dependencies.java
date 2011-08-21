@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  *
- * Copyright 2003, 2009 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2003, 2011 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -29,6 +29,7 @@ import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.ConstructorDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.MethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.env.AccessRestriction;
 import org.eclipse.jdt.internal.compiler.lookup.BinaryTypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
@@ -1653,7 +1654,7 @@ public class Dependencies implements ITranslationStates {
 			resolver.resolve(false/*doCallout*/); // callins last so all methods incl. callout are already in place
 		
 		if (subRoleDecl != null)
-			checkMissingMethods(subRole, subRoleDecl.scope);
+			checkMissingMethods(subRole, subRoleDecl);
 
         clazz.setState(STATE_METHODS_CREATED);
         return true;
@@ -1777,11 +1778,12 @@ public class Dependencies implements ITranslationStates {
 	}
 
 	// detail of STATE_METHODS_CREATED (can only check this after callouts have been transformed):
-	private static void checkMissingMethods(ReferenceBinding roleBinding, ClassScope scope) {
+	private static void checkMissingMethods(ReferenceBinding roleBinding, TypeDeclaration roleDecl) {
 		if (roleBinding.isClass() && ((roleBinding.tagBits & TagBits.AnnotationInstantiation) != 0)) {
 			InstantiationPolicy instantiationPolicy = RoleModel.getInstantiationPolicy(roleBinding);
 			if (!instantiationPolicy.isAlways())
 				return;
+			ClassScope scope = roleDecl.scope;
 			boolean missing = false;
 			MethodBinding equals = roleBinding.getExactMethod(TypeConstants.EQUALS, 
 															  new TypeBinding[] {scope.getJavaLangObject()}, scope.compilationUnitScope());
@@ -1795,6 +1797,17 @@ public class Dependencies implements ITranslationStates {
 			}
 			if (missing) {
 				scope.problemReporter().missingEqualsHashCodeWithInstantation(scope.referenceContext, instantiationPolicy);
+			}
+		}
+		// copied abstract methods are not yet checked for callout inference (which is normally triggered from checkMethods()) 
+		if (roleBinding.isClass() && roleDecl.methods != null) {
+			for (AbstractMethodDeclaration method : roleDecl.methods) {
+				if (((method.modifiers & ClassFileConstants.AccAbstract) != 0) && method.isCopied) {
+		    		// inheriting abstract method in non-abstract role may require callout inference:
+					CalloutImplementor coi = new CalloutImplementor(roleDecl.getRoleModel());
+					if (coi.generateInferredCallout(roleDecl, method.binding))
+						roleDecl.scope.problemReporter().addingInferredCalloutForInherited(roleDecl, method.binding);
+				}
 			}
 		}
 	}
