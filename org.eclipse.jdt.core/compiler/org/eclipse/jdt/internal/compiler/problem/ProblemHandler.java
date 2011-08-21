@@ -161,10 +161,9 @@ private void protectedHandle(
 			boolean alreadyReported = ((severity & ProblemSeverities.Error) != 0)
 										? method.compilationResult().hasErrors()
 										: method.compilationResult().hasWarnings();
-			if (alreadyReported) {
+			if (alreadyReported && !requireRecheck) { // recheckable problems should not be skipped, rechecker has better judgment
 				if ((severity & ProblemSeverities.Fatal) != 0)
-					if (!requireRecheck)
-						referenceContext.tagAsHavingErrors();
+					referenceContext.tagAsHavingErrors();
 				return;
 			}
 		} else if (method.binding != null) {
