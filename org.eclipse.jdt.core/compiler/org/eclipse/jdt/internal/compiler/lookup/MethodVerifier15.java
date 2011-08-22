@@ -66,13 +66,7 @@ boolean areParametersEqual(MethodBinding one, MethodBinding two) {
 	int length = oneArgs.length;
 	if (length != twoArgs.length) return false;
 
-	if (one.declaringClass.isInterface()) {
-		for (int i = 0; i < length; i++)
-//{ObjectTeams: added 3. argument:
-			if (!areTypesEqual(oneArgs[i], twoArgs[i], two))
-// SH}
-				return false;
-	} else {
+	{
 		// methods with raw parameters are considered equal to inherited methods
 		// with parameterized parameters for backwards compatibility, need a more complex check
 		int i;
