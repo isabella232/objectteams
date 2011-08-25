@@ -10,6 +10,7 @@
  *     Stephan Herrmann <stephan@cs.tu-berlin.de> - Contributions for 
  *     						Bug 328281 - visibility leaks not detected when analyzing unused field in private class
  *     						Bug 300576 - NPE Computing type hierarchy when compliance doesn't match libraries
+ *     						Bug 354536 - compiling package-info.java still depends on the order of compilation units
  *     Fraunhofer FIRST - extended API and implementation
  *     Technical University Berlin - extended API and implementation
  *******************************************************************************/
@@ -916,8 +917,6 @@ public class ClassScope extends Scope {
 				else
 					modifiers |= ClassFileConstants.AccStatic;
 			}
-			if (enclosingType.isViewedAsDeprecated() && !sourceType.isDeprecated())
-				modifiers |= ExtraCompilerModifiers.AccDeprecatedImplicitly;
 //{ObjectTeams: check for role / team modifiers
             modifiers = Protections.checkRoleModifiers(modifiers, this.referenceContext, this);
 // SH}
