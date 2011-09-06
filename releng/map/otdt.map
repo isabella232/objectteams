@@ -59,7 +59,7 @@ plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=SVN,url=file://localhost/svnr
 
 !-- Tests fetched from original CVS (some are required indirectly by jdt.ui.tests): --
 !   (these lines are generated from SDK map file using processSDKmap.sh)
-plugin@org.eclipse.jdt.core.tests.builder=v_B75_R37x,/cvsroot/eclipse
+plugin@org.eclipse.jdt.core.tests.builder=v_B76_R37x,/cvsroot/eclipse
 plugin@org.eclipse.jdt.debug.tests=v20110803_r371,/cvsroot/eclipse
 plugin@org.eclipse.jdt.ui.tests=r371_v20110824-0800,/cvsroot/eclipse
 plugin@org.eclipse.jdt.ui.tests.refactoring=r371_v20110824-0800,/cvsroot/eclipse
