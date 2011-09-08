@@ -42,6 +42,14 @@ public final class JavaConventions {
 	private static final String PACKAGE_INFO = new String(TypeConstants.PACKAGE_INFO_NAME);
 	private static final Scanner SCANNER = new Scanner(false /*comment*/, true /*whitespace*/, false /*nls*/, ClassFileConstants.JDK1_3 /*sourceLevel*/, null/*taskTag*/, null/*taskPriorities*/, true /*taskCaseSensitive*/);
 
+//{ObjectTeams: be conservative: this class has no context so cannot distinguish OT vs. Java projects, always assume pure Java:
+	static {
+		SCANNER.forceBaseIsIdentifier();
+		SCANNER.parsePureJavaOnly = true;
+		SCANNER.parseOTJonly = false;
+	}
+//SH}
+
 	private JavaConventions() {
 		// Not instantiable
 	}
@@ -80,9 +88,6 @@ public final class JavaConventions {
 
 		try {
 			SCANNER.setSource(id.toCharArray());
-//{ObjectTeams: recognize "base" as an identifier in plain java code:
-			SCANNER.forceBaseIsIdentifier();
-// SH}
 			int token = SCANNER.scanIdentifier();
 			if (token != TerminalTokens.TokenNameIdentifier) return null;
 			if (SCANNER.currentPosition == SCANNER.eofPosition) { // to handle case where we had an ArrayIndexOutOfBoundsException
