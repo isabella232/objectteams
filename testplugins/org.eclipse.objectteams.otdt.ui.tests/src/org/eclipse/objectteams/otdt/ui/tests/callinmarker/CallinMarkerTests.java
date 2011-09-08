@@ -45,6 +45,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -213,7 +214,8 @@ public class CallinMarkerTests extends FileBasedUITest
     {
     	_creator.reset();
     	// this already triggers activeJavaEditorChanged, if project is a java project:
-    	IEditorPart activeEditor = JavaUI.openInEditor(_baseType.getCompilationUnit());
+    	IJavaElement element = _baseType != null ? _baseType.getCompilationUnit() : JavaCore.create(resource);
+    	IEditorPart activeEditor = JavaUI.openInEditor(element);
     	if (!this._creator.isFinished() && !this._creator.hasJob()) {
     		// explicitly trigger in non-java projects
     		 _creator.initialize(activeEditor);
@@ -288,6 +290,8 @@ public class CallinMarkerTests extends FileBasedUITest
         
         IMarker[] markers = getCallinMarkers(_baseResource);
         assertMarkers(expectedMarkers, markers);
+        _baseType = null;
+        _baseResource = null;
     }
     
     /** compute marker although one baseclass is missing. */
@@ -305,6 +309,8 @@ public class CallinMarkerTests extends FileBasedUITest
         
         IMarker[] markers = getCallinMarkers(_baseResource);
         assertMarkers(expectedMarkers, markers);
+        _baseType = null;
+        _baseResource = null;
     }
     /** Base classes have a member-super cycle (OK since they're static members). */
     public void testMarkers_3() throws JavaModelException, PartInitException
@@ -321,6 +327,8 @@ public class CallinMarkerTests extends FileBasedUITest
         
         IMarker[] markers = getCallinMarkers(_baseResource);
         assertMarkers(expectedMarkers, markers);
+        _baseType = null;
+        _baseResource = null;
     }
     
     /** Cycle a la https://bugs.eclipse.org/303474 and callin-to-callin */
@@ -338,6 +346,8 @@ public class CallinMarkerTests extends FileBasedUITest
         
         IMarker[] markers = getCallinMarkers(_baseResource);
         assertMarkers(expectedMarkers, markers);
+        _baseType = null;
+        _baseResource = null;
     }
     
     // see http://trac.objectteams.org/ot/ticket/188
