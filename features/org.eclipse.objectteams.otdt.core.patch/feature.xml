@@ -7,9 +7,9 @@
       plugin="org.eclipse.jdt.core">
 
    <description url="http://www.eclipse.org/objectteams">
-      This feature updates the org.eclipse.jdt.core plugin 
-by the corresponding version for Object Teams.
-This update makes the JDT Core able to handle OT/J code.
+      This feature is NOT a regular update of the JDT, but REPLACES the
+org.eclipse.jdt.core plugin by the corresponding version for Object Teams.
+This change makes the JDT Core capable to handle OT/J code.
    </description>
 
    <copyright>
