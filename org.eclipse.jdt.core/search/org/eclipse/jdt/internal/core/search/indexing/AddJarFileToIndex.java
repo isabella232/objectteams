@@ -244,6 +244,11 @@ class AddJarFileToIndex extends IndexRequest {
 		if (this.scanner == null)
 			this.scanner = new Scanner(false /* comment */, true /* whitespace */, false /* nls */,
 					ClassFileConstants.JDK1_3/* sourceLevel */, null/* taskTag */, null/* taskPriorities */, true /* taskCaseSensitive */);
+//{ObjectTeams: don't exclude OT keywords appearing as package names:
+		this.scanner.forceBaseIsIdentifier();
+		this.scanner.parsePureJavaOnly = true;
+		this.scanner.parseOTJonly = false;
+// SH}
 		this.scanner.setSource(classNameArray); 
 		this.scanner.eofPosition = classNameArray.length - SuffixConstants.SUFFIX_CLASS.length;
 		try {
