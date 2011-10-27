@@ -542,9 +542,7 @@ private void rememberAllTypes(CompilationUnitDeclaration parsedUnit, org.eclipse
 }
 private void rememberWithMemberTypes(TypeDeclaration typeDecl, IType typeHandle) {
 //{ObjectTeams: ensure all OT types have their OTType set:
-	if (   !((CompilationUnit)typeHandle.getCompilationUnit()).isOpen()
-		&& (typeDecl.isTeam() || typeDecl.isDirectRole()))
-	{
+	if (typeDecl.isTeam() || typeDecl.isDirectRole()) {
 		if (!OTModelManager.hasOTElementFor(typeHandle)) {
 			String baseClassName = null;
 			String baseClassAnchor = null;
