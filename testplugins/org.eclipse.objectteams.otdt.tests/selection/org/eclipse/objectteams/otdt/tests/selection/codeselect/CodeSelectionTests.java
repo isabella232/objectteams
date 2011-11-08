@@ -313,6 +313,19 @@ public class CodeSelectionTests extends AbstractJavaModelTests
 	}
 
 	/**
+	 * Select a callin replace mapping (role method spec)
+	 */
+	public void testCallin1() throws JavaModelException
+	{
+	       ICompilationUnit cu = getCompilationUnit("CodeSelection", "src", "mappings", "MappingsTeam1.java");
+	       IJavaElement[] elements = codeSelect(cu, "rm1(int i, Collection c) <-", "rm1");
+	       assertElementsEqual(
+	               "Unexpected elements",
+	               "rm1(int, Collection) [in R [in MappingsTeam1 [in MappingsTeam1.java [in mappings [in src [in CodeSelection]]]]]]",
+	               elements);
+	}
+	
+	/**
 	 * Select argument name inside a callin parameter mapping.
 	 */
 	public void testParamMapping1() throws JavaModelException
@@ -321,7 +334,7 @@ public class CodeSelectionTests extends AbstractJavaModelTests
 	       IJavaElement[] elements = codeSelect(cu, "i <- x,", "i");
 	       assertElementsEqual(
 	               "Unexpected elements",
-	               "i [in rm1(int) [in R [in MappingsTeam1 [in MappingsTeam1.java [in mappings [in src [in CodeSelection]]]]]]]",
+	               "i [in rm1(int, Collection) [in R [in MappingsTeam1 [in MappingsTeam1.java [in mappings [in src [in CodeSelection]]]]]]]",
 	               elements);
 	}
 
