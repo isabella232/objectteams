@@ -21,12 +21,10 @@
 package org.eclipse.objectteams.otdt.internal.codeassist;
 
 import org.eclipse.jdt.internal.codeassist.select.SelectionNodeFound;
-import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.AbstractMethodDeclaration;
 import org.eclipse.jdt.internal.compiler.lookup.BlockScope;
 import org.eclipse.jdt.internal.compiler.lookup.MethodBinding;
 import org.eclipse.jdt.internal.compiler.lookup.ProblemReasons;
-import org.eclipse.jdt.internal.compiler.lookup.ReferenceBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.ast.MethodSpec;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.CallinCalloutScope;
 
@@ -75,14 +73,6 @@ public class SelectionOnMethodSpec extends MethodSpec
 				// method is copy inherited: use the original binding:
 		    	if(binding.copyInheritanceSrc != null)
 		    		throw new SelectionNodeFound(binding.copyInheritanceSrc);
-
-		    	//have to generate a new binding here!
-		    	ReferenceBinding roleBinding = binding.declaringClass.roleModel.getBinding();
-		    	//generate temporary invocation site (a fake field)
-		    	FieldDeclaration fakeField = new FieldDeclaration("<fakeField>".toCharArray(), 0, 0); //$NON-NLS-1$
-		    	MethodBinding newBinding =
-		    		this.scope.findExactMethod(roleBinding, binding.selector, binding.parameters, fakeField);
-		    	throw new SelectionNodeFound(newBinding);
 		    }
  //haebor}
 		}
