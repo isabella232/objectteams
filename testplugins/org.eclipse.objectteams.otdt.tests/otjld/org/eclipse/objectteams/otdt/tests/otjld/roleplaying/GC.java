@@ -249,7 +249,7 @@ public class GC extends AbstractOTJLDTest {
 
     // a role is unregistered, after it can be gargabe collected
     // 2.5.3-otjld-garbage-collecting-unregistered-1
-    public void test253_garbageCollectingUnregistered1() {
+    public void test253_garbageCollectingUnregistered1() throws InterruptedException {
        
        runConformTest(
             new String[] {
@@ -257,6 +257,7 @@ public class GC extends AbstractOTJLDTest {
 			    "\n" +
 			    "import java.lang.ref.WeakReference;\n" +
 			    "public team class Team253gcu1 {\n" +
+			    "    static boolean running=true;\n" +
 			    "    WeakReference<R> r = null;\n" +
 			    "    protected class R playedBy T253gcu1 {\n" +
 			    "        int v;\n" +
@@ -269,7 +270,8 @@ public class GC extends AbstractOTJLDTest {
 			    "        }\n" +
 			    "        detect <- after t;\n" +
 			    "        public void finalize() {\n" +
-			    "            System.out.print(\"f\"+v+\"!\");\n" +
+			    "            if (running)\n" +
+			    "                System.out.print(\"f\"+v+\"!\");\n" +
 			    "        }\n" +
 			    "    }\n" +
 			    "    public static void main(String[] args) {\n" +
@@ -287,6 +289,7 @@ public class GC extends AbstractOTJLDTest {
 			    "        } catch (InterruptedException ie) {}\n" +
 			    "        System.out.print(t.r.get()+\".\");\n" +
 			    "        System.out.print(t.getAllRoles().length);\n" +
+			    "        running = false;\n" +
 			    "    }\n" +
 			    "}\n" +
 			    "    \n",
