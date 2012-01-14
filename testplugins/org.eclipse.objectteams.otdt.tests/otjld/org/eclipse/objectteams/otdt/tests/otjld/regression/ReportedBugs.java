@@ -18,6 +18,7 @@ package org.eclipse.objectteams.otdt.tests.otjld.regression;
 
 import java.util.Map;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.objectteams.otdt.tests.otjld.AbstractOTJLDTest;
 
@@ -38,7 +39,7 @@ public class ReportedBugs extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "testB11_sh75"};
+//		TESTS_NAMES = new String[] { "testB11_sh9"};
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -4388,6 +4389,133 @@ public class ReportedBugs extends AbstractOTJLDTest {
     		"The method accept(Visitor<Parameter1,Parameter2>) from the type Caller is never used locally\n" + 
     		"----------\n",
     		options);
+    }
+
+    // witness for NPE in AstGenerator.baseclassReference(TypeBinding, boolean) from SerializationGenerator.fillRestoreRole(TypeDeclaration, FieldDeclaration[])
+    public void testB11_sh96() {
+        Map customOptions = getCompilerOptions();
+        customOptions.put(JavaCore.COMPILER_COMPLIANCE, "1.3");
+        customOptions.put(JavaCore.COMPILER_SOURCE, "1.3");
+        customOptions.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.3");
+        runNegativeTest(
+            new String[] {
+		"TB11sh4.java",
+			    "\n" +
+			    "public class TB11sh4 {}    \n" +
+			    "    \n",
+		"TeamB11sh4_1.java",
+			    "\n" +
+			    "public team class TeamB11sh4_1 implements java.io.Serializable {\n" +
+			    "    protected TeamB11sh4_1 (Role1 r) { \n" +
+			    "    } \n" +
+			    "    public class Role1 playedBy TB11sh4 {} \n" +
+			    "}\n"
+            },
+            "----------\n" + 
+    		"1. ERROR in TeamB11sh4_1.java (at line 2)\n" + 
+    		"	public team class TeamB11sh4_1 implements java.io.Serializable {\n" + 
+    		"	                  ^^^^^^^^^^^\n" + 
+    		"Name clash: The method restoreRole(Class<?>, Object) of type TeamB11sh4_1 has the same erasure as restoreRole(Class, Object) of type Team but does not override it\n" + 
+    		"----------\n" + 
+    		"2. WARNING in TeamB11sh4_1.java (at line 2)\n" + 
+    		"	public team class TeamB11sh4_1 implements java.io.Serializable {\n" + 
+    		"	                  ^^^^^^^^^^^^\n" + 
+    		"The serializable class TeamB11sh4_1 does not declare a static final serialVersionUID field of type long\n" + 
+    		"----------\n",
+            null/*classLibraries*/,
+            true/*shouldFlushOutputDirectory*/,
+            customOptions,
+            true/*generateOutput*/,
+            false/*showCategory*/,
+            false/*showWarningToken*/);    
+    }
+    
+    // Bug 366597 - [compiler] NPE with role ifc wrongly interpreted as a team
+    public void testB11_sh97() {
+    	runNegativeTest(new String[] {
+    			"t/T1.java",
+    			"package t;\n" +
+    			"import base b.Base;\n" +
+    			"public team class T1  {\n" +
+    			"    protected interface IR\n" +
+    			"    public class R2 playedBy Base {\n" +
+    			"        void bar() {\n" +
+    			"            this.foo();\n" +
+    			"        }\n" +
+    			"    }\n" +
+    			"}\n",
+    			"b/Base.java",
+    			"package b;\n" +
+    			"public class Base { void foo() {} }\n"
+    	}, 
+		"----------\n" +
+		"1. ERROR in t\\T1.java (at line 4)\n" +
+		"	protected interface IR\n" +
+		"	                    ^^\n" +
+		"Syntax error, insert \"InterfaceBody\" to complete ClassBodyDeclarations\n" +
+		"----------\n" +
+		"2. ERROR in t\\T1.java (at line 5)\n" +
+		"	public class R2 playedBy Base {\n" +
+		"	             ^^\n" +
+		"Member types not allowed in regular roles. Mark class t.T1.IR as a team if R2 should be its role (OTJLD 1.5(a,b)). \n" +
+		"----------\n" +
+		"3. ERROR in t\\T1.java (at line 7)\n" +
+		"	this.foo();\n" +
+		"	^^^^\n" +
+		"Missing anchor (team instance) for role type t.T1.IR.R2 outside its team context (OTJLD 1.2.2(b)).\n" +
+		"----------\n" +
+		"4. WARNING in t\\T1.java (at line 7)\n" +
+		"	this.foo();\n" +
+		"	^^^^^^^^^^\n" +
+		"Access restriction of method foo() in type b.Base is overridden by this method binding (OTJLD 3.4(a)).\n" +
+		"----------\n" +
+		"5. ERROR in t\\T1.java (at line 7)\n" +
+		"	this.foo();\n" +
+		"	^^^^^^^^^^\n" +
+		"Unresolved self call foo() is implicitly bound by an inferred callout (OTJLD 3.1(j)).\n" +
+		"----------\n");
+    }
+
+    // Bug 366597 - [compiler] NPE with role ifc wrongly interpreted as a team
+    public void testB11_sh98() {
+    	runNegativeTest(new String[] {
+    			"t/T1.java",
+    			"package t;\n" +
+    			"import base b.Base;\n" +
+    			"public team class T1 extends T0 {\n" +
+    			"    protected team interface IR {}\n" +
+    			"    @Override\n" +
+    			"    protected class R2 playedBy Base {\n" +
+    			"        void bar() {\n" +
+    			"            this.foo();\n" +
+    			"        }\n" +
+    			"    }\n" +
+    			"}\n",
+    			"t/T0.java",
+    			"package t;\n" +
+    			"public team class T0 {\n" +
+    			"    protected class R2 {}" +
+    			"}\n",
+    			"b/Base.java",
+    			"package b;\n" +
+    			"public class Base { void foo() {} }\n"
+    	}, 
+		"----------\n" + 
+		"1. ERROR in t\\T1.java (at line 4)\n" + 
+		"	protected team interface IR {}\n" + 
+		"	                         ^^\n" + 
+		"Illegal modifier for the member interface IR; only public, protected, private, static & abstract are permitted\n" + 
+		"----------\n" + 
+		"2. WARNING in t\\T1.java (at line 8)\n" + 
+		"	this.foo();\n" + 
+		"	^^^^^^^^^^\n" + 
+		"Access restriction of method foo() in type b.Base is overridden by this method binding (OTJLD 3.4(a)).\n" + 
+		"----------\n" + 
+		"3. ERROR in t\\T1.java (at line 8)\n" + 
+		"	this.foo();\n" + 
+		"	^^^^^^^^^^\n" + 
+		"Unresolved self call foo() is implicitly bound by an inferred callout (OTJLD 3.1(j)).\n" + 
+		"----------\n");
     }
 
     // reported by Christine Hundt

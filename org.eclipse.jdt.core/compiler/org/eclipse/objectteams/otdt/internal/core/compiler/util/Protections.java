@@ -84,8 +84,10 @@ public class Protections implements ClassFileConstants, ExtraCompilerModifiers {
                 if (!hasClassKindProblem(type.binding))
                 	scope.problemReporter().missingTeamForRoleWithMembers(type.binding, type.memberTypes[0]);
         		// avoid secondary errors
-        		modifiers |= AccTeam;
-        		type.modifiers |= AccTeam;
+                if (!type.isInterface()) { // setting AccTeam for interface would aggravate the situation
+                	modifiers |= AccTeam;
+                	type.modifiers |= AccTeam;
+                }
         		type.binding.tagBits |= TagBits.HasClassKindProblem;
         		type.getTeamModel(); // initialize
         		for (int i = 0; i < type.memberTypes.length; i++) {

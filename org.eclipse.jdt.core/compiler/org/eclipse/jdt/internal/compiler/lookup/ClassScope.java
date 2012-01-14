@@ -996,6 +996,10 @@ public class ClassScope extends Scope {
 						problemReporter().illegalModifierForAnnotationMemberType(sourceType);
 					else
 						problemReporter().illegalModifierForMemberInterface(sourceType);
+//{ObjectTeams: prevent downstream problems with types illegally marked as team:
+					modifiers &= ~ClassFileConstants.AccTeam;
+					this.referenceContext.modifiers &= ~ClassFileConstants.AccTeam;
+// SH}
 				}
 				/*
 				} else if (sourceType.isLocalType()) { //interfaces cannot be defined inside a method
