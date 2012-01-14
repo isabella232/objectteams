@@ -55,7 +55,6 @@ notifyTestRunFailure()
 	local cmdLogfiles="-a ${OT_SUITE_LOG}-tail.gz"
 	
 	grep -q "\[java\] BUILD FAILED" "$OT_SUITE_LOG" && { subject="OT Testsuite: Compile/Build Failure!"; }
-	grep -q "svn.*connection timed out" "$OT_SUITE_LOG" && { subject="OT Testsuite: SVN timeout"; message="Nothing to fix, next run hopefully works"; }
 	tail -1000 "$OT_SUITE_LOG" | gzip -f - > "${OT_SUITE_LOG}-tail.gz"
 	echo -e "$message" | mutt -s "$subject" $cmdLogfiles $OT_RECIPIENT
 	cleanup

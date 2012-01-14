@@ -53,9 +53,8 @@
 	<!-- ===================================================================== -->
 	<target name="getMapFiles">
 		<mkdir dir="${buildDirectory}/maps"/>
-		<property name="svn.map.url" value="${svn.repository.url}/${mapVersionTag}/${pathToMapFile}/${mapFileName}" />
-
-		<svn command="export" url="${svn.map.url}" dest="${buildDirectory}/maps/${mapFileName}" />
+		<echo message="REMEMBER: this is a workaround which requires manual pulling in ${git.repository.path}."/>
+		<copy file="${git.repository.path}/${pathToMapFile}/${mapFileName}" todir="${buildDirectory}/maps/" />
 	</target>
 	
 	<!-- ===================================================================== -->

@@ -42,10 +42,10 @@
 		<!-- orig:
 		<cvs cvsRoot="${mapsRepo}" package="${mapsRoot}" dest="${buildDirectory}/maps" tag="${mapsCheckoutTag}" />
 		-->
-		<property name="svn.map.url" value="${svn.repository.url}/${mapVersionTag}/${pathToMapFile}/${mapFileName}" />
 
 		<mkdir dir="${buildDirectory}/maps"/>
-		<svn command="export" url="${svn.map.url}" dest="${buildDirectory}/maps/${mapFileName}" />
+		<echo message="REMEMBER: this is a workaround which requires manual pulling in ${git.repository.path}."/>
+		<copy file="${git.repository.path}/${pathToMapFile}/${mapFileName}" todir="${buildDirectory}/maps/" />
 	</target>
 
 	<target name="checkLocalMaps">

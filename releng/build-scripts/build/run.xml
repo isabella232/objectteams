@@ -182,9 +182,9 @@ should test be run (true|false)?
 		<untar compression="gzip" src="${eclipse-app.tgz}" dest="${build.root.dir}"/>
 	</target>
 	
-	<target name="AddPluginsToEclipse" description="Add svn.pde.build plugin to the base Eclipse">
+	<target name="AddPluginsToEclipse" description="Add git.pde.build plugins to the base Eclipse">
 		<mkdir dir="${baseLocation}/dropins/plugins"/>
-		<copy file="${OTScriptDir}/lib/${svn.pde.build}" todir="${baseLocation}/dropins/plugins" />
+		<copy file="${OTScriptDir}/lib/${git.pde.build}" todir="${baseLocation}/dropins/plugins" />
 	</target>
 
 	<!-- ==== BUILDING AND RUNNING: ==== -->
@@ -223,7 +223,7 @@ should test be run (true|false)?
 	            <arg value="-DmapVersionTag=${mapVersionTag}"/>
 	            <arg value="-DpathToMapFile=${pathToMapFile}"/>
 		    	<arg value="-DmapFileName=otdt.map"/>
-		    	<arg value="-Dsvn.repository.url=${svn.repository.url}"/>
+		    	<arg value="-Dgit.repository.path=${git.repository.path}"/>
 	            <arg value="-Declipse-app.tgz=${eclipse-app.tgz}"/>
 	            <arg value="-Declipse.tests.zip=${eclipse.tests.zip}"/>
 	            <!--arg value="-verbose" /-->
@@ -299,7 +299,7 @@ should test be run (true|false)?
 				<arg value="-Dbasearch=${arch}"/>
 				<arg value="-Dtest.root.dir=${test.root.dir}"/>
 				<arg value="-Dtest.eclipseDir=${test.eclipseDir}"/>
-				<arg value="-Dsvn.repository.url=${svn.repository.url}"/>
+				<arg value="-Dgit.repository.path=${git.repository.path}"/>
 				<arg value="-DmapVersionTag=${mapVersionTag}"/>
 				<arg value="-DpathToMapFile=${pathToMapFile}"/>
 				<arg value="-DmapFileName=otdt.map"/>

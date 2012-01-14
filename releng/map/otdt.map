@@ -3,42 +3,42 @@
 ! when unfreezing set tag to: branches/maintenance/OTDT_2.0.x
 
 !-- Don't set version numbers for features, otherwise pdebuild would complain about a non-existent Basedir: -- 
-feature@org.eclipse.objectteams.otdt=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.feature,tag=tags/builds/201109101025
-feature@org.eclipse.objectteams.otdt.core.patch=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otdt.core.patch,tag=tags/builds/201109101025
-feature@org.eclipse.objectteams.otequinox=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=features/org.eclipse.objectteams.otequinox.feature,tag=tags/builds/201109101025
+feature@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature,tag=branches/maintenance/OTDT_2.0.x
+feature@org.eclipse.objectteams.otdt.core.patch=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.core.patch,tag=branches/maintenance/OTDT_2.0.x
+feature@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.feature,tag=tags/builds/201109101025
 
 !-- Also don't use version numbers for those plugins that hold the various otre jars: --
-plugin@org.eclipse.jdt.core,3.7.1.v_OTDT_r201_qualifier=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.jdt.core,tag=tags/builds/201109101025
+plugin@org.eclipse.jdt.core,3.7.1.v_OTDT_r201_qualifier=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.jdt.core,tag=branches/maintenance/OTDT_2.0.x
 
 !next plug-in don't specify version so that org.eclipse.objectteams.runtime/customBuildCallbacks.xml will find the plug-in directory:
-plugin@org.eclipse.objectteams.otdt=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt,tag=tags/builds/201109101025
 
-plugin@org.eclipse.objectteams.otdt.debug,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.debug.ui,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.ui,2.0.1=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.ui,tag=tags/builds/201109101025
-plugin@org.eclipse.objectteams.otdt.metrics,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.metrics,tag=tags/builds/201101290806
+plugin@org.eclipse.objectteams.otdt.debug,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.debug.ui,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.ui,2.0.1=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.otdt.metrics,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics,tag=tags/builds/201101290806
 
-plugin@org.eclipse.objectteams.runtime=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.runtime,tag=tags/builds/201109101025
-fragment@org.eclipse.objectteams.otequinox.hook,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.hook,tag=tags/builds/201106070730
-fragment@org.eclipse.objectteams.otequinox.sunjvm,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.sunjvm
+plugin@org.eclipse.objectteams.runtime=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.runtime,tag=tags/builds/201109101025
+fragment@org.eclipse.objectteams.otequinox.hook,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.hook,tag=tags/builds/201106070730
+fragment@org.eclipse.objectteams.otequinox.sunjvm,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.sunjvm
 !the following is also referenced in otdt.ui.help/buildDoc.xml (plugin-name without version):
-plugin@org.eclipse.objectteams.otequinox=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox,tag=tags/builds/201109101025
-plugin@org.eclipse.objectteams.eclipse.monitor,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.eclipse.monitor,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.eclipse.monitor,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.eclipse.monitor,tag=tags/builds/201105161939
 
 !not currently maintained:
-!plugin@org.eclipse.objectteams.otdt.earlyui=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.earlyui,tag=tags/builds/201109101025
-!plugin@org.eclipse.objectteams.otdt.metrics.export=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.metrics.export,tag=tags/builds/201109101025
+!plugin@org.eclipse.objectteams.otdt.earlyui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.earlyui,tag=tags/builds/201109101025
+!plugin@org.eclipse.objectteams.otdt.metrics.export=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics.export,tag=tags/builds/201109101025
 
 !** OT/J Plugins **!
-plugin@org.eclipse.objectteams.otequinox.branding,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.jdt.ui,2.0.1=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.jdt.ui,tag=tags/builds/201109101025
-plugin@org.eclipse.objectteams.otdt.ui.help,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.ui.help,tag=tags/builds/201106070730
-plugin@org.eclipse.objectteams.otdt.apt,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.apt,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.compiler.adaptor,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.compiler.adaptor,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.debug.adaptor,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.debug.adaptor,tag=tags/builds/201106070730
-plugin@org.eclipse.objectteams.otdt.refactoring,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.refactoring,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.pde.ui,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.pde.ui,tag=tags/builds/201105161939
-plugin@org.eclipse.objectteams.otdt.samples,2.0.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams,path=plugins/org.eclipse.objectteams.otdt.samples,tag=tags/builds/201106070730
+plugin@org.eclipse.objectteams.otequinox.branding,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.jdt.ui,2.0.1=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.jdt.ui,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.otdt.ui.help,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui.help,tag=tags/builds/201106070730
+plugin@org.eclipse.objectteams.otdt.apt,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.apt,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.compiler.adaptor,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.compiler.adaptor,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.debug.adaptor,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.adaptor,tag=tags/builds/201106070730
+plugin@org.eclipse.objectteams.otdt.refactoring,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.refactoring,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.pde.ui,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.pde.ui,tag=tags/builds/201105161939
+plugin@org.eclipse.objectteams.otdt.samples,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.samples,tag=tags/builds/201106070730
 
 !** Consume BCEL from Orbit: **!
 plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository
@@ -46,26 +46,27 @@ plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400
 !***************  OTDT Test CONTRIBUTION  ******************************************************** 
 
 
-feature@org.eclipse.objectteams.otdt-tests=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature,tag=branches/maintenance/OTDT_2.0.x
+feature@org.eclipse.objectteams.otdt-tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature,tag=branches/maintenance/OTDT_2.0.x
 
-plugin@org.eclipse.jdt.core.tests.compiler=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.compiler,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.jdt.core.tests.model=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.model,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.objectteams.otdt.tests,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.tests,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.objectteams.otdt.ui.tests.dom,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.dom,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.objectteams.otdt.debug.tests,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.debug.tests,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.jdt.core.tests.compiler=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.compiler,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.jdt.core.tests.model=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.jdt.core.tests.model,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.tests,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.ui.tests.dom,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.dom,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.debug.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.debug.tests,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring,tag=branches/maintenance/OTDT_2.0.x
 
 !** OT/J Test Plugins **!
-plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.test.builder,tag=branches/maintenance/OTDT_2.0.x
-plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=SVN,url=file://localhost/svnroot/tools/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.test.builder,tag=branches/maintenance/OTDT_2.0.x
+plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams/,path=testplugins/org.eclipse.objectteams.otdt.ui.tests,tag=branches/maintenance/OTDT_2.0.x
 
-!-- Tests fetched from original CVS (some are required indirectly by jdt.ui.tests): --
+!-- Tests fetched from original GIT (some are required indirectly by jdt.ui.tests): --
 !   (these lines are generated from SDK map file using processSDKmap.sh)
-plugin@org.eclipse.jdt.core.tests.builder=v_B76_R37x,/cvsroot/eclipse
-plugin@org.eclipse.jdt.debug.tests=v20110803_r371,/cvsroot/eclipse
-plugin@org.eclipse.jdt.ui.tests=r371_v20110824-0800,/cvsroot/eclipse
-plugin@org.eclipse.jdt.ui.tests.refactoring=r371_v20110824-0800,/cvsroot/eclipse
-plugin@org.eclipse.jdt.text.tests=r371_v20110729-0400,/cvsroot/eclipse
-plugin@org.eclipse.jface.text.tests=v20110505-0800,/cvsroot/eclipse
-plugin@org.eclipse.text.tests=v20110505-0800,/cvsroot/eclipse
-plugin@org.eclipse.core.filebuffers.tests=v20110505-0800,/cvsroot/eclipse
+plugin@org.eclipse.jdt.core.tests.builder=GIT,tag=v20111117-0916,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.core.tests.builder
+plugin@org.eclipse.jdt.debug.tests=GIT,tag=v20111115-2002,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.debug.git,path=org.eclipse.jdt.debug.tests
+plugin@org.eclipse.jdt.ui.tests=GIT,tag=v20111205-1546,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.ui.git,path=org.eclipse.jdt.ui.tests
+plugin@org.eclipse.jdt.ui.tests.refactoring=GIT,tag=v20111115-1507,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.ui.git,path=org.eclipse.jdt.ui.tests.refactoring
+plugin@org.eclipse.jdt.text.tests=GIT,tag=v20111115-0800,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.ui.git,path=org.eclipse.jdt.text.tests
+plugin@org.eclipse.jface.text.tests=GIT,tag=v20111115-0800,repo=git://git.eclipse.org/gitroot/platform/eclipse.platform.text.git,path=org.eclipse.jface.text.tests
+plugin@org.eclipse.text.tests=GIT,tag=v20111115-0800,repo=git://git.eclipse.org/gitroot/platform/eclipse.platform.text.git,path=org.eclipse.text.tests
+plugin@org.eclipse.core.filebuffers.tests=GIT,tag=v20111115-0800,repo=git://git.eclipse.org/gitroot/platform/eclipse.platform.text.git,path=org.eclipse.core.filebuffers.tests
+
