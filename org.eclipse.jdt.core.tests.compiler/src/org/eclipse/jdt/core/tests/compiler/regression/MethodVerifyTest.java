@@ -11416,9 +11416,9 @@ public void test207() {
 		},
 		"class java.lang.Object");
 }
-// https://bugs.eclipse.org/bugs/show_bug.cgi?id=288658, make sure a bridge method
-// is generated when a public method is inherited from a non-public class into a
-// public class.
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=343060, make sure a bridge method
+// is NOT generated when a public method is inherited from a non-public class into a
+// public class if the non public class happens to be in the default package.
 public void test208() {
 	this.runConformTest(
 		new String[] {
@@ -11451,11 +11451,11 @@ public void test208() {
 			"\n"+ 
 			"}\n"
 		},
-		this.complianceLevel <= ClassFileConstants.JDK1_5 ? "Annotation was found" : "Annotation was not found");
+		"Annotation was found");
 }
-// https://bugs.eclipse.org/bugs/show_bug.cgi?id=288658, make sure a bridge method
-// is generated when a public method is inherited from a non-public class into a
-// public class.
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=343060, make sure a bridge method
+// is NOT generated when a public method is inherited from a non-public class into a
+// public class if the non public class happens to be in the default package.
 public void test208a() {
 	this.runConformTest(
 		new String[] {
@@ -11489,7 +11489,7 @@ public void test208a() {
 			"\n"+ 
 			"}\n"
 		},
-		this.complianceLevel <= ClassFileConstants.JDK1_5 ? "Annotation was found" : "Annotation was not found");
+		"Annotation was found");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=322001
 public void test209() {
@@ -13367,7 +13367,7 @@ public void testBug317719h() throws Exception {
 	String output = this.complianceLevel == ClassFileConstants.JDK1_6 ?
 			"----------\n" + 
 			"1. WARNING in Test.java (at line 3)\n" + 
-			"	public class Test<Key, Value> extends LinkedHashMap<Key, Collection<Value>> {\n" + 
+			"	public class Test<Key, Value> extends HashMap<Key, Collection<Value>> {\n" + 
 			"	             ^^^^\n" + 
 			"The serializable class Test does not declare a static final serialVersionUID field of type long\n" + 
 			"----------\n" + 
@@ -13379,7 +13379,7 @@ public void testBug317719h() throws Exception {
 			"3. WARNING in Test.java (at line 5)\n" + 
 			"	public Collection<Value> get(Key k) { return null; }\n" + 
 			"	                         ^^^^^^^^^^\n" + 
-			"Name clash: The method get(Key) of type Test<Key,Value> has the same erasure as get(Object) of type LinkedHashMap<K,V> but does not override it\n" + 
+			"Name clash: The method get(Key) of type Test<Key,Value> has the same erasure as get(Object) of type HashMap<K,V> but does not override it\n" + 
 			"----------\n" + 
 			"4. ERROR in Test.java (at line 6)\n" + 
 			"	Zork z;\n" + 
@@ -13388,7 +13388,7 @@ public void testBug317719h() throws Exception {
 			"----------\n":
 				"----------\n" + 
 				"1. WARNING in Test.java (at line 3)\n" + 
-				"	public class Test<Key, Value> extends LinkedHashMap<Key, Collection<Value>> {\n" + 
+				"	public class Test<Key, Value> extends HashMap<Key, Collection<Value>> {\n" + 
 				"	             ^^^^\n" + 
 				"The serializable class Test does not declare a static final serialVersionUID field of type long\n" + 
 				"----------\n" + 
@@ -13400,7 +13400,7 @@ public void testBug317719h() throws Exception {
 				"3. ERROR in Test.java (at line 5)\n" + 
 				"	public Collection<Value> get(Key k) { return null; }\n" + 
 				"	                         ^^^^^^^^^^\n" + 
-				"Name clash: The method get(Key) of type Test<Key,Value> has the same erasure as get(Object) of type LinkedHashMap<K,V> but does not override it\n" + 
+				"Name clash: The method get(Key) of type Test<Key,Value> has the same erasure as get(Object) of type HashMap<K,V> but does not override it\n" + 
 				"----------\n" + 
 				"4. ERROR in Test.java (at line 6)\n" + 
 				"	Zork z;\n" + 
@@ -13411,13 +13411,90 @@ public void testBug317719h() throws Exception {
 		new String[] {
 			"Test.java",
 			"import java.util.Collection;\n" +
-			"import java.util.LinkedHashMap;\n" +
-			"public class Test<Key, Value> extends LinkedHashMap<Key, Collection<Value>> {\n" +
+			"import java.util.HashMap;\n" +
+			"public class Test<Key, Value> extends HashMap<Key, Collection<Value>> {\n" +
 			"    public Collection<Value> put(Key k, Value v) { return null; }\n" +
 			"	 public Collection<Value> get(Key k) { return null; }\n" +
 			"	 Zork z;\n" +
 			"}\n"
 		},
 		output);
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=288658, make sure a bridge method
+// is generated when a public method is inherited from a non-public class into a
+// public class if the non public class happens to be defined in a named package.
+public void test288658() {
+	this.runConformTest(
+		new String[] {
+			"pkg/Test.java",
+			"package pkg;\n" +
+			"import java.lang.annotation.Annotation;\n"+ 
+			"import java.lang.annotation.Retention;\n"+ 
+			"import java.lang.annotation.RetentionPolicy;\n"+ 
+			"import java.lang.reflect.Method;\n"+ 
+			"\n"+ 
+			"public class Test extends Super {\n"+ 
+			"    public static void main(String[] args) {\n"+ 
+			"        try {\n"+ 
+			"            Method m = Test.class.getMethod(\"setFoo\", String.class);\n"+
+			"            Annotation a = m.getAnnotation(Anno.class);\n"+ 
+			"            System.out.println(\"Annotation was \" + (a == null ? \"not \" : \"\") +\n"+ 
+			"\"found\");\n"+ 
+			"        } catch (Exception e) {\n"+ 
+			"            e.printStackTrace();\n"+ 
+			"        }\n"+ 
+			"    }\n"+ 
+			"}\n"+ 
+			"\n"+ 
+			"class Super {\n"+ 
+			"    @Anno\n"+ 
+			"    public void setFoo(String foo) {}\n"+ 
+			"}\n"+ 
+			"\n"+ 
+			"@Retention(RetentionPolicy.RUNTIME)\n"+ 
+			"@interface Anno {\n"+ 
+			"\n"+ 
+			"}\n"
+		},
+		this.complianceLevel <= ClassFileConstants.JDK1_5 ? "Annotation was found" : "Annotation was not found");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=288658, make sure a bridge method
+// is generated when a public method is inherited from a non-public class into a
+// public class if the non public class happens to be defined in a named package.
+public void test288658a() {
+	this.runConformTest(
+		new String[] {
+			"pkg/Test.java",
+			"package pkg;\n" +
+			"import java.lang.annotation.Annotation;\n"+ 
+			"import java.lang.annotation.Retention;\n"+ 
+			"import java.lang.annotation.RetentionPolicy;\n"+ 
+			"import java.lang.reflect.Method;\n"+ 
+			"\n"+ 
+			"public class Test extends Super {\n"+
+			"    public void setFoo() {}\n" +
+			"    public static void main(String[] args) {\n"+ 
+			"        try {\n"+ 
+			"            Method m = Test.class.getMethod(\"setFoo\", String.class);\n"+
+			"            Annotation a = m.getAnnotation(Anno.class);\n"+ 
+			"            System.out.println(\"Annotation was \" + (a == null ? \"not \" : \"\") +\n"+ 
+			"\"found\");\n"+ 
+			"        } catch (Exception e) {\n"+ 
+			"            e.printStackTrace();\n"+ 
+			"        }\n"+ 
+			"    }\n"+ 
+			"}\n"+ 
+			"\n"+ 
+			"class Super {\n"+ 
+			"    @Anno\n"+ 
+			"    public void setFoo(String foo) {}\n"+ 
+			"}\n"+ 
+			"\n"+ 
+			"@Retention(RetentionPolicy.RUNTIME)\n"+ 
+			"@interface Anno {\n"+ 
+			"\n"+ 
+			"}\n"
+		},
+		this.complianceLevel <= ClassFileConstants.JDK1_5 ? "Annotation was found" : "Annotation was not found");
 }
 }

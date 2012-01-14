@@ -591,6 +591,12 @@ abstract public void markedAsNullOrNonNullInAssertExpression(LocalVariableBindin
 //https://bugs.eclipse.org/bugs/show_bug.cgi?id=303448
 abstract public boolean isMarkedAsNullOrNonNullInAssertExpression(LocalVariableBinding local);
 
+/**
+ * Resets the definite and potential initialization info for the given local variable
+ * @param local
+ */
+abstract public void resetAssignmentInfo(LocalVariableBinding local);
+
 //{ObjectTeams:
 public boolean isDefinitelyAssigned(BaseCallTrackingVariable baseCallTrackingVariable)
 {

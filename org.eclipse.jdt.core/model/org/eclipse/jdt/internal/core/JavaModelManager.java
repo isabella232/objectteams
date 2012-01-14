@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2011 IBM Corporation and others.
+ * Copyright (c) 2000, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1417,9 +1417,7 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 	public static boolean CP_RESOLVE_VERBOSE_ADVANCED = false;
 	public static boolean CP_RESOLVE_VERBOSE_FAILURE = false;
 	public static boolean ZIP_ACCESS_VERBOSE = false;
-	// temporary debug flag to track failures of bug 302850
-	public static boolean DEBUG_302850 = false;
-
+	
 	/**
 	 * A cache of opened zip files per thread.
 	 * (for a given thread, the object value is a HashMap from IPath to java.io.ZipFile)
@@ -1486,7 +1484,8 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 					propertyName.equals(JavaCore.CORE_ENABLE_CLASSPATH_MULTIPLE_OUTPUT_LOCATIONS) ||
 					propertyName.equals(JavaCore.CORE_INCOMPLETE_CLASSPATH) ||
 					propertyName.equals(JavaCore.CORE_CIRCULAR_CLASSPATH) ||
-					propertyName.equals(JavaCore.CORE_INCOMPATIBLE_JDK_LEVEL)) {
+					propertyName.equals(JavaCore.CORE_INCOMPATIBLE_JDK_LEVEL) ||
+					propertyName.equals(JavaCore.CORE_OUTPUT_LOCATION_OVERLAPPING_ANOTHER_SOURCE)) {
 					JavaModelManager manager = JavaModelManager.getJavaModelManager();
 					IJavaModel model = manager.getJavaModel();
 					IJavaProject[] projects;
@@ -2158,13 +2157,10 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 		// return cached options if already computed
 		Hashtable cachedOptions; // use a local variable to avoid race condition (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=256329 )
 		if ((cachedOptions = this.optionsCache) != null) {
-			if (DEBUG_302850) checkTaskTags("Retrieving options from optionsCache", this.optionsCache); //$NON-NLS-1$
 			return new Hashtable(cachedOptions);
 		}
-		if (DEBUG_302850) System.out.println("optionsCache was null"); //$NON-NLS-1$
 		if (!Platform.isRunning()) {
 			this.optionsCache = getDefaultOptionsNoInitialization();
-			if (DEBUG_302850) checkTaskTags("Platform is not running", this.optionsCache); //$NON-NLS-1$
 			return new Hashtable(this.optionsCache);
 		}
 		// init
@@ -2180,7 +2176,6 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 				options.put(propertyName, propertyValue);
 			}
 		}
-		if (DEBUG_302850) checkTaskTags("Options initialized from preferences", options); //$NON-NLS-1$
 
 		// set deprecated options using preferences service lookup
 		Iterator deprecatedEntries = this.deprecatedOptions.entrySet().iterator();
@@ -2206,28 +2201,10 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 		addDeprecatedOptions(options);
 
 		Util.fixTaskTags(options);
-		if (DEBUG_302850) checkTaskTags("Retrieved options from preferences", options); //$NON-NLS-1$
 		// store built map in cache
 		this.optionsCache = new Hashtable(options);
-		if (DEBUG_302850) checkTaskTags("Stored optionsCache", this.optionsCache); //$NON-NLS-1$
-
 		// return built map
 		return options;
-	}
-
-	// debugging bug 302850:
-	private void checkTaskTags(String msg, Hashtable someOptions) {
-		System.out.println(msg);
-		Object taskTags = someOptions.get(JavaCore.COMPILER_TASK_TAGS);
-		System.out.println("	+ Task tags:           " + taskTags); //$NON-NLS-1$
-		if (taskTags == null || "".equals(taskTags)) { //$NON-NLS-1$
-			System.out.println("	- option names: "+this.optionNames); //$NON-NLS-1$
-			System.out.println("	- Call stack:"); //$NON-NLS-1$
-			StackTraceElement[] elements = new Exception().getStackTrace();
-			for (int i=0,n=elements.length; i<n; i++) {
-				System.out.println("		+ "+elements[i]); //$NON-NLS-1$
-			}
-		}
 	}
 
 	// Do not modify without modifying getDefaultOptions()
@@ -2253,7 +2230,8 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 		defaultOptionsMap.put(JavaCore.CORE_JAVA_BUILD_ORDER, JavaCore.IGNORE);
 		defaultOptionsMap.put(JavaCore.CORE_INCOMPLETE_CLASSPATH, JavaCore.ERROR);
 		defaultOptionsMap.put(JavaCore.CORE_CIRCULAR_CLASSPATH, JavaCore.ERROR);
-		defaultOptionsMap.put(JavaCore.CORE_INCOMPATIBLE_JDK_LEVEL, JavaCore.IGNORE);
+		defaultOptionsMap.put(JavaCore.CORE_INCOMPATIBLE_JDK_LEVEL, JavaCore.IGNORE); 
+		defaultOptionsMap.put(JavaCore.CORE_OUTPUT_LOCATION_OVERLAPPING_ANOTHER_SOURCE, JavaCore.WARNING);
 		defaultOptionsMap.put(JavaCore.CORE_ENABLE_CLASSPATH_EXCLUSION_PATTERNS, JavaCore.ENABLED);
 		defaultOptionsMap.put(JavaCore.CORE_ENABLE_CLASSPATH_MULTIPLE_OUTPUT_LOCATIONS, JavaCore.ENABLED);
 
@@ -4834,66 +4812,46 @@ public class JavaModelManager implements ISaveParticipant, IContentTypeChangeLis
 	}
 
 	public void setOptions(Hashtable newOptions) {
-		
-		if (DEBUG_302850) {
-			System.out.println("Entering in JavaModelManager.setOptions():"); //$NON-NLS-1$
-			System.out.println(new CompilerOptions(newOptions).toString());
-			System.out.println("	- Call stack:"); //$NON-NLS-1$
-			StackTraceElement[] elements = new Exception().getStackTrace();
-			for (int i=0,n=elements.length; i<n; i++) {
-				System.out.println("		+ "+elements[i]); //$NON-NLS-1$
+		Hashtable cachedValue = newOptions == null ? null : new Hashtable(newOptions);
+		IEclipsePreferences defaultPreferences = getDefaultPreferences();
+		IEclipsePreferences instancePreferences = getInstancePreferences();
+
+		if (newOptions == null){
+			try {
+				instancePreferences.clear();
+			} catch(BackingStoreException e) {
+				// ignore
+			}
+		} else {
+			Enumeration keys = newOptions.keys();
+			while (keys.hasMoreElements()){
+				String key = (String)keys.nextElement();
+				int optionLevel = getOptionLevel(key);
+				if (optionLevel == UNKNOWN_OPTION) continue; // unrecognized option
+				if (key.equals(JavaCore.CORE_ENCODING)) {
+					if (cachedValue != null) {
+						cachedValue.put(key, JavaCore.getEncoding());
+					}
+					continue; // skipped, contributed by resource prefs
+				}
+				String value = (String) newOptions.get(key);
+				String defaultValue = defaultPreferences.get(key, null);
+				// Store value in preferences
+				if (defaultValue != null && defaultValue.equals(value)) {
+					value = null;
+				}
+				storePreference(key, value, instancePreferences);
+			}
+			try {
+				// persist options
+				instancePreferences.flush();
+			} catch(BackingStoreException e) {
+				// ignore
 			}
 		}
-
-			Hashtable cachedValue = newOptions == null ? null : new Hashtable(newOptions);
-			IEclipsePreferences defaultPreferences = getDefaultPreferences();
-			IEclipsePreferences instancePreferences = getInstancePreferences();
-
-			if (newOptions == null){
-				try {
-					instancePreferences.clear();
-				} catch(BackingStoreException e) {
-					// ignore
-				}
-			} else {
-				Enumeration keys = newOptions.keys();
-				while (keys.hasMoreElements()){
-					String key = (String)keys.nextElement();
-					int optionLevel = getOptionLevel(key);
-					if (optionLevel == UNKNOWN_OPTION) continue; // unrecognized option
-					if (key.equals(JavaCore.CORE_ENCODING)) {
-						if (cachedValue != null) {
-							cachedValue.put(key, JavaCore.getEncoding());
-						}
-						continue; // skipped, contributed by resource prefs
-					}
-					String value = (String) newOptions.get(key);
-					String defaultValue = defaultPreferences.get(key, null);
-					// Store value in preferences
-					if (defaultValue != null && defaultValue.equals(value)) {
-						value = null;
-					}
-					storePreference(key, value, instancePreferences);
-				}
-				try {
-					// persist options
-					instancePreferences.flush();
-				} catch(BackingStoreException e) {
-					// ignore
-//{ObjectTeams: harness for  Bug 302850 -  13 failures in JavaModel tests for the N20100214-2000 Mac OS X - Cocoa test machine
-					e.printStackTrace(); 
-				} catch (RuntimeException e) {
-					e.printStackTrace();
-					throw e;
-				} catch (Error e) {
-					e.printStackTrace();
-					throw e;
-// SH}
-				}
-			}
-			// update cache
-			Util.fixTaskTags(cachedValue);
-			this.optionsCache = cachedValue;
+		// update cache
+		Util.fixTaskTags(cachedValue);
+		this.optionsCache = cachedValue;
 	}
 
 	public void startup() throws CoreException {

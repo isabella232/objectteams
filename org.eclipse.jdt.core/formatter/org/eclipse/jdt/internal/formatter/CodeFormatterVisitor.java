@@ -112,7 +112,6 @@ import org.eclipse.jdt.internal.compiler.ast.WhileStatement;
 import org.eclipse.jdt.internal.compiler.ast.Wildcard;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
-import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.lookup.BlockScope;
 import org.eclipse.jdt.internal.compiler.lookup.ClassScope;
 import org.eclipse.jdt.internal.compiler.lookup.CompilationUnitScope;
@@ -3845,8 +3844,7 @@ public class CodeFormatterVisitor extends ASTVisitor {
 		if (numberOfParens > 0) {
 			manageOpeningParenthesizedExpression(doubleLiteral, numberOfParens);
 		}
-		Constant constant = doubleLiteral.constant;
-		if (constant != null && constant.doubleValue() < 0) {
+		if (isNextToken(TerminalTokens.TokenNameMINUS)) {
 			this.scribe.printNextToken(TerminalTokens.TokenNameMINUS);
 		}
 		this.scribe.printNextToken(TerminalTokens.TokenNameDoubleLiteral);
@@ -4070,8 +4068,7 @@ public class CodeFormatterVisitor extends ASTVisitor {
 		if (numberOfParens > 0) {
 			manageOpeningParenthesizedExpression(floatLiteral, numberOfParens);
 		}
-		Constant constant = floatLiteral.constant;
-		if (constant != null && floatLiteral.constant.floatValue() < 0) {
+		if (isNextToken(TerminalTokens.TokenNameMINUS)) {
 			this.scribe.printNextToken(TerminalTokens.TokenNameMINUS);
 		}
 		this.scribe.printNextToken(TerminalTokens.TokenNameFloatingPointLiteral);
@@ -4384,8 +4381,7 @@ public class CodeFormatterVisitor extends ASTVisitor {
 		if (numberOfParens > 0) {
 			manageOpeningParenthesizedExpression(intLiteral, numberOfParens);
 		}
-		Constant constant = intLiteral.constant;
-		if (constant != null && constant.intValue() < 0) {
+		if (isNextToken(TerminalTokens.TokenNameMINUS)) {
 			this.scribe.printNextToken(TerminalTokens.TokenNameMINUS);
 		}
 		this.scribe.printNextToken(TerminalTokens.TokenNameIntegerLiteral);
@@ -4435,8 +4431,7 @@ public class CodeFormatterVisitor extends ASTVisitor {
 		if (numberOfParens > 0) {
 			manageOpeningParenthesizedExpression(longLiteral, numberOfParens);
 		}
-		Constant constant = longLiteral.constant;
-		if (constant != null && constant.longValue() < 0) {
+		if (isNextToken(TerminalTokens.TokenNameMINUS)) {
 			this.scribe.printNextToken(TerminalTokens.TokenNameMINUS);
 		}
 		this.scribe.printNextToken(TerminalTokens.TokenNameLongLiteral);
