@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.objectteams.otequinox"
       label="%featureName"
-      version="2.0.1.qualifier"
+      version="2.0.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.objectteams.otequinox"
       colocation-affinity="org.eclipse.rcp">
@@ -22,7 +22,7 @@ Author: Stephan Herrmann.
 
    <url>
       <update label="Object Teams Updates" url="http://download.eclipse.org/objectteams/updates/2.0"/>
-      <discovery label="Orbit Repository" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository"/>
+      <discovery label="Orbit Repository" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20120119162704/repository"/>
    </url>
 
    <plugin

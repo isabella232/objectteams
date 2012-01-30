@@ -5,13 +5,13 @@
 !-- Don't set version numbers for features, otherwise pdebuild would complain about a non-existent Basedir: -- 
 feature@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature,tag=branches/maintenance/OTDT_2.0.x
 feature@org.eclipse.objectteams.otdt.core.patch=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.core.patch,tag=branches/maintenance/OTDT_2.0.x
-feature@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.feature,tag=tags/builds/201109101025
+feature@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.feature
 
 !-- Also don't use version numbers for those plugins that hold the various otre jars: --
 plugin@org.eclipse.jdt.core,3.7.3.v_OTDT_r202_qualifier=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core,tag=branches/maintenance/OTDT_2.0.x
 
 !next plug-in don't specify version so that org.eclipse.objectteams.runtime/customBuildCallbacks.xml will find the plug-in directory:
-plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt
 
 plugin@org.eclipse.objectteams.otdt.debug,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=tags/builds/201105161939
 plugin@org.eclipse.objectteams.otdt.debug.ui,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=tags/builds/201105161939
@@ -22,7 +22,7 @@ plugin@org.eclipse.objectteams.runtime=GIT,repo=git://git.eclipse.org/gitroot/ob
 fragment@org.eclipse.objectteams.otequinox.hook,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.hook,tag=tags/builds/201106070730
 fragment@org.eclipse.objectteams.otequinox.sunjvm,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.sunjvm
 !the following is also referenced in otdt.ui.help/buildDoc.xml (plugin-name without version):
-plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox,tag=tags/builds/201109101025
+plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox
 plugin@org.eclipse.objectteams.eclipse.monitor,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.eclipse.monitor,tag=tags/builds/201105161939
 
 !not currently maintained:
@@ -41,7 +41,7 @@ plugin@org.eclipse.objectteams.otdt.pde.ui,2.0.0=GIT,repo=git://git.eclipse.org/
 plugin@org.eclipse.objectteams.otdt.samples,2.0.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.samples,tag=tags/builds/201106070730
 
 !** Consume BCEL from Orbit: **!
-plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository
+plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/R20120119162704/repository
 
 !***************  OTDT Test CONTRIBUTION  ******************************************************** 
 
