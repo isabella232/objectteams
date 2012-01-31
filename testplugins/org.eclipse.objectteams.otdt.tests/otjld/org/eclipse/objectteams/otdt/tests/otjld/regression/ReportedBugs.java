@@ -4391,45 +4391,6 @@ public class ReportedBugs extends AbstractOTJLDTest {
     		options);
     }
 
-    // witness for NPE in AstGenerator.baseclassReference(TypeBinding, boolean) from SerializationGenerator.fillRestoreRole(TypeDeclaration, FieldDeclaration[])
-    public void testB11_sh96() {
-        Map customOptions = getCompilerOptions();
-        customOptions.put(JavaCore.COMPILER_COMPLIANCE, "1.3");
-        customOptions.put(JavaCore.COMPILER_SOURCE, "1.3");
-        customOptions.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, "1.3");
-        runNegativeTest(
-            new String[] {
-		"TB11sh4.java",
-			    "\n" +
-			    "public class TB11sh4 {}    \n" +
-			    "    \n",
-		"TeamB11sh4_1.java",
-			    "\n" +
-			    "public team class TeamB11sh4_1 implements java.io.Serializable {\n" +
-			    "    protected TeamB11sh4_1 (Role1 r) { \n" +
-			    "    } \n" +
-			    "    public class Role1 playedBy TB11sh4 {} \n" +
-			    "}\n"
-            },
-            "----------\n" + 
-    		"1. ERROR in TeamB11sh4_1.java (at line 2)\n" + 
-    		"	public team class TeamB11sh4_1 implements java.io.Serializable {\n" + 
-    		"	                  ^^^^^^^^^^^\n" + 
-    		"Name clash: The method restoreRole(Class<?>, Object) of type TeamB11sh4_1 has the same erasure as restoreRole(Class, Object) of type Team but does not override it\n" + 
-    		"----------\n" + 
-    		"2. WARNING in TeamB11sh4_1.java (at line 2)\n" + 
-    		"	public team class TeamB11sh4_1 implements java.io.Serializable {\n" + 
-    		"	                  ^^^^^^^^^^^^\n" + 
-    		"The serializable class TeamB11sh4_1 does not declare a static final serialVersionUID field of type long\n" + 
-    		"----------\n",
-            null/*classLibraries*/,
-            true/*shouldFlushOutputDirectory*/,
-            customOptions,
-            true/*generateOutput*/,
-            false/*showCategory*/,
-            false/*showWarningToken*/);    
-    }
-    
     // Bug 366597 - [compiler] NPE with role ifc wrongly interpreted as a team
     public void testB11_sh97() {
     	runNegativeTest(new String[] {
