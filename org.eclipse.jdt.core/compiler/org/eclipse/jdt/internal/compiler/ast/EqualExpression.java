@@ -379,6 +379,7 @@ public class EqualExpression extends BinaryExpression {
 		// default case
 		this.left.generateCode(currentScope, codeStream, valueRequired);
 		this.right.generateCode(currentScope, codeStream, valueRequired);
+		int pc = codeStream.position;
 		if (valueRequired) {
 			if (falseLabel == null) {
 				if (trueLabel != null) {
@@ -394,8 +395,7 @@ public class EqualExpression extends BinaryExpression {
 				}
 			}
 		}
-		// reposition the endPC
-		codeStream.updateLastRecordedEndPC(currentScope, codeStream.position);
+		codeStream.recordPositionsFrom(pc, this.sourceEnd);
 	}
 	/**
 	 * Boolean generation for == with non-boolean operands

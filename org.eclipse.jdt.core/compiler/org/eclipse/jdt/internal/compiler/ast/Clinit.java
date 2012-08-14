@@ -21,9 +21,7 @@ import org.eclipse.jdt.internal.compiler.codegen.Opcodes;
 import org.eclipse.jdt.internal.compiler.flow.ExceptionHandlingFlowContext;
 import org.eclipse.jdt.internal.compiler.flow.FlowInfo;
 import org.eclipse.jdt.internal.compiler.flow.InitializationFlowContext;
-import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
-import org.eclipse.jdt.internal.compiler.lookup.BlockScope;
 import org.eclipse.jdt.internal.compiler.lookup.ClassScope;
 import org.eclipse.jdt.internal.compiler.lookup.FieldBinding;
 import org.eclipse.jdt.internal.compiler.lookup.MethodScope;
@@ -198,7 +196,7 @@ public class Clinit extends AbstractMethodDeclaration {
 		}
 		// generate static fields/initializers/enum constants
 		final FieldDeclaration[] fieldDeclarations = declaringType.fields;
-		BlockScope lastInitializerScope = null;
+		int sourcePosition = -1;
 		int remainingFieldCount = 0;
 		if (TypeDeclaration.kind(declaringType.modifiers) == TypeDeclaration.ENUM_DECL) {
 			int enumCount = declaringType.enumConstantsCounter;
@@ -270,19 +268,15 @@ public class Clinit extends AbstractMethodDeclaration {
 						case AbstractVariableDeclaration.ENUM_CONSTANT :
 							break;
 						case AbstractVariableDeclaration.INITIALIZER :
-							if (!fieldDecl.isStatic()) {
+							if (!fieldDecl.isStatic())
 								break;
-							}
-							remainingFieldCount--;
-							lastInitializerScope = ((Initializer) fieldDecl).block.scope;
+							sourcePosition = ((Initializer) fieldDecl).block.sourceEnd;
 							fieldDecl.generateCode(staticInitializerScope, codeStream);
 							break;
 						case AbstractVariableDeclaration.FIELD :
-							if (!fieldDecl.binding.isStatic()) {
+							if (!fieldDecl.binding.isStatic())
 								break;
-							}
-							remainingFieldCount--;
-							lastInitializerScope = null;
+							sourcePosition = fieldDecl.declarationEnd;
 							fieldDecl.generateCode(staticInitializerScope, codeStream);
 							break;
 					}
@@ -342,9 +336,9 @@ public class Clinit extends AbstractMethodDeclaration {
 			if ((this.bits & ASTNode.NeedFreeReturn) != 0) {
 				int before = codeStream.position;
 				codeStream.return_();
-				if (lastInitializerScope != null) {
+				if (sourcePosition != -1) {
 					// expand the last initializer variables to include the trailing return
-					codeStream.updateLastRecordedEndPC(lastInitializerScope, before);
+					codeStream.recordPositionsFrom(before, sourcePosition);
 				}
 			}
 			// Record the end of the clinit: point to the declaration of the class
