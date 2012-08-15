@@ -203,7 +203,7 @@ public class AbstractOTJLDTest extends AbstractComparableTest {
 	protected INameEnvironment getNameEnvironment(final String[] testFiles, String[] classPaths) {
 		this.classpaths = classPaths == null ? getDefaultClassPaths() : classPaths;
 		// make cleanup weaker:
-		return new InMemoryNameEnvironment(testFiles, getClassLibs()) {
+		return new InMemoryNameEnvironment(testFiles, getClassLibs(false)) {
 			@Override
 			public void cleanup() {
 				for (int i = 0, max = this.classLibs.length; i < max; i++)

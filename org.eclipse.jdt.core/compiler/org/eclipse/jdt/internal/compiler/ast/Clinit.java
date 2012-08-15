@@ -21,6 +21,7 @@ import org.eclipse.jdt.internal.compiler.codegen.Opcodes;
 import org.eclipse.jdt.internal.compiler.flow.ExceptionHandlingFlowContext;
 import org.eclipse.jdt.internal.compiler.flow.FlowInfo;
 import org.eclipse.jdt.internal.compiler.flow.InitializationFlowContext;
+import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
 import org.eclipse.jdt.internal.compiler.lookup.ClassScope;
 import org.eclipse.jdt.internal.compiler.lookup.FieldBinding;
@@ -291,13 +292,12 @@ public class Clinit extends AbstractMethodDeclaration {
 							if (!fieldDecl.isStatic())
 								break;
 //{ObjectTeams: note: static initializer in inner type is already prohibited in Java. SH}//
-							lastInitializerScope = ((Initializer) fieldDecl).block.scope;
+							sourcePosition = ((Initializer) fieldDecl).block.sourceEnd;
 							fieldDecl.generateCode(staticInitializerScope, codeStream);
 							break;
 						case AbstractVariableDeclaration.FIELD :
 							if (!fieldDecl.binding.isStatic())
 								break;
-							lastInitializerScope = null;
 //{ObjectTeams: roles cannot initialize static fields with non-constant values:
 							int previousPosition = codeStream.position;
 // orig:
