@@ -71,7 +71,7 @@ public class CallinMapping extends MethodMapping implements ICallinMapping
 	}
 	
     // for use by sub-class ResolvedCallinMapping 
-    protected CallinMapping(
+    public CallinMapping(
         	int          declarationSourceStart,
 			int          sourceStart,
 			int          sourceEnd,

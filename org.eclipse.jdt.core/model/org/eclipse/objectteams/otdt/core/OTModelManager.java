@@ -254,7 +254,8 @@ public class OTModelManager
 							   baseMethods == null ? null : baseMethods[0],
 							   info.hasSignature(),
 							   info.isOverride(),
-							   info.getDeclaredModifiers());
+							   info.getDeclaredModifiers(),
+							   true/*addAsChild*/);
 		}
 		
 		return null;
@@ -283,7 +284,8 @@ public class OTModelManager
 					   info.getRoleMethod(),
 					   info.getBaseField(),
 					   info.hasSignature(),
-					   info.isOverride());
+					   info.isOverride(),
+					   true/*addAsChild*/);
         }
         
         return null;

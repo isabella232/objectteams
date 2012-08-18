@@ -56,9 +56,10 @@ public class CalloutMapping extends AbstractCalloutMapping implements ICalloutMa
                           MethodData baseMethodHandle,
                           boolean hasSignature,
                           boolean isOverride,
-                          int     declaredModifiers)
+                          int     declaredModifiers,
+                          boolean addAsChild)
     {
-        this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_MAPPING, role, corrJavaMethod, roleMethodHandle, baseMethodHandle, hasSignature, isOverride, declaredModifiers);
+        this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_MAPPING, role, corrJavaMethod, roleMethodHandle, baseMethodHandle, hasSignature, isOverride, declaredModifiers, addAsChild);
     }
 
     protected CalloutMapping(
@@ -101,7 +102,7 @@ public class CalloutMapping extends AbstractCalloutMapping implements ICalloutMa
 
 		this.isOverride = isOverride;
 		this.baseMethodHandle = baseMethodHandle;
-		this.declaredModifiers = declarationSourceEnd;
+		this.declaredModifiers = declaredModifiers;
 	}
 
     public IMethodMapping createStealthMethodMapping()
