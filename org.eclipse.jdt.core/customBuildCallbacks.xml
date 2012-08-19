@@ -36,7 +36,11 @@
 	<!-- Available parameters :                                                -->
 	<!--   build.result.folder - folder to contain the build results           -->
 	<!-- ===================================================================== -->
-	<target name="post.build.jars">		<!-- SH for OT: if we are running within a full build, fetch the build labels: --> 		<property file="${basedir}/../../label.properties"/>		<!-- HS -->		<property name="buildLabel" value="global" />
+	<target name="post.build.jars">
+		<!-- SH for OT: if we are running within a full build, fetch the build labels: -->
+		<property file="${basedir}/../../label.properties"/>
+		<!-- HS -->
+		<property name="buildLabel" value="global" />
 		<property name="build.result.folder" value="${basedir}" />
 		<property name="postingDirectory" value="${build.result.folder}/ecj" />
 		<property name="dest" value="${postingDirectory}/${buildLabel}" />
