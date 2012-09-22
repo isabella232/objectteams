@@ -11080,6 +11080,8 @@ public void decapsulation(ImportReference type) {
 }
 public void decapsulationByForcedExport(ReferenceBinding type, ASTNode reference) {
 	String[] args = { new String(type.readableName()) };
+	if (reference instanceof Expression)
+		((Expression)reference).tagReportedBaseclassDecapsulation();
 	this.handle(
 			IProblem.BaseclassDecapsulationForcedExport,
 			args,

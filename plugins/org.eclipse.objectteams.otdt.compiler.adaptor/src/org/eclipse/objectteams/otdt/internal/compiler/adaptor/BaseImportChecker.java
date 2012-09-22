@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2007 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2007, 2012 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -10,7 +10,6 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id: BaseImportChecker.java 23451 2010-02-04 20:33:32Z stephan $
  * 
  * Please visit http://www.eclipse.org/objectteams for updates and contact.
  * 
@@ -204,10 +203,7 @@ public team class BaseImportChecker extends CompilationThreadWatcher
 				if (location instanceof MessageSend)
 					return DecapsulationState.REPORTED; // callout message send.
 				Expression expr= (Expression) location;
-				DecapsulationState result= expr.getBaseclassDecapsulation();
-				if (result == DecapsulationState.ALLOWED)
-					expr.tagReportedBaseclassDecapsulation();
-				return result;
+				return expr.getBaseclassDecapsulation();
 			} 
 			if (location instanceof ImportReference) {
 				ImportReference impRef= (ImportReference)location;

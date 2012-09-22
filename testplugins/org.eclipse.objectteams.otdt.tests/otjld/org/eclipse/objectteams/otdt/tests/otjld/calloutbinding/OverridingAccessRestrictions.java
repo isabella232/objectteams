@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2011 IT Service Omikron GmbH and others.
+ * Copyright 2004, 2012 IT Service Omikron GmbH and others.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,9 +21,12 @@ import java.util.Map;
 
 import junit.framework.Test;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.objectteams.otdt.core.ext.OTDTPlugin;
 import org.eclipse.objectteams.otdt.tests.otjld.AbstractOTJLDTest;
 
+@SuppressWarnings("unchecked")
 public class OverridingAccessRestrictions extends AbstractOTJLDTest {
 	
 	public OverridingAccessRestrictions(String name) {
@@ -1287,8 +1290,9 @@ public class OverridingAccessRestrictions extends AbstractOTJLDTest {
     // a bound base class is final - expect decapsulation warning
     // 7.4.6-otjld-baseclass-is-invisible-8
     public void test746_baseclassIsInvisible8() {
-       
-       runConformTest(
+       Map options = getCompilerOptions();
+       options.put(OTDTPlugin.OT_COMPILER_DECAPSULATION, JavaCore.ERROR);
+       runNegativeTest(
             new String[] {
 		"Team746bii8.java",
 			    "\n" +
@@ -1310,7 +1314,15 @@ public class OverridingAccessRestrictions extends AbstractOTJLDTest {
 			    "}\n" +
 			    "    \n"
             },
-            "OK");
+            "----------\n" + 
+    		"1. ERROR in Team746bii8.java (at line 3)\n" + 
+    		"	public class R playedBy T746bii8 {\n" + 
+    		"	                        ^^^^^^^^\n" + 
+    		"PlayedBy binding overrides finalness of base class T746bii8 (OTJLD 2.1.2(c)).\n" + 
+    		"----------\n",
+            null/*classLibraries*/,
+            true/*shouldFlushOutputDirectory*/,
+            options);
     }
 
     // a base imported base class is invisible, suppressing at the role suffices
