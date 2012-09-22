@@ -114,8 +114,7 @@ public team class AdaptorActivator
 			try {
 				for (int i=0; i<javaProjects.length; i++) {
 					Project project= (Project)javaProjects[i].getProject();
-					if (   containers[i] != null
-						&& REQUIRED_PLUGINS_CONTAINER_PATH.equals(containers[i].getPath())
+					if (   containers[i] instanceof RequiredPluginsClasspathContainer // checking the name is not enough, could still be a UpdatedClasspathContainer
 						&& ProjectUtil.isOTPluginProject(project)) // avoid LiftingVetoException
 					{
 						AspectBindingReader aspectBindingReader = ResourceProjectAdaptor.getDefault().getAspectBindingReader(project);
