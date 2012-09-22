@@ -43,6 +43,7 @@ import org.eclipse.jdt.internal.compiler.lookup.MethodBinding;
 import org.eclipse.jdt.internal.compiler.lookup.MethodScope;
 import org.eclipse.jdt.internal.compiler.lookup.ReferenceBinding;
 import org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
+import org.eclipse.jdt.internal.compiler.lookup.SyntheticMethodBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TypeIds;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
@@ -141,11 +142,21 @@ public class InsertTypeAdjustmentsVisitor extends ASTVisitor {
     @Override
     public void endVisit(FieldReference fieldReference, BlockScope scope) {
     	// e.g., someArray.length has NO declaring class, so be careful
-    	if (fieldReference.binding.declaringClass != null)
+    	if (fieldReference.binding.declaringClass != null) {
+    		MethodBinding[] syntheticAccessors = fieldReference.syntheticAccessors;
+			if (syntheticAccessors != null) {
+    			for (int i = 0; i < syntheticAccessors.length; i++) {
+    				MethodBinding accessor = syntheticAccessors[i];
+					if (accessor instanceof SyntheticMethodBinding 
+							&& ((SyntheticMethodBinding)accessor).purpose == SyntheticMethodBinding.InferredCalloutToField) 
+						return; // already redirecting to base, prevent double-lowering
+				}
+    		}
     		fieldReference.receiver = maybeWrap(
     					scope,
     					fieldReference.receiver,
     					fieldReference.binding.declaringClass);
+    	}
     }
 
     public void endVisit(AllocationExpression alloc, BlockScope scope) {

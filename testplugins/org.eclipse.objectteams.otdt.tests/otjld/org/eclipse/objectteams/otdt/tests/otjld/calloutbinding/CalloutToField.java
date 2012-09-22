@@ -20,6 +20,7 @@ import java.util.Map;
 
 import junit.framework.Test;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.objectteams.otdt.tests.otjld.AbstractOTJLDTest;
 
@@ -3612,5 +3613,64 @@ public class CalloutToField extends AbstractOTJLDTest {
 			    "    \n"
             },
             "2");
+    }
+    
+    // Bug 354480 - VerifyError due to bogus lowering in inferred callout-to-field
+    public void testBug354480() {
+    	Map options = getCompilerOptions();
+    	options.put(JavaCore.COMPILER_PB_SUPPRESS_OPTIONAL_ERRORS, JavaCore.ENABLED);
+    	runConformTest(
+    		new String[] {
+    			"Main.java",
+	    			"import b.Return;\n" + 
+	    			"import b.Scope;\n" + 
+	    			"import t.Team1;\n" + 
+	    			"public class Main {\n" + 
+	    			"	public static void main(String[] args) {\n" + 
+	    			"		new Team1().activate();\n" + 
+	    			"		new Return().analyse(new Scope());\n" + 
+	    			"	}\n" + 
+	    			"}\n",
+    			"b/Expr.java",
+	    			"package b;\n" +
+	    			"public class Expr  {\n" + 
+	    			"	public void analyse(Scope scope) {\n" +
+	    			"		System.out.print(\"OK\");\n" +
+	    			"	}\n" + 
+	    			"}\n",
+    			"b/Scope.java",
+	    			"package b;\n" +
+	    			"public class Scope {}\n",
+    			"b/Return.java",
+	    			"package b;\n" +
+	    			"public class Return  {\n" + 
+	    			"	public Expr expr = new Expr();\n" + 
+	    			"	public void analyse(Scope scope) {\n" + 
+	    			"	}\n" + 
+	    			"}\n",
+	    		"t/Team1.java",
+	    		"package t;\n" +
+	    		"import b.Expr;\n" + 
+	    		"import base b.Return;\n" + 
+	    		"import base b.Scope;\n" + 
+	    		"\n" + 
+	    		"public team class Team1 {\n" + 
+	    		"	protected class Scope playedBy Scope {}\n" + 
+	    		"	protected class Return playedBy Return {\n" + 
+	    		"		Expr getExpr() -> get Expr expr;\n" + 
+	    		"		void analyse(Scope scope) <- replace void analyse(Scope scope);\n" + 
+	    		"		@SuppressWarnings({\"inferredcallout\", \"basecall\"})\n" + 
+	    		"		callin void analyse(Scope scope) {\n" + 
+	    		"			this.expr.analyse(scope);\n" + // expr via c-t-f, scope needs lowering
+	    		"		}\n" + 
+	    		"	}\n" + 
+	    		"}\n"    			
+    		},
+    		"OK",
+            null/*classLibraries*/,
+            false/*shouldFlushOutputDirectory*/,
+            null/*vmArguments*/,
+            options,
+            null/*no custom requestor*/);
     }
 }
