@@ -4861,6 +4861,67 @@ public class LiftingAndLowering extends AbstractOTJLDTest {
             "OK");
     }
 
+    // Bug 391290 - Internal compiler error/Corrupt byte code
+    // witness for "tsuper has corrupt byte code" regarding call to _OT$getBase()
+    public void test2229_explicitLowering4() {
+    	runConformTest(
+    		new String[] {
+    			"Team2229el4_2.java",
+    			"public team class Team2229el4_2 extends Team2229el4_1 {\n" +
+    			"	public static void main(String[] args) {\n" +
+    			"		new Team2229el4_2().test(new T2229el4());\n" +
+    			"	}\n" +
+    			"}\n",
+    			"Team2229el4_1.java",
+    			"public team class Team2229el4_1 {\n" +
+    			"	protected class R implements ILowerable playedBy T2229el4 {\n" +
+    			"		protected void test() {\n" +
+    			"			this.lower().bar();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"	void test(T2229el4 as R r) { r.test(); }\n" +
+    			"}\n",
+    			"T2229el4.java",
+    			"public class T2229el4 {\n" +
+    			"	void bar() { System.out.print(\"OK\"); }\n" +
+    			"}\n"
+    		},
+    		"OK");
+    }
+
+    // Bug 391290 - Internal compiler error/Corrupt byte code
+    // positive case involving copy-inherited call to _OT$getBase()
+    public void test2229_explicitLowering4b() {
+    	runConformTest(
+    		new String[] {
+				"Team2229el4b_2.java",
+				"public team class Team2229el4b_2 extends Team2229el4b_1 {\n" +
+				"	public static void main(String[] args) {\n" +
+				"		new Team2229el4b_2().test(new T2229el4b());\n" +
+				"	}\n" +
+				"}\n",
+    			"Team2229el4b_1.java",
+    			"public team class Team2229el4b_1 {" +
+    			"	protected team class Mid {\n" +
+    			"		protected class R playedBy T2229el4b {\n" +
+    			"		}\n" +
+    			"		protected void test(T2229el4b as R r) { " +
+    			"			T2229el4b b = r;\n" +
+    			"			b.bar();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"	public void test(T2229el4b b) {\n" +
+    			"		new Mid().test(b);\n" +
+    			"	}\n" +
+    			"}\n",
+    			"T2229el4b.java",
+    			"public class T2229el4b {\n" +
+    			"	void bar() { System.out.print(\"OK\"); }\n" +
+    			"}\n",
+    		},
+    		"OK");
+    }
+
     // a static team method tries to lift its parameter
     // 2.2.30-otjld-declared-lifting-in-static-method
     public void test2230_declaredLiftingInStaticMethod() {

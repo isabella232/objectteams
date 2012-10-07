@@ -730,6 +730,10 @@ public class StandardElementGenerator {
 			getBase.typeParameters = new TypeParameter[]{methodParam};
 
 		AstEdit.addMethod(roleType, getBase);
+		for (ReferenceBinding tsuperRole : roleType.getRoleModel().getTSuperRoleBindings()) {
+			for (MethodBinding tsuperMethod : tsuperRole.getMethods(_OT_GETBASE))
+				getBase.binding.addOverriddenTSuper(tsuperMethod);
+		}
 
 		if (methodParam != null)
 			roleType.getRoleModel().unimplementedGetBase = getBase.binding;
