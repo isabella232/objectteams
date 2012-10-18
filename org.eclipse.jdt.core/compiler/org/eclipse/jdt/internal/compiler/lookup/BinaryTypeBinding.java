@@ -542,7 +542,8 @@ void cachePartsFrom(IBinaryType binaryType, boolean needFieldsAndMethods) {
 					types.add(this.environment.getTypeFromTypeSignature(wrapper, typeVars, this, missingTypeNames));
   :giro*/
 					TypeBinding type = this.environment.getTypeFromTypeSignature(wrapper, typeVars, this, missingTypeNames);
-					if (!(type instanceof ReferenceBinding && TSuperHelper.isTSubOf(this, (ReferenceBinding) type)))
+					if (this.isDirectRole()
+							&& !(type instanceof ReferenceBinding && TSuperHelper.isTSubOf(this, (ReferenceBinding) type)))
 						type = RoleTypeCreator.maybeWrapUnqualifiedRoleType(type, this);
 					types.add(type);
 // SH}

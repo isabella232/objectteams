@@ -40,7 +40,7 @@ public class ReportedBugs extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "testBug372786"};
+//		TESTS_NAMES = new String[] { "testBug391876"};
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -5253,5 +5253,46 @@ public class ReportedBugs extends AbstractOTJLDTest {
     		"----------\n",
     		getClassLibraries("bug372786.jar"),
     		false);
+    }
+
+    // Bug 391876 - false-report (nested class): interface cannot be implemented more than once
+    // bogus error seen: the interface NonUniqueIndex cannot be implemented more than once[...]
+    public void testBug391876() {
+    	runConformTest(
+    		new String[] {
+    			"p/Entity.java",
+    				"package p;\n" +
+					"public interface Entity{}\n",
+    			"p/Index.java",
+    				"package p;\n" +
+    				"public interface Index<T extends Entity> {}\n",
+    			"p/NonUniqueIndex.java",
+	    			"package p;\n" +
+	    			"public interface NonUniqueIndex<V extends Entity, T> extends Index<V> {}\n",
+    			"p/User.java",
+    				"package p;\n" +
+    				"public interface User extends Entity {}",
+    			"p/UserByCustomerIndex.java",
+    				"package p;\n" +
+    				"public interface UserByCustomerIndex extends NonUniqueIndex<User, UserByCustomerIndex.UserByCustomerKey> {\n" + 
+    				"	class UserByCustomerKey {}\n" +
+    				"}",
+    			"p3/NonUniqueIndexImpl.java",
+    				"package p3;\n" +
+    				"import p.*;\n" +
+    				"public class NonUniqueIndexImpl<V extends Entity, T> implements NonUniqueIndex<V, T> {}\n",
+    		},
+    		"");
+    	runConformTest(
+			new String[] {
+				"p2/UserByCustomerIndexImpl.java",
+				"package p2;\n" +
+						"import p.*;\n" +
+						"import p3.NonUniqueIndexImpl;\n" +
+						"public class UserByCustomerIndexImpl \n" +
+						"		extends NonUniqueIndexImpl<User, UserByCustomerIndex.UserByCustomerKey>\n" +
+						"		implements UserByCustomerIndex {}\n",
+			},
+			"", null, false/*flush*/, null);
     }
 }
