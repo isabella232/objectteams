@@ -387,7 +387,7 @@ public class TypeLevel {
 			&& newSuperclass.isDirectRole())
 		{
 		    // check team compatibility
-		    if (!TeamModel.areCompatibleEnclosings(destTeam, newSuperclass.enclosingType()))
+		    if (!TeamModel.areCompatibleEnclosings(destTeam, newSuperclass.original().enclosingType()))
 		    {
 		        destScope.problemReporter().extendIncompatibleEnclosingTypes(
 		        		destRoleDecl, newSuperclass, newSuperclass.enclosingType());

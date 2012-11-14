@@ -245,7 +245,7 @@ public class Protections implements ClassFileConstants, ExtraCompilerModifiers {
         		enclosing = enclosing.enclosingType();
         	}
         }
-        ReferenceBinding otherEnclosing = other.enclosingType();
+        ReferenceBinding otherEnclosing = other.original().enclosingType();
         if (otherEnclosing == null)
             return true;
         ReferenceBinding thisEnclosing = binding.enclosingType();

@@ -32,7 +32,7 @@ public class Java5 extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "testA112_genericTeam3"};
+//		TESTS_NAMES = new String[] { "testA112_genericTeam4"};
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -3120,6 +3120,19 @@ public class Java5 extends AbstractOTJLDTest {
     		"----------\n",
     		"OK");
     }
+    
+    // Bug 394263 - Team with generic type parameter causes role inheritance error 
+    public void testA112_genericTeam4() {
+    	runConformTest(
+    		new String[] {
+    	"MyTeam.java",
+    			"public team class MyTeam<T> {	\n" + 
+    			"	protected class MyRole {}	\n" + 
+    			"	protected class MySubRole extends MyRole {}\n" + 
+    			"}"
+    		}
+    	);
+    }
 
     // a static method in a role file suppresses an nls warning
     // Bug 321352 -  [compiler][reconciler] reporting of non-externalized string constants in role files 
@@ -5080,4 +5093,6 @@ public class Java5 extends AbstractOTJLDTest {
 			"}\n"
     		});
     }
+    
+
 }
