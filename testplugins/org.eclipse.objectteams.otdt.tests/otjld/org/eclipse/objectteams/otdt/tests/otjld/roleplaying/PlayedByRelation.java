@@ -2643,4 +2643,28 @@ public class PlayedByRelation extends AbstractOTJLDTest {
     			"}\n"
     		});
     }
+
+    // access to private static inner of an inaccessible outer via playedBy
+    public void test2125_roleOfNestedClass1() {
+    	runConformTest(
+    		new String[] {
+    	"p2125/base/T2125ronc1.java",
+    			"package p2125.base;\n" +
+    			"class T2125ronc1 {\n" +
+    			"    private static class Inner {\n" +
+    			"        void foo() {}\n" +
+    			"    }\n" +
+    			"    void bar(Inner i) { i.foo(); }\n" +
+    			"}\n",
+    	"p2125/teams/Team2125ronc1.java",
+    			"package p2125.teams;\n" +
+    			"import base p2125.base.T2125ronc1.Inner;\n" +
+    			"@SuppressWarnings(\"decapsulation\")\n" +
+    			"public team class Team2125ronc1 {\n" +
+    			"    protected class R playedBy Inner {\n" +
+    			"        void foo() -> void foo();\n" +
+    			"    }\n" +
+    			"}\n"
+    		});
+    }
 }

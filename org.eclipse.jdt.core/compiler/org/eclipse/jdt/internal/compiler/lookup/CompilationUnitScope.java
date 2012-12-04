@@ -343,7 +343,7 @@ void checkAndSetImports() {
 //{ObjectTeams: base imports are collected seperately
 	  	  if (importReference.isBase()) {
  			baseImports[baseCount] = importReference;
-			Binding importBinding = findImport(compoundName, compoundName.length);
+			Binding importBinding = findImport(compoundName, compoundName.length, true/*allowDecapsulation*/);
 			if (importBinding.problemId() == ProblemReasons.NotVisible) {
 				final ReferenceBinding importedType = (ReferenceBinding) ((ProblemReferenceBinding)importBinding).closestMatch();
 				problemReporter().setRechecker(new IProblemRechecker() {
@@ -701,6 +701,11 @@ public Binding findImport(char[][] compoundName, boolean findStaticImports, bool
 	}
 }
 private Binding findImport(char[][] compoundName, int length) {
+//{ObjectTeams: optional third argument:
+	return findImport(compoundName, length, false);
+}
+private Binding findImport(char[][] compoundName, int length, boolean allowDecapsulation) {
+// SH}
 	recordQualifiedReference(compoundName);
 
 	Binding binding = this.environment.getTopLevelPackage(compoundName[0]);
@@ -735,6 +740,9 @@ private Binding findImport(char[][] compoundName, int length) {
 
 	while (i < length) {
 		type = (ReferenceBinding)this.environment.convertToRawType(type, false /*do not force conversion of enclosing types*/); // type imports are necessarily raw for all except last
+//{ObjectTeams:
+	  if (!allowDecapsulation)
+// SH}
 		if (!type.canBeSeenBy(this.fPackage))
 			return new ProblemReferenceBinding(CharOperation.subarray(compoundName, 0, i), type, ProblemReasons.NotVisible);
 
