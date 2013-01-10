@@ -1,13 +1,12 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2010 Stephan Herrmann
+ * Copyright 2010, 2013 Stephan Herrmann
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id$
  * 
  * Please visit http://www.eclipse.org/objectteams for updates and contact.
  * 
@@ -29,7 +28,7 @@ public class ExternalizedRoles extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "test1626_loopingOverExternalized2"};
+//		TESTS_NAMES = new String[] { "test166_typeAnchorIsPath9"};
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -1165,6 +1164,69 @@ public class ExternalizedRoles extends AbstractOTJLDTest {
 			    "    \n"
             },
             "Type mismatch");
+    }
+
+    // See https://bugs.eclipse.org/397897 [compiler] In three layers of teams anchor equivalence is not recognized
+    public void test166_typeAnchorIsPath9() {
+    	runConformTest(
+    		new String[] {
+    	"p166taip9/Main.java",
+    			"package p166taip9;\n" +
+    			"public team class Main {\n" + 
+    			"	private final Display display;\n" + 
+    			"\n" + 
+    			"	public Main(Display display) {\n" + 
+    			"		this.display = display;\n" + 
+    			"	}\n" + 
+    			"	protected class C playedBy Connect<@display> {\n" + 
+    			"		final Shapes sw = display.a;\n" + 
+    			"		protected void test() {\n" + 
+    			"			sw.new Connection(getNode().getShape());\n" + 
+    			"		}\n" + 
+    			"		Node<@display> getNode() -> Node<@display> getNode();\n" + 
+    			"	}\n" +
+    			"   void test2(Connect<@display> as C c) {\n" +
+    			"       c.test();\n" +
+    			"   }\n" +
+    			"   void test() {\n" +
+    			"		test2(display.new Connect());\n" +
+    			"	}\n" +
+    			"   public static void main(String[] args) {\n" +
+    			"		final Display d = new Display();\n" +
+    			"       new Main(d).test();\n" +
+    			"   }\n" + 
+    			"}",
+    	"p166taip9/Shapes.java",
+    			"package p166taip9;\n" +
+    			"public team class Shapes {\n" + 
+    			"	public class Shape {\n" +
+    			"		protected void print() {\n" +
+    			"			System.out.print(\"OK\");\n" +
+    			"		}\n" +
+    			"	}\n" + 
+    			"	public class Connection {\n" + 
+    			"		public Connection(Shape s) {" +
+    			"			s.print();\n" +
+    			"		}\n" + 
+    			"	}\n" + 
+    			"}\n",
+    	"p166taip9/Display.java",
+    			"package p166taip9;\n" +
+    			"public team class Display {\n" + 
+    			"	public final Shapes a = new Shapes();\n" + 
+    			"	public class Connect {\n" + 
+    			"		public Node getNode() {\n" + 
+    			"			return new Node();\n" + 
+    			"		}\n" + 
+    			"	}\n" + 
+    			"	public class Node {\n" + 
+    			"		public Shape<@a> getShape() {\n" + 
+    			"			return a.new Shape();\n" + 
+    			"		}\n" + 
+    			"	}\n" + 
+    			"}\n"
+    		},
+    		"OK");
     }
 
     // a role is externalized relative to the base reference

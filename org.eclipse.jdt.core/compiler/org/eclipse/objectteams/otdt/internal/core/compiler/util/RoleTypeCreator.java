@@ -277,7 +277,9 @@ public class RoleTypeCreator implements TagBits {
 		        	&& !(existingAnchor instanceof TThisBinding)
 		        	&& !existingAnchor.hasSameBestNameAs(variableBinding))
 		        {
-	        		return originalType; // cannot merge anchors -> original type cannot be improved.
+		        	variableBinding = TeamAnchor.maybeImproveAnchor(site, existingAnchor, anchorExpr);
+		        	if (variableBinding == null)
+		        		return originalType; // cannot merge anchors -> original type cannot be improved.
 		        }
 		        // delegate to the principal function:
 		        TypeBinding[] typeArguments = refBinding.isParameterizedType() ? ((ParameterizedTypeBinding)refBinding).arguments : null;
