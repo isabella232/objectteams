@@ -851,13 +851,15 @@ public class TransformerHook implements ClassLoadingHook, BundleWatcher, ClassLo
 				shouldTrigger = true;
 		}
 		// perform scheduled activations:
-		if (shouldTrigger)
+		if (shouldTrigger) {
+			Bundle[] copy;
 			synchronized (this.activatableBundles) {
-				Bundle[] copy = this.activatableBundles.toArray(new Bundle[this.activatableBundles.size()]);
-				for (Bundle bundle : copy)
-					BaseBundleRole.endActivation(this.bundleRegistry, bundle, this.aspectRegistry, this.teamLoadingService);
+				copy = this.activatableBundles.toArray(new Bundle[this.activatableBundles.size()]);
 				this.activatableBundles.clear();
 			}
+			for (Bundle bundle : copy)
+				BaseBundleRole.endActivation(this.bundleRegistry, bundle, this.aspectRegistry, this.teamLoadingService);
+		}
 
 		if (name.startsWith("org.objectteams")) {
 			if (name.equals(ORG_OBJECTTEAMS_TEAM))

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.objectteams.otequinox.hook.IByteCodeAnalyzer;
 import org.objectweb.asm.ClassReader;
@@ -77,7 +78,8 @@ public class ASMByteCodeAnalyzer implements IByteCodeAnalyzer {
 		}
 	}
 
-	private Map<String, ClassInformation> classInformationMap = new HashMap<String, ClassInformation>();
+	private Map<String, ClassInformation> classInformationMap =
+			new ConcurrentHashMap<String, ClassInformation>(512, 0.75f, 4);
 
 	/** 
 	 * {@inheritDoc}
@@ -111,19 +113,17 @@ public class ASMByteCodeAnalyzer implements IByteCodeAnalyzer {
 	private ClassInformation getClassInformation(byte[] classBytes,
 			InputStream classStream, String className) throws IOException 
 	{
-		synchronized (this.classInformationMap) {
-			ClassInformation classInformation = classInformationMap.get(className);
-			if (classInformation != null) {
-				return classInformation;
-			}
-			if (classBytes != null) {
-				classInformation = this.getClassInformationPrivate(classBytes);
-			} else {
-				classInformation = this.getClassInformationPrivate(classStream);
-			}
-			classInformationMap.put(className, classInformation);
+		ClassInformation classInformation = classInformationMap.get(className);
+		if (classInformation != null) {
 			return classInformation;
 		}
+		if (classBytes != null) {
+			classInformation = this.getClassInformationPrivate(classBytes);
+		} else {
+			classInformation = this.getClassInformationPrivate(classStream);
+		}
+		classInformationMap.put(className, classInformation);
+		return classInformation;
 	}
 
 
