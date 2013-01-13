@@ -4226,9 +4226,9 @@ public void invokeAutoCloseableClose(TypeBinding resourceType) {
 	// invokevirtual/interface: <resourceType>.close()
 	invoke(
 //{ObjectTeams: role via the interface, too:
-			resourceType.isRole() ||
+			resourceType.erasure().isRole() ||
 // SH}
-			resourceType.isInterface() ? Opcodes.OPC_invokeinterface : Opcodes.OPC_invokevirtual,
+			resourceType.erasure().isInterface() ? Opcodes.OPC_invokeinterface : Opcodes.OPC_invokevirtual,
 			1, // receiverAndArgsSize
 			0, // returnTypeSize
 			resourceType.constantPoolName(), 
