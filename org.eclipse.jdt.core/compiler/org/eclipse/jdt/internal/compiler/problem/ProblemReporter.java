@@ -1,10 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2012 IBM Corporation and others.
+ * Copyright (c) 2000, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id: ProblemReporter.java 23405 2010-02-03 17:02:18Z stephan $
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
@@ -11264,6 +11263,20 @@ public void callinToDeprecated(MethodSpec spec, MethodBinding binding) {
 	String[] args = { new String(binding.readableName()) };
 	this.handle(IProblem.CallinToDeprecated, args, args, spec.sourceStart, spec.sourceEnd);
 }
+
+public void invisibleMethod(MethodSpec spec, MethodBinding method) {
+	this.handle(
+		IProblem.NotVisibleMethod,
+		new String[] {
+			new String(method.declaringClass.readableName()),
+			new String(method.selector), typesAsString(method, false)},
+		new String[] {
+			new String(method.declaringClass.shortReadableName()),
+			new String(method.selector), typesAsString(method, true)},
+		spec.sourceStart,
+		spec.sourceEnd);
+}
+
 // -- 4.2 --
 public void callinInNonRole(ReferenceBinding declaringClass, AbstractMethodDeclaration method) {
 	String[] args = new String[] {

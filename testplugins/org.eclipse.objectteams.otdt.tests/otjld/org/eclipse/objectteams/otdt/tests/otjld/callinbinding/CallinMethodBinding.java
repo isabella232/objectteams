@@ -1,13 +1,12 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2010 IT Service Omikron GmbH and others.
+ * Copyright 2004, 2013 IT Service Omikron GmbH and others.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id$
  * 
  * Please visit http://www.eclipse.org/objectteams for updates and contact.
  * 
@@ -34,7 +33,7 @@ public class CallinMethodBinding extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "test726_callinWithHiddenLiftingProblem4"};
+//		TESTS_NAMES = new String[] { "test4143J_callinToTeamMethod4" };
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -7689,7 +7688,44 @@ public class CallinMethodBinding extends AbstractOTJLDTest {
             customOptions,
             null/*no custom requestor*/);
     }
-    
+
+    // an after callin binding refers to a package-private method of a super team
+    // https://bugs.eclipse.org/397867 - [compiler] illegal access to invisible method via callin binding not detected
+    public void test4143_callinToTeamMethod4() {
+       runNegativeTest(
+            new String[] {
+		"p2/Team4143cttm4_2.java",
+			    "package p2;\n" +
+			    "import base p0.T4143cttm4;\n" +
+			    "public team class Team4143cttm4_2 extends p1.Team4143cttm4_1 {\n" +
+			    "    protected class R playedBy T4143cttm4 {\n" +
+			    "        void k(String s) <- after void test()\n" +
+			    "            with { s <- \"K\" }\n" +
+			    "    }\n" +
+			    "}\n",
+		"p1/Team4143cttm4_1.java",
+			    "package p1;\n" +
+			    "public team class Team4143cttm4_1 {\n" +
+			    "    void k(String s) {\n" +
+			    "        System.out.print(s);\n" +
+			    "    }\n" +
+			    "}\n",
+		"p0/T4143cttm4.java",
+			    "package p0;\n" +
+			    "public class T4143cttm4 {\n" +
+			    "    public void test() {\n" +
+			    "        System.out.print(\"O\");\n" +
+			    "    }\n" +
+			    "}\n"
+            },
+            "----------\n" + 
+    		"1. ERROR in p2\\Team4143cttm4_2.java (at line 5)\n" + 
+    		"	void k(String s) <- after void test()\n" + 
+    		"	     ^\n" + 
+    		"The method k(String) from the type Team4143cttm4_1 is not visible\n" + 
+    		"----------\n");
+    }
+
     // implicitly inherited role method requires weakening
     public void test4144_callinToInherited1() {
     	runConformTest(
