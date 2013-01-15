@@ -290,12 +290,13 @@ public team class ExtensionEditorAdaptor
 			String optionSrc = javaProject.getOption(JavaCore.COMPILER_SOURCE,true);
 			String optionCompliance = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, true);
 			IStatus valid;
-			while (true) {
+			for (int i=0; i<2; i++) { // two attempts to account for "throw" -> "throws" -> "throwss"
 				valid = JavaConventions.validatePackageName(result, optionSrc, optionCompliance);
 				if (valid.isOK())
 					return result;
 				result += 's';
 			}
+			return result;
 		}
 
 		/** 

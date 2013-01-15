@@ -37,7 +37,7 @@ plugin@org.eclipse.objectteams.otdt.apt,2.0.0=GIT,repo=git://git.eclipse.org/git
 plugin@org.eclipse.objectteams.otdt.compiler.adaptor,2.1.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.compiler.adaptor,tag=builds/201203201248
 plugin@org.eclipse.objectteams.otdt.debug.adaptor,2.1.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.adaptor,tag=builds/201205081843
 plugin@org.eclipse.objectteams.otdt.refactoring,2.1.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.refactoring,tag=builds/201203201248
-plugin@org.eclipse.objectteams.otdt.pde.ui,2.1.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.pde.ui,tag=builds/201203201248
+plugin@org.eclipse.objectteams.otdt.pde.ui,2.1.1=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.pde.ui,tag=branches/maintenance/OTDT_2.1.x
 plugin@org.eclipse.objectteams.otdt.samples,2.1.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.samples,tag=builds/201108142105
 
 !** Consume BCEL from Orbit: **!
@@ -59,7 +59,7 @@ plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=GIT,repo=git://gi
 plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.test.builder,tag=branches/maintenance/OTDT_2.1.x
 plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests,tag=branches/maintenance/OTDT_2.1.x
 
-!-- Tests fetched from original CVS (some are required indirectly by jdt.ui.tests): --
+!-- Tests fetched from original GIT (some are required indirectly by jdt.ui.tests): --
 !   (these lines are generated from SDK map file using extractVersions)
 plugin@org.eclipse.jdt.core.tests.builder=GIT,tag=v20120523-1238,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.core.tests.builder
 plugin@org.eclipse.jdt.debug.tests=GIT,tag=v20120531-0709,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.debug.git,path=org.eclipse.jdt.debug.tests
