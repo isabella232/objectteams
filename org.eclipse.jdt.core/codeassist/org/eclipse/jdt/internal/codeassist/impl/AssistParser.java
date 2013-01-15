@@ -1584,12 +1584,7 @@ public void parseBlockStatements(AbstractMethodMappingDeclaration mapping, Compi
 		mapping.hasParsedParamMappings = true;
 	}
 
-	checkNonNLSAfterBodyEnd(mapping.declarationSourceEnd);
-
-// FIXME(SH): should re-enable this?
-//	if (this.lastAct == ERROR_ACTION) {
-//		return;
-//	}
+// SH: no return on ERROR_ACTION, which would spoil completion in (incomplete) parameter mappings.
 
 	// mapping has no explicitDeclarations:
 	// mapping.explicitDeclarations = this.realBlockStack[this.realBlockPtr--];
