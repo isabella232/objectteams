@@ -28,7 +28,7 @@ public class TeamNesting extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "test1115_nestedTeamExtendsRegularTeam1", "test1122_layeredTeams1"};
+//		TESTS_NAMES = new String[] { "testBug411449" };
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -3767,5 +3767,19 @@ public class TeamNesting extends AbstractOTJLDTest {
 			    "  \n"
             },
             "1.2.2(e)");
+    }
+
+    public void testBug411449() {
+    	runConformTest(
+    		new String[] {
+    			"X.java",
+    			"public team class X {\n" +
+    			"	final R r;\n" +
+    			"	public X(R r) {\n" +
+    			"		this.r = r;\n" +
+    			"	}\n" +
+    			"	protected class R {}\n" +
+    			"}\n"
+    		});
     }
 }

@@ -262,6 +262,9 @@ public void analyseCode(ClassScope classScope, InitializationFlowContext initial
 			// if calling 'this(...)', then flag all non-static fields as definitely
 			// set since they are supposed to be set inside other local constructor
 			if (this.constructorCall.accessMode == ExplicitConstructorCall.This) {
+//{ObjectTeams: calls to copied super ctors are not relevant here:
+			  if (!TSuperHelper.isTSuper(this.constructorCall.binding)) {
+// orig:
 				FieldBinding[] fields = this.binding.declaringClass.fields();
 				for (int i = 0, count = fields.length; i < count; i++) {
 					FieldBinding field;
@@ -269,6 +272,9 @@ public void analyseCode(ClassScope classScope, InitializationFlowContext initial
 						flowInfo.markAsDefinitelyAssigned(field);
 					}
 				}
+// :giro
+			  }
+// SH}
 			}
 			flowInfo = this.constructorCall.analyseCode(this.scope, constructorContext, flowInfo);
 		}

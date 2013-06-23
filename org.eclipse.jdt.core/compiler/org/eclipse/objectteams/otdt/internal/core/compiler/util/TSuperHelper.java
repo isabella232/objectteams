@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  *
- * Copyright 2004, 2006 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2004, 2013 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -150,6 +150,7 @@ public class TSuperHelper {
 	 * @return the answer
 	 */
 	public static boolean isTSuper(MethodBinding method) {
+		if (method == null) return false;
 	    TypeBinding[] params = method.parameters;
 	    if (params.length > 0) {
 	        TypeBinding lastParam = params[params.length-1];
