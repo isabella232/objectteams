@@ -1196,7 +1196,7 @@ public ParameterizedTypeBinding createParameterizedType(ReferenceBinding generic
 				if (teamAnchor != null) {
 					if (!(cachedType instanceof DependentTypeBinding))
 						continue nextCachedType;
-					if (((DependentTypeBinding)cachedType)._teamAnchor != teamAnchor)
+					if (!((DependentTypeBinding)cachedType)._teamAnchor.hasSameBestNameAs(teamAnchor))
 						continue nextCachedType;
 				}
 				if (   valueParamPosition > -1 							// position specified, requires dependent type
