@@ -471,9 +471,8 @@ public class MethodSpec extends ASTNode implements InvocationSite
 					ReferenceBinding declaringClass = this.resolvedMethod.declaringClass;
 					if (!declaringClass.isRole() && ((ProblemMethodBinding)this.resolvedMethod).closestMatch.isProtected()) {
 						this.resolvedMethod = ((ProblemMethodBinding)this.resolvedMethod).closestMatch;
-						break; // ignore
 					}
-					//$FALL-THROUGH$
+					break; // ignore (may already be reported)
 				default:
 					scope.problemReporter().missingImplementation(this, "Unexpected compile error at MethodSpec "+this); //$NON-NLS-1$
 					return;

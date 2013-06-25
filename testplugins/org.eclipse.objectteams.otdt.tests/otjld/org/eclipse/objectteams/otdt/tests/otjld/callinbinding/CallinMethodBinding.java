@@ -33,7 +33,7 @@ public class CallinMethodBinding extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "test4146_callinToConstructor" };
+//		TESTS_NAMES = new String[] { "test4143_callinToTeamMethod" };
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -7723,6 +7723,42 @@ public class CallinMethodBinding extends AbstractOTJLDTest {
     		"	void k(String s) <- after void test()\n" + 
     		"	     ^\n" + 
     		"The method k(String) from the type Team4143cttm4_1 is not visible\n" + 
+    		"----------\n");
+    }
+
+    // a before callin binding refers to a package-private method of a super team
+    // https://bugs.eclipse.org/411625 - [compiler] unreportable compile error in the context of bug 397867
+    public void test4143_callinToTeamMethod5() {
+       runNegativeTest(
+            new String[] {
+		"p2/Team4143cttm5_2.java",
+			    "package p2;\n" +
+			    "import base p0.T4143cttm5;\n" +
+			    "public team class Team4143cttm5_2 extends p1.Team4143cttm5_1 {\n" +
+			    "    protected class R playedBy T4143cttm5 {\n" +
+			    "        k <- before test;\n" +
+			    "    }\n" +
+			    "}\n",
+		"p1/Team4143cttm5_1.java",
+			    "package p1;\n" +
+			    "public team class Team4143cttm5_1 {\n" +
+			    "    void k() {\n" +
+			    "        System.out.println();\n" +
+			    "    }\n" +
+			    "}\n",
+		"p0/T4143cttm5.java",
+			    "package p0;\n" +
+			    "public class T4143cttm5 {\n" +
+			    "    public void test() {\n" +
+			    "        System.out.print(\"O\");\n" +
+			    "    }\n" +
+			    "}\n"
+            },
+            "----------\n" + 
+    		"1. ERROR in p2\\Team4143cttm5_2.java (at line 5)\n" + 
+    		"	k <- before test;\n" + 
+    		"	^\n" + 
+    		"The method k() from the type Team4143cttm5_1 is not visible\n" + 
     		"----------\n");
     }
 
