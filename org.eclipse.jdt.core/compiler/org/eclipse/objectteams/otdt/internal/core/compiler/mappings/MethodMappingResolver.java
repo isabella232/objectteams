@@ -80,6 +80,9 @@ public class MethodMappingResolver
 			return true;
 		}
 
+		// just in case this step was skipped when doing STATE_LENV_DONE_FIELDS_AND_METHODS:
+		this._roleScope.buildCallinCallouts();
+
 		boolean result = true;
 		for (int idx = 0; idx < methodMappings.length; idx++)
 		{

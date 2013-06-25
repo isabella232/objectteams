@@ -102,6 +102,8 @@ public class StateMemento
     	int oldState= this._state;
     	if (state >= this._currentlyProcessingState)
 			this._currentlyProcessingState = ITranslationStates.STATE_NONE;
+    	if (state >= this._requestedState)
+			this._requestedState = ITranslationStates.STATE_NONE;
         if (state > this._state) {
         	this._state = state;
 // Debugging the statemachine:

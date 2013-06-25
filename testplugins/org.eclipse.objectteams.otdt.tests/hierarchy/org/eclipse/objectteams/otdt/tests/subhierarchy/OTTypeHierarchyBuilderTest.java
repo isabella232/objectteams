@@ -30,6 +30,8 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.core.hierarchy.HierarchyBuilder;
 import org.eclipse.jdt.internal.core.hierarchy.IndexBasedHierarchyBuilder;
 import org.eclipse.jdt.internal.core.hierarchy.TypeHierarchy;
+import org.eclipse.objectteams.otdt.core.IOTType;
+import org.eclipse.objectteams.otdt.core.OTModelManager;
 import org.eclipse.objectteams.otdt.core.TypeHelper;
 import org.eclipse.objectteams.otdt.tests.otmodel.FileBasedModelTest;
 
@@ -155,6 +157,19 @@ public class OTTypeHierarchyBuilderTest extends FileBasedModelTest
 	    IType[] actual = hierarchy.getAllSubtypes(_focusType);
 	    
 	    assertTrue(compareTypes(expected, actual));
+	}
+
+	public void testBug411591() throws CoreException
+	{
+	    _focusType = javaProject.findType("java.lang.Object");
+	    TypeHierarchy hierarchy = new TypeHierarchy(_focusType, null, _focusType.getJavaProject(), false);
+	    HierarchyBuilder builder = new IndexBasedHierarchyBuilder(hierarchy, SearchEngine.createJavaSearchScope(new IJavaElement[] {_focusType.getJavaProject()} ));
+   
+	    builder.build(true);
+	    IType[] actual = hierarchy.getAllSubtypes(_focusType);
+	    assertNotNull(actual);
+	    
+	    // no real assert not throwing NPE is all we need to check
 	}
 	
 }

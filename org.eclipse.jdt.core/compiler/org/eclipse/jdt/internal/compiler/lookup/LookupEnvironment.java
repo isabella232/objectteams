@@ -47,6 +47,7 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.statemachine.transfor
 import org.eclipse.objectteams.otdt.internal.core.compiler.statemachine.transformer.TeamMethodGenerator;
 import org.eclipse.objectteams.otdt.internal.core.compiler.util.AstEdit;
 import org.eclipse.objectteams.otdt.internal.core.compiler.util.RoleFileHelper;
+import org.eclipse.objectteams.otdt.internal.core.compiler.util.TypeAnalyzer;
 
 /**
  * OTDT changes:
@@ -511,11 +512,17 @@ public void completeTypeBindings(CompilationUnitDeclaration[] parsedUnits, boole
 		  boolean done = false;
 		  if (parsedUnit.state.getState() < ITranslationStates.STATE_LENV_DONE_FIELDS_AND_METHODS)
 		  {
+			// also roles with anchored baseclass need fields:
+			if (TypeAnalyzer.containsAnchoredBaseclass(parsedUnit))
+				buildFieldsAndMethods[i] = true;
 // SH}
 			(this.unitBeingCompleted = parsedUnit).scope.checkParameterizedTypes();
 			if (buildFieldsAndMethods[i])
 				parsedUnit.scope.buildFieldsAndMethods();
-//{ObjectTeams: record that we are done:
+//{ObjectTeams: roles *always* need their baseclass:
+			else
+				parsedUnit.scope.connectBaseclass();
+			// record that we are done:
 			done = true;
 		  }
 		  StateHelper.setStateRecursive(parsedUnit, ITranslationStates.STATE_LENV_DONE_FIELDS_AND_METHODS, done);

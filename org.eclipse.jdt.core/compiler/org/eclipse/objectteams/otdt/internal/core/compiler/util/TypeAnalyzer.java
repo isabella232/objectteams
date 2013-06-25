@@ -27,6 +27,7 @@ import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.eclipse.jdt.internal.compiler.ast.Expression.DecapsulationState;
 import org.eclipse.jdt.internal.compiler.ast.FieldReference;
+import org.eclipse.jdt.internal.compiler.ast.ParameterizedSingleTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.QualifiedTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.SingleTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.ThisReference;
@@ -53,6 +54,7 @@ import org.eclipse.jdt.internal.compiler.lookup.TypeIds;
 import org.eclipse.jdt.internal.compiler.lookup.UnresolvedReferenceBinding;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
 import org.eclipse.objectteams.otdt.core.exceptions.InternalCompilerError;
+import org.eclipse.objectteams.otdt.internal.core.compiler.ast.TypeAnchorReference;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Config;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Dependencies;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.DependentTypeBinding;
@@ -818,6 +820,31 @@ public class TypeAnalyzer  {
 				return true;
 			binding = binding.enclosingType();
 		}
+		return false;
+	}
+
+	/** Does the unit contain any role class with a base class reference that could potentially represent an anchored type? */
+	public static boolean containsAnchoredBaseclass(CompilationUnitDeclaration parsedUnit) {
+		if (parsedUnit.types == null) return false;
+		for (TypeDeclaration type : parsedUnit.types)
+			if (containsAnchoredBaseclass(type))
+				return true;
+		return false;
+	}
+
+	private static boolean containsAnchoredBaseclass(TypeDeclaration type) {
+		TypeReference baseRef = type.baseclass;
+		if (baseRef instanceof ParameterizedSingleTypeReference) {
+			 TypeReference[] typeArguments = ((ParameterizedSingleTypeReference)baseRef).typeArguments;
+			 return typeArguments != null && typeArguments.length > 0 && typeArguments[0] instanceof TypeAnchorReference;
+		} else if (baseRef instanceof QualifiedTypeReference) {
+			return true;
+		}
+		TypeDeclaration[] members = type.memberTypes;
+		if (members != null)
+			for (TypeDeclaration member : members)
+				if (containsAnchoredBaseclass(member))
+					return true;
 		return false;
 	}
 }

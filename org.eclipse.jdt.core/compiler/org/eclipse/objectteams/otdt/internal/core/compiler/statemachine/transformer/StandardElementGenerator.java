@@ -621,7 +621,7 @@ public class StandardElementGenerator {
 											   null);
 		boolean hasTypeProblem = baseclass instanceof MissingTypeBinding;
 		AstEdit.addField(roleType, baseField, createBinding, hasTypeProblem, false);
-		if (hasTypeProblem) {
+		if (hasTypeProblem && createBinding) {
 			// faked resolving for missing type
 			baseField.binding.type= baseclass;
 			baseField.binding.modifiers &= ~ExtraCompilerModifiers.AccUnresolved;
