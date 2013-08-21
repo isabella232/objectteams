@@ -16,8 +16,6 @@ import java.util.Map;
 
 import junit.framework.Test;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 
@@ -53,7 +51,7 @@ public NullAnnotationTest(String name) {
 // Static initializer to specify tests subset using TESTS_* static variables
 // All specified tests which do not belong to the class are skipped...
 static {
-//		TESTS_NAMES = new String[] { "test_nullable_field_10c" };
+//		TESTS_NAMES = new String[] { "testBug412076" };
 //		TESTS_NUMBERS = new int[] { 561 };
 //		TESTS_RANGE = new int[] { 1, 2049 };
 }
@@ -69,15 +67,7 @@ public static Class testClass() {
 protected void setUp() throws Exception {
 	super.setUp();
 	if (this.LIBS == null) {
-		String[] defaultLibs = getDefaultClassPaths();
-		int len = defaultLibs.length;
-		this.LIBS = new String[len+1];
-		System.arraycopy(defaultLibs, 0, this.LIBS, 0, len);
-		File bundleFile = FileLocator.getBundleFile(Platform.getBundle("org.eclipse.jdt.annotation"));
-		if (bundleFile.isDirectory())
-			this.LIBS[len] = bundleFile.getPath()+"/bin";
-		else
-			this.LIBS[len] = bundleFile.getPath();
+		this.LIBS = getLibsWithNullAnnotations();
 	}
 }
 // Conditionally augment problem detection settings
@@ -3879,7 +3869,7 @@ public void test_nonnull_field_2e() {
 		new String[] {
 			"X.java",
 			"import org.eclipse.jdt.annotation.*;\n" +
-			"public class X {\n" +
+			"public class X<T> {\n" +
 			"    @NonNull Object f;\n" +
 			"    {\n" +
 			"         this.f = new Object();\n" +
@@ -6204,5 +6194,39 @@ public void testBug403086_2() {
 		},
 		customOptions,
 		"");
+}
+
+// https://bugs.eclipse.org/412076 - [compiler] @NonNullByDefault doesn't work for varargs parameter when in generic interface
+public void testBug412076() {
+	Map options = getCompilerOptions();
+	options.put(JavaCore.COMPILER_PB_MISSING_OVERRIDE_ANNOTATION, JavaCore.IGNORE);
+	runConformTestWithLibs(
+		new String[] {
+			"Foo.java",
+			"import org.eclipse.jdt.annotation.*;\n" +
+			"@NonNullByDefault\n" + 
+			"public interface Foo<V> {\n" + 
+			"  V bar(String... values);\n" + 
+			"  V foo(String value);\n" + 
+			"}\n"
+		},
+		options,
+		"");
+	runConformTestWithLibs(
+		new String[] {
+			"FooImpl.java",
+			"import org.eclipse.jdt.annotation.*;\n" +
+			"@NonNullByDefault\n" + 
+			"public class FooImpl implements Foo<String> {\n" + 
+			"  public String bar(final String... values) {\n" + 
+			"    return (\"\");\n" + 
+			"  }\n" + 
+			"  public String foo(final String value) {\n" + 
+			"    return (\"\");\n" + 
+			"  }\n" + 
+			"}\n"
+		},
+		options,
+		"");	
 }
 }

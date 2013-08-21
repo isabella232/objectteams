@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.objectteams.otdt"
       label="%featureName"
-      version="2.2.0.qualifier"
+      version="2.2.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.objectteams.otdt"
       image="OTDT-110.png">
@@ -64,7 +64,7 @@ Project Leader:
 
    <includes
          id="org.eclipse.objectteams.otdt.core.patch"
-         version="2.2.0.qualifier"/>
+         version="2.2.1.qualifier"/>
 
    <plugin
          id="org.eclipse.objectteams.otdt"
