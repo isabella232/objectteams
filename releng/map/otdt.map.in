@@ -46,18 +46,18 @@ plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400
 !***************  OTDT Test CONTRIBUTION  ******************************************************** 
 
 
-feature@org.eclipse.objectteams.otdt-tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature
+feature@org.eclipse.objectteams.otdt-tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature,tag=branches/maintenance/OTDT_2.2.x
 
-plugin@org.eclipse.jdt.core.tests.compiler=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.compiler
-plugin@org.eclipse.jdt.core.tests.model=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.model
-plugin@org.eclipse.objectteams.otdt.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.tests
-plugin@org.eclipse.objectteams.otdt.ui.tests.dom,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.dom
-plugin@org.eclipse.objectteams.otdt.debug.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.debug.tests
-plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring
+plugin@org.eclipse.jdt.core.tests.compiler=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.compiler,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.jdt.core.tests.model=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.model,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.objectteams.otdt.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.tests,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.objectteams.otdt.ui.tests.dom,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.dom,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.objectteams.otdt.debug.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.debug.tests,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring,tag=branches/maintenance/OTDT_2.2.x
 
 !** OT/J Test Plugins **!
-plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.test.builder
-plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests
+plugin@org.eclipse.objectteams.otdt.test.builder,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.test.builder,tag=branches/maintenance/OTDT_2.2.x
+plugin@org.eclipse.objectteams.otdt.ui.tests,0.7.0=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests,tag=branches/maintenance/OTDT_2.2.x
 
 !-- Tests fetched from original GIT (some are required indirectly by jdt.ui.tests): --
 plugin@org.eclipse.jdt.core.tests.builder=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.core.tests.builder
