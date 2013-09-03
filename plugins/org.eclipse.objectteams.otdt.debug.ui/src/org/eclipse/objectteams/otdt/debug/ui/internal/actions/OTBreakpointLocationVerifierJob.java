@@ -41,6 +41,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.TextSelection;
+import org.eclipse.objectteams.otdt.core.ext.OTDTPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -135,6 +136,12 @@ public class OTBreakpointLocationVerifierJob extends Job {
             }
             options.put(JavaCore.COMPILER_COMPLIANCE, compilerCompliance);
             options.put(JavaCore.COMPILER_SOURCE, compilerSource);
+//{ObjectTeams: copy one more option to ensure proper parsing:
+            if (project != null) {
+	            String isPureJava = project.getOption(OTDTPlugin.OT_COMPILER_PURE_JAVA, true);
+	            options.put(OTDTPlugin.OT_COMPILER_PURE_JAVA, isPureJava);
+            }
+// SH}
 			parser.setCompilerOptions(options);
 		}
 		CompilationUnit compilationUnit= (CompilationUnit)parser.createAST(null);

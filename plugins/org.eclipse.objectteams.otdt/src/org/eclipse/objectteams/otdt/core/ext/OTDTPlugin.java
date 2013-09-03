@@ -221,7 +221,17 @@ public class OTDTPlugin extends Plugin
 	 */	
 	public static final String OT_COMPILER_UNUSED_PARAMMAP =  PLUGIN_ID + ".compiler.problem.unused_parammap";
 
-
+	/**
+	 * Compiler option ID: Parse pure Java (disabling OT/J keywords).
+	 * This is not normally set by clients but initialized from the project nature.
+	 * <dl>
+	 * <dt>Possible values:</dt><dd><code>{ "enabled", "disabled" }</code></dd>
+	 * <dt>Default:</dt><dd><code>"enabled"</code></dd>
+	 * </dl>
+	 * @category CompilerOptionID
+	 */
+	public static final String OT_COMPILER_PURE_JAVA = PLUGIN_ID + ".compiler.option.pure_java";
+	
     private static OTDTPlugin _singleton = null;
 
 
