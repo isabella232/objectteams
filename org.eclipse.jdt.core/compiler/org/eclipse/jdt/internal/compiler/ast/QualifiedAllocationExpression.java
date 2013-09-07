@@ -342,7 +342,7 @@ public static abstract class AbstractQualifiedAllocationExpression extends Alloc
 			return super.resolveType(scope);
 		}
 		TypeBinding result=resolveTypeForQualifiedAllocationExpression(scope);
-		if(result != null) {
+		if(result != null && this.binding != null) { // OT: advance-patched for https://bugs.eclipse.org/416267 
 			final CompilerOptions compilerOptions = scope.compilerOptions();
 			if (compilerOptions.isAnnotationBasedNullAnalysisEnabled && (this.binding.tagBits & TagBits.IsNullnessKnown) == 0) {
 //{ObjectTeams: added 2nd arg:
