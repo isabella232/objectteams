@@ -34,7 +34,7 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
 	// Static initializer to specify tests subset using TESTS_* static variables
 	// All specified tests which does not belong to the class are skipped...
 	static {
-//		TESTS_NAMES = new String[] { "test3113_calloutToStatic"};
+//		TESTS_NAMES = new String[] { "test3117_inferredCallout13"};
 //		TESTS_NUMBERS = new int[] { 1459 };
 //		TESTS_RANGE = new int[] { 1097, -1 };
 	}
@@ -2988,6 +2988,76 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
             "OK",
             null/*classLibraries*/,
             true/*shouldFlushOutputDirectory*/,
+            null/*vmArguments*/,
+            customOptions,
+            null/*no custom requestor*/);
+    }
+
+    // Bug 416776 - [compiler] callout inference from interface fails during incremental build
+    public void test3117_inferredCallout13() {
+       Map customOptions = getCompilerOptions();
+       customOptions.put(CompilerOptions.OPTION_ReportInferredCallout, CompilerOptions.WARNING);
+       
+       runConformTest(
+            new String[] {
+		"b/IBase.java",
+			    "\n" +
+			    "package b;\n" + 
+			    "\n" + 
+			    "public interface IBase {\n" + 
+			    "\n" + 
+			    "	void setS(String s);\n" + 
+			    "\n" +
+			    "	void setL(java.util.List<String> l);\n" + 
+			    "}\n",
+		"b/BaseClass.java",
+			    "package b;\n" + 
+			    "\n" + 
+			    "public class BaseClass implements IBase {\n" + 
+			    "\n" + 
+			    "	String s;\n" + 
+			    "	java.util.List<String> l;\n" + 
+			    "\n" + 
+			    "	public void setS(String s) {\n" + 
+			    "		this.s = s;\n" + 
+			    "	}\n" + 
+			    "\n" + 
+			    "	public void setL(java.util.List<String> l) {\n" + 
+			    "		this.l = l;\n" + 
+			    "	}\n" + 
+			    "}\n" + 
+			    "\n"
+            },
+            "",
+            null/*classLibraries*/,
+            true/*shouldFlushOutputDirectory*/,
+            null/*vmArguments*/,
+            customOptions,
+            null/*no custom requestor*/);
+       runConformTest(
+               new String[] {
+		"t/Team3117ic13.java",
+			    "package t;\n" + 
+			    "\n" + 
+			    "import b.IBase;\n" + 
+			    "\n" + 
+			    "import base b.BaseClass;\n" + 
+			    "\n" + 
+			    "/**\n" + 
+			    " * @author stephan\n" + 
+			    " *\n" + 
+			    " */\n" + 
+			    "public team class Team3117ic13 {\n" + 
+			    "\n" + 
+			    "	@SuppressWarnings(\"inferredcallout\")\n" + 
+			    "	protected class Role1 implements IBase playedBy BaseClass {\n" + 
+			    "		String extra;\n" + 
+			    "	}\n" + 
+			    "}\n"
+            },
+            "",
+            null/*classLibraries*/,
+            false/*shouldFlushOutputDirectory*/,
             null/*vmArguments*/,
             customOptions,
             null/*no custom requestor*/);

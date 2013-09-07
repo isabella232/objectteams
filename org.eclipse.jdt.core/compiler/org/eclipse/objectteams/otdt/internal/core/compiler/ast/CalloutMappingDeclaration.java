@@ -31,6 +31,7 @@ import org.eclipse.jdt.internal.compiler.lookup.ProblemReasons;
 import org.eclipse.jdt.internal.compiler.lookup.ReferenceBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TagBits;
 import org.eclipse.jdt.internal.compiler.lookup.TypeBinding;
+import org.eclipse.jdt.internal.compiler.lookup.UnresolvedReferenceBinding;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Config;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Dependencies;
@@ -111,6 +112,8 @@ public class CalloutMappingDeclaration extends AbstractMethodMappingDeclaration
 				Config oldConfig = Config.createOrResetConfig(this);
 				try {
 					TypeBinding roleParam = roleParams[j];
+					if (roleParam instanceof UnresolvedReferenceBinding)
+						roleParam = ((UnresolvedReferenceBinding) roleParam).resolve(this.scope.environment(), false);
 					TypeBinding roleParamLeaf = roleParam.leafComponentType();
 					TypeBinding roleBaseLeaf = null;
 					if (   roleParamLeaf instanceof ReferenceBinding
