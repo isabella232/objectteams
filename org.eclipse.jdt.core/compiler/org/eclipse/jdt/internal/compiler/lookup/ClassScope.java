@@ -1792,14 +1792,15 @@ public class ClassScope extends Scope {
 					sourceType.baseclass = null;
 					return true;
 				} else {
+					// only want to reach here when no errors are reported
+					sourceType.baseclass = baseclass;
+
 					RoleModel roleModel = sourceType.roleModel;
 					roleModel._state.addJob(ITranslationStates.STATE_ROLES_LINKED, new Runnable() {
 						public void run() {
 							checkBaseClassRedefinition(ClassScope.this.referenceContext);
 						}
 					});
-					// only want to reach here when no errors are reported
-					sourceType.baseclass = baseclass;
 
 					char[] packageName = baseclass.compoundName[0];
 					if (   CharOperation.equals(packageName, "java".toCharArray())   //$NON-NLS-1$
