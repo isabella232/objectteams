@@ -230,6 +230,15 @@ ReferenceBinding askForType(PackageBinding packageBinding, char[] name) {
 		this.typeRequestor.accept(answer.getBinaryType(), packageBinding, answer.getAccessRestriction());
 	} else if (answer.isCompilationUnit()) {
 		// the type was found as a .java file, try to build it then search the cache
+//{ObjectTeams: prevent marking type as STATE_FINAL in case of caught abort()
+		boolean prevFlag = false;
+		TypeDeclaration typeDeclaration = null;
+		if (this.problemReporter.referenceContext instanceof TypeDeclaration) {
+			typeDeclaration = (TypeDeclaration)this.problemReporter.referenceContext;
+			prevFlag = typeDeclaration.willCatchAbort;
+			typeDeclaration.willCatchAbort = true;
+		} 
+// SH}
 		try {
 			this.typeRequestor.accept(answer.getCompilationUnit(), answer.getAccessRestriction());
 		} catch (AbortCompilation abort) {
@@ -237,6 +246,12 @@ ReferenceBinding askForType(PackageBinding packageBinding, char[] name) {
 				return null; // silently, requestor may not be able to handle compilation units (HierarchyResolver)
 			throw abort;
 		}
+//{ObjectTeams: reset
+		finally {
+			if (typeDeclaration != null)
+				typeDeclaration.willCatchAbort = prevFlag;
+		}
+//SH}
 	} else if (answer.isSourceType()) {
 		// the type was found as a source model
 		this.typeRequestor.accept(answer.getSourceTypes(), packageBinding, answer.getAccessRestriction());

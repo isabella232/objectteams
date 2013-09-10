@@ -339,6 +339,8 @@ public class TypeDeclaration extends Statement implements ProblemSeverities, Ref
 	/** copy inheritence without an overriding source role in the current team? */
 	public boolean isPurelyCopied = false;
 
+	public boolean willCatchAbort = false;
+
 	public final boolean isTeam() {
 		return (this.modifiers & AccTeam) != 0;
 	}
@@ -404,15 +406,17 @@ public TypeDeclaration(CompilationResult compilationResult){
  */
 public void abort(int abortLevel, CategorizedProblem problem) {
 //{ObjectTeams: also mark in the state that we're done:
-	switch (abortLevel) {
-		case AbortCompilation :
-		case AbortCompilationUnit :
-			StateHelper.setStateRecursive(this.scope.referenceCompilationUnit(), ITranslationStates.STATE_FINAL, false);
-			break;
-		case AbortMethod:
-			break;
-		default :
-			StateHelper.setStateRecursive(this, ITranslationStates.STATE_FINAL, false);
+	if (!this.willCatchAbort) { // only on exceptions that will actually fly
+		switch (abortLevel) {
+			case AbortCompilation :
+			case AbortCompilationUnit :
+				StateHelper.setStateRecursive(this.scope.referenceCompilationUnit(), ITranslationStates.STATE_FINAL, false);
+				break;
+			case AbortMethod:
+				break;
+			default :
+				StateHelper.setStateRecursive(this, ITranslationStates.STATE_FINAL, false);
+		}
 	}
 // SH}
 	switch (abortLevel) {
