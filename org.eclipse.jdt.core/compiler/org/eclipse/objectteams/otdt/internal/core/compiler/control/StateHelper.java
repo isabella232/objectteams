@@ -20,6 +20,7 @@
  **********************************************************************/
 package org.eclipse.objectteams.otdt.internal.core.compiler.control;
 
+import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 import org.eclipse.jdt.internal.compiler.lookup.ClassScope;
@@ -232,6 +233,31 @@ public class StateHelper
 			return false;
 		return isReadyToProcess(type.model, state);
 	}
+	
+	public static boolean isDefinitelyReadyToProcess(ReferenceBinding type, ReferenceBinding requestingSite, int state) {
+		
+		if (!(type instanceof SourceTypeBinding))
+			return false; // most treatment not needed for binary types
+		SourceTypeBinding sourceType = (SourceTypeBinding) type;
+		
+		if (sourceType.outermostEnclosingType().erasure() == requestingSite.outermostEnclosingType().erasure() 
+				|| CharOperation.equals(type.getFileName(), requestingSite.getFileName()))
+			return false; // could infinitely recurse to the same inclosing of kind
+			
+		if (!StateHelper.isReadyToProcess(sourceType, state))
+			return false;
+			
+		try {
+			StateMemento unitState = sourceType.scope.compilationUnitScope().referenceContext.state;
+			if (unitState.isReadyToProcess(state))
+				return true; // GOAL
+		} catch (NullPointerException npe) {
+			// be shy, if any enclosing thing was missing don't risk infinite recursion.
+		}
+		
+		return false;
+	}
+
 
 	/** Signal that processing for `state' has begun
 	 *  (role- and team-models of type plus enclosing team).

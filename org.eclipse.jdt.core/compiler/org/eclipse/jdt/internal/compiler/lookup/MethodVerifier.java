@@ -37,6 +37,7 @@ import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
 import org.eclipse.objectteams.otdt.core.compiler.OTNameUtils;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Dependencies;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.ITranslationStates;
+import org.eclipse.objectteams.otdt.internal.core.compiler.control.StateHelper;
 import org.eclipse.objectteams.otdt.internal.core.compiler.mappings.CalloutImplementor;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.MethodModel;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.RoleModel;
@@ -833,9 +834,9 @@ protected boolean canOverridingMethodDifferInErasure(MethodBinding overridingMet
 }
 void computeMethods() {
 //{ObjectTeams: make sure we actually have all methods we can have:
-	// supers (unless from the same enclosing) should have all features:
+	// supers (unless in danger of infinite recursion) should have all features:
 	ReferenceBinding superclass = this.type.superclass;
-	if (superclass != null && superclass.outermostEnclosingType().erasure() != this.type.outermostEnclosingType().erasure())
+	if (StateHelper.isDefinitelyReadyToProcess(superclass, this.type, ITranslationStates.STATE_METHODS_VERIFIED))
 		Dependencies.ensureBindingState(superclass, ITranslationStates.STATE_METHODS_VERIFIED);
 	// role should copy all we can get by now
 	if (this.type.isRole() && !this.type.isInterface())
