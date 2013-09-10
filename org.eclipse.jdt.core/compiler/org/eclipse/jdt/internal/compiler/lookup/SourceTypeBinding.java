@@ -2952,8 +2952,12 @@ void verifyMethods(MethodVerifier verifier) {
 // SH}
 	verifier.verify(this);
 
+//{ObjectTeams: going from general to specific is safer (memberTypes have been sorted during connect):
+/* orig:
 	for (int i = this.memberTypes.length; --i >= 0;)
-//{ObjectTeams: roles can be binary contained in source type:
+  :giro */
+	for (int i = 0; i < this.memberTypes.length; i++)
+	  // roles can be binary contained in source type:
 	  if (!this.memberTypes[i].isBinaryBinding())
 // SH}
 		 ((SourceTypeBinding) this.memberTypes[i]).verifyMethods(verifier);
