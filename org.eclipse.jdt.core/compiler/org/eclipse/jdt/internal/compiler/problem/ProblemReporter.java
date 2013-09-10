@@ -113,6 +113,7 @@ import org.eclipse.jdt.internal.compiler.env.AccessRestriction;
 import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
 import org.eclipse.jdt.internal.compiler.flow.FlowInfo;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.jdt.internal.compiler.impl.IrritantSet;
 import org.eclipse.jdt.internal.compiler.impl.ReferenceContext;
 import org.eclipse.jdt.internal.compiler.lookup.ArrayBinding;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
@@ -10950,7 +10951,10 @@ public void duplicateCalloutBinding(ReferenceContext context, MethodSpec methodS
 		methodSpec.declarationSourceEnd
 	);
 }
-public void addingInferredCalloutForInherited(TypeDeclaration type, MethodBinding abstractMethod) {
+public void addingInferredCalloutForInherited(TypeDeclaration type, MethodBinding abstractMethod, final MethodDeclaration calloutWrapper) {
+	setRechecker(new IProblemRechecker() { public boolean shouldBeReported(IrritantSet[] foundIrritants) {
+		return !calloutWrapper.isCopied; // inferred callout replaced by a copy-inherited method?
+	}});
 	String[] args = { new String(abstractMethod.shortReadableName()) };
 	this.handle(
 			IProblem.AddingInferredCalloutForInherited,

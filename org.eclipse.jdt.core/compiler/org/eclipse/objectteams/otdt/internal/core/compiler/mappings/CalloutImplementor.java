@@ -161,7 +161,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 				if(methodMapping.isCallout())
 				{
 					boolean createStatements= needMethodBodies && !methodMapping.hasErrors();
-					result &= createCallout((CalloutMappingDeclaration) methodMapping, createStatements, false/*inferred*/);
+					result &= (createCallout((CalloutMappingDeclaration) methodMapping, createStatements, false/*inferred*/) != null);
 				}
 			}
 		}
@@ -170,7 +170,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 	}
 
     /** This method drives the creation of a callout implementation for one callout mapping. */
-    private boolean createCallout(CalloutMappingDeclaration calloutMappingDeclaration, boolean needBody, boolean isInferred)
+    private MethodDeclaration createCallout(CalloutMappingDeclaration calloutMappingDeclaration, boolean needBody, boolean isInferred)
     {
 		CallinCalloutScope calloutScope = calloutMappingDeclaration.scope;
 
@@ -183,14 +183,14 @@ public class CalloutImplementor extends MethodMappingImplementor
         {
         	// problemreporting already done in find-Base/Role-MethodBinding
             assert(calloutMappingDeclaration.ignoreFurtherInvestigation);
-			return false;
+			return null;
         }
         if (!roleMethodBinding.isValidBinding()) {
         	if (roleMethodBinding.problemId() != ProblemReasons.NotFound) {
         		// CLOVER: never true in jacks suite
 	        	calloutMappingDeclaration.tagAsHavingErrors();
 	        	// hopefully error has been reported!
-	        	return false;
+	        	return null;
 	        } else { // shorthand style callout
 	        	// help sourceMethod() below to find another callout method
 	        	MethodBinding existingMethod = calloutScope.enclosingSourceType().getExactMethod(roleMethodBinding.selector, roleMethodBinding.parameters, calloutScope.compilationUnitScope());
@@ -281,7 +281,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 	            		this._role.getAst(),
 						calloutMappingDeclaration,
 						roleMethodDeclaration.binding);
-	            return false;
+	            return null;
             }
 
             // fix flags (even if not needing body):
@@ -313,7 +313,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 			throw new InternalCompilerError("OT-Compiler Error: couldn't create method declaration for callout! "  //$NON-NLS-1$
 									+ calloutMappingDeclaration.toString());
     	}
-        return true;
+        return roleMethodDeclaration;
     }
 
     private MethodDeclaration createAbstractRoleMethodDeclaration(
@@ -1008,12 +1008,12 @@ public class CalloutImplementor extends MethodMappingImplementor
 	 *
 	 * @param roleClass      type into which the callout might be generated (guaranteed to be a role)
 	 * @param abstractMethod inherited abstract method
-	 * @return whether or not inference was successful
+	 * @return the generated wrapper method or null
 	 */
-	public boolean generateInferredCallout(TypeDeclaration roleClass, MethodBinding abstractMethod) {
+	public MethodDeclaration generateInferredCallout(TypeDeclaration roleClass, MethodBinding abstractMethod) {
 		ReferenceBinding baseType = this._role.getBaseTypeBinding();
 		if (baseType == null || !baseType.isValidBinding())
-			return false;
+			return null;
 		AstGenerator gen = new AstGenerator(roleClass.sourceStart, roleClass.sourceEnd);
 		MethodSpec roleMethod = fromMethodBinding(abstractMethod, gen);
 		TypeBinding[] roleParams = abstractMethod.parameters;
@@ -1051,7 +1051,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 		CalloutImplementor coi = new CalloutImplementor(roleClass.getRoleModel());
 		if (coi.internalGenerateInferredCallout(roleClass, baseType,
 												roleMethod, roleParams, InferenceKind.SELFCALL,
-												gen))
+												gen) != null)
 		{
 			messageSend.binding = roleMethod.resolvedMethod;
 			return true;
@@ -1070,9 +1070,9 @@ public class CalloutImplementor extends MethodMappingImplementor
 	 * @param roleParams
 	 * @param kind 			 infer from superInterface or from an unresolved self-call?
 	 * @param gen            positioned AstGenerator
-	 * @return whether or not inference succeeded
+	 * @return the generated wrapper method or null if no success
 	 */
-	private boolean internalGenerateInferredCallout(TypeDeclaration  roleClass,
+	private MethodDeclaration internalGenerateInferredCallout(TypeDeclaration  roleClass,
 													ReferenceBinding baseType,
 													MethodSpec 		 roleMethodSpec,
 													TypeBinding[]    roleParams,
@@ -1089,7 +1089,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 		MethodBinding candidate;
 		candidate= inferBaseMethod(callout, baseType, roleMethodSpec.selector, roleParams);
 		if (candidate == null)
-			return false;
+			return null;
 
 		// modifiers adjustment:
 		if (kind == InferenceKind.SELFCALL && candidate.isStatic())
@@ -1134,7 +1134,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 
 		// now we have all information for checking 3.4(d) (see Trac #96):
 		if (!callout.checkVisibility(callout.baseMethodSpec, baseType))
-			return false; // don't generate illegal access.
+			return null; // don't generate illegal access.
 
 		CallinCalloutBinding calloutBinding;
 		calloutBinding= callout.scope.createBinding(callout);
@@ -1145,8 +1145,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 		callout.checkReturnCompatibility(callout.roleMethodSpec);
 		callout.checkReturnCompatibility(callout.baseMethodSpec);
 		// translate to method declaration:
-		createCallout(callout, true/*needBody*/, true/*isInferred*/);
-		return true;
+		return createCallout(callout, true/*needBody*/, true/*isInferred*/);
 	}
 
 	/**

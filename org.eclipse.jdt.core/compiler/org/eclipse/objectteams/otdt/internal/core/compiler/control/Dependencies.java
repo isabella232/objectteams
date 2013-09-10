@@ -1816,8 +1816,9 @@ public class Dependencies implements ITranslationStates {
 				if (((method.modifiers & ClassFileConstants.AccAbstract) != 0) && method.isCopied) {
 		    		// inheriting abstract method in non-abstract role may require callout inference:
 					CalloutImplementor coi = new CalloutImplementor(roleDecl.getRoleModel());
-					if (coi.generateInferredCallout(roleDecl, method.binding))
-						roleDecl.scope.problemReporter().addingInferredCalloutForInherited(roleDecl, method.binding);
+					MethodDeclaration callout = coi.generateInferredCallout(roleDecl, method.binding);
+					if (callout != null)
+						roleDecl.scope.problemReporter().addingInferredCalloutForInherited(roleDecl, method.binding, callout);
 				}
 			}
 		}

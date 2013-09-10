@@ -1017,6 +1017,7 @@ public class CopyInheritance implements IOTConstants, ClassFileConstants, ExtraC
 	    // + adjust method in subteam to the more general signature (here)
 	    // + extend copy with marker arg (below).
 	    // else give an exact copy.
+	    boolean reuseFoundMethod = false;
 	    if(methodFound != null)
 	    {
 	        // do not touch broken methods:
@@ -1027,6 +1028,22 @@ public class CopyInheritance implements IOTConstants, ClassFileConstants, ExtraC
 
 	    	if (methodFound.binding.copyInheritanceSrc == origin)
 	    		return; // diamond inheritance: copying the same method from two different sources
+
+	    	// tsuper method trumps previously inferred callout:
+	    	if (methodFound.isMappingWrapper == WrapperKind.CALLOUT) {
+	    		MethodModel model = methodFound.model;
+	    		if (model != null && model._inferredCallout != null) {
+	    			// reset callout related stuff:
+	    			methodFound.isMappingWrapper = WrapperKind.NONE;
+	    			model._inferredCallout = null;
+	    			methodFound.statements = null;
+	    			// setup as a copied method:
+	    			methodFound.isCopied = true;
+	    			methodFound.binding.copyInheritanceSrc = method;
+	    			methodFound.sourceMethodBinding = method;
+	    			reuseFoundMethod = true;
+	    		}
+	    	}
 
 	    	// do this in any case so that ConstantPoolObjectMapper won't fail:
 	    	methodFound.binding.addOverriddenTSuper(method);
@@ -1069,30 +1086,34 @@ public class CopyInheritance implements IOTConstants, ClassFileConstants, ExtraC
 	    }
 	    AstGenerator gen = new AstGenerator(targetRoleDecl.sourceStart, targetRoleDecl.sourceEnd);
 	    gen.replaceableEnclosingClass = tgtTeam;
-	    final AbstractMethodDeclaration newMethodDecl =
-	    		AstConverter.createMethod(method, site, targetRoleDecl.compilationResult, DecapsulationState.REPORTED, gen);
+	    final AbstractMethodDeclaration newMethodDecl;
+	    if (methodFound != null && reuseFoundMethod) {
+	    	newMethodDecl = methodFound;
+	    } else {
+	    	newMethodDecl = AstConverter.createMethod(method, site, targetRoleDecl.compilationResult, DecapsulationState.REPORTED, gen);
 
-	    if (methodFound != null)
-	        TSuperHelper.addMarkerArg(newMethodDecl, srcTeam);
-
-	    if(newMethodDecl.isConstructor()){
-	        // comments (SH):
-	        // other phases may depend on this field (constructorCall) being set,
-	        // although it carries no real information.
-	        ConstructorDeclaration cd = (ConstructorDeclaration)newMethodDecl;
-	        cd.constructorCall = SuperReference.implicitSuperConstructorCall();
-
-	        if (   Lifting.isLiftingCtor(method)
-		    	&& method.parameters[0].isRole())
-		    {
-	        	// if baseclass is implicitely redefined use the strong type:
-	        	ReferenceBinding newBase= targetRoleDecl.binding.baseclass();
-	        	if (newBase != method.parameters[0])
-	        		newMethodDecl.arguments[0].type= gen.baseclassReference(newBase);
+		    if (methodFound != null)
+		        TSuperHelper.addMarkerArg(newMethodDecl, srcTeam);
+	
+		    if(newMethodDecl.isConstructor()){
+		        // comments (SH):
+		        // other phases may depend on this field (constructorCall) being set,
+		        // although it carries no real information.
+		        ConstructorDeclaration cd = (ConstructorDeclaration)newMethodDecl;
+		        cd.constructorCall = SuperReference.implicitSuperConstructorCall();
+	
+		        if (   Lifting.isLiftingCtor(method)
+			    	&& method.parameters[0].isRole())
+			    {
+		        	// if baseclass is implicitely redefined use the strong type:
+		        	ReferenceBinding newBase= targetRoleDecl.binding.baseclass();
+		        	if (newBase != method.parameters[0])
+		        		newMethodDecl.arguments[0].type= gen.baseclassReference(newBase);
+			    }
 		    }
-	    }
 
-    	AstEdit.addMethod(targetRoleDecl, newMethodDecl, wasSynthetic, false/*addToFront*/, origin);
+		    AstEdit.addMethod(targetRoleDecl, newMethodDecl, wasSynthetic, false/*addToFront*/, origin);
+	    }
     	if (method.isPrivate()) {
     		newMethodDecl.binding.modifiers |= ExtraCompilerModifiers.AccLocallyUsed; // don't warn unused copied method
     		MethodBinding synthBinding = SyntheticRoleBridgeMethodBinding.findOuterAccessor(targetRoleDecl.scope, targetRoleDecl.binding, newMethodDecl.binding);
