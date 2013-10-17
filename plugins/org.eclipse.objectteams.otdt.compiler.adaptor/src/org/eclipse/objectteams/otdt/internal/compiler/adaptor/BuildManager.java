@@ -127,6 +127,20 @@ public team class BuildManager extends CompilationThreadWatcher
 		this.staleRoles = new HashSet<String>();
 	}
 	
+	/**
+	 * We'll deactivate this BuildManager after MAX_RETRIES to avoid causing to fall back
+	 * on a full build due to our attempts, which in certain situations could lead to
+	 * an infinite build loop, see https://bugs.eclipse.org/417735
+	 * To play safe MAX_RETRIES must be less than IncrementalImageBuilder.MaxCompileLoop.
+	 */
+	final static int MAX_RETRIES = 3;
+	int retries = 0;
+
+	public BuildManager start() {
+		this.retries = 0;
+		return this;
+	}
+
 	protected class BinaryType playedBy BinaryTypeBinding 
 	{
 		/** Record if a given type depends on an unresolvable type.

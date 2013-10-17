@@ -334,7 +334,7 @@ public team class AdaptorActivator
 		callin boolean build(SimpleLookupTable deltas) 
 		{
 			// Activation only for this thread/control flow:
-			within (manager) {
+			within (manager.start()) {
 				return base.build(deltas);
 			}
 		}

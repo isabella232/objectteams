@@ -215,6 +215,9 @@ protected class ImageBuilder playedBy IncrementalImageBuilder
 	void addAffectedTeamFiles() <- after void addAffectedSourceFiles();
 	
 	void addAffectedTeamFiles() {
+		if (++BuildManager.this.retries > MAX_RETRIES)
+			BuildManager.this.deactivate();
+
 		// fetch sets of teams:
 		Set<String> teamFiles = fetchTeamsToRecompile();
 		
