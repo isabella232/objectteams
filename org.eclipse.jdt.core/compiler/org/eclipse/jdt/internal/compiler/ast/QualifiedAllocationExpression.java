@@ -19,6 +19,7 @@
  *								bug 388996 - [compiler][resource] Incorrect 'potential resource leak'
  *								bug 395977 - [compiler][resource] Resource leak warning behavior possibly incorrect for anonymous inner class
  *								bug 403147 - [compiler][null] FUP of bug 400761: consolidate interaction between unboxing, NPE, and deferred checking
+ *								Bug 416267 - NPE in QualifiedAllocationExpression.resolveType
  *     Jesper S Moller <jesper@selskabet.org> - Contributions for
  *								bug 378674 - "The method can be declared as static" is wrong
  *     Till Brychcy - Contributions for
@@ -342,7 +343,7 @@ public static abstract class AbstractQualifiedAllocationExpression extends Alloc
 			return super.resolveType(scope);
 		}
 		TypeBinding result=resolveTypeForQualifiedAllocationExpression(scope);
-		if(result != null && this.binding != null) { // OT: advance-patched for https://bugs.eclipse.org/416267 
+		if(result != null && this.binding != null) {
 			final CompilerOptions compilerOptions = scope.compilerOptions();
 			if (compilerOptions.isAnnotationBasedNullAnalysisEnabled && (this.binding.tagBits & TagBits.IsNullnessKnown) == 0) {
 //{ObjectTeams: added 2nd arg:
