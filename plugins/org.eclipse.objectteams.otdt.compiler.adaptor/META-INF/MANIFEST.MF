@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.objectteams.otdt.compiler.adaptor;singleton:=true
-Bundle-Version: 2.2.0.qualifier
+Bundle-Version: 2.2.2.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jdt.core;bundle-version="[3.9.0.v_OTDT_r220,4.0.0)",
+Require-Bundle: org.eclipse.jdt.core;bundle-version="[3.9.2.v_OTDT_r222,4.0.0)",
  org.eclipse.objectteams.otequinox;bundle-version="[2.2.0,3.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.7.100,4.0.0)",
