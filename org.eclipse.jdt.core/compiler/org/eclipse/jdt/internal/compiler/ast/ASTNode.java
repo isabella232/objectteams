@@ -562,7 +562,8 @@ public abstract class ASTNode implements TypeConstants, TypeIds {
 				scope.problemReporter().forbiddenReference(type, this, restriction.classpathEntryType,
 						restriction.classpathEntryName, restriction.getProblemId());
   :giro */
-				scope.problemReporter().forbiddenReference(type, this, restriction.classpathEntryType,
+				if (!isGeneratedBaseTypeReference())
+					scope.problemReporter().forbiddenReference(type, this, restriction.classpathEntryType,
 						restriction);
 // SH}
 			}
@@ -579,6 +580,14 @@ public abstract class ASTNode implements TypeConstants, TypeIds {
 		// if context is deprecated, may avoid reporting
 		if (!scope.compilerOptions().reportDeprecationInsideDeprecatedCode && scope.isInsideDeprecatedCode()) return false;
 		return true;
+	}
+	
+	private boolean isGeneratedBaseTypeReference() {
+		if ((this.bits & IsGenerated) == 0)
+			return false;
+		if (!(this instanceof Expression))
+			return false;
+		return  ((Expression)this).getBaseclassDecapsulation().isAllowed();
 	}
 
 	public abstract StringBuffer print(int indent, StringBuffer output);

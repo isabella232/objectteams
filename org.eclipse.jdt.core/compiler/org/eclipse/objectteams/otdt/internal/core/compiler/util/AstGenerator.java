@@ -299,13 +299,17 @@ public class AstGenerator extends AstFactory {
 	public QualifiedTypeReference qualifiedTypeReference(char[][] compoundName) {
 		long[] poss = new long[compoundName.length];
 		Arrays.fill(poss, this.pos);
-		return new QualifiedTypeReference(compoundName, poss, true);
+		QualifiedTypeReference reference = new QualifiedTypeReference(compoundName, poss);
+		reference.bits |= ASTNode.IsGenerated | ASTNode.IgnoreRawTypeCheck;
+		return reference;
 	}
 
 	public QualifiedTypeReference qualifiedArrayTypeReference(char[][] compoundName, int dims) {
 		long[] poss = new long[compoundName.length];
 		Arrays.fill(poss, this.pos);
-		return new ArrayQualifiedTypeReference(compoundName, dims, poss, true);
+		ArrayQualifiedTypeReference reference = new ArrayQualifiedTypeReference(compoundName, dims, poss);
+		reference.bits |= ASTNode.IsGenerated | ASTNode.IgnoreRawTypeCheck;
+		return reference;
 	}
 
 	public SingleTypeReference parameterizedSingleTypeReference(char[] name, TypeReference[] typeParameters, int dimensions)
@@ -364,6 +368,7 @@ public class AstGenerator extends AstFactory {
             elementType = ab.leafComponentType;
         }
         TypeReference typeReference = createArrayTypeReference(elementType, dims, makeGeneric);
+        typeReference.bits |= ASTNode.IsGenerated | ASTNode.IgnoreRawTypeCheck;
         typeReference.deprecationProblemId = 0;
         if (!type.isValidBinding())
         	typeReference.bits |= ASTNode.IsGeneratedWithProblem;
@@ -412,9 +417,11 @@ public class AstGenerator extends AstFactory {
     {
     	TypeReference typeReference = createArrayTypeReference(elementType, dims, true);
     	typeReference.deprecationProblemId = 0;
+    	typeReference.bits |= ASTNode.IsGenerated | ASTNode.IgnoreRawTypeCheck;
 		return typeReference;
     }
-    public TypeReference createArrayTypeReference(
+
+    private TypeReference createArrayTypeReference(
             TypeBinding elementType,
             int dims,
             boolean makeGeneric)
@@ -523,12 +530,12 @@ public class AstGenerator extends AstFactory {
 	            if (qname == null)
 	           		return new SingleTypeReference(sname, this.pos);
 	            else
-	                return new QualifiedTypeReference(qname, poss, /*isGenerated*/true);
+	                return new QualifiedTypeReference(qname, poss);
 	        } else {
 	            if (qname == null)
 	                return new ArrayTypeReference(sname, dims, this.pos);
 	            else {
-	                return new ArrayQualifiedTypeReference(qname, dims, poss, /*isGenerated*/true);
+	                return new ArrayQualifiedTypeReference(qname, dims, poss);
 	            }
 	        }
         } else {

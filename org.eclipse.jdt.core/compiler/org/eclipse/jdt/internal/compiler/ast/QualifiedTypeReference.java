@@ -35,15 +35,6 @@ public class QualifiedTypeReference extends TypeReference {
 
 	public char[][] tokens;
 	public long[] sourcePositions;
-//{ObjectTeams: exempt generated references from OTJLD 1.2.3(b).
-	public boolean isGenerated;
-	public QualifiedTypeReference(char[][] sources , long[] poss, boolean isGenerated) {
-		this(sources,poss);
-		this.isGenerated = isGenerated;
-		if (isGenerated)
-			this.bits |= ASTNode.IgnoreRawTypeCheck;
-	}
-// SH}
 
 	public QualifiedTypeReference(char[][] sources , long[] poss) {
 
@@ -170,7 +161,7 @@ public class QualifiedTypeReference extends TypeReference {
 				reportDeprecatedType(this.resolvedType, scope, i);
 			}
 //{ObjectTeams: statically qualified use of role?
-			if (i > 0 && !this.isGenerated && shouldAnalyzeRoleReference()) { // generated (and copied) methods are allowed to use MyTeam.R
+			if (i > 0 && (this.bits & ASTNode.IsGenerated) == 0 && shouldAnalyzeRoleReference()) { // generated (and copied) methods are allowed to use MyTeam.R
 				if (isIllegalQualifiedUseOfProtectedRole(scope)) {
 					// already reported
 				} else {

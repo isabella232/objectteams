@@ -19,12 +19,6 @@ import org.eclipse.jdt.internal.compiler.problem.AbortCompilation;
 public class ArrayQualifiedTypeReference extends QualifiedTypeReference {
 	int dimensions;
 
-//{ObjectTeams: mark generated reference:
-	public ArrayQualifiedTypeReference(char[][] sources , int dim, long[] poss, boolean isGenerated) {
-		this(sources, dim, poss);
-		this.isGenerated = isGenerated;
-	}
-// SH}
 	public ArrayQualifiedTypeReference(char[][] sources , int dim, long[] poss) {
 
 		super( sources , poss);
