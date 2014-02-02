@@ -96,8 +96,13 @@ public abstract class ObjectTeamsTransformation
    
     /** Which class loader are we working for? */
     protected ClassLoader loader;
+    protected boolean isLoadingSystemClass;
 
 	public ObjectTeamsTransformation(ClassLoader loader) {
+		if (loader == null) {
+			isLoadingSystemClass = true;
+			loader = getClass().getClassLoader();
+		}
 		this.loader = loader;
 	}
 
@@ -638,15 +643,19 @@ public abstract class ObjectTeamsTransformation
 	 * @param ce
 	 */
     private void addTeamInitializations(ClassGen cg, ClassEnhancer ce) {
+    	if (isLoadingSystemClass) {
+    		// JPLIS launching may intercept system classes before the custom main.
+    		AttributeReadingGuard.reset(); // reset the guard in order to retry with subsequent classes.
+    		return;
+    	}
     	String main_class_name = cg.getClassName();
     	ConstantPoolGen cpg = cg.getConstantPool();
     	InstructionFactory factory = new InstructionFactory(cpg);
     	Method main = cg.containsMethod("main", "([Ljava/lang/String;)V");
     	if (main == null) {
-    		// JPLIS launching may intercept system classes before the custom main.
-    		// reset the guard in order to retry with subsequent classes.
-    		AttributeReadingGuard.reset();
-    		return; // no main method in the first loaded class...
+    		// no main method in the first loaded class...
+    		AttributeReadingGuard.reset(); // reset the guard in order to retry with subsequent classes.
+    		return;
     	}
     	
     	MethodGen mainMethod = newMethodGen(main, main_class_name, cpg);
