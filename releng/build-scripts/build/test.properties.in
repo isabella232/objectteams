@@ -1,8 +1,8 @@
 # versions of test plugins:
 
 # ----
-org.eclipse.jdt.core.tests.builder=org.eclipse.jdt.core.tests.builder_3.8.2.@SDK_QUALIFIER@
-org.eclipse.jdt.debug.tests=org.eclipse.jdt.debug.tests_3.8.101.@SDK_QUALIFIER@
+org.eclipse.jdt.core.tests.builder=org.eclipse.jdt.core.tests.builder_3.9.2.@SDK_QUALIFIER@
+org.eclipse.jdt.debug.tests=org.eclipse.jdt.debug.tests_3.8.102.@SDK_QUALIFIER@
 org.eclipse.jdt.ui.tests=org.eclipse.jdt.ui.tests_3.9.1.@SDK_QUALIFIER@
 org.eclipse.jdt.ui.tests.refactoring=org.eclipse.jdt.ui.tests.refactoring_3.9.0.@SDK_QUALIFIER@
 org.eclipse.test.performance=org.eclipse.test.performance_3.7.0.@SDK_QUALIFIER@
