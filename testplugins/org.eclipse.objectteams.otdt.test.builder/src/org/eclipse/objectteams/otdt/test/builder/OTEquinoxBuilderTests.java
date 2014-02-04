@@ -368,19 +368,6 @@ public class OTEquinoxBuilderTests extends OTBuilderTests {
 				});
 	}
 
-	public void testAspectExport () throws CoreException, IOException {
-		IJavaProject aeb= fileManager.setUpJavaProject("AspectExportBase"); 
-		env.addProject(aeb.getProject());
-		IJavaProject aea= fileManager.setUpJavaProject("AspectExportAspect"); 
-		aea.setOption("org.eclipse.objectteams.otdt.compiler.problem.binding_conventions", "error");
-		env.addProject(aea.getProject());
-		fullBuild();
-		expectingNoProblemsFor(aeb.getPath());
-		expectingOnlySpecificProblemsFor(aea.getPath(), 
-				new Problem[] {
-					getMissingAspectExportProblem(aea, "aea")});
-	}
-	
 	public void testBug419987() throws CoreException, IOException {
 		IJavaProject aeb= fileManager.setUpJavaProject("Base419987"); 
 		env.addProject(aeb.getProject());
