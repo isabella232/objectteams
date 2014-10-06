@@ -3,7 +3,7 @@
 	------
 	Olaf Otto & Stephan Herrmann
 	------
-	2014-06-15
+	2014-10-06
 	------
 
 Using Object Teams with Maven3
@@ -33,7 +33,7 @@ Using Object Teams with Maven3
 	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.1</version>
 	</parent>
 +-----
 

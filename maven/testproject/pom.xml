@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.1</version>
 	</parent>
 
 	<packaging>jar</packaging>
         
 	<artifactId>objectteams-compile-test</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<name>Object Teams test project</name>
 
 	<!-- simply repeat this declaration from the parent pom, otherwise Maven duplicates the artifactId in the path -->

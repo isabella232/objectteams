@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>2.3.0</version>
+		<version>2.3.1</version>
 		<relativePath>../parent-pom</relativePath>
 	</parent>
 
@@ -53,9 +53,9 @@
 	<properties>
 		<!-- Object Teams versions, update manually: 					-->
 		<!--   version of the signed ecotj jar file:	 				-->
-		<ecotj.version>R-2.3.0-201406101336-signed</ecotj.version> 
+		<ecotj.version>R-2.3.1-201409160725-signed</ecotj.version> 
 		<!--   version of the org.eclipse.objectteams.runtime plugin:	-->
-		<otre.version>2.3.0.201406101339</otre.version>
+		<otre.version>2.3.1.201409160728</otre.version>
 		
 		<!-- locate the jar files to install/deploy: -->
 	    <ecotj.jar.file>${ecj.export.dir}/ecotj-${ecotj.version}.jar</ecotj.jar.file>
