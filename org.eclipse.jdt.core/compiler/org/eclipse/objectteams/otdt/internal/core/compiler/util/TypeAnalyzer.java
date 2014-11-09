@@ -21,22 +21,24 @@
 package org.eclipse.objectteams.otdt.internal.core.compiler.util;
 
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.internal.compiler.ast.AbstractMethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
-import org.eclipse.jdt.internal.compiler.ast.Expression.DecapsulationState;
-import org.eclipse.jdt.internal.compiler.ast.FieldReference;
+import org.eclipse.jdt.internal.compiler.ast.ExpressionContext;
 import org.eclipse.jdt.internal.compiler.ast.ParameterizedSingleTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.QualifiedTypeReference;
+import org.eclipse.jdt.internal.compiler.ast.SingleNameReference;
 import org.eclipse.jdt.internal.compiler.ast.SingleTypeReference;
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.TypeReference;
 import org.eclipse.jdt.internal.compiler.lookup.ArrayBinding;
 import org.eclipse.jdt.internal.compiler.lookup.BaseTypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
 import org.eclipse.jdt.internal.compiler.lookup.FieldBinding;
+import org.eclipse.jdt.internal.compiler.lookup.InferenceContext18;
+import org.eclipse.jdt.internal.compiler.lookup.InvocationSite;
 import org.eclipse.jdt.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.jdt.internal.compiler.lookup.MemberTypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.MethodBinding;
@@ -570,7 +572,7 @@ public class TypeAnalyzer  {
 			char[] selector,
 			TypeBinding[] params)
 	{
-		return findMethod(scope, type, selector, params, /*decapsulationAllowed*/false);
+		return findMethod(scope, type, selector, params, /*decapsulationAllowed*/false, null);
 	}
 	/**
 	 * Find a method in type or one of its super types.
@@ -579,22 +581,57 @@ public class TypeAnalyzer  {
 	 * @param selector name of the method
 	 * @param params params
 	 * @param decapsulationAllowed whether or not invisible methods should be found, too
+	 * @param site invocation site if available
 	 */
-	public static MethodBinding findMethod(
-			Scope 			 scope,
-			ReferenceBinding type,
-			char[] 			 selector,
-			TypeBinding[] 	 params,
-			boolean          decapsulationAllowed)
+	public static @Nullable MethodBinding findMethod(
+			final		Scope		 		scope,
+						ReferenceBinding 	type,
+						char[]	 			selector,
+						TypeBinding[]		params,
+						boolean        	decapsulationAllowed,
+			@Nullable 	InvocationSite		site)
 	{
 		if (type == null || scope == null)
 			return null;
-		FieldReference invocationSite = new FieldReference("dummy".toCharArray(), 0); //$NON-NLS-1$
-		if (decapsulationAllowed)
-			invocationSite.setBaseclassDecapsulation(DecapsulationState.ALLOWED);
-		invocationSite.receiver = new ThisReference(0,0);
-		invocationSite.actualReceiverType = invocationSite.receiver.resolveType(scope.classScope()); // method scope could be static context!
-		return scope.getMethod(type, selector, params, invocationSite);
+		if (site == null) {
+			final Expression[] fakeArguments = new Expression[params.length];
+			for (int i = 0; i < params.length; i++) {
+				fakeArguments[i] = new SingleNameReference(("fakeArg"+i).toCharArray(), 0L); //$NON-NLS-1$
+				fakeArguments[i].resolvedType = params[i];
+			}
+			site = new InvocationSite() {
+				@Override public int sourceStart() { return 0; }
+				@Override public int sourceEnd() { return 0; }
+				@Override public void setFieldIndex(int depth) { /* nop */ }
+				@Override public void setDepth(int depth) { /* nop */ }
+				
+				@Override public void setActualReceiverType(ReferenceBinding receiverType) { /* nop */ }
+				@Override public boolean receiverIsImplicitThis() { return false; }
+				@Override public boolean isTypeAccess() { return false; }
+				@Override public boolean isSuperAccess() { return false; }
+				
+				@Override
+				public TypeBinding invocationTargetType() {
+					return scope.getJavaLangObject();
+				}
+				
+				@Override
+				public ExpressionContext getExpressionContext() {
+					return ExpressionContext.ASSIGNMENT_CONTEXT;
+				}
+				
+				@Override
+				public TypeBinding[] genericTypeArguments() {
+					return null;
+				}
+
+				@Override
+				public InferenceContext18 freshInferenceContext(Scope someScope) {
+					return new InferenceContext18(someScope, fakeArguments, this);
+				}
+			};
+		}
+		return scope.getMethod(type, selector, params, site);
 	}
 
 	/** Find a method with identical parameters after erasing. */
@@ -614,7 +651,7 @@ public class TypeAnalyzer  {
 		return null;
 	}
 	/**
-	 * Look for the method declartion matching the given selector and length of argument list.
+	 * Look for the method declaration matching the given selector and length of argument list.
 	 * @param typeDeclaration
 	 * @param selector
 	 * @param nArgs

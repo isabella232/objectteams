@@ -323,12 +323,20 @@ public class Java5 extends AbstractOTJLDTest {
 			    "}\n" +
 			    "  \n"
             },
-    		"----------\n" + 
-    		"1. ERROR in TeamA11gfib3cib3.java (at line 4)\n" + 
-    		"	<T> T getIt(T it) <- replace T getIt(T it);\n" + 
-    		"	      ^^^^^\n" + 
-    		"Bound mismatch: The generic method getIt(T) of type TeamA11gfib3cib3.R is not applicable for the arguments (T). The inferred type T is not a valid substitute for the bounded parameter <T extends Number>\n" + 
-    		"----------\n");
+            (this.complianceLevel < ClassFileConstants.JDK1_8 ?
+	    		"----------\n" + 
+	    		"1. ERROR in TeamA11gfib3cib3.java (at line 4)\n" + 
+	    		"	<T> T getIt(T it) <- replace T getIt(T it);\n" + 
+	    		"	      ^^^^^\n" + 
+	    		"Bound mismatch: The generic method getIt(T) of type TeamA11gfib3cib3.R is not applicable for the arguments (T). The inferred type T is not a valid substitute for the bounded parameter <T extends Number>\n" + 
+	    		"----------\n"
+	    	:
+	    		"----------\n" + 
+	    		"1. ERROR in TeamA11gfib3cib3.java (at line 4)\n" + 
+	    		"	<T> T getIt(T it) <- replace T getIt(T it);\n" + 
+	    		"	^^^^^^^^^^^^^^^^^\n" + 
+	    		"No method getIt(T) found in type TeamA11gfib3cib3.R to resolve method designator (OTJLD 4.1(c)).\n" + 
+	    		"----------\n"));
     }
 
     // a base has a parameterized method  which is bound via callin - illegally declared type parameter

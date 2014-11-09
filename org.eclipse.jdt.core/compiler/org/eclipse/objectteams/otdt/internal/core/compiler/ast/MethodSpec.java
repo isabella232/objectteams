@@ -29,9 +29,11 @@ import org.eclipse.jdt.internal.compiler.CompilationResult.CheckPoint;
 import org.eclipse.jdt.internal.compiler.ast.ASTNode;
 import org.eclipse.jdt.internal.compiler.ast.AbstractMethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.Argument;
+import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.eclipse.jdt.internal.compiler.ast.ExpressionContext;
 import org.eclipse.jdt.internal.compiler.ast.FieldReference;
 import org.eclipse.jdt.internal.compiler.ast.MethodDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.SingleNameReference;
 import org.eclipse.jdt.internal.compiler.ast.SingleTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.ThisReference;
 import org.eclipse.jdt.internal.compiler.ast.TypeParameter;
@@ -293,14 +295,14 @@ public class MethodSpec extends ASTNode implements InvocationSite
    	    	CompilationResult compilationResult = scope.referenceContext().compilationResult();
 			CheckPoint cp = compilationResult.getCheckPoint(scope.referenceContext());
 			
-			this.resolvedMethod = TypeAnalyzer.findMethod(scope, receiverClass, realSelector, enhancedParameters, isBaseSide);
+			this.resolvedMethod = TypeAnalyzer.findMethod(scope, receiverClass, realSelector, enhancedParameters, isBaseSide, isBaseSide ? this : null);
 			if (   !this.resolvedMethod.isValidBinding()
 				&& this.resolvedMethod.problemId() == ProblemReasons.NotFound)
 			{
 				// second+ chance: try plain:
 				while (receiverClass != null) {
 					compilationResult.rollBack(cp);
-					MethodBinding plainMethod = TypeAnalyzer.findMethod(scope, receiverClass, realSelector, this.parameters, isBaseSide);
+					MethodBinding plainMethod = TypeAnalyzer.findMethod(scope, receiverClass, realSelector, this.parameters, isBaseSide, isBaseSide ? this : null);
 					if (!callinExpected) {
 						this.resolvedMethod = plainMethod;
 					} else {
@@ -776,19 +778,27 @@ public class MethodSpec extends ASTNode implements InvocationSite
 	}
 
 	/**
-	 * Used for generic method resolving, however, we implement InvocationSite only for visibility checking,
-	 * not for type checking.
+	 * Used for generic method resolving.
 	 */
 	public TypeBinding invocationTargetType() {
 		return null;
 	}
 	
 	public InferenceContext18 freshInferenceContext(Scope scope) {
-		throw new InternalCompilerError("Method not applicable"); //$NON-NLS-1$
+		int nArgs = this.arguments.length;
+		final Expression[] expressions = new Expression[nArgs];
+		long pos = 0L; // should never be used for error reporting, right?
+		for (int i = 0; i < nArgs; i++) {
+			Argument argument = this.arguments[i];
+			expressions[i] = new SingleNameReference(argument.name, pos);
+			expressions[i].resolvedType = argument.type.resolvedType;
+		}
+
+		return new InferenceContext18(scope, expressions, this);
 	}
 	
 	public ExpressionContext getExpressionContext() {
-		throw new InternalCompilerError("Method not applicable"); //$NON-NLS-1$
+		return ExpressionContext.ASSIGNMENT_CONTEXT;
 	}
 	
 	public int createAccessAttribute(RoleModel roleModel) {

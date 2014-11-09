@@ -70,6 +70,7 @@ import org.eclipse.jdt.internal.compiler.util.ObjectVector;
 import org.eclipse.jdt.internal.compiler.util.SimpleLookupTable;
 import org.eclipse.jdt.internal.compiler.util.SimpleSet;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
+import org.eclipse.objectteams.otdt.internal.core.compiler.ast.MethodSpec;
 import org.eclipse.objectteams.otdt.internal.core.compiler.ast.TypeAnchorReference;
 import org.eclipse.objectteams.otdt.internal.core.compiler.ast.TypeValueParameter;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.Config;
@@ -2087,17 +2088,15 @@ public abstract class Scope {
 				visiblesCount++;
 			}
 //{ObjectTeams: check if decapsulation is allowed:
-			else if (invocationSite instanceof Expression) { 
-				if (((Expression)invocationSite).getBaseclassDecapsulation().isAllowed()) {
-					methodBinding = new ProblemMethodBinding(methodBinding, selector, argumentTypes, ProblemReasons.NotVisible);
-					if (visiblesCount != i) {
-						candidates[i] = null;
-						candidates[visiblesCount] = methodBinding;
-					} else {
-						candidates[i] = methodBinding;
-					}
-					visiblesCount++;
+			else if (allowsBaseclassDecapsulation(invocationSite, methodBinding.declaringClass)) {
+				methodBinding = new ProblemMethodBinding(methodBinding, selector, argumentTypes, ProblemReasons.NotVisible);
+				if (visiblesCount != i) {
+					candidates[i] = null;
+					candidates[visiblesCount] = methodBinding;
+				} else {
+					candidates[i] = methodBinding;
 				}
+				visiblesCount++;
 			}
 // SH}
 		}
@@ -3279,8 +3278,7 @@ public abstract class Scope {
 //{ObjectTeams: callout to private role method goes through the role class-part:
 			// (will later be replaced by synthetic accessor)
 			if (   methodBinding == null
-				&& invocationSite instanceof MessageSend
-				&& ((MessageSend)invocationSite).isDecapsulationAllowed(this) 
+				&& allowsBaseclassDecapsulation(invocationSite, currentType)
 				&& currentType.isRole())
 			{
 				currentType = currentType.getRealClass();
@@ -3308,6 +3306,10 @@ public abstract class Scope {
 	}
 //{ObjectTeams: check if a receiver allows baseclass decapsultion:
 	private boolean allowsBaseclassDecapsulation(InvocationSite invocationSite, ReferenceBinding type) {
+		if (invocationSite instanceof MethodSpec) {
+			MethodSpec spec = (MethodSpec) invocationSite;
+			return spec.isCallin() == spec.isDeclaration;
+		}
 		Expression receiver = null;
 		if (invocationSite instanceof MessageSend)
 			receiver = ((MessageSend) invocationSite).receiver;

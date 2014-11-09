@@ -303,6 +303,7 @@ public abstract class AbstractMethodMappingDeclaration
 				&& !calloutMissingRoleMethod)
 			{
 				this.scope.problemReporter().boundMethodProblem(this.roleMethodSpec, role.getBinding(), isCallout());
+				roleOK = false;
 			} else {
 				// TODO (SH): should we wrap roleMethodSpec.returnType here??
 				// (checkReturnType falsely fails in GebitDispo).
@@ -370,18 +371,20 @@ public abstract class AbstractMethodMappingDeclaration
 								|| !methodSpec.checkParameterTypes(this.scope, true))
 								continue;
 							// translation bits are already initialized in the constructor of MethodSpec.
-							if (this.mappings == null && this.hasParsedParamMappings && roleOK) {
-								if (methodSpec instanceof FieldAccessSpec) {
-									((CalloutMappingDeclaration)this)
-									.checkTypeCompatibility((FieldAccessSpec)methodSpec);
+							if (roleOK) {
+								if (this.mappings == null && this.hasParsedParamMappings) {
+									if (methodSpec instanceof FieldAccessSpec) {
+										((CalloutMappingDeclaration)this)
+										.checkTypeCompatibility((FieldAccessSpec)methodSpec);
+									} else {
+										checkParametersCompatibility(methodSpec);
+										checkReturnCompatibility(methodSpec);
+									}
+									// if we have mappings, type checking needs to be deferred..
+									// or if we have problems or haven't parsed mappings skip these checks altogether
 								} else {
-									checkParametersCompatibility(methodSpec);
-									checkReturnCompatibility(methodSpec);
+									checkResult(methodSpec);
 								}
-								// if we have mappings, type checking needs to be deferred..
-								// or if we have problems or haven't parsed mappings skip these checks altogether
-							} else {
-								checkResult(methodSpec);
 							}
 							// check these in both cases (?)
 							checkVisibility(methodSpec, baseType);
