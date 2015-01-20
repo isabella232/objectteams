@@ -1,15 +1,14 @@
 /**********************************************************************
  * This file is part of the "Object Teams Runtime Environment"
  * 
- * Copyright 2005-2009 Berlin Institute of Technology, Germany.
+ * Copyright 2005-2015 Berlin Institute of Technology, Germany.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id: ObjectTeamsTransformer.java 23408 2010-02-03 18:07:35Z stephan $
  * 
- * Please visit http://www.objectteams.org for updates and contact.
+ * Please visit http://www.eclipse.org/objectteams for updates and contact.
  * 
  * Contributors:
  * Berlin Institute of Technology - Initial API and implementation
@@ -25,6 +24,7 @@ import java.security.ProtectionDomain;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.generic.ClassGen;
@@ -113,6 +113,9 @@ public class ObjectTeamsTransformer implements ClassFileTransformer {
 			if (className.equals("java/util/LinkedHashMap$KeyIterator")) 
 				// skip, I saw class loading circularity caused by accessing this class
 				return null;
+			if (className.equals("java/util/function/Function")) 
+				// skip, contains constant pool with tag 18, which is unknown to BCEL
+				return null;
 			break;
 		}
 		if (classBeingRedefined != null) {
@@ -142,6 +145,10 @@ public class ObjectTeamsTransformer implements ClassFileTransformer {
 			JavaClass java_class;
 			try {
 				java_class = new ClassParser(is, className).parse();
+			} catch (ClassFormatException e) {
+				// CFE doesn't show the class name, so at least print it to console:
+				System.err.println(e.getMessage()+", offending className: "+className);
+				throw e;
 			} finally {
 				if (is != null)
 					try {
