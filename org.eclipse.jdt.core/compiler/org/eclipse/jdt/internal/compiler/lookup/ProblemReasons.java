@@ -45,11 +45,12 @@ public interface ProblemReasons {
 	final int ParameterizedMethodExpectedTypeProblem = 23;
 	final int ApplicableMethodOverriddenByInapplicable = 24;
 	final int ContradictoryNullAnnotations = 25;
+	final int NoSuchMethodOnArray = 26;
 //{ObjectTeams;
-    final int NoTeamContext = 26;
-    final int AnchorNotFinal = 27;
-    final int AnchorNotATeam = 28;
-    final int AnchorNotFound = 29;
-    final int ProblemAlreadyReported = 30;
+    final int NoTeamContext = 27;
+    final int AnchorNotFinal = 28;
+    final int AnchorNotATeam = 29;
+    final int AnchorNotFound = 30;
+    final int ProblemAlreadyReported = 31;
 // SH}
 }

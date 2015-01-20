@@ -617,7 +617,10 @@ public boolean isWarningSuppressedAt(int problemID, int start, int end, Irritant
 }
 // SH}
 
-public void recordSuppressWarnings(IrritantSet irritants, Annotation annotation, int scopeStart, int scopeEnd) {
+public void recordSuppressWarnings(IrritantSet irritants, Annotation annotation, int scopeStart, int scopeEnd, ReferenceContext context) {
+	if (context instanceof LambdaExpression && context != ((LambdaExpression) context).original())
+		return; // Do not record from copies. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=441929
+		
 	if (this.suppressWarningIrritants == null) {
 		this.suppressWarningIrritants = new IrritantSet[3];
 		this.suppressWarningAnnotations = new Annotation[3];

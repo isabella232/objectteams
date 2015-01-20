@@ -791,7 +791,7 @@ public abstract class Annotation extends Expression {
 			}
 		}
 		if (isSuppressingWarnings && suppressWarningIrritants != null) {
-			scope.referenceCompilationUnit().recordSuppressWarnings(suppressWarningIrritants, this, startSuppresss, endSuppress);
+			scope.referenceCompilationUnit().recordSuppressWarnings(suppressWarningIrritants, this, startSuppresss, endSuppress, scope.referenceContext());
 		}
 	}
 
@@ -885,7 +885,7 @@ public abstract class Annotation extends Expression {
 		tagBits &= ~Binding.NullnessDefaultMASK;
 
 		// record annotation positions in the compilation result
-		scope.referenceCompilationUnit().recordSuppressWarnings(IrritantSet.NLS, null, this.sourceStart, this.declarationSourceEnd);
+		scope.referenceCompilationUnit().recordSuppressWarnings(IrritantSet.NLS, null, this.sourceStart, this.declarationSourceEnd, scope.referenceContext());
 		if (this.recipient != null) {
 			int kind = this.recipient.kind();
 			if (tagBits != 0 || defaultNullness != 0) {

@@ -5062,7 +5062,7 @@ this.runNegativeTest(
 				"	public static void main(String[] args) {\n" +
 				"		new X().foo(()->{ return \"\";});\n" +
 				"		new X().foo(()-> 10);\n" +
-				"		new X().foo((s)->{});\n" +    // error not reported here, since analyzeCode does not get to run.
+				"		new X().foo((s)->{});\n" +
 				"		new X().foo((s)->{ return;});\n" +
 				"		new X().foo((s)->{ return \"\";});\n" +
 				"		new X().foo((s)-> \"hello\");\n" +
@@ -5092,10 +5092,25 @@ this.runNegativeTest(
 				"	                 ^^\n" + 
 				"Void methods cannot return a value\n" + 
 				"----------\n" + 
-				"5. ERROR in X.java (at line 18)\n" + 
+				"5. ERROR in X.java (at line 17)\n" + 
+				"	new X().foo((s)->{});\n" + 
+				"	        ^^^\n" + 
+				"The method foo(I) in the type X is not applicable for the arguments ((<no type> s) -> {})\n" + 
+				"----------\n" + 
+				"6. ERROR in X.java (at line 17)\n" + 
+				"	new X().foo((s)->{});\n" + 
+				"	            ^^^^^\n" + 
+				"Lambda expression\'s signature does not match the signature of the functional interface method foo()\n" + 
+				"----------\n" + 
+				"7. ERROR in X.java (at line 18)\n" + 
 				"	new X().foo((s)->{ return;});\n" + 
-				"	                   ^^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	        ^^^\n" + 
+				"The method foo(I) in the type X is not applicable for the arguments ((<no type> s) -> {})\n" + 
+				"----------\n" + 
+				"8. ERROR in X.java (at line 18)\n" + 
+				"	new X().foo((s)->{ return;});\n" + 
+				"	            ^^^^^\n" + 
+				"Lambda expression\'s signature does not match the signature of the functional interface method foo()\n" + 
 				"----------\n");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=401610, [1.8][compiler] Allow lambda/reference expressions in non-overloaded method invocation contexts
@@ -5766,58 +5781,48 @@ public void test401939b() {
 				"----------\n" + 
 				"1. ERROR in X.java (at line 14)\n" + 
 				"	goo((x) -> { while (FALSE) throw new Exception(); });\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"2. ERROR in X.java (at line 14)\n" + 
-				"	goo((x) -> { while (FALSE) throw new Exception(); });\n" + 
-				"	                           ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Unreachable code\n" + 
+				"2. ERROR in X.java (at line 15)\n" + 
+				"	goo((x) -> { while (TRUE) throw new Exception(); });\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"3. ERROR in X.java (at line 17)\n" + 
-				"	goo((x) -> { while (POI) throw new Exception(); });\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"3. ERROR in X.java (at line 16)\n" + 
+				"	goo((x) -> { while (NIJAM) throw new Exception(); });\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
 				"4. ERROR in X.java (at line 17)\n" + 
 				"	goo((x) -> { while (POI) throw new Exception(); });\n" + 
-				"	                         ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Unreachable code\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"5. WARNING in X.java (at line 18)\n" + 
+				"5. ERROR in X.java (at line 18)\n" + 
 				"	goo((x) -> { if (TRUE) throw new Exception(); else throw new Exception(); });\n" + 
-				"	                                                   ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Statement unnecessarily nested within else clause. The corresponding then clause does not complete normally\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
 				"6. ERROR in X.java (at line 19)\n" + 
 				"	goo((x) -> { if (TRUE) throw new Exception(); });\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"7. WARNING in X.java (at line 20)\n" + 
+				"7. ERROR in X.java (at line 20)\n" + 
 				"	goo((x) -> { if (true) throw new Exception(); else throw new Exception(); });\n" + 
-				"	                                                   ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Statement unnecessarily nested within else clause. The corresponding then clause does not complete normally\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"8. WARNING in X.java (at line 20)\n" + 
-				"	goo((x) -> { if (true) throw new Exception(); else throw new Exception(); });\n" + 
-				"	                                                   ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Dead code\n" + 
-				"----------\n" + 
-				"9. WARNING in X.java (at line 21)\n" + 
+				"8. ERROR in X.java (at line 21)\n" + 
 				"	goo((x) -> { if (false) throw new Exception(); else throw new Exception(); });\n" + 
-				"	                        ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Dead code\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n" + 
-				"10. WARNING in X.java (at line 21)\n" + 
-				"	goo((x) -> { if (false) throw new Exception(); else throw new Exception(); });\n" + 
-				"	                                                    ^^^^^^^^^^^^^^^^^^^^^^\n" + 
-				"Statement unnecessarily nested within else clause. The corresponding then clause does not complete normally\n" + 
-				"----------\n" + 
-				"11. ERROR in X.java (at line 22)\n" + 
+				"9. ERROR in X.java (at line 22)\n" + 
 				"	goo((x) -> { while (BLANK) throw new Exception(); });\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=401939, [1.8][compiler] Incorrect shape analysis leads to method resolution failure .
@@ -5841,6 +5846,11 @@ public void test401939c() {
 				"	goo((x) -> { if (x) return null; });\n" + 
 				"	                 ^\n" + 
 				"Type mismatch: cannot convert from String to boolean\n" + 
+				"----------\n" + 
+				"2. ERROR in X.java (at line 9)\n" + 
+				"	goo((x) -> {});\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=401939, [1.8][compiler] Incorrect shape analysis leads to method resolution failure .
@@ -5861,8 +5871,8 @@ public void test401939ca() {
 				"----------\n" + 
 				"1. ERROR in X.java (at line 8)\n" + 
 				"	goo((x) -> {});\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=401939, [1.8][compiler] Incorrect shape analysis leads to method resolution failure .
@@ -5883,8 +5893,8 @@ public void test401939d() {
 				"----------\n" + 
 				"1. ERROR in X.java (at line 8)\n" + 
 				"	goo((x) -> { if (x) return null; });\n" + 
-				"	    ^^^^^^\n" + 
-				"This method must return a result of type String\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
 				"----------\n");
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=401939, [1.8][compiler] Incorrect shape analysis leads to method resolution failure .
@@ -5904,6 +5914,11 @@ public void test401939e() {
 				"}\n",			},
 				"----------\n" + 
 				"1. ERROR in X.java (at line 8)\n" + 
+				"	goo((x) -> { return null; });\n" + 
+				"	^^^\n" + 
+				"The method goo(I) in the type X is not applicable for the arguments ((<no type> x) -> {})\n" + 
+				"----------\n" + 
+				"2. ERROR in X.java (at line 8)\n" + 
 				"	goo((x) -> { return null; });\n" + 
 				"	             ^^^^^^^^^^^^\n" + 
 				"Void methods cannot return a value\n" + 
@@ -5979,11 +5994,6 @@ public void test402219a() {
 				"}\n",			},
 				"----------\n" + 
 				"1. ERROR in X.java (at line 11)\n" + 
-				"	new X().goo((p1, p2) -> {});\n" + 
-				"	        ^^^\n" + 
-				"The method goo(I) is ambiguous for the type X\n" + 
-				"----------\n" + 
-				"2. ERROR in X.java (at line 11)\n" + 
 				"	new X().goo((p1, p2) -> {});\n" + 
 				"	                        ^^\n" + 
 				"Empty block should be documented\n" + 
@@ -6961,7 +6971,6 @@ public void test412284c() {
 				"  }\n" +
 				"}\n"
 		},
-
 		"----------\n" + 
 		"1. ERROR in X.java (at line 4)\n" + 
 		"	X(){\n" + 
@@ -6971,9 +6980,19 @@ public void test412284c() {
 		"2. ERROR in X.java (at line 7)\n" + 
 		"	t += 3;\n" + 
 		"	^\n" + 
+		"The blank final field t may not have been initialized\n" + 
+		"----------\n" + 
+		"3. ERROR in X.java (at line 7)\n" + 
+		"	t += 3;\n" + 
+		"	^\n" + 
 		"The final field X.t cannot be assigned\n" + 
 		"----------\n" + 
-		"3. ERROR in X.java (at line 9)\n" + 
+		"4. ERROR in X.java (at line 9)\n" + 
+		"	t += 4;\n" + 
+		"	^\n" + 
+		"The blank final field t may not have been initialized\n" + 
+		"----------\n" + 
+		"5. ERROR in X.java (at line 9)\n" + 
 		"	t += 4;\n" + 
 		"	^\n" + 
 		"The final field X.t cannot be assigned\n" + 
@@ -7506,17 +7525,7 @@ public void test422489b() { // interfaces and methods order changed, triggers NP
 					"    }\n" +
 					"}\n"
 			},
-			"----------\n" + 
-			"1. ERROR in X.java (at line 13)\n" + 
-			"	goo((x, y) -> { return x[0] += 1; });\n" + 
-			"	^^^\n" + 
-			"The method goo(J) is ambiguous for the type X\n" + 
-			"----------\n" + 
-			"2. ERROR in X.java (at line 13)\n" + 
-			"	goo((x, y) -> { return x[0] += 1; });\n" + 
-			"	                       ^^^^\n" + 
-			"The type of the expression must be an array type but it resolved to int\n" + 
-			"----------\n"
+			""
 		);
 }
 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=422489, [1.8][compiler] NPE in CompoundAssignment.analyseCode when creating AST for java.util.stream.Collectors
@@ -9066,6 +9075,403 @@ public void test431514() {
 		"	      ^\n" +
 		"The nested type Z cannot hide an enclosing type\n" +
 		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=442983, [1.8] NPE in Scope.findDefaultAbstractMethod 
+public void test442983() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.util.function.Function;\n" +
+			"class CL<T> {\n" +
+			"	<F> String method1(CL<T> ie) {\n" +
+			"		return \"b\";\n" +
+			"	}\n" +
+			"	public void bar() {		\n" +
+			"		Function<CL<Integer>, String> v5 = CL::method1;\n" +
+			"		v5 = t -> t.method1();	\n" +
+			"	}	\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 7)\n" + 
+		"	Function<CL<Integer>, String> v5 = CL::method1;\n" + 
+		"	                                   ^^^^^^^^^^^\n" + 
+		"The type CL does not define method1(CL<Integer>) that is applicable here\n" + 
+		"----------\n" + 
+		"2. ERROR in X.java (at line 8)\n" + 
+		"	v5 = t -> t.method1();	\n" + 
+		"	            ^^^^^^^\n" + 
+		"The method method1(CL<Integer>) in the type CL<Integer> is not applicable for the arguments ()\n" + 
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=438945, [1.8] NullPointerException InferenceContext18.checkExpression in java 8 with generics, primitives, and overloading
+public void test438945() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.util.function.ToIntFunction;\n" +
+			"import java.util.function.ToLongFunction;\n" +
+			"public class X {\n" +
+			"    public static void error() {\n" +
+			"        test(X::works);\n" +
+			"        test(X::broken);\n" +
+			"    }\n" +
+			"    private static <T> void test(ToLongFunction<T> func) {}\n" +
+			"    private static <T> void test(ToIntFunction<T> func) {}\n" +
+			"    private static int broken(Object o) { return 0; }\n" +
+			"    private static long works(Object o) { return 0; } \n" +
+			"}\n"
+		},
+		"");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=433458, [1.8][compiler] Eclipse accepts lambda expression with potentially uninitialized arguments
+public void test433458() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.util.Comparator;\n" +
+			"public class X {\n" +
+			"    final Comparator mComparator1;\n" +
+			//"    Comparator mComparator2 = mComparator1;\n" +
+			"    Comparator mComparator2 = (pObj1, pObj2) -> mComparator1.compare(pObj1, pObj2);\n" +
+			"    X() {mComparator1 = Comparator.naturalOrder();}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. WARNING in X.java (at line 3)\n" + 
+		"	final Comparator mComparator1;\n" + 
+		"	      ^^^^^^^^^^\n" + 
+		"Comparator is a raw type. References to generic type Comparator<T> should be parameterized\n" + 
+		"----------\n" + 
+		"2. WARNING in X.java (at line 4)\n" + 
+		"	Comparator mComparator2 = (pObj1, pObj2) -> mComparator1.compare(pObj1, pObj2);\n" + 
+		"	^^^^^^^^^^\n" + 
+		"Comparator is a raw type. References to generic type Comparator<T> should be parameterized\n" + 
+		"----------\n" + 
+		"3. WARNING in X.java (at line 4)\n" + 
+		"	Comparator mComparator2 = (pObj1, pObj2) -> mComparator1.compare(pObj1, pObj2);\n" + 
+		"	                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" + 
+		"Type safety: The method compare(Object, Object) belongs to the raw type Comparator. References to generic type Comparator<T> should be parameterized\n" + 
+		"----------\n" + 
+		"4. ERROR in X.java (at line 4)\n" + 
+		"	Comparator mComparator2 = (pObj1, pObj2) -> mComparator1.compare(pObj1, pObj2);\n" + 
+		"	                                            ^^^^^^^^^^^^\n" + 
+		"The blank final field mComparator1 may not have been initialized\n" + 
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=433588, [1.8][compiler] ECJ compiles an ambiguous call in the presence of an unrelated unused method.
+public void test433588() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.io.IOException;\n" +
+			"import java.nio.file.Files;\n" +
+			"import java.nio.file.Paths;\n" +
+			"import java.util.function.Consumer;\n" +
+			"import java.util.stream.Stream;\n" +
+			"public class X {\n" +
+			"	private interface StreamyBase<T, E extends Exception> {\n" +
+			"		@SuppressWarnings(\"unused\")\n" +
+			"		default void forEachOrdered(Consumer<? super T> action) throws E {}\n" +
+			"	}\n" +
+			"	abstract private static class AbstractStream<T, E extends Exception, STREAM, SELF extends AbstractStream<T, E, STREAM, SELF, CONSUMER>, CONSUMER> implements StreamyBase<T, E> {\n" +
+			"		@SuppressWarnings(\"unused\")\n" +
+			"		public void forEachOrdered(CONSUMER action) throws E {}\n" +
+			"		// remove this method with a warning about it being unused:\n" +
+			"		public final @SafeVarargs void forEachOrdered(Consumer<? super T> action, Consumer<? super T>... actions) throws E {}\n" +
+			"	}\n" +
+			"	private static class UnStream<T> extends AbstractStream<T, RuntimeException, Stream<T>, UnStream<T>, Consumer<? super T>> {}\n" +
+			"	private static class IOStream<T> extends AbstractStream<T, IOException, Stream<T>, IOStream<T>, IOConsumer<? super T>> {}\n" +
+			"	@FunctionalInterface\n" +
+			"	private interface ExConsumer<T, E extends Exception> {\n" +
+			"		void accept(T t1) throws E;\n" +
+			"	}\n" +
+			"	@FunctionalInterface\n" +
+			"	private interface IOConsumer<T> extends ExConsumer<T, IOException> {}\n" +
+			"	public static void tests1(IOStream<String> lines1, UnStream<String> lines2) throws IOException {\n" +
+			"		IOConsumer<? super String> action = s -> Files.isHidden(Paths.get(s));\n" +
+			"		Consumer<? super String> action2 = s -> System.out.println(s);\n" +
+			"		// After removal these two become ambiguous:\n" +
+			"		lines1.forEachOrdered(s -> Files.isHidden(Paths.get(s)));\n" +
+			"		lines1.forEachOrdered(s -> System.out.println(s));\n" +
+			"		lines1.forEachOrdered(action);\n" +
+			"		lines1.forEachOrdered(action2);\n" +
+			"		lines2.forEachOrdered(action2);\n" +
+			"	}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. WARNING in X.java (at line 15)\n" + 
+		"	public final @SafeVarargs void forEachOrdered(Consumer<? super T> action, Consumer<? super T>... actions) throws E {}\n" + 
+		"	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" + 
+		"The method forEachOrdered(Consumer<? super T>, Consumer<? super T>...) from the type X.AbstractStream<T,E,STREAM,SELF,CONSUMER> is never used locally\n" + 
+		"----------\n" + 
+		"2. WARNING in X.java (at line 17)\n" + 
+		"	private static class UnStream<T> extends AbstractStream<T, RuntimeException, Stream<T>, UnStream<T>, Consumer<? super T>> {}\n" + 
+		"	                     ^^^^^^^^\n" + 
+		"Access to enclosing constructor X.AbstractStream<T,E,STREAM,SELF,CONSUMER>() is emulated by a synthetic accessor method\n" + 
+		"----------\n" + 
+		"3. WARNING in X.java (at line 18)\n" + 
+		"	private static class IOStream<T> extends AbstractStream<T, IOException, Stream<T>, IOStream<T>, IOConsumer<? super T>> {}\n" + 
+		"	                     ^^^^^^^^\n" + 
+		"Access to enclosing constructor X.AbstractStream<T,E,STREAM,SELF,CONSUMER>() is emulated by a synthetic accessor method\n" + 
+		"----------\n" + 
+		"4. ERROR in X.java (at line 29)\n" + 
+		"	lines1.forEachOrdered(s -> Files.isHidden(Paths.get(s)));\n" + 
+		"	       ^^^^^^^^^^^^^^\n" + 
+		"The method forEachOrdered(X.IOConsumer<? super String>) is ambiguous for the type X.IOStream<String>\n" + 
+		"----------\n" + 
+		"5. ERROR in X.java (at line 30)\n" + 
+		"	lines1.forEachOrdered(s -> System.out.println(s));\n" + 
+		"	       ^^^^^^^^^^^^^^\n" + 
+		"The method forEachOrdered(X.IOConsumer<? super String>) is ambiguous for the type X.IOStream<String>\n" + 
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=433588, [1.8][compiler] ECJ compiles an ambiguous call in the presence of an unrelated unused method.
+public void test433588a() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.io.IOException;\n" +
+			"import java.nio.file.Files;\n" +
+			"import java.nio.file.Paths;\n" +
+			"import java.util.function.Consumer;\n" +
+			"import java.util.stream.Stream;\n" +
+			"public class X {\n" +
+			"	private interface StreamyBase<T, E extends Exception> {\n" +
+			"		@SuppressWarnings(\"unused\")\n" +
+			"		default void forEachOrdered(Consumer<? super T> action) throws E {}\n" +
+			"	}\n" +
+			"	abstract private static class AbstractStream<T, E extends Exception, STREAM, SELF extends AbstractStream<T, E, STREAM, SELF, CONSUMER>, CONSUMER> implements StreamyBase<T, E> {\n" +
+			"		@SuppressWarnings(\"unused\")\n" +
+			"		public void forEachOrdered(CONSUMER action) throws E {}\n" +
+			"		// remove this method with a warning about it being unused:\n" +
+			"		// public final @SafeVarargs void forEachOrdered(Consumer<? super T> action, Consumer<? super T>... actions) throws E {}\n" +
+			"	}\n" +
+			"	private static class UnStream<T> extends AbstractStream<T, RuntimeException, Stream<T>, UnStream<T>, Consumer<? super T>> {}\n" +
+			"	private static class IOStream<T> extends AbstractStream<T, IOException, Stream<T>, IOStream<T>, IOConsumer<? super T>> {}\n" +
+			"	@FunctionalInterface\n" +
+			"	private interface ExConsumer<T, E extends Exception> {\n" +
+			"		void accept(T t1) throws E;\n" +
+			"	}\n" +
+			"	@FunctionalInterface\n" +
+			"	private interface IOConsumer<T> extends ExConsumer<T, IOException> {}\n" +
+			"	public static void tests1(IOStream<String> lines1, UnStream<String> lines2) throws IOException {\n" +
+			"		IOConsumer<? super String> action = s -> Files.isHidden(Paths.get(s));\n" +
+			"		Consumer<? super String> action2 = s -> System.out.println(s);\n" +
+			"		// After removal these two become ambiguous:\n" +
+			"		lines1.forEachOrdered(s -> Files.isHidden(Paths.get(s)));\n" +
+			"		lines1.forEachOrdered(s -> System.out.println(s));\n" +
+			"		lines1.forEachOrdered(action);\n" +
+			"		lines1.forEachOrdered(action2);\n" +
+			"		lines2.forEachOrdered(action2);\n" +
+			"	}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. WARNING in X.java (at line 17)\n" + 
+		"	private static class UnStream<T> extends AbstractStream<T, RuntimeException, Stream<T>, UnStream<T>, Consumer<? super T>> {}\n" + 
+		"	                     ^^^^^^^^\n" + 
+		"Access to enclosing constructor X.AbstractStream<T,E,STREAM,SELF,CONSUMER>() is emulated by a synthetic accessor method\n" + 
+		"----------\n" + 
+		"2. WARNING in X.java (at line 18)\n" + 
+		"	private static class IOStream<T> extends AbstractStream<T, IOException, Stream<T>, IOStream<T>, IOConsumer<? super T>> {}\n" + 
+		"	                     ^^^^^^^^\n" + 
+		"Access to enclosing constructor X.AbstractStream<T,E,STREAM,SELF,CONSUMER>() is emulated by a synthetic accessor method\n" + 
+		"----------\n" + 
+		"3. ERROR in X.java (at line 29)\n" + 
+		"	lines1.forEachOrdered(s -> Files.isHidden(Paths.get(s)));\n" + 
+		"	       ^^^^^^^^^^^^^^\n" + 
+		"The method forEachOrdered(X.IOConsumer<? super String>) is ambiguous for the type X.IOStream<String>\n" + 
+		"----------\n" + 
+		"4. ERROR in X.java (at line 30)\n" + 
+		"	lines1.forEachOrdered(s -> System.out.println(s));\n" + 
+		"	       ^^^^^^^^^^^^^^\n" + 
+		"The method forEachOrdered(X.IOConsumer<? super String>) is ambiguous for the type X.IOStream<String>\n" + 
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=444665, Internal compiler error: java.lang.NullPointerException at org.eclipse.jdt.internal.compiler.problem.ProblemReporter.invalidMethod 
+public void test444665() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java", 
+			"public class X {\n" +
+			"    static void foo(java.util.Map<Long, Long> map) {\n" +
+			"        java.util.function.Consumer<int[]> c = array -> map.compute(array.get(0), (k, v) -> null);\n" +
+			"    }\n" +
+			"}\n"
+	},
+	"----------\n" + 
+	"1. ERROR in X.java (at line 3)\n" + 
+	"	java.util.function.Consumer<int[]> c = array -> map.compute(array.get(0), (k, v) -> null);\n" + 
+	"	                                                            ^^^^^^^^^^^^\n" + 
+	"Cannot invoke get(int) on the array type int[]\n" + 
+	"----------\n");
+}
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=440643, Eclipse compiler doesn't like method references with overloaded varargs method
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=439515, [1.8] ECJ reports error at method reference to overloaded instance method
+public void test440643() {
+	Map options = getCompilerOptions();
+	options.put(CompilerOptions.OPTION_ReportUnusedPrivateMember, CompilerOptions.ERROR);
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"@FunctionalInterface\n" +
+			"interface Accumalator<E> {\n" +
+			"  void acum(Container<E> container, E data);\n" +
+			"}\n" +
+			"interface Container<E> {\n" +
+			"  public void add(E data);\n" +
+			"  @SuppressWarnings(\"unchecked\")\n" +
+			"  public void add(E...data);\n" +
+			"}\n" +
+			"class Binding<E> {\n" +
+			"  private final Accumalator<E> function;\n" +
+			"  \n" +
+			"  public Binding() {\n" +
+			"    function = Container::add;\n" +
+			"  }\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 11)\n" + 
+		"	private final Accumalator<E> function;\n" + 
+		"	                             ^^^^^^^^\n" + 
+		"The value of the field Binding<E>.function is not used\n" + 
+		"----------\n",
+		null,
+		false,
+		options);
+}
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=440643, Eclipse compiler doesn't like method references with overloaded varargs method
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=439515, [1.8] ECJ reports error at method reference to overloaded instance method
+public void test440643a() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"interface Fun<T, R> {\n" +
+			"	R apply(T arg);\n" +
+			"}\n" +
+			"public class X {\n" +
+			"	static int size() {\n" +
+			"		return -1;\n" +
+			"	}\n" +
+			"	static int size(Object arg) {\n" +
+			"		return 0;\n" +
+			"	}\n" +
+			"	int size(X arg) {\n" +
+			"		return 1;\n" +
+			"	}\n" +
+			"	public static void main(String args[]) {\n" +
+			"		Fun<X, Integer> f1 = X::size;\n" +
+			"		System.out.println(f1.apply(new X()));\n" +
+			"	}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 15)\n" + 
+		"	Fun<X, Integer> f1 = X::size;\n" + 
+		"	                     ^^^^^^^\n" + 
+		"Cannot make a static reference to the non-static method size(X) from the type X\n" + 
+		"----------\n");
+}
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=440643, Eclipse compiler doesn't like method references with overloaded varargs method
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=439515, [1.8] ECJ reports error at method reference to overloaded instance method
+public void test440643b() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"interface Fun<T, R> {\n" +
+			"	R apply(T arg);\n" +
+			"}\n" +
+			"public class X {\n" +
+			"	int size() {\n" +
+			"		return -1;\n" +
+			"	}\n" +
+			"	static int size(Object arg) {\n" +
+			"		return 0;\n" +
+			"	}\n" +
+			"	public static void main(String args[]) {\n" +
+			"		Fun<X, Integer> f1 = X::size;\n" +
+			"		System.out.println(f1.apply(new X()));\n" +
+			"	}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 12)\n" + 
+		"	Fun<X, Integer> f1 = X::size;\n" + 
+		"	                     ^^^^^^^\n" + 
+		"Ambiguous method reference: both size() and size(Object) from the type X are eligible\n" + 
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=433735, [1.8] Discrepancy with javac when dealing with local classes in lambda expressions
+public void test433735() {
+	this.runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.util.function.Supplier;\n" +
+			"class E {\n" +
+			"	E(Supplier<Object> factory) { }\n" +
+			"}\n" +
+			"public class X extends E {\n" +
+			"	X() {\n" +
+			"		super( () -> {\n" +
+			"			class Z extends E {\n" +
+			"				Z() {\n" +
+			"					super(new Supplier<Object>() {\n" +
+			"						@Override\n" +
+			"						public Object get() {\n" +
+			"							return new Object();\n" +
+			"						}\n" +
+			"					});\n" +
+			"				}\n" +
+			"			} \n" +
+			"			return new Z();\n" +
+			"			});\n" +
+			"	}\n" +
+			"	public static void main(String[] args) {\n" +
+			"		new X();\n" +
+			"	}\n" +
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 7)\n" + 
+		"	super( () -> {\n" + 
+		"	       ^^^^^\n" + 
+		"Cannot refer to \'this\' nor \'super\' while explicitly invoking a constructor\n" +
+		"----------\n");
+}
+// https://bugs.eclipse.org/bugs/show_bug.cgi?id=432531 [1.8] VerifyError with anonymous subclass inside of lambda expression in the superclass constructor call
+public void test432531a() {
+	this.runNegativeTest(
+		new String[] {
+			"Y.java", 
+			"import java.util.function.Supplier;\n" + 
+			"class E {\n" + 
+			"	E(Supplier<Object> factory) { }\n" + 
+			"}\n" + 
+			"public class Y extends E {\n" + 
+			"	Y() {\n" + 
+			"		super( () -> {\n" + 
+			"			class Z extends E {\n" + 
+			"				Z() {\n" + 
+			"					super(() -> new Object());\n" + 
+			"				}\n" + 
+			"			}\n" + 
+			"			return new Z();\n" + 
+			"			});\n" + 
+			"	}\n" + 
+			"	public static void main(String[] args) {\n" + 
+			"		new Y();\n" + 
+			"	}\n" + 
+			"}"
+	},
+	"----------\n" + 
+	"1. ERROR in Y.java (at line 7)\n" + 
+	"	super( () -> {\n" + 
+	"	       ^^^^^\n" + 
+	"Cannot refer to \'this\' nor \'super\' while explicitly invoking a constructor\n" +
+	"----------\n");
 }
 public static Class testClass() {
 	return NegativeLambdaExpressionsTest.class;

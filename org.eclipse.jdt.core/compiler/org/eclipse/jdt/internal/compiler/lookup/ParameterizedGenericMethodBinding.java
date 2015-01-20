@@ -20,6 +20,8 @@
  *								Bug 418743 - [1.8][null] contradictory annotations on invocation of generic method not reported
  *								Bug 416182 - [1.8][compiler][null] Contradictory null annotations not rejected
  *								Bug 429958 - [1.8][null] evaluate new DefaultLocation attribute of @NonNullByDefault
+ *								Bug 434602 - Possible error with inferred null annotations leading to contradictory null annotations
+ *								Bug 434483 - [1.8][compiler][inference] Type inference not picked up with method reference
  *******************************************************************************/
 package org.eclipse.jdt.internal.compiler.lookup;
 
@@ -27,6 +29,7 @@ import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.eclipse.jdt.internal.compiler.ast.Invocation;
 import org.eclipse.jdt.internal.compiler.ast.MessageSend;
 import org.eclipse.jdt.internal.compiler.ast.NullAnnotationMatching;
+import org.eclipse.jdt.internal.compiler.ast.ReferenceExpression;
 import org.eclipse.jdt.internal.compiler.ast.Wildcard;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
@@ -115,9 +118,11 @@ public class ParameterizedGenericMethodBinding extends ParameterizedMethodBindin
 			CompilerOptions compilerOptions = scope.compilerOptions();
 			if (compilerOptions.sourceLevel >= ClassFileConstants.JDK1_8) {
 				if ((inferenceLevel & Scope.APPLICABILITY) != 0)
-				infCtx18 = invocationSite.freshInferenceContext(scope);
+					infCtx18 = invocationSite.freshInferenceContext(scope);
 				else if (invocationSite instanceof Invocation && originalMethod instanceof ParameterizedGenericMethodBinding)
 					infCtx18 = ((Invocation) invocationSite).getInferenceContext((ParameterizedGenericMethodBinding) originalMethod);
+				if (infCtx18 == null)
+					return originalMethod;
 			}
 			if (infCtx18 != null) {
 				try {
@@ -126,46 +131,48 @@ public class ParameterizedGenericMethodBinding extends ParameterizedMethodBindin
 					if ((inferenceLevel & Scope.APPLICABILITY) != 0) {
 
 						// ---- 18.5.1 (Applicability): ----
-				boolean isDiamond = originalMethod.isConstructor()
-						&& invocationSite instanceof Expression
-						&& ((Expression)invocationSite).isPolyExpression(originalMethod);
+						boolean isDiamond = originalMethod.isConstructor()
+								&& invocationSite instanceof Expression
+								&& ((Expression)invocationSite).isPolyExpression(originalMethod);
 						if (arguments.length == parameters.length) {
 							infCtx18.inferenceKind = InferenceContext18.CHECK_LOOSE; // TODO: validate if 2 phase checking (strict/loose + vararg) is sufficient.
 							infCtx18.inferInvocationApplicability(originalMethod, arguments, isDiamond);
 							provisionalResult = infCtx18.solve();
 						}
-					if (provisionalResult == null && originalMethod.isVarargs()) {
+						if (provisionalResult == null && originalMethod.isVarargs()) {
 							// check for variable-arity applicability
-						infCtx18 = invocationSite.freshInferenceContext(scope); // start over
+							infCtx18 = invocationSite.freshInferenceContext(scope); // start over
 							infCtx18.inferenceKind = InferenceContext18.CHECK_VARARG;
 							infCtx18.inferInvocationApplicability(originalMethod, arguments, isDiamond);
-						provisionalResult = infCtx18.solve();
-					}
-					if (provisionalResult != null && infCtx18.isResolved(provisionalResult)) {
+							provisionalResult = infCtx18.solve();
+						}
+						if (provisionalResult != null && infCtx18.isResolved(provisionalResult)) {
 							infCtx18.storedSolution = provisionalResult;
 							infCtx18.stepCompleted = InferenceContext18.APPLICABILITY_INFERRED;
+							if (invocationSite instanceof ReferenceExpression)
+								((ReferenceExpression) invocationSite).inferenceKind = infCtx18.inferenceKind;
 						}
 					} else {
 						provisionalResult = infCtx18.storedSolution;
 					}
 					result = infCtx18.currentBounds.copy(); // the result after reduction, without effects of resolve()
 
-						TypeBinding expectedType = invocationSite.invocationTargetType();
-						boolean hasReturnProblem = false;
-						boolean invocationTypeInferred = false;
+					TypeBinding expectedType = invocationSite.invocationTargetType();
+					boolean hasReturnProblem = false;
+					boolean invocationTypeInferred = false;
 					if ((inferenceLevel & Scope.INVOCATION_TYPE) != 0 // requested?
 							&& (expectedType != null || !invocationSite.getExpressionContext().definesTargetType())) { // possible?
 
 						// ---- 18.5.2 (Invocation type): ----
 						result = infCtx18.inferInvocationType(result, expectedType, invocationSite, originalMethod);
-							invocationTypeInferred = true;
-							hasReturnProblem |= result == null;
-							if (hasReturnProblem)
-								result = provisionalResult; // let's prefer a type error regarding the return type over reporting no match at all
-						} else {
-							// we're not yet ready for invocation type inference
-							result = provisionalResult;
-						}
+						invocationTypeInferred = true;
+						hasReturnProblem |= result == null;
+						if (hasReturnProblem)
+							result = provisionalResult; // let's prefer a type error regarding the return type over reporting no match at all
+					} else {
+						// we're not yet ready for invocation type inference
+						result = provisionalResult;
+					}
 
 					if (result != null) {
 						// assemble the solution etc:
@@ -186,7 +193,7 @@ public class ParameterizedGenericMethodBinding extends ParameterizedMethodBindin
 							if (hasReturnProblem) { // illegally working from the provisional result?
 								MethodBinding problemMethod = infCtx18.getReturnProblemMethodIfNeeded(expectedType, methodSubstitute);
 								if (problemMethod instanceof ProblemMethodBinding)
-								return problemMethod;
+									return problemMethod;
 							}
 							if (invocationTypeInferred) {
 								if (compilerOptions.isAnnotationBasedNullAnalysisEnabled)
@@ -194,15 +201,17 @@ public class ParameterizedGenericMethodBinding extends ParameterizedMethodBindin
 								infCtx18.rebindInnerPolies(result, methodSubstitute.parameters);
 //{ObjectTeams: 2nd arg added:
 /* orig:
-								return methodSubstitute.boundCheck18(scope, arguments);
+								MethodBinding problemMethod = methodSubstitute.boundCheck18(scope, arguments);
   :giro */
-								return methodSubstitute.boundCheck18(scope, invocationSite, arguments);
+								MethodBinding problemMethod = methodSubstitute.boundCheck18(scope, invocationSite, arguments);
 // SH}
+								if (problemMethod != null)
+									return problemMethod;
 							} else {
 								if (invocationSite instanceof Invocation)
 									((Invocation) invocationSite).registerInferenceContext(methodSubstitute, infCtx18); // keep context so we can finish later
-								return methodSubstitute;
 							}
+							return methodSubstitute;
 						}
 					}
 					return null;

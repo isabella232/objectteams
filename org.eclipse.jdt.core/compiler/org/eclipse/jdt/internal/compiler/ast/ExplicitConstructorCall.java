@@ -509,7 +509,7 @@ public class ExplicitConstructorCall extends Statement implements Invocation {
 						  argumentTypes[i] = argument.resolvedType;
 				  }
 // SH}
-					if (sourceLevel >= ClassFileConstants.JDK1_8 && argument.isPolyExpression()) {
+					if (sourceLevel >= ClassFileConstants.JDK1_8 && (argument.isPolyExpression() || ((argument instanceof Invocation) && ((Invocation) argument).usesInference()))) {
 						if (this.innerInferenceHelper == null)
 							this.innerInferenceHelper = new InnerInferenceHelper();
 					}

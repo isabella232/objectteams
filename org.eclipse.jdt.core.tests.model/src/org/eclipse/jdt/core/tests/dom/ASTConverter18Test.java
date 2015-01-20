@@ -4703,6 +4703,53 @@ public void test436347() throws CoreException, IOException {
 		removeLibrary(javaProject, jarName, srcName);
 	}
 }
-
-
+//https://bugs.eclipse.org/bugs/show_bug.cgi?id=435348, [1.8][compiler] NPE in JDT Core during AST creation
+// NPE without fix
+public void testBug435348() throws JavaModelException {
+	this.workingCopy = getWorkingCopy("/Converter18/src/testBug435348/X.java",
+		true/* resolve */);
+	String contents = "package testBug435348;\n" +
+		"class Y {}\n" +
+		"class Z{}\n" +
+		"class X {\n" +
+		"  void bar2(@ Z z) {}\n" +
+		"  //        ^  Illegal @ \n" +
+		"  static  {\n" +
+		"        bar(new Y() {});\n" +
+		"  }\n" +
+		"}\n";
+	buildAST(contents, this.workingCopy, false);
+}
+/**
+ * https://bugs.eclipse.org/bugs/show_bug.cgi?id=447062
+ * 
+ * @throws JavaModelException
+ */
+public void testBug447062() throws JavaModelException {
+	String contents =
+			"public class X {\n" +
+			"    Runnable foo = () -> {\n" +
+			"    \n" +
+			"    }\n" +
+			"}\n";
+	this.workingCopy = getWorkingCopy("/Converter18/src/test447062/X.java", contents, true/*computeProblems*/);
+	IJavaProject javaProject = this.workingCopy.getJavaProject();
+	class BindingRequestor extends ASTRequestor {
+		ITypeBinding _result = null;
+		public void acceptBinding(String bindingKey, IBinding binding) {
+			if (this._result == null && binding != null && binding.getKind() == IBinding.TYPE)
+				this._result = (ITypeBinding) binding;
+		}
+	}
+	final BindingRequestor requestor = new BindingRequestor();
+	final ASTParser parser = ASTParser.newParser(AST.JLS8);
+	parser.setResolveBindings(false);
+	parser.setProject(javaProject);
+	parser.setIgnoreMethodBodies(true);
+	try {
+		parser.createASTs(new ICompilationUnit[] {this.workingCopy}, new String[0], requestor, null);
+	} catch (IllegalArgumentException e) {
+		assertTrue("Test Failed", false);
+	}
+}
 }

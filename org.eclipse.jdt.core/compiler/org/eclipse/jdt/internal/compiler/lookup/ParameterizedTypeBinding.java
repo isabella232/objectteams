@@ -66,7 +66,7 @@ public class ParameterizedTypeBinding extends ReferenceBinding implements Substi
 
 //{ObjectTeams: make visible to objectteams package
 /* orig:
-	private ReferenceBinding type; // must ensure the type is resolved
+	protected ReferenceBinding type; // must ensure the type is resolved
   :giro */
 	public ReferenceBinding type; // must ensure the type is resolved
 // SH}
@@ -78,7 +78,7 @@ public class ParameterizedTypeBinding extends ReferenceBinding implements Substi
 	public FieldBinding[] fields;
 	public ReferenceBinding[] memberTypes;
 	public MethodBinding[] methods;
-	private ReferenceBinding enclosingType;
+	protected ReferenceBinding enclosingType;
 
 	public ParameterizedTypeBinding(ReferenceBinding type, TypeBinding[] arguments,  ReferenceBinding enclosingType, LookupEnvironment environment){
 		this.environment = environment;
