@@ -1,9 +1,9 @@
 !***************  OTDT CONTRIBUTION  ******************************************************** 
 
 !-- Don't set version numbers for features, otherwise pdebuild would complain about a non-existent Basedir: -- 
-feature@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature,tag=builds/201409160728
-feature@org.eclipse.objectteams.otdt.source.feature=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.source.feature,tag=builds/201409160728
-feature@org.eclipse.objectteams.otdt.core.patch=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.core.patch,tag=builds/201409160728
+feature@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature,tag=branches/maintenance/OTDT_2.3.x
+feature@org.eclipse.objectteams.otdt.source.feature=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.source.feature,tag=branches/maintenance/OTDT_2.3.x
+feature@org.eclipse.objectteams.otdt.core.patch=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.core.patch,tag=branches/maintenance/OTDT_2.3.x
 feature@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.feature,tag=builds/201409160728
 feature@org.eclipse.objectteams.otequinox.turbo=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.turbo.feature,tag=builds/201409160728
 
@@ -11,7 +11,7 @@ feature@org.eclipse.objectteams.otequinox.turbo=GIT,repo=git://git.eclipse.org/g
 plugin@org.eclipse.jdt.core,3.10.2.v_OTDT_r232_qualifier=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core,tag=branches/maintenance/OTDT_2.3.x
 
 !next plug-in don't specify version so that org.eclipse.objectteams.runtime/customBuildCallbacks.xml will find the plug-in directory:
-plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt,tag=builds/201409160728
+plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt,tag=branches/maintenance/OTDT_2.3.x
 
 plugin@org.eclipse.objectteams.otdt.debug=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=builds/201406101339
 plugin@org.eclipse.objectteams.otdt.debug.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=builds/201409160728
