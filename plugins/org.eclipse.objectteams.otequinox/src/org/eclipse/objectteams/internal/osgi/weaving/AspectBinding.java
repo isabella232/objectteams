@@ -34,6 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.objectteams.internal.osgi.weaving.Util.ProfileKind;
 import org.eclipse.objectteams.otequinox.ActivationKind;
 import org.eclipse.objectteams.otequinox.AspectPermission;
+import org.eclipse.objectteams.otequinox.TransformerPlugin;
 import org.objectteams.Team;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.hooks.weaving.WovenClass;
@@ -62,6 +63,7 @@ public class AspectBinding {
 
 		String teamName;
 		@Nullable Class<? extends Team> teamClass;
+		@Nullable Team instance;
 
 		@Nullable String superTeamName;
 		@Nullable TeamBinding superTeam;
@@ -212,6 +214,21 @@ public class AspectBinding {
 		public boolean hasBeenDenied() {
 			return this.checkedPermission == AspectPermission.DENY
 						|| AspectBinding.this.hasBeenDenied;
+		}
+
+		/** Precondition: teamClass is set. Create fresh or answer existing. */
+		public Team getInstance() throws InstantiationException, IllegalAccessException {
+			for (TeamBinding equalivalent : this.equivalenceSet) {
+				Team inst = equalivalent.instance;
+				if (inst != null)
+					return inst;
+			}
+			Class<? extends Team> cl = this.teamClass;
+			assert cl != null : "Precondition";
+			@SuppressWarnings("null")@NonNull Team nnInst = cl.newInstance();
+			TransformerPlugin.registerTeamInstance(nnInst);
+			log(IStatus.INFO, "Instantiated team "+teamName);
+			return this.instance = nnInst;
 		}
 	}
 	

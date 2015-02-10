@@ -31,7 +31,6 @@ import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.BaseBundle;
 import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.TeamBinding;
 import org.eclipse.objectteams.internal.osgi.weaving.Util.ProfileKind;
 import org.eclipse.objectteams.otequinox.ActivationKind;
-import org.eclipse.objectteams.otequinox.TransformerPlugin;
 import org.eclipse.objectteams.otredyn.runtime.TeamManager;
 import org.objectteams.Team;
 import org.osgi.framework.Bundle;
@@ -180,6 +179,9 @@ public class TeamLoader {
 	 */
 	@Nullable Team instantiateAndActivate(AspectBinding aspectBinding, TeamBinding team, ActivationKind activationKind)
 	{
+		for (TeamBinding equivalent : team.equivalenceSet)
+			if (equivalent.instance != null && equivalent.isActivated) return equivalent.instance;
+
 		String teamName = team.teamName;
 		// don't try to instantiate before all base classes successfully loaded.
 		synchronized(aspectBinding) {
@@ -196,9 +198,7 @@ public class TeamLoader {
 			long time = 0;
 			if (Util.PROFILE) time= System.nanoTime();
 
-			@SuppressWarnings("null")@NonNull Team instance = team.teamClass.newInstance();
-			TransformerPlugin.registerTeamInstance(instance);
-			log(IStatus.INFO, "Instantiated team "+teamName);
+			Team instance = team.getInstance();
 			
 			try {
 				switch (activationKind) {

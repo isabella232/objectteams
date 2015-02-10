@@ -238,7 +238,7 @@ public class TransformerPlugin implements BundleActivator, IAspectRegistry {
 		return result;
 	}
 
-	public static synchronized void registerTeamInstance(Team instance) {
+	public static synchronized void registerTeamInstance(@NonNull Team instance) {
 		plugin.teamInstances.add(instance);
 	}
 	/**
