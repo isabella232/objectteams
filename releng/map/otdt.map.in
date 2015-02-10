@@ -23,7 +23,7 @@ plugin@org.eclipse.objectteams.runtime=GIT,repo=git://git.eclipse.org/gitroot/ob
 plugin@org.eclipse.objectteams.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otre,tag=branches/maintenance/OTDT_2.3.x
 plugin@org.eclipse.objectteams.otredyn=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otredyn,tag=builds/201409160728
 !the following is also referenced in otdt.doc/buildDoc.xml (plugin-name without version):
-plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otre,tag=branches/maintenance/OTDT_2.3.x
+plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox,tag=branches/maintenance/OTDT_2.3.x
 fragment@org.eclipse.objectteams.otequinox.turbo=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.turbo,tag=builds/201409160728
 plugin@org.eclipse.objectteams.eclipse.monitor=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.eclipse.monitor,tag=builds/201406101339
 
