@@ -124,9 +124,7 @@ public class OTDTUIPlugin extends AbstractUIPlugin implements OTDTUIPluginConsta
         addJavaElementChangedListeners();
 
         getCallinMarkerCreator(); // initialize
-        
-        getImageRegistry(); // initialize images to avoid https://bugs.eclipse.org/293995
-	}
+    }
     
     public void stop(BundleContext context) throws Exception
     {

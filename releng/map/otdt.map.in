@@ -15,7 +15,7 @@ plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objec
 
 plugin@org.eclipse.objectteams.otdt.debug=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=builds/201406101339
 plugin@org.eclipse.objectteams.otdt.debug.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=builds/201506091717
-plugin@org.eclipse.objectteams.otdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui,tag=builds/201506091717
+plugin@org.eclipse.objectteams.otdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui,tag=branches/maintenance/OTDT_2.4.x
 plugin@org.eclipse.objectteams.otdt.doc=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.doc,tag=builds/201506091717
 !plugin@org.eclipse.objectteams.otdt.metrics=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics,tag=builds/201101290806
 
