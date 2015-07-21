@@ -19,8 +19,10 @@ import static org.eclipse.objectteams.otredyn.transformer.names.ClassNames.OBJEC
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.objectteams.otredyn.bytecode.asm.ASMByteCodeAnalyzer.ClassInformation;
@@ -36,7 +38,8 @@ public class LoaderAwareClassWriter extends ClassWriter {
 	// Only use as a resource loader!
 	private ClassLoader loader;
 	private ASMByteCodeAnalyzer analyzer; // hopefully caching loaded classes per class-being-written is sufficient for performance
-
+	private Map<String, ClassInformation> knownClasses = new HashMap<String, ASMByteCodeAnalyzer.ClassInformation>();
+	
 	public LoaderAwareClassWriter(ClassReader reader, int computeFrames, ClassLoader loader) {
 		super(reader, computeFrames);
 		this.loader = loader;
@@ -67,13 +70,32 @@ public class LoaderAwareClassWriter extends ClassWriter {
 		    throw new RuntimeException(e.toString());
 		}
 
-        // do a breadth-first search: each iteration adds just one more level of super types:
+        // do a breadth-first search: each iteration adds just one more level of super types,
+		// but strictly prefer common super class over super interface.
         Set<String> allTypes1 = new HashSet<String>();
         Set<String> allTypes2 = new HashSet<String>();
         allTypes1.add(type1);
         allTypes2.add(type2);
-        List<String> newTypes1 = getDirectSupers(ci1);
-        List<String> newTypes2 = getDirectSupers(ci2);
+        // Phase 1: classes:
+        List<String> newTypes1 = new ArrayList<String>(); 
+        addSuperClass(newTypes1, ci1);
+        List<String> newTypes2 = new ArrayList<String>(); 
+        addSuperClass(newTypes2, ci2);
+        while (!newTypes1.isEmpty() || !newTypes2.isEmpty()) {
+        	for (String newType1 : newTypes1)
+        		if (allTypes2.contains(newType1))
+        			return newType1;
+        	allTypes1.addAll(newTypes1);
+        	for (String newType2 : newTypes2)
+        		if (allTypes1.contains(newType2))
+        			return newType2;
+        	allTypes2.addAll(newTypes2);
+        	newTypes1 = getDirectSupersLayer(newTypes1, true);
+        	newTypes2 = getDirectSupersLayer(newTypes2, true);
+        }
+        // Phase 2: interfaces:
+        addSuperInterfaces(newTypes1, ci1);
+        addSuperInterfaces(newTypes2, ci2);
         while (true) {
         	if (newTypes1.isEmpty() && newTypes2.isEmpty())
         		return OBJECT_SLASH;
@@ -85,35 +107,43 @@ public class LoaderAwareClassWriter extends ClassWriter {
         		if (allTypes1.contains(newType2))
         			return newType2;
         	allTypes2.addAll(newTypes2);
-        	newTypes1 = getDirectSupersLayer(newTypes1);
-        	newTypes2 = getDirectSupersLayer(newTypes2);
+        	newTypes1 = getDirectSupersLayer(newTypes1, false);
+        	newTypes2 = getDirectSupersLayer(newTypes2, false);
         }
 	}
 
-	private List<String> getDirectSupersLayer(List<String> types) {
+	private List<String> getDirectSupersLayer(List<String> types, boolean classes) {
 		List<String> result = new ArrayList<String>();
 		for (String type : types) {
-			InputStream s;
-			try {
-				s = this.loader.getResourceAsStream(type+".class");
-	        } catch (Exception e) {
-	            throw new RuntimeException(e.toString());
+			ClassInformation ci = this.knownClasses.get(type);
+			if (ci == null) {
+				InputStream s;
+				try {
+					s = this.loader.getResourceAsStream(type+".class");
+		        } catch (Exception e) {
+		            throw new RuntimeException(e.toString());
+				}
+				ci = this.analyzer.getClassInformation(s, type);
+				this.knownClasses.put(type, ci);
 			}
-			ClassInformation ci = this.analyzer.getClassInformation(s, type);
-			if (ci != null)
-				result.addAll(getDirectSupers(ci));
+			if (ci != null) {
+				if (classes)
+					addSuperClass(result, ci);
+				else
+					addSuperInterfaces(result, ci);
+			}
 		}
 		return result;
 	}
 
-	private List<String> getDirectSupers(ClassInformation ci) {
-		List<String> result = new ArrayList<String>();
+	private void addSuperClass(List<String> result, ClassInformation ci) {
 		String superClass = ci.getSuperClassName();
 		if (superClass != null && !superClass.equals(OBJECT_SLASH)) // avoid prematurely answering j.l.Object
 			result.add(superClass);
-		for (String ifc : ci.getSuperInterfaceNames())
-			result.add(ifc);
-		return result;
 	}
 
+	private void addSuperInterfaces(List<String> result, ClassInformation ci) {
+		for (String ifc : ci.getSuperInterfaceNames())
+			result.add(ifc);
+	}
 }
