@@ -168,7 +168,7 @@ public class TransformStatementsVisitor
 	    			case OTDRE:
 		    			AstGenerator gen = new AstGenerator(messageSend);
 		    			if (args == null || args.length == 0) {
-		    				args = new Expression[] { gen.nullLiteral() };
+		    				args = new Expression[] { gen.nullLiteral(), gen.booleanLiteral(true) /*isBaseCall*/ };
 		    			} else {
 		    				Expression[] boxedArgs = new Expression[args.length];
 		    				for (int i = 0; i < args.length; i++) {
@@ -190,7 +190,8 @@ public class TransformStatementsVisitor
 								boxedArgs[i] = args[i];
 		    				}
 		    				args = new Expression[] {
-		    					gen.arrayAllocation(gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_OBJECT), 1, boxedArgs)
+		    					gen.arrayAllocation(gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_OBJECT), 1, boxedArgs),
+		    					gen.booleanLiteral(true) // isBaseCall
 		    				};	
 		    			}
 		    			break;

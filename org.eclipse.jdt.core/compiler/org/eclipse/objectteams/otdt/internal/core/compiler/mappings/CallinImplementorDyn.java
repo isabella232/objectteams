@@ -114,6 +114,7 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 	
 	// for call next:
 	private static final char[] BASE_CALL_ARGS  = "baseCallArguments".toCharArray();   //$NON-NLS-1$
+	private static final char[] IS_BASE_CALL = "isBaseCall".toCharArray(); //$NON-NLS-1$
 
 	// for call{replace,before,after}:
 	static final char[][] REPLACE_ARG_NAMES = new char[][]{_BASE$, TEAMS, INDEX, CALLIN_ID, BOUND_METHOD_ID, ARGUMENTS};
@@ -753,10 +754,11 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 				if (isReplace) { 
 
 					// default: callNext:
-					Expression[] callArgs = new Expression[REPLACE_ARG_NAMES.length+1];
+					Expression[] callArgs = new Expression[REPLACE_ARG_NAMES.length+2];
 					for (int idx=0; idx < REPLACE_ARG_NAMES.length; idx++)
 						callArgs[idx] = gen.singleNameReference(REPLACE_ARG_NAMES[idx]);
-					callArgs[callArgs.length-1] = gen.nullLiteral(); // no explicit baseCallArguments
+					callArgs[callArgs.length-2] = gen.nullLiteral(); // no explicit baseCallArguments
+					callArgs[callArgs.length-1] = gen.booleanLiteral(false); // not a base call  
 					statements.add(gen.caseStatement(null)); 													// default:
 					statements.add(gen.returnStatement(															//    return _OT$callNext(..);
 										gen.messageSend(
@@ -844,7 +846,8 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 				gen.argument(CALLIN_ID, 		gen.createArrayTypeReference(TypeBinding.INT, 1)),
 				gen.argument(BOUND_METHOD_ID, 	gen.typeReference(TypeBinding.INT)),
 				gen.argument(ARGUMENTS, 		gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1)),
-				gen.argument(BASE_CALL_ARGS, 	gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1))
+				gen.argument(BASE_CALL_ARGS, 	gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1)),
+				gen.argument(IS_BASE_CALL,		gen.typeReference(TypeBinding.BOOLEAN))
 		};
 		// super call directly passes all these args through:
 		Expression[] superArgs = new Expression[args.length];
@@ -862,94 +865,98 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 		swStat.expression = gen.arrayReference(gen.singleNameReference(CALLIN_ID), gen.singleNameReference(INDEX));	// switch(callinId[index]) { ...
 		List<Statement> swStatements = new ArrayList<Statement>(); 
 		for (CallinMappingDeclaration mapping : callinDecls) {
-			List<Statement> caseBlockStats = new ArrayList<Statement>();
 			int nLabels = 0;
-			for (MethodSpec baseSpec : mapping.baseMethodSpecs) 
-				caseBlockStats.add(gen.caseStatement(gen.intLiteral(baseSpec.getCallinId(aTeam))));					// case bseSpecCallinId:
-			int nRoleArgs = mapping.getRoleMethod().getSourceParamLength();
-			TypeBinding[] roleParams = mapping.getRoleMethod().getSourceParameters();
-			for (int i=0; i<roleParams.length; i++)
-				if (roleParams[i].isRole() && TeamModel.isTeamContainingRole(teamDecl.binding, (ReferenceBinding) roleParams[i]))
-					roleParams[i] = TeamModel.strengthenRoleType(teamDecl.binding, roleParams[i]);
-
-			List<Statement> repackingStats = new ArrayList<Statement>();
-			
-			if (mapping.positions != null) {
-				int[] poss = mapping.positions;
-				nLabels = caseBlockStats.size();
-				int argOffset = 0; // some methods have their real arguments at an offset
-				MethodSpec baseSpec = mapping.baseMethodSpecs[0]; // TODO(SH): check all base methods??
-				if (baseSpec.isCallin())
-					argOffset += 6;
-				if (baseSpec.isStatic() && baseSpec.getDeclaringClass().isRole())
-					argOffset += 2;
-				for (int i=0; i<poss.length; i++)
-					// arguments[basepos] = baseCallArguments[i]
-					if (poss[i] > 0) {
-						// FIXME(SH): this is cheating: should obtain translation info from actual 
-						// parameter mapping (see cast in test432_expressionInReplaceParameterMapping11)
-						TypeBinding roleSideParameter = roleParams[i];
-						 // FIXME(SH): per basemethod:
-						TypeBinding baseSideParameter = mapping.baseMethodSpecs[0].resolvedParameters()[poss[i]-1];
-						Expression roleSideArgument = gen.arrayReference(gen.singleNameReference(BASE_CALL_ARGS), i);//   ... baseCallArguments[i] ...
-						if (TypeBinding.notEquals(roleSideParameter, baseSideParameter))
-							roleSideArgument = gen.resolvedCastExpression(roleSideArgument, roleSideParameter, CastExpression.RAW);
-						TypeBinding roleSideLeaf = roleSideParameter.leafComponentType();
-						TypeBinding baseSideLeaf = baseSideParameter.leafComponentType();
-						if (   roleSideLeaf.isRole() 
-							&& ((ReferenceBinding)roleSideLeaf).baseclass().isCompatibleWith(baseSideLeaf))
-							roleSideArgument = new PotentialLowerExpression(roleSideArgument, baseSideParameter, gen.thisReference());
-						repackingStats.add(gen.assignment(gen.arrayReference(gen.singleNameReference(ARGUMENTS), 	//   arguments[p] = baseCallArguments[i];
-								                                             poss[i]-1+argOffset), // 0 represents result
-														  roleSideArgument));
+			for (MethodSpec baseSpec : mapping.baseMethodSpecs) {
+				List<Statement> caseBlockStats = new ArrayList<Statement>();
+				caseBlockStats.add(gen.caseStatement(gen.intLiteral(baseSpec.getCallinId(aTeam))));					// case baseSpecCallinId:
+				int nRoleArgs = mapping.getRoleMethod().getSourceParamLength();
+				TypeBinding[] roleParams = mapping.getRoleMethod().getSourceParameters();
+				for (int i=0; i<roleParams.length; i++)
+					if (roleParams[i].isRole() && TeamModel.isTeamContainingRole(teamDecl.binding, (ReferenceBinding) roleParams[i]))
+						roleParams[i] = TeamModel.strengthenRoleType(teamDecl.binding, roleParams[i]);
+	
+				List<Statement> repackingStats = new ArrayList<Statement>();
+				
+				if (mapping.positions != null) {
+					int[] poss = mapping.positions;
+					nLabels = caseBlockStats.size();
+					int argOffset = 0; // some methods have their real arguments at an offset
+					if (baseSpec.isCallin())
+						argOffset += 6;
+					if (baseSpec.isStatic() && baseSpec.getDeclaringClass().isRole())
+						argOffset += 2;
+					for (int i=0; i<poss.length; i++)
+						// arguments[basepos] = baseCallArguments[i]
+						if (poss[i] > 0) {
+							// FIXME(SH): this is cheating: should obtain translation info from actual 
+							// parameter mapping (see cast in test432_expressionInReplaceParameterMapping11)
+							TypeBinding roleSideParameter = roleParams[i];
+							TypeBinding baseSideParameter = baseSpec.resolvedParameters()[poss[i]-1];
+							Expression roleSideArgument = gen.arrayReference(gen.singleNameReference(BASE_CALL_ARGS), i);//   ... baseCallArguments[i] ...
+							if (TypeBinding.notEquals(roleSideParameter, baseSideParameter))
+								roleSideArgument = gen.resolvedCastExpression(roleSideArgument, roleSideParameter, CastExpression.RAW);
+							TypeBinding roleSideLeaf = roleSideParameter.leafComponentType();
+							TypeBinding baseSideLeaf = baseSideParameter.leafComponentType();
+							if (   roleSideLeaf.isRole() 
+								&& ((ReferenceBinding)roleSideLeaf).baseclass().isCompatibleWith(baseSideLeaf))
+								roleSideArgument = new PotentialLowerExpression(roleSideArgument, baseSideParameter, gen.thisReference());
+							repackingStats.add(gen.assignment(gen.arrayReference(gen.singleNameReference(ARGUMENTS), 	//   arguments[p] = baseCallArguments[i];
+									                                             poss[i]-1+argOffset), // 0 represents result
+															  roleSideArgument));
+						}
+				} else if (nRoleArgs > 0) {
+					for (int i=0; i<nRoleArgs; i++) {
+						Expression basecallArg = gen.arrayReference(gen.singleNameReference(BASE_CALL_ARGS), i);
+						if (baseSpec.argNeedsTranslation(i)) {
+							basecallArg = new PotentialLowerExpression(gen.castExpression(basecallArg,
+																				 			gen.typeReference(roleParams[i]),
+																				 			CastExpression.RAW),
+																	   baseSpec.resolvedParameters()[i],
+																	   gen.qualifiedThisReference(teamDecl.binding));
+						}
+						repackingStats.add(gen.assignment(gen.arrayReference(gen.singleNameReference(ARGUMENTS), i),	//    arguments[i] = lower?(baseCallArguments[i])
+								  		   				  basecallArg));
 					}
-			} else if (nRoleArgs > 0) {
-				for (int i=0; i<nRoleArgs; i++) {
-					Expression basecallArg = gen.arrayReference(gen.singleNameReference(BASE_CALL_ARGS), i);
-					if (mapping.baseMethodSpecs[0].argNeedsTranslation(i)) { // FIXME(SH): per basemethod!
-						basecallArg = new PotentialLowerExpression(gen.castExpression(basecallArg,
-																			 			gen.typeReference(roleParams[i]),
-																			 			CastExpression.RAW),
-																   mapping.baseMethodSpecs[0].resolvedParameters()[i], // FIXME(SH): per basemethod!
-																   gen.qualifiedThisReference(teamDecl.binding));
-					}
-					repackingStats.add(gen.assignment(gen.arrayReference(gen.singleNameReference(ARGUMENTS), i),	//    arguments[i] = lower?(baseCallArguments[i])
-							  		   				  basecallArg));
 				}
-			}
-			caseBlockStats.add(gen.ifStatement(gen.nullCheck(gen.singleNameReference(BASE_CALL_ARGS)),				//    if (baseCallArgs == null) {} { arguments[i] = ...; ... } 
-											   gen.emptyStatement(),
-											   gen.block(repackingStats.toArray(new Statement[repackingStats.size()]))));
-
-			Expression result = genSuperCallNext(gen, teamDecl.binding, superArgs);									//    return cast+lift?(super._OT$callNext(..));
-			if (mapping.baseMethodSpecs[0].returnNeedsTranslation) { // FIXME(SH): per basemethod!
-				// lifting:
-				TypeBinding[]/*role,base*/ returnTypes = getReturnTypes(mapping, 0);
-				//   who is responsible for lifting: the team or the current role?
-				ReferenceBinding currentRole = mapping.scope.enclosingReceiverType();
-				Expression liftReceiver = (isRoleOfCurrentRole(currentRole, returnTypes[0]))
-					? Lifting.liftCall(mapping.scope,
-										gen.thisReference(),
-										gen.castExpression(gen.singleNameReference(IOTConstants.BASE), gen.typeReference(currentRole.baseclass()), CastExpression.RAW),
-										currentRole.baseclass(), currentRole, false)
-								// TODO: might want to extend the signature of callNext to pass the current role to avoid this lifting?
-					: genTeamThis(gen, returnTypes[0]);
-				result = Lifting.liftCall(mapping.scope,
-										  liftReceiver,
-										  gen.castExpression(result,
-												  			 gen.baseclassReference(returnTypes[1]),
-												  			 CastExpression.RAW),
-										  returnTypes[1],
-										  returnTypes[0],
-										  false,
-										  gen);
-			}
-			caseBlockStats.add(gen.returnStatement(result));
-			
-			if (caseBlockStats.size() > nLabels) { // any action added ?
-				swStatements.addAll(caseBlockStats);
-			}
-		}																											// } // end-switch
+				caseBlockStats.add(gen.ifStatement(gen.nullCheck(gen.singleNameReference(BASE_CALL_ARGS)),				//    if (baseCallArgs == null) {} { arguments[i] = ...; ... } 
+												   gen.emptyStatement(),
+												   gen.block(repackingStats.toArray(new Statement[repackingStats.size()]))));
+	
+				Expression result = genSuperCallNext(gen, teamDecl.binding, superArgs);									//    return cast+lift?(super._OT$callNext(..));
+				if (baseSpec.returnNeedsTranslation) {
+					// lifting:
+					TypeBinding[]/*role,base*/ returnTypes = getReturnTypes(mapping, 0);
+					//   who is responsible for lifting: the team or the current role?
+					ReferenceBinding currentRole = mapping.scope.enclosingReceiverType();
+					Expression liftReceiver = (isRoleOfCurrentRole(currentRole, returnTypes[0]))
+						? Lifting.liftCall(mapping.scope,
+											gen.thisReference(),
+											gen.castExpression(gen.singleNameReference(IOTConstants.BASE), gen.typeReference(currentRole.baseclass()), CastExpression.RAW),
+											currentRole.baseclass(), currentRole, false)
+									// TODO: might want to extend the signature of callNext to pass the current role to avoid this lifting?
+						: genTeamThis(gen, returnTypes[0]);
+					caseBlockStats.add(gen.localVariable(RESULT, gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_OBJECT), result));
+					caseBlockStats.add(gen.ifStatement(gen.singleNameReference(IS_BASE_CALL), 
+							gen.assignment(gen.singleNameReference(RESULT), 
+											Lifting.liftCall(mapping.scope,
+											  liftReceiver,
+											  gen.castExpression(gen.singleNameReference(RESULT),
+													  			 gen.baseclassReference(returnTypes[1]),
+													  			 CastExpression.RAW),
+											  returnTypes[1],
+											  returnTypes[0],
+											  false,
+											  gen)),
+							null));
+					result = gen.singleNameReference(RESULT);
+				}
+				caseBlockStats.add(gen.returnStatement(result));
+				
+				if (caseBlockStats.size() > nLabels) { // any action added ?
+					swStatements.addAll(caseBlockStats);
+				}
+			}																											// } // end-switch
+		}
 		if (swStatements.size() == 0)
 			return; // don't add useless method
 		

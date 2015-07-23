@@ -573,9 +573,10 @@ public /* team */ class Team implements ITeam {
 	 *                      This id is needed for a base call.
 	 * @param args original packed arguments.
 	 * @param baseCallArgs packed arguments as provided to the base call.
+	 * @param isBaseCall true if we are invoked as a base call (vs. dispatch to the next team in the chain).
 	 * @return possibly boxed result
 	 */
-	public Object _OT$callNext(IBoundBase2 baze, ITeam[] teams, int idx, int[] callinIds, int boundMethodId, Object[] args, Object[] baseCallArgs)
+	public Object _OT$callNext(IBoundBase2 baze, ITeam[] teams, int idx, int[] callinIds, int boundMethodId, Object[] args, Object[] baseCallArgs, boolean isBaseCall)
 	{
 		return _OT$terminalCallNext(baze, teams, idx, callinIds, boundMethodId, args, baseCallArgs);
 	}
@@ -642,7 +643,7 @@ public /* team */ class Team implements ITeam {
 	 */
 	public Object _OT$callReplace(IBoundBase2 baze, ITeam[] teams, int idx, int[] callinIds, int boundMethodId, Object[] args) {
 		// default; override with code from replace callin bindings.
-		return _OT$callNext(baze, teams, idx, callinIds, boundMethodId, args, null);
+		return _OT$callNext(baze, teams, idx, callinIds, boundMethodId, args, null, false);
 	}
 
 	/**

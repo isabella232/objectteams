@@ -439,4 +439,54 @@ public class CallinWithTranslation extends AbstractOTJLDTest {
             },
             "->OK<-");
     }
+
+    public void testBug473392() {
+    	runConformTest(
+    		new String[] {
+    	"t1/MyTeam.java",
+    			"package t1;\n" + 
+    			"\n" + 
+    			"import b1.MyBase;\n" + 
+    			"\n" + 
+    			"public team class MyTeam {\n" + 
+    			"    protected team class Mid { \n" + 
+    			"        \n" + 
+    			"        protected class R playedBy MyBase {\n" + 
+    			"            callin void rm1(R r) {\n" + 
+    			"                System.out.println(\"rm1 \" + r.getClass().getName());\n" + 
+    			"                base.rm1(r);\n" + 
+    			"            }\n" + 
+    			"            callin1: rm1 <- replace id, process;\n" + 
+    			"            callin R rm2(R r) {\n" + 
+    			"                System.out.println(\"rm2\");\n" + 
+    			"                return this;\n" + 
+    			"            }\n" + 
+    			"            callin2: rm2 <- replace id\n" + 
+    			"                base when (false);\n" + 
+    			"\n" + 
+    			"            precedence callin2, callin1;\n" + 
+    			"        }\n" + 
+    			"    }\n" + 
+    			"    \n" + 
+    			"    public static void main(String[] args) {\n" + 
+    			"        new MyTeam().new Mid().activate();\n" + 
+    			"        new MyBase().process(new MyBase());\n" + 
+    			"    }\n" + 
+    			"}\n",
+    	"b1/MyBase.java",
+    			"package b1;\n" + 
+    			"\n" + 
+    			"public class MyBase {\n" + 
+    			"    MyBase id(MyBase other) { return this; }\n" + 
+    			"    public MyBase process(MyBase other) {\n" + 
+    			"        other = id(other);\n" + 
+    			"        System.out.println(other.getClass().getName());\n" + 
+    			"        return null;\n" + 
+    			"    }\n" + 
+    			"}\n"
+    		},
+    		"rm1 t1.MyTeam$__OT__Mid$__OT__R\n" + 
+			"rm1 t1.MyTeam$__OT__Mid$__OT__R\n" + 
+			"b1.MyBase");
+    }
 }
