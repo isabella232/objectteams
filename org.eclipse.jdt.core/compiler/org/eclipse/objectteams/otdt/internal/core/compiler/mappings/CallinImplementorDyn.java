@@ -864,9 +864,9 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 		SwitchStatement swStat = new SwitchStatement();
 		swStat.expression = gen.arrayReference(gen.singleNameReference(CALLIN_ID), gen.singleNameReference(INDEX));	// switch(callinId[index]) { ...
 		List<Statement> swStatements = new ArrayList<Statement>(); 
+		char[] resultVar = RESULT;
 		for (CallinMappingDeclaration mapping : callinDecls) {
 			int nLabels = 0;
-			char[] resultVar = RESULT;
 			for (MethodSpec baseSpec : mapping.baseMethodSpecs) {
 				List<Statement> caseBlockStats = new ArrayList<Statement>();
 				caseBlockStats.add(gen.caseStatement(gen.intLiteral(baseSpec.getCallinId(aTeam))));					// case baseSpecCallinId:
