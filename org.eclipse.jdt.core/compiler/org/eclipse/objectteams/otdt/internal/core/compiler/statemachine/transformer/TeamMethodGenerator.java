@@ -135,7 +135,8 @@ public class TeamMethodGenerator {
 						gen.argument("callinIds".toCharArray(), 	gen.arrayTypeReference(TypeConstants.INT, 1)),
 						gen.argument("boundMethodId".toCharArray(), gen.baseTypeReference(TypeConstants.INT)),
 						gen.argument("args".toCharArray(), 			gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1)),
-						gen.argument("baseCallArgs".toCharArray(), 	gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1))
+						gen.argument("baseCallArgs".toCharArray(), 	gen.qualifiedArrayTypeReference(TypeConstants.JAVA_LANG_OBJECT, 1)),
+						gen.argument("isBaseCall".toCharArray(), 	gen.baseTypeReference(TypeConstants.INT))
 					};
 				case OTDYNARGS3:
 					return new Argument[] {
@@ -184,7 +185,7 @@ public class TeamMethodGenerator {
 		}, 
 		THREAD, BOOLEAN, INT, OBJECT, 
 		OTDYNARGS1 { @Override int length() { return 6; } },
-		OTDYNARGS2 { @Override int length() { return 7; } },
+		OTDYNARGS2 { @Override int length() { return 8; } },
 		OTDYNARGS3 { @Override int length() { return 4; } },
 		OTDYNARGS4 { @Override int length() { return 5; } },
 		OTDYNARGS5 { @Override int length() { return 3; } };
@@ -215,7 +216,7 @@ public class TeamMethodGenerator {
 	final MethodDescriptor[] methodDescriptorsDyn = new MethodDescriptor[] {
 		new MethodDescriptor("_OT$callAllBindings",		"(Lorg/objectteams/IBoundBase2;[Lorg/objectteams/ITeam;I[II[Ljava/lang/Object;)Ljava/lang/Object;", 
 																							Type.OTDYNARGS1,		Type.OBJECT,	AccPublic),
-		new MethodDescriptor("_OT$callNext",			"(Lorg/objectteams/IBoundBase2;[Lorg/objectteams/ITeam;I[II[Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;", 
+		new MethodDescriptor("_OT$callNext",			"(Lorg/objectteams/IBoundBase2;[Lorg/objectteams/ITeam;I[II[Ljava/lang/Object;[Ljava/lang/Object;Z)Ljava/lang/Object;", 
 																							Type.OTDYNARGS2,		Type.OBJECT,	AccPublic),
 		new MethodDescriptor("_OT$callReplace",			"(Lorg/objectteams/IBoundBase2;[Lorg/objectteams/ITeam;I[II[Ljava/lang/Object;)Ljava/lang/Object;", 
 																							Type.OTDYNARGS1,		Type.OBJECT,	AccPublic),
