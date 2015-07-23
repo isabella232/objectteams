@@ -27,6 +27,7 @@ import org.eclipse.jdt.internal.compiler.lookup.SourceTypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.SyntheticMethodBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TypeIds;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.TeamModel;
 
 /**
  * A synthetic method binding, which used as an invocation target needs to
@@ -145,7 +146,7 @@ public abstract class SyntheticOTTargetMethod extends SyntheticMethodBinding {
 	 * Represents a decapsulating method access while targeting OTDRE (not an explicit callout).
 	 * We need to generate a special sequence to call _OT$access(int,int,Object[],ITeam)
 	 */
-	public static class OTDREMethodDecapsulation extends SyntheticOTTargetMethod {
+	public static class OTDREMethodDecapsulation extends SyntheticOTTargetMethod implements TeamModel.UpdatableAccessId {
 
 		private int accessId;
 		private ReferenceBinding enclosingTeam;
@@ -235,6 +236,11 @@ public abstract class SyntheticOTTargetMethod extends SyntheticMethodBinding {
 				codeStream.pop();
 			}
 			return 0; // signal we're done
+		}
+
+		@Override
+		public void update(int offset) {
+			this.accessId += offset;
 		}
 	}
 	static int size(TypeBinding type) {

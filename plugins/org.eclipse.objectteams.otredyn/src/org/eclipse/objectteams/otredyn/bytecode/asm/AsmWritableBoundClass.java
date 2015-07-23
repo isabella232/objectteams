@@ -460,10 +460,9 @@ class AsmWritableBoundClass extends AsmBoundClass {
 	@Override
 	protected void prepareForFirstMemberAccess() {
 		if (!isTransformedForMemberAccess && !isInterface()) {
-			nodes.add(new CreateSwitchForAccessAdapter(ConstantMembers.access,
-					getInternalSuperClassName(), this));
-			nodes.add(new CreateSwitchForAccessAdapter(ConstantMembers.accessStatic,
-					getInternalSuperClassName(), this));
+			String superClassName = this.weavingContext.isWeavable(getSuperClassName()) ? getInternalSuperClassName() : null;
+			nodes.add(new CreateSwitchForAccessAdapter(ConstantMembers.access, superClassName, this));
+			nodes.add(new CreateSwitchForAccessAdapter(ConstantMembers.accessStatic, superClassName, this));
 			isTransformedForMemberAccess = true;
 		}
 

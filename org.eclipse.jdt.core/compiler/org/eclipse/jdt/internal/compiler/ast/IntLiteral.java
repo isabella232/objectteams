@@ -53,6 +53,9 @@ public class IntLiteral extends NumberLiteral {
 		}
 		return new IntLiteral(token, intReducedToken != token ? intReducedToken : null, s, e);
 	}
+//{ObjectTeams:
+protected
+// SH}
 IntLiteral(char[] token, char[] reducedForm, int start, int end) {
 	super(token, start, end);
 	this.reducedForm = reducedForm;

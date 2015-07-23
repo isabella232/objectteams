@@ -964,6 +964,7 @@ public void generateCode(ClassFile enclosingClassFile) {
 	}
 	if (isTeam()) {
 		CopyInheritance.copySyntheticTeamMethods(this);
+		getTeamModel().updateDecapsAccessIds();
 	}
 	// value paramters:
 	this.binding.computeValueParameterSlotSizes();

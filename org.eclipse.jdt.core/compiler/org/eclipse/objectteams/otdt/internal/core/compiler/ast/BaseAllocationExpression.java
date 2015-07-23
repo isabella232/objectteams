@@ -67,6 +67,7 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.RoleTypeBindin
 import org.eclipse.objectteams.otdt.internal.core.compiler.mappings.CalloutImplementorDyn;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.MethodModel;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.RoleModel;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.TeamModel.UpdatableIntLiteral;
 import org.eclipse.objectteams.otdt.internal.core.compiler.util.AstGenerator;
 
 /**
@@ -262,11 +263,13 @@ public class BaseAllocationExpression extends Assignment {
     	int modifiers = ClassFileConstants.AccPublic|ClassFileConstants.AccStatic;
 		Expression[] arguments = expression.arguments;
 		Expression enclosingInstance = null;
+		ReferenceBinding enclosingTeam = null;
 		if (expression instanceof QualifiedAllocationExpression) {
 			enclosingInstance = ((QualifiedAllocationExpression) expression).enclosingInstance;
+			// TODO: enclosing team (for accessId-updating)?
 		} else if (baseclass.isMemberType()) {
 			// extract the enclosing base instance from an outer playedBy:
-			ReferenceBinding enclosingTeam = scope.enclosingReceiverType().enclosingType();
+			enclosingTeam = scope.enclosingReceiverType().enclosingType();
 			if (enclosingTeam != null
 					&& TypeBinding.equalsEquals(baseclass.enclosingType(), enclosingTeam.baseclass)) {
 				enclosingInstance = gen.fieldReference(
@@ -301,7 +304,7 @@ public class BaseAllocationExpression extends Assignment {
     	allocSend.constant = Constant.NotAConstant;
     	allocSend.actualReceiverType = baseclass;
     	allocSend.accessId = accessId;
-   		allocSend.arguments = createResolvedAccessArguments(gen, accessId, arguments, scope);
+   		allocSend.arguments = createResolvedAccessArguments(gen, accessId, arguments, enclosingTeam, scope);
     	allocSend.binding = new MethodBinding(modifiers, new TypeBinding[] {
     			TypeBinding.INT,
     			TypeBinding.INT,
@@ -315,9 +318,11 @@ public class BaseAllocationExpression extends Assignment {
     	return gen.resolvedCastExpression(allocSend, baseclass, CastExpression.RAW);
 	}
 
-	private static Expression[] createResolvedAccessArguments(AstGenerator gen, int accessId, Expression[] arguments, BlockScope scope) {
-		IntLiteral accessIdLiteral = gen.intLiteral(accessId);
+	private static Expression[] createResolvedAccessArguments(AstGenerator gen, int accessId, Expression[] arguments, ReferenceBinding enclosingTeam, BlockScope scope) {
+		UpdatableIntLiteral accessIdLiteral = gen.updatableIntLiteral(accessId);
 		accessIdLiteral.resolveType(scope);
+		if (enclosingTeam != null)
+			enclosingTeam.getTeamModel().recordUpdatableAccessId(accessIdLiteral);
 
 		IntLiteral opKindLiteral = gen.intLiteral(0);
 		opKindLiteral.resolveType(scope);

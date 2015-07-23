@@ -30,8 +30,11 @@ import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.internal.compiler.ClassFile;
 import org.eclipse.jdt.internal.compiler.ast.ASTNode;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.IntLiteral;
 import org.eclipse.jdt.internal.compiler.ast.TypeDeclaration;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
+import org.eclipse.jdt.internal.compiler.impl.CompilerOptions.WeavingScheme;
+import org.eclipse.jdt.internal.compiler.impl.IntConstant;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
 import org.eclipse.jdt.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.jdt.internal.compiler.lookup.MethodBinding;
@@ -965,5 +968,59 @@ public class TeamModel extends TypeModel {
 				return IProblem.CallinDespiteBindingAmbiguity;
 		}
 		return 0;
+	}
+
+//	=======================================================================================
+//	=  Support for ensuring uniqueness of accessIds among a team and all its super teams. =
+
+	public static interface UpdatableAccessId {
+		void update(int offset);
+	}
+	
+	public static class UpdatableIntLiteral extends IntLiteral implements UpdatableAccessId {
+		int val;
+		public UpdatableIntLiteral(int val, int start, int end) {
+			super(String.valueOf(val).toCharArray(), null, start, end);
+			this.val = val;
+		}
+		@Override
+		public void update(int offset) {
+			this.constant = IntConstant.fromValue(this.val + offset);
+		}
+	}
+
+	/** Region of ids used by this team and its supers. */
+	int accessIdOffset = -1;
+	/** accessIds that may require updating. */
+	List<UpdatableAccessId> updatableAccessIds = null;
+
+	public void recordUpdatableAccessId(UpdatableAccessId updatableAccessId) {
+		if (this.updatableAccessIds == null)
+			this.updatableAccessIds = new ArrayList<>();
+		this.updatableAccessIds.add(updatableAccessId);
+	}
+
+	/** Update all recorded accessIds to stay clear of id ranges used by super teams. */
+	public int updateDecapsAccessIds() {
+		if (this.accessIdOffset > -1 || this.weavingScheme != WeavingScheme.OTDRE) return this.accessIdOffset;
+		
+		this.accessIdOffset = 0;
+
+		TeamModel superTeam = getSuperTeam();
+		if (superTeam != null)
+			this.accessIdOffset += superTeam.updateDecapsAccessIds();
+
+		// update ASTs above super's id range if needed:
+		if (this.updatableAccessIds != null && this.accessIdOffset > 0)
+			for (UpdatableAccessId updater : this.updatableAccessIds)
+				updater.update(this.accessIdOffset);
+
+		if (this._specialAccess != null) {
+			// update attribute if needed:
+			this._specialAccess.accessIdOffset = this.accessIdOffset;
+			// include local value in the total offset:
+			this.accessIdOffset += this._specialAccess.nextAccessId;
+		}
+		return this.accessIdOffset;
 	}
 }

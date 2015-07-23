@@ -50,7 +50,8 @@ public class CalloutImplementorDyn {
 	{
 		char[] selector = ensureAccessor(scope, baseType, baseSpec.isStatic()).selector;
 		TeamModel teamModel = roleModel.getTeamModel();
-		Expression accessIdArg = gen.intLiteral(baseSpec.accessId);
+		TeamModel.UpdatableIntLiteral accessIdArg = gen.updatableIntLiteral(baseSpec.accessId);
+		teamModel.recordUpdatableAccessId(accessIdArg); // may need updating before codeGen.
 		int opKind = 0;
 		if (baseSpec instanceof FieldAccessSpec)
 			if (((FieldAccessSpec) baseSpec).calloutModifier == TerminalTokens.TokenNameset)

@@ -71,6 +71,7 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.DependentTypeB
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.ITeamAnchor;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.TThisBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.model.RoleModel;
+import org.eclipse.objectteams.otdt.internal.core.compiler.model.TeamModel;
 
 /**
  * This factory creates "generated" elements, ie., elements that have
@@ -333,6 +334,9 @@ public class AstGenerator extends AstFactory {
 	public IntLiteral intLiteral(int val) {
 		IntLiteral result = IntLiteral.buildIntLiteral(String.valueOf(val).toCharArray(), this.sourceStart, this.sourceEnd);
 		return result;
+	}
+	public TeamModel.UpdatableIntLiteral updatableIntLiteral(int val) {
+		return new TeamModel.UpdatableIntLiteral(val, this.sourceStart, this.sourceEnd);
 	}
 	public Literal booleanLiteral(boolean val) {
 		MagicLiteral result = val

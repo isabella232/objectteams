@@ -65,6 +65,7 @@ package org.eclipse.jdt.internal.compiler.ast;
 import static org.eclipse.jdt.internal.compiler.ast.ExpressionContext.*;
 import static org.eclipse.objectteams.otdt.core.compiler.IOTConstants.CALLIN_FLAG_DEFINITELY_MISSING_BASECALL;
 import static org.eclipse.objectteams.otdt.core.compiler.IOTConstants.CALLIN_FLAG_POTENTIALLY_MISSING_BASECALL;
+import static org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticOTTargetMethod.OTDREMethodDecapsulation;
 
 import java.util.HashMap;
 
@@ -119,7 +120,6 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.control.Dependencies;
 import org.eclipse.objectteams.otdt.internal.core.compiler.control.ITranslationStates;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.AnchorMapping;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.DependentTypeBinding;
-import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticOTTargetMethod;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.SyntheticRoleBridgeMethodBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.WeakenedTypeBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.mappings.CalloutImplementor;
@@ -1081,7 +1081,11 @@ public TypeBinding resolveType(BlockScope scope) {
 					this.accessId = scope.enclosingSourceType().roleModel.addInaccessibleBaseMethod(this.binding);
 				if (weavingScheme == WeavingScheme.OTDRE) {
 					MethodBinding accessor = CalloutImplementorDyn.ensureAccessor(scope, this.binding.declaringClass, this.binding.isStatic());
-					this.syntheticAccessor = new SyntheticOTTargetMethod.OTDREMethodDecapsulation(accessor, this.binding.parameters, this.binding.returnType, this.accessId, scope, this);
+					OTDREMethodDecapsulation updatableAccessor = new OTDREMethodDecapsulation(accessor, this.binding.parameters, this.binding.returnType, this.accessId, scope, this);
+					ReferenceBinding enclosingType = scope.enclosingSourceType().enclosingType();
+					if (enclosingType != null && enclosingType.isTeam())
+						enclosingType.getTeamModel().recordUpdatableAccessId(updatableAccessor);
+					this.syntheticAccessor = updatableAccessor;
 				} else {
 					this.binding = new MethodBinding(this.binding, this.binding.declaringClass.getRealClass());
 					this.binding.selector = CharOperation.concat(IOTConstants.OT_DECAPS, this.selector);

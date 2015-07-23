@@ -24,7 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingReason;
@@ -134,14 +133,6 @@ public abstract class DelegatingTransformer {
 		return new IWeavingContext() {
 			@Override
 			public boolean isWeavable(String className) {
-				// currently, we don't support implicit crossing of bundle boundaries,
-				// so check if the requested class is provided by the current bundle:
-				int lastDot = className.lastIndexOf('.');
-				String path = className.substring(0, lastDot).replace('.', '/');
-				String filePattern = className.substring(lastDot+1)+".class";
-				List<URL> entry = bundleWiring.findEntries(path, filePattern, 0);
-				if (entry == null || entry.isEmpty())
-					return false;
 				return hook.requiresWeaving(bundleWiring, className, null) != WeavingReason.None;
 			}
 		};

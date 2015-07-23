@@ -513,7 +513,7 @@ public class TypeModel extends ModelElement {
 		assert this._specialAccess == null;
 		this._specialAccess = attribute;
 	}
-	protected OTSpecialAccessAttribute getSpecialAccessAttribute() {
+	public OTSpecialAccessAttribute getSpecialAccessAttribute() {
 		if (this._specialAccess == null) {
 			this._specialAccess = new OTSpecialAccessAttribute(this._binding, getWeavingScheme());
 			addAttribute(this._specialAccess);

@@ -41,7 +41,7 @@ public class TeamManager implements ITeamManager {
 	private static List<List<ITeam>> _teams = new ArrayList<List<ITeam>>();
 	private static List<List<Integer>> _callinIds = new ArrayList<List<Integer>>();
 	private static Map<String, Integer> joinpointMap = new HashMap<String, Integer>();
-	// key: Team class, value: list of global memberIds, indexed by local accessId
+	// key: Team class, value: list of global memberIds, indexed by local accessId, id of null means "not mapped in this team (try super)"
 	private static Map<Class<?>, List<Integer>> accessIdMap = new HashMap<Class<?>, List<Integer>>();
 	private static int currentJoinpointId = 0;
 	// map all original joinpoints to their inherited versions in subclasses
@@ -116,15 +116,14 @@ public class TeamManager implements ITeamManager {
 	 */
 	public static int getMemberId(int accessId, Class<? extends ITeam> teamClass) {
 		List<Integer> teamMap = accessIdMap.get(teamClass);
-		if (teamMap == null) {
-			// TODO: is it safe to assume that the accessId is the same between sub & super teams?
+		Integer id = -1;
+		if (teamMap == null || (id = teamMap.get(accessId)) == null) {
 			Class<?> superClass = teamClass.getSuperclass();
 			if (ITeam.class.isAssignableFrom(superClass)) {
 				@SuppressWarnings("unchecked") Class<? extends ITeam> superTeam = (Class<? extends ITeam>) superClass;
 				return getMemberId(accessId, superTeam);
 			}
 		}
-		Integer id = teamMap.get(accessId);
 		return id;
 	}
 
@@ -294,7 +293,7 @@ public class TeamManager implements ITeamManager {
 			int highestAccessId = teem.getHighestAccessId() + 1;
 			accessIds = new ArrayList<Integer>(highestAccessId);
 			for (int i = 0; i <= highestAccessId; i++) {
-				accessIds.add(0);
+				accessIds.add(null);
 			}
 			accessIdMap.put(teamClass, accessIds);
 		}

@@ -53,11 +53,9 @@ public class CreateSwitchForAccessAdapter extends CreateSwitchAdapter {
 	@Override
 	protected void addPreSwitchInstructions(MethodNode method) {
 		// put "accessId" on the stack
-		method.instructions.add(new IntInsnNode(Opcodes.ILOAD,
-				getFirstArgIndex()));
+		method.instructions.add(new IntInsnNode(Opcodes.ILOAD, getFirstArgIndex()));
 		// put "caller".getClass() on the stack
-		method.instructions.add(new IntInsnNode(Opcodes.ALOAD,
-				getFirstArgIndex() + 3));
+		method.instructions.add(new IntInsnNode(Opcodes.ALOAD, getFirstArgIndex() + 3));
 		method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;", false));
 		// call "getMemberId(accessId, callerClass)
 		method.instructions
@@ -70,7 +68,7 @@ public class CreateSwitchForAccessAdapter extends CreateSwitchAdapter {
 	
 	@Override
 	protected void addInstructionForDefaultLabel(MethodNode method) {
-		if (superClassName.equals("java/lang/Object")) {
+		if (superClassName == null || superClassName.equals("java/lang/Object")) {
 			method.instructions.add(new TypeInsnNode(Opcodes.NEW, "org/objectteams/NoSuchMethodError"));
 			method.instructions.add(new InsnNode(Opcodes.DUP));
 			method.instructions.add(new IntInsnNode(Opcodes.ILOAD, getFirstArgIndex())); // accessId
@@ -88,14 +86,14 @@ public class CreateSwitchForAccessAdapter extends CreateSwitchAdapter {
 			}
 			method.instructions.add(new MethodInsnNode(opcode,
 					superClassName, getMethod().getName(),
-					getMethod().getSignature()));
+					getMethod().getSignature(), false));
 			method.instructions.add(new InsnNode(Opcodes.ARETURN));
 		}
 	}
 	
 	@Override
 	protected int getMaxStack() {
-		return 5;
+		return 6;
 	}
 
 }

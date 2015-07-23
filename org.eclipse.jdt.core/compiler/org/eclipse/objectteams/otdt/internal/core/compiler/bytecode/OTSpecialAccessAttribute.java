@@ -61,9 +61,11 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 	private static final int DYN_CALLOUT_FIELD_ACCESS = 5;
 	private static final int DYN_SUPER_METHOD_ACCESS = 6;
 
-	/*
+	/**
 	 * For OTREDyn, each attribute of this type maintains a set of locally unique (per team) access IDs.
-	 * These IDs are consumed and translated by OTREDyn to obtain those IDs that uniquely identify the
+	 * These IDs are later made unique per team-hierarchy by adding {@link #accessIdOffset}.
+	 * This for of ids is then stored in the attribute.
+	 * Stored ids are consumed and translated by OTREDyn to obtain those global IDs that uniquely identify the
 	 * base feature within a generated _OT$access or _OT$accessStatic method.
 	 * 
 	 * AccessIds are generated during resolve and stored in these AST nodes:
@@ -72,13 +74,18 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 	 *     the accessId as an argument for the generated _OT$access[Static] call.
 	 * - MessageSend; accessId is preset for message sends implementing decapsulating BaseAllocationExpression
 	 *   - regular base class:
-	 *     - detected during AllocationExpression.resolveType, throws ConstructorDecapsulationExpression
+	 *     - detected during AllocationExpression.resolveType, throws ConstructorDecapsulationException
 	 *     - allocation is then replaced by a MessageSend to the _OT$access method
 	 *   - base is role:
 	 *     - generated AST has accessId = -1 to be updated during MessageSend.resolveType() if decaps needed
+	 * The UpdatableAccessId representing the accessId in any of these generated ASTs / synthetic binding
+	 * is updated after disambiguation from TeamModel.updateDecapsAccessIds().
 	 */
-	int nextAccessId = 0;
-	
+	public int nextAccessId = 0;
+
+	/** Updated by {@link TeamModel#updateDecapsAccessIds()} to denote the space of ids used by super teams. */
+	public int accessIdOffset;
+
 	/** Descriptor for a decapsulated base-method. */
 	private class DecapsulatedMethodDesc {
 		ReferenceBinding boundBaseclass;
@@ -140,7 +147,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 				writeName(this.method.signature());
 			}
 			if (OTSpecialAccessAttribute.this._weavingScheme == WeavingScheme.OTDRE)
-				writeUnsignedShort(this.accessId);
+				writeUnsignedShort(this.accessId + OTSpecialAccessAttribute.this.accessIdOffset);
 		}
 
 		public String toString() {
@@ -188,7 +195,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		void write() {
 			if (OTSpecialAccessAttribute.this._weavingScheme == WeavingScheme.OTDRE) {
 				writeByte((byte)DYN_CALLOUT_FIELD_ACCESS);
-				writeUnsignedShort(this.accessId);
+				writeUnsignedShort(this.accessId + OTSpecialAccessAttribute.this.accessIdOffset);
 			} else {
 				writeByte((byte)CALLOUT_FIELD_ACCESS);
 			}
@@ -452,5 +459,4 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		}
 		return result.toString();
 	}
-
 }
