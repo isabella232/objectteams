@@ -866,6 +866,7 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 		List<Statement> swStatements = new ArrayList<Statement>(); 
 		for (CallinMappingDeclaration mapping : callinDecls) {
 			int nLabels = 0;
+			char[] resultVar = RESULT;
 			for (MethodSpec baseSpec : mapping.baseMethodSpecs) {
 				List<Statement> caseBlockStats = new ArrayList<Statement>();
 				caseBlockStats.add(gen.caseStatement(gen.intLiteral(baseSpec.getCallinId(aTeam))));					// case baseSpecCallinId:
@@ -935,12 +936,13 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 											currentRole.baseclass(), currentRole, false)
 									// TODO: might want to extend the signature of callNext to pass the current role to avoid this lifting?
 						: genTeamThis(gen, returnTypes[0]);
-					caseBlockStats.add(gen.localVariable(RESULT, gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_OBJECT), result));
+					resultVar = CharOperation.append(resultVar, '$');
+					caseBlockStats.add(gen.localVariable(resultVar, gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_OBJECT), result));
 					caseBlockStats.add(gen.ifStatement(gen.singleNameReference(IS_BASE_CALL), 
-							gen.assignment(gen.singleNameReference(RESULT), 
+							gen.assignment(gen.singleNameReference(resultVar), 
 											Lifting.liftCall(mapping.scope,
 											  liftReceiver,
-											  gen.castExpression(gen.singleNameReference(RESULT),
+											  gen.castExpression(gen.singleNameReference(resultVar),
 													  			 gen.baseclassReference(returnTypes[1]),
 													  			 CastExpression.RAW),
 											  returnTypes[1],
@@ -948,7 +950,7 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 											  false,
 											  gen)),
 							null));
-					result = gen.singleNameReference(RESULT);
+					result = gen.singleNameReference(resultVar);
 				}
 				caseBlockStats.add(gen.returnStatement(result));
 				
