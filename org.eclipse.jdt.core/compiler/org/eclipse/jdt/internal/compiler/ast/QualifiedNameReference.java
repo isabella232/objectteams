@@ -937,7 +937,7 @@ private void accessAsCalloutToField(BlockScope scope, ReferenceBinding enclosing
 	final MethodBinding fakedAccessorBinding = FieldModel.getDecapsulatingFieldAccessor(scope, baseClass, baseclassField, true, strategy);
 
 	// record the need to have the OTRE create the accessor:
-	int accessid = enclosingReceiver.roleModel.addAccessedBaseField(baseclassField, TerminalTokens.TokenNameget);
+	int accessid = enclosingReceiver.roleModel.addAccessedBaseField(baseclassField, TerminalTokens.TokenNameget, null);
 
 	SyntheticMethodBinding accessor = (strategy == ImplementationStrategy.DYN_ACCESS)
 			? new SyntheticOTTargetMethod.OTDREFieldDecapsulation(fakedAccessorBinding, baseclassField.type, accessid, 0/*get*/, scope, this)

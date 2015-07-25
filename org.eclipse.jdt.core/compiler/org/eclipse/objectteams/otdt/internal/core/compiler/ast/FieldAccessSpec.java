@@ -417,7 +417,7 @@ public class FieldAccessSpec extends MethodSpec {
 	}
 
 	public int createAccessAttribute(RoleModel roleModel) {		
-		return roleModel.addAccessedBaseField(this.resolvedField, this.calloutModifier);
+		return roleModel.addAccessedBaseField(this.resolvedField, this.calloutModifier, null);
 	}
 
 }

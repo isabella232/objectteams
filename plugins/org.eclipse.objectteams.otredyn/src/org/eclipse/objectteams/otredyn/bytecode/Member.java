@@ -33,7 +33,7 @@ public abstract class Member implements IMember {
 
 	/** Map of globally unique Ids by keys that are constructed from the resolved target member. */
 	private static Map<String, Integer> idMap = new HashMap<String, Integer>();
-	private static int currentId = 0;
+	private static int currentId = 1; // distinguish from uninitialized 0 (for debugging purposes)
 	
 	private String name;
 	private String signature;

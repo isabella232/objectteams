@@ -157,7 +157,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 	List<DecapsulatedMethodDesc> _decapsulatedMethods = new ArrayList<DecapsulatedMethodDesc>();
 
 	/** Descriptor for a callout-bound base field. */
-	private class CalloutToFieldDesc {
+	public class CalloutToFieldDesc {
 		// flags:
 		private static final int CALLOUT_GET_FIELD = 0; // (== !CALLOUT_SET_FIELD)
 		private static final int CALLOUT_SET_FIELD = 1;
@@ -167,7 +167,8 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		ReferenceBinding targetClass;
 		int flags; // use the above constants
 		int accessId;
-		CalloutToFieldDesc(FieldBinding field, ReferenceBinding targetClass, int calloutModifier)
+		CalloutToFieldDesc cpInheritanceSrc;
+		CalloutToFieldDesc(FieldBinding field, ReferenceBinding targetClass, int calloutModifier, CalloutToFieldDesc cpInheritanceSrc)
 		{
 			this.field = field;
 			this.targetClass = targetClass;
@@ -176,13 +177,17 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 			if (field.isStatic())
 				this.flags |= CALLOUT_STATIC_FIELD;
 			if (OTSpecialAccessAttribute.this._weavingScheme == WeavingScheme.OTDRE) {
-				for (CalloutToFieldDesc ctf : OTSpecialAccessAttribute.this._calloutToFields) {
-					if (ctf.field == field) {
-						this.accessId = ctf.accessId; // share the accessId from another callout to the same field
-						return;
+				if (cpInheritanceSrc == null) {
+					for (CalloutToFieldDesc ctf : OTSpecialAccessAttribute.this._calloutToFields) {
+						if (ctf.field == field) {
+							this.accessId = ctf.accessId; // share the accessId from another callout to the same field
+							return;
+						}
 					}
+					this.accessId = OTSpecialAccessAttribute.this.nextAccessId++;
+				} else {
+					this.cpInheritanceSrc = cpInheritanceSrc;
 				}
-				this.accessId = OTSpecialAccessAttribute.this.nextAccessId++;
 			}
 		}
 
@@ -195,7 +200,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		void write() {
 			if (OTSpecialAccessAttribute.this._weavingScheme == WeavingScheme.OTDRE) {
 				writeByte((byte)DYN_CALLOUT_FIELD_ACCESS);
-				writeUnsignedShort(this.accessId + OTSpecialAccessAttribute.this.accessIdOffset);
+				writeUnsignedShort(getId());
 			} else {
 				writeByte((byte)CALLOUT_FIELD_ACCESS);
 			}
@@ -203,6 +208,12 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 			writeName(this.targetClass.attributeName());
 			writeName(this.field.name);
 			writeName(this.field.type.signature());
+		}
+
+		private int getId() {
+			if (this.cpInheritanceSrc != null)
+				return this.cpInheritanceSrc.getId();
+			return this.accessId + OTSpecialAccessAttribute.this.accessIdOffset;
 		}
 
 		@SuppressWarnings("nls")
@@ -269,8 +280,8 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		return desc.accessId;
 	}
 
-	public int addCalloutFieldAccess(FieldBinding field, ReferenceBinding targetClass, int calloutModifier) {
-		CalloutToFieldDesc calloutToFieldDesc = new CalloutToFieldDesc(field, targetClass, calloutModifier);
+	public int addCalloutFieldAccess(FieldBinding field, ReferenceBinding targetClass, int calloutModifier, CalloutToFieldDesc cpInheritanceSrc) {
+		CalloutToFieldDesc calloutToFieldDesc = new CalloutToFieldDesc(field, targetClass, calloutModifier, cpInheritanceSrc);
 		this._calloutToFields.add(calloutToFieldDesc);
 		return calloutToFieldDesc.accessId;
 	}
@@ -426,7 +437,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 							newBase = ((WeakenedTypeBinding)newBase).getStrongType();
 						if (((RoleTypeBinding)newBase)._teamAnchor.isBaseAnchor()) {
 							FieldBinding newField = newBase.getRealClass().getField(fieldDesc.field.name, false);
-							role.addAccessedBaseField(newField, fieldDesc.calloutModifier());
+							role.addAccessedBaseField(newField, fieldDesc.calloutModifier(), fieldDesc);
 						}
 					}
 				}

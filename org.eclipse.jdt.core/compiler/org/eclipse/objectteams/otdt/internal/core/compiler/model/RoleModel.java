@@ -64,6 +64,7 @@ import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.CPTypeAnchor
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.CallinMethodMappingsAttribute;
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.CalloutMappingsAttribute;
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.OTSpecialAccessAttribute;
+import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.OTSpecialAccessAttribute.CalloutToFieldDesc;
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.RoleLocalTypesAttribute;
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.SingleValueAttribute;
 import org.eclipse.objectteams.otdt.internal.core.compiler.bytecode.WordValueAttribute;
@@ -1211,7 +1212,7 @@ public class RoleModel extends TypeModel
 	 * @param calloutModifier either TokenNameget or TokenNameset (from TerminalTokens).
 	 * @return the accessId (per team) for this field
 	 */
-	public int addAccessedBaseField(FieldBinding field, int calloutModifier) {
+	public int addAccessedBaseField(FieldBinding field, int calloutModifier, CalloutToFieldDesc cpInheritanceSrc) {
 		// find appropriate target class
 		ReferenceBinding targetClass = field.declaringClass; // default: the class declaring the field (could be super of bound base)
 		if (!field.isStatic() && (field.isProtected() || field.isPublic()))
@@ -1219,7 +1220,7 @@ public class RoleModel extends TypeModel
 
 		// push out to the team to ensure early evaluation by the OTRE:
 		OTSpecialAccessAttribute specialAccess = getTeamModel().getSpecialAccessAttribute();
-		int accessId = specialAccess.addCalloutFieldAccess(field, targetClass, calloutModifier);
+		int accessId = specialAccess.addCalloutFieldAccess(field, targetClass, calloutModifier, cpInheritanceSrc);
 		specialAccess.addAdaptedBaseClass(field.declaringClass);
 		return accessId;
 	}
