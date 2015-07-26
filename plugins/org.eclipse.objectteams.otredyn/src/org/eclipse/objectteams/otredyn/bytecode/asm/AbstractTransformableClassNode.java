@@ -19,6 +19,7 @@ package org.eclipse.objectteams.otredyn.bytecode.asm;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.objectteams.otredyn.bytecode.AbstractBoundClass;
 import org.eclipse.objectteams.otredyn.bytecode.Method;
 import org.eclipse.objectteams.otredyn.transformer.names.ClassNames;
 import org.objectweb.asm.Opcodes;
@@ -286,8 +287,11 @@ public abstract class AbstractTransformableClassNode extends ClassNode {
 	}
 
 	protected void replaceSuperCallsWithCallToCallOrig(InsnList instructions, List<MethodInsnNode> superCalls, 
-			boolean returnsJLObject, IBoundMethodIdInsnProvider insnProvider) {
+			boolean returnsJLObject, AbstractBoundClass superclass, IBoundMethodIdInsnProvider insnProvider) {
 		for (MethodInsnNode oldNode : superCalls) {
+			
+			superclass.addWeavingOfSubclassTask(oldNode.name, oldNode.desc, oldNode.getOpcode() == Opcodes.INVOKESTATIC);
+			
 			Type[] args = Type.getArgumentTypes(oldNode.desc);
 			Type returnType = Type.getReturnType(oldNode.desc);
 	

@@ -93,6 +93,10 @@ public class CreateFieldAccessAdapter extends AbstractTransformableClassNode {
 		
 		//write access
 		instructions.add(writeAccess);
+		//put "this" on the stack
+		if (!field.isStatic())
+			instructions.add(new IntInsnNode(Opcodes.ALOAD, 0));
+			
 		//put "args" on the stack 
 		instructions.add(new IntInsnNode(Opcodes.ALOAD, firstArgIndex + 2));
 		//get the first element of "args"
@@ -111,9 +115,6 @@ public class CreateFieldAccessAdapter extends AbstractTransformableClassNode {
 			//save value in field
 			instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, name, field.getName(), field.getSignature()));
 		} else {
-			//put "this" on the stack
-			instructions.add(new IntInsnNode(Opcodes.ALOAD, 0));
-			instructions.add(new InsnNode(Opcodes.SWAP));
 			//save value in field
 			instructions.add(new FieldInsnNode(Opcodes.PUTFIELD, name, field.getName(), field.getSignature()));
 		}

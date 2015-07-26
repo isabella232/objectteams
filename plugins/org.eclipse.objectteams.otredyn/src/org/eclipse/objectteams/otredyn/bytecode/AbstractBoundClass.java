@@ -139,7 +139,7 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	
 	// not completed WeavingTasks for callin bindings mapped by the method,
 	// that has to be woven
-	private Map<Method, WeavingTask> openBindingTasks;
+	public Map<Method, WeavingTask> openBindingTasks;
 	
 	// completed WeavingTasks for decapsulation bindings mapped by the member,
 	// that was woven
@@ -581,6 +581,8 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	 * It redefines the class, if it is not called while loading
 	 */
 	public synchronized void handleTaskList() {
+		if (isTransformationActive()) return;
+
 		Set<Map.Entry<Method, WeavingTask>> bindingEntrySet = openBindingTasks
 				.entrySet();
 
@@ -645,14 +647,14 @@ public abstract class AbstractBoundClass implements IBoundClass {
 					} else {
 						//No, so weave this class and delegate to the super class
 						weaveBindingInNotImplementedMethod(task);
-					}
-					if (weavingContext.isWeavable(getSuperClassName())) {
 						AbstractBoundClass superclass = getSuperclass();
-						Method superMethod = superclass.getMethod(method, task);
-						if (superMethod != null) {
-							WeavingTask newTask = new WeavingTask(WeavingTaskType.WEAVE_BINDING_OF_SUBCLASS, superMethod, task);
-							superclass.addWeavingTask(newTask, true/*standBy*/);
-							affectedClasses.add(superclass);
+						if (weavingContext.isWeavable(getSuperClassName())) {
+							Method superMethod = superclass.getMethod(method, task);
+							if (superMethod != null) {
+								WeavingTask newTask = new WeavingTask(WeavingTaskType.WEAVE_BINDING_OF_SUBCLASS, superMethod, task);
+								superclass.addWeavingTask(newTask, true/*standBy*/);
+								affectedClasses.add(superclass);
+							}
 						}
 					}
 
@@ -906,6 +908,11 @@ public abstract class AbstractBoundClass implements IBoundClass {
 			}
 		}
 	}
+	
+	public void addWeavingOfSubclassTask(String methodName, String signature, boolean isStatic) {
+		int flags = isStatic ? IBinding.STATIC_BASE : 0;
+		addBindingWeavingTask(new WeavingTask(WeavingTaskType.WEAVE_BINDING_OF_SUBCLASS, methodName, signature, flags, isStatic));
+	}
 
 	/**
 	 * Merge tasks of two AbstractBoundClasses (this class and a other).
@@ -1064,6 +1071,8 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	protected abstract void prepareForFirstStaticTransformation();
 
 	public abstract boolean isFirstTransformation();
+	
+	public boolean isLoaded() { return isLoaded; }
 
 	protected abstract void createDispatchCodeInOrgMethod(Method boundMethod,
 			int joinpointId, int boundMethodId);

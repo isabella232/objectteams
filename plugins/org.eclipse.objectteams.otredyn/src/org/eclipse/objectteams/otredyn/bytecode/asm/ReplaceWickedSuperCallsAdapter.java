@@ -126,7 +126,7 @@ public class ReplaceWickedSuperCallsAdapter extends AbstractTransformableClassNo
 			List<MethodInsnNode> superCallsToReplace = toWeave.getValue();
 			Type returnType = Type.getReturnType(enclosingMethod.desc);
 			boolean returnsJLObject = returnType.getSort() == Type.OBJECT ? returnType.getInternalName().equals(OBJECT_SLASH) : false;
-			replaceSuperCallsWithCallToCallOrig(instructions, superCallsToReplace, returnsJLObject, this);
+			replaceSuperCallsWithCallToCallOrig(instructions, superCallsToReplace, returnsJLObject, superclass, this);
 		}
 		return true;
 	}

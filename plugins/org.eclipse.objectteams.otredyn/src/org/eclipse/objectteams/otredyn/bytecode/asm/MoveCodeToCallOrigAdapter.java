@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.objectteams.otredyn.bytecode.AbstractBoundClass;
 import org.eclipse.objectteams.otredyn.bytecode.Method;
 import org.eclipse.objectteams.otredyn.transformer.IWeavingContext;
 import org.eclipse.objectteams.otredyn.transformer.names.ConstantMembers;
@@ -46,6 +47,7 @@ public class MoveCodeToCallOrigAdapter extends AbstractTransformableClassNode {
 	private int argOffset; // used to skip synth args if the callOrig method itself is a statid role method
 	private Method callOrig;
 	private boolean superIsWeavable = true;
+	private AbstractBoundClass superclass;
 	
 	public MoveCodeToCallOrigAdapter(AsmWritableBoundClass clazz, Method method, int boundMethodId, IWeavingContext weavingContext) {
 		this.method = method;
@@ -60,6 +62,8 @@ public class MoveCodeToCallOrigAdapter extends AbstractTransformableClassNode {
 		}
 		if (weavingContext != null)
 			superIsWeavable = weavingContext.isWeavable(clazz.getSuperClassName());
+		if (superIsWeavable)
+			superclass = clazz.getSuperclass();
 	}
 	
 	public boolean transform() {
@@ -147,7 +151,7 @@ public class MoveCodeToCallOrigAdapter extends AbstractTransformableClassNode {
 		if (toReplace.isEmpty())
 			return;
 		// replace:
-		replaceSuperCallsWithCallToCallOrig(instructions, toReplace, true, new IBoundMethodIdInsnProvider() {
+		replaceSuperCallsWithCallToCallOrig(instructions, toReplace, true, superclass, new IBoundMethodIdInsnProvider() {
 			@Override public AbstractInsnNode getLoadBoundMethodIdInsn(MethodInsnNode methodInsn) {
 				return new IntInsnNode(Opcodes.ILOAD, boundMethodIdSlot);
 			}

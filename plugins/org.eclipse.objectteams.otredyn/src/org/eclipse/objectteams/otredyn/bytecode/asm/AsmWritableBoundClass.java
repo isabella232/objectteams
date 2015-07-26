@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.objectteams.otredyn.bytecode.AbstractBoundClass;
+import org.eclipse.objectteams.otredyn.bytecode.AbstractTeam;
 import org.eclipse.objectteams.otredyn.bytecode.Field;
 import org.eclipse.objectteams.otredyn.bytecode.IBytecodeProvider;
 import org.eclipse.objectteams.otredyn.bytecode.Method;
@@ -204,6 +205,9 @@ class AsmWritableBoundClass extends AsmBoundClass {
 		isTransformationActive = false;
 		isFirstTransformation = false;
 		releaseBytecode();
+		AbstractTeam mySuper = getSuperclass();
+		if (mySuper != null && !mySuper.openBindingTasks.isEmpty() && mySuper.isLoaded())
+			mySuper.handleTaskList();
 	}
 
 	/**
