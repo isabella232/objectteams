@@ -54,16 +54,17 @@ public class CommentsPreparator extends ASTVisitor {
 	private final static Pattern HTML_TAG_PATTERN;
 	private final static Pattern HTML_ATTRIBUTE_PATTERN;
 	static {
-		String formatCodeTags = "(pre)?"; //$NON-NLS-1$
-		String separateLineTags = "(dl|hr|nl|p|ul|ol|table|tr)?"; //$NON-NLS-1$
-		String breakBeforeTags = "(dd|dt|li|td|th|h1|h2|h3|h4|h5|h6|q)?"; //$NON-NLS-1$
-		String breakAfterTags = "(br)?"; //$NON-NLS-1$
-		String noFormatTags = "(code|em|tt)?"; //$NON-NLS-1$
-		String otherTags = "([^<>&&\\S]+)??"; //$NON-NLS-1$
-		String ws = "(?:[ \\t]+|[\\r\\n]+[ \\t]*\\*?)"; // whitespace or line break with optional asterisk //$NON-NLS-1$
-		String attribute = "(?:" + ws + "+[^=&&\\S]+" + ws + "*(=)" + ws + "*\"?[^\"]*\"?)"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		HTML_TAG_PATTERN = Pattern.compile("<(/)?" //$NON-NLS-1$
-				+ formatCodeTags + separateLineTags + breakBeforeTags + breakAfterTags + noFormatTags + otherTags
+		String formatCodeTags = "(pre)"; //$NON-NLS-1$
+		String separateLineTags = "(dl|hr|nl|p|ul|ol|table|tr)"; //$NON-NLS-1$
+		String breakBeforeTags = "(dd|dt|li|td|th|h1|h2|h3|h4|h5|h6|q)"; //$NON-NLS-1$
+		String breakAfterTags = "(br)"; //$NON-NLS-1$
+		String noFormatTags = "(code|em|tt)"; //$NON-NLS-1$
+		String otherTags = "([^<>&&\\S]++)"; //$NON-NLS-1$
+		String ws = "(?>[ \\t]++|[\\r\\n]++[ \\t]*+\\*?)"; // whitespace or line break with optional asterisk //$NON-NLS-1$
+		String attributeValue = "(?>\"[^\"]*\")|(?>\'[^\']*\')|[^/>\"\'&&\\S]++"; //$NON-NLS-1$
+		String attribute = "(?>" + ws + "+[^=&&\\S]+" + ws + "*(=)" + ws + "*(?>" + attributeValue  + "))"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		HTML_TAG_PATTERN = Pattern.compile("<(/)?+(?:" //$NON-NLS-1$
+				+ formatCodeTags + '|' + separateLineTags + '|' + breakBeforeTags + '|' + breakAfterTags + '|' + noFormatTags + '|' + otherTags + ')'
 				+ "(" + attribute + "*)" + ws + "*/?>", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		HTML_ATTRIBUTE_PATTERN = Pattern.compile(attribute);
 	}
@@ -216,11 +217,13 @@ public class CommentsPreparator extends ASTVisitor {
 				structure.get(0).clearSpaceBefore();
 
 			Token previous = this.tm.get(commentIndex - 1);
+			previous.clearSpaceAfter();
 			if (previous.originalEnd + 1 >= commentToken.originalStart)
 				return;
 			if (structure == null || structure.isEmpty()) {
 				structure = new ArrayList<Token>();
 				structure.add(new Token(previous.originalEnd + 1, commentToken.originalEnd, TokenNameCOMMENT_LINE));
+				commentToken.setInternalStructure(structure);
 			} else {
 				structure.add(0, new Token(previous.originalEnd + 1, commentToken.originalStart - 1,
 						TokenNameWHITESPACE));
@@ -591,7 +594,8 @@ public class CommentsPreparator extends ASTVisitor {
 			}
 
 			Token startTokeen = this.ctm.get(startIndex);
-			startTokeen.breakBefore();
+			if (startIndex > 1)
+				startTokeen.breakBefore();
 			int firstTagIndex;
 			if (this.firstTagToken == null || (firstTagIndex = this.ctm.indexOf(this.firstTagToken)) < 0
 					|| startIndex < firstTagIndex)

@@ -567,7 +567,7 @@ class DefaultBindingResolver extends BindingResolver {
 		return null;
 	}
 
-	class AnnotationIdentityBinding {
+	static class AnnotationIdentityBinding {
 		org.eclipse.jdt.internal.compiler.lookup.AnnotationBinding internalInstance;
 		AnnotationIdentityBinding(org.eclipse.jdt.internal.compiler.lookup.AnnotationBinding internalInstance) {
 			this.internalInstance = internalInstance;
@@ -591,13 +591,9 @@ class DefaultBindingResolver extends BindingResolver {
 			}
 		}
 		Object key =  new AnnotationIdentityBinding(internalInstance);
-		IAnnotationBinding domInstance =
-			(IAnnotationBinding) this.bindingTables.compilerAnnotationBindingsToASTBindings.get(key);
-		if (domInstance != null)
-			return domInstance;
-		domInstance = new AnnotationBinding(internalInstance, this);
-		this.bindingTables.compilerAnnotationBindingsToASTBindings.put(key, domInstance);
-		return domInstance;
+		IAnnotationBinding newDomInstance = new AnnotationBinding(internalInstance, this);
+		IAnnotationBinding domInstance = (IAnnotationBinding) ((ConcurrentHashMap)this.bindingTables.compilerAnnotationBindingsToASTBindings).putIfAbsent(key, newDomInstance);
+		return domInstance != null ? domInstance : newDomInstance;
 	}
 
 	boolean isResolvedTypeInferredFromExpectedType(MethodInvocation methodInvocation) {

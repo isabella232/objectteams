@@ -53,6 +53,7 @@
  *								Bug 452788 - [1.8][compiler] Type not correctly inferred in lambda expression
  *								Bug 456487 - [1.8][null] @Nullable type variant of @NonNull-constrained type parameter causes grief
  *								Bug 407414 - [compiler][null] Incorrect warning on a primitive type being null
+ *								Bug 470958 - [1.8] Unable to convert lambda 
  *     Jesper S Moller - Contributions for
  *								Bug 378674 - "The method can be declared as static" is wrong
  *        Andy Clement (GoPivotal, Inc) aclement@gopivotal.com - Contributions for
@@ -86,6 +87,7 @@ import org.eclipse.jdt.internal.compiler.lookup.ExtraCompilerModifiers;
 import org.eclipse.jdt.internal.compiler.lookup.FieldBinding;
 import org.eclipse.jdt.internal.compiler.lookup.ImplicitNullAnnotationVerifier;
 import org.eclipse.jdt.internal.compiler.lookup.InferenceContext18;
+import org.eclipse.jdt.internal.compiler.lookup.InferenceVariable;
 import org.eclipse.jdt.internal.compiler.lookup.LocalVariableBinding;
 import org.eclipse.jdt.internal.compiler.lookup.MethodBinding;
 import org.eclipse.jdt.internal.compiler.lookup.MethodScope;
@@ -831,7 +833,12 @@ public TypeBinding resolveType(BlockScope scope) {
 		this.actualReceiverType = this.receiver.resolveType(scope);
 // :giro
 	  }
-  /*orig:
+// SH}
+		if (this.actualReceiverType instanceof InferenceVariable) {
+			return null; // not yet ready for resolving
+		}
+//{Object Teams:
+  /* orig:
 		this.receiverIsType = this.receiver instanceof NameReference && (((NameReference) this.receiver).bits & Binding.TYPE) != 0;
    */
     	// don't only expect NameReference, BaseReference can be static, too.

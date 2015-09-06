@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 IBM Corporation and others.
+ * Copyright (c) 2008, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -164,7 +164,7 @@ public abstract class TypeConverter {
 
 		int length = typeName.length;
 		this.namePos = 0;
-		return decodeType(typeName, length, start, end, true);
+		return decodeType2(typeName, length, start, end, true);
 	}
 
 	/*
@@ -177,7 +177,7 @@ public abstract class TypeConverter {
 
 		int length = typeName.length;
 		this.namePos = 0;
-		return decodeType(typeName, length, start, end, false);
+		return decodeType2(typeName, length, start, end, false);
 	}
 
 	/*
@@ -468,7 +468,7 @@ public abstract class TypeConverter {
 		}
 	}
 
-	private TypeReference decodeType(char[] typeName, int length, int start, int end, boolean includeGenericsAnyway) {
+	private TypeReference decodeType2(char[] typeName, int length, int start, int end, boolean includeGenericsAnyway) {
 		int identCount = 1;
 		int dim = 0;
 		int nameFragmentStart = this.namePos, nameFragmentEnd = -1;
@@ -493,7 +493,7 @@ public abstract class TypeConverter {
 								}
 								this.namePos += max;
 								Wildcard result = new Wildcard(Wildcard.SUPER);
-								result.bound = decodeType(typeName, length, start, end, includeGenericsAnyway);
+								result.bound = decodeType2(typeName, length, start, end, includeGenericsAnyway);
 								result.sourceStart = start;
 								result.sourceEnd = end;
 								return result;
@@ -509,7 +509,7 @@ public abstract class TypeConverter {
 								}
 								this.namePos += max;
 								Wildcard result = new Wildcard(Wildcard.EXTENDS);
-								result.bound = decodeType(typeName, length, start, end, includeGenericsAnyway);
+								result.bound = decodeType2(typeName, length, start, end, includeGenericsAnyway);
 								result.sourceStart = start;
 								result.sourceEnd = end;
 								return result;
@@ -571,6 +571,27 @@ public abstract class TypeConverter {
 			}
 			this.namePos++;
 		}
+//{ObjectTeams: new param isAnchor:
+/* orig:
+		return decodeType3(typeName, length, start, end, identCount, dim, nameFragmentStart, nameFragmentEnd,
+				fragments);
+  :giro */
+		return decodeType3(typeName, length, start, end, identCount, dim, nameFragmentStart, nameFragmentEnd,
+				fragments, isAnchor);
+	}
+
+	/*
+	 * Method should be inlined.
+	 * 
+	 * Only extracted to work around https://bugs.eclipse.org/471835 :
+	 * Random crashes in PhaseIdealLoop::build_loop_late_post when C2 JIT tries to compile TypeConverter::decodeType
+	 */
+	private TypeReference decodeType3(char[] typeName, int length, int start, int end, int identCount, int dim,
+/* orig:
+			int nameFragmentStart, int nameFragmentEnd, ArrayList fragments) {
+  :giro */
+			int nameFragmentStart, int nameFragmentEnd, ArrayList fragments, boolean isAnchor) {
+// SH}
 		if (nameFragmentEnd < 0) nameFragmentEnd = this.namePos-1;
 		if (fragments == null) { // non parameterized
 			/* rebuild identifiers and dimensions */
@@ -681,7 +702,7 @@ public abstract class TypeConverter {
 		ArrayList argumentList = new ArrayList(1);
 		int count = 0;
 		argumentsLoop: while (this.namePos < length) {
-			TypeReference argument = decodeType(typeName, length, start, end, includeGenericsAnyway);
+			TypeReference argument = decodeType2(typeName, length, start, end, includeGenericsAnyway);
 			count++;
 			argumentList.add(argument);
 			if (this.namePos >= length) break argumentsLoop;

@@ -120,6 +120,11 @@ public class SpacePreparator extends ASTVisitor {
 		List<TypeParameter> typeParameters = node.typeParameters();
 		handleTypeParameters(typeParameters);
 
+		if (!node.isInterface() && !node.superInterfaceTypes().isEmpty()) {
+			// fix for: class A<E> extends ArrayList<String>implements Callable<String>
+			handleToken(node.getName(), TokenNameimplements, true, false);
+		}
+
 		handleToken(node.getName(), TokenNameLBRACE,
 				this.options.insert_space_before_opening_brace_in_type_declaration, false);
 		handleCommas(node.superInterfaceTypes(), this.options.insert_space_before_comma_in_superinterfaces,
@@ -378,6 +383,7 @@ public class SpacePreparator extends ASTVisitor {
 
 	@Override
 	public boolean visit(AssertStatement node) {
+		this.tm.firstTokenIn(node, TokenNameassert).spaceAfter();
 		if (node.getMessage() != null) {
 			handleTokenBefore(node.getMessage(), TokenNameCOLON, this.options.insert_space_before_colon_in_assert,
 					this.options.insert_space_after_colon_in_assert);
@@ -425,6 +431,7 @@ public class SpacePreparator extends ASTVisitor {
 
 	@Override
 	public boolean visit(AnnotationTypeMemberDeclaration node) {
+		handleToken(node.getName(), TokenNameIdentifier, true, false);
 		handleToken(node.getName(), TokenNameLPAREN,
 				this.options.insert_space_before_opening_paren_in_annotation_type_member_declaration, false);
 		handleEmptyParens(node.getName(),
@@ -520,11 +527,14 @@ public class SpacePreparator extends ASTVisitor {
 	public boolean visit(IfStatement node) {
 		handleToken(node, TokenNameLPAREN, this.options.insert_space_before_opening_paren_in_if,
 				this.options.insert_space_after_opening_paren_in_if);
-		handleTokenBefore(node.getThenStatement(), TokenNameRPAREN,
-				this.options.insert_space_before_closing_paren_in_if, true);
 
 		Statement thenStatement = node.getThenStatement();
-		if (thenStatement instanceof Block && this.tm.isGuardClause((Block) node.getThenStatement())) {
+		int closingParenIndex = this.tm.firstIndexBefore(thenStatement, TokenNameRPAREN);
+		handleToken(this.tm.get(closingParenIndex), this.options.insert_space_before_closing_paren_in_if,
+				/* space before then statement may be needed if it will stay on the same line */
+				!(thenStatement instanceof Block) && !this.tm.get(closingParenIndex + 1).isComment());
+
+		if (thenStatement instanceof Block && this.tm.isGuardClause((Block) thenStatement)) {
 			handleToken(thenStatement, TokenNameLBRACE, false, true);
 			this.tm.lastTokenIn(node, TokenNameRBRACE).spaceBefore();
 		}
@@ -985,6 +995,7 @@ public class SpacePreparator extends ASTVisitor {
 	private void handleToken(ASTNode node, int tokenType, boolean spaceBefore, boolean spaceAfter) {
 		if (spaceBefore || spaceAfter) {
 			Token token = this.tm.get(this.tm.findIndex(node.getStartPosition(), tokenType, true));
+			// ^not the same as "firstTokenIn(node, tokenType)" - do not assert the token is inside the node
 			handleToken(token, spaceBefore, spaceAfter);
 		}
 	}
