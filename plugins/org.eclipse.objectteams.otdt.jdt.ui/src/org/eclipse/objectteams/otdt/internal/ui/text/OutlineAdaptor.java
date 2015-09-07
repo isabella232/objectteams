@@ -82,7 +82,7 @@ public team class OutlineAdaptor
 			}					
 			return children;
 		}
-		getChildren <- replace getChildren;
+		Object[] getChildren(Object element) <- replace Object[] getChildren(Object element);
 		
 		boolean showRoleFiles() -> boolean isShowingInheritedMembers();  
 	
