@@ -4,7 +4,7 @@
 	
 	<groupId>org.eclipse.objectteams</groupId>
 	<artifactId>objectteams-parent-pom</artifactId>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Object Teams parent pom</name>
@@ -23,7 +23,7 @@
 			<comments>
 				This file is part of "Object Teams Development Tooling"-Software.
 
-				Copyright 2010, 2014 GK Software AG and others.
+				Copyright 2010, 2015 GK Software AG and others.
 				All rights reserved. This program and the accompanying materials
 				are made available under the terms of the Eclipse Public License v1.0
 				which accompanies this distribution, and is available at
@@ -82,11 +82,11 @@
     	<project-repository-path>maven/infrastructure/parent-pom</project-repository-path>
 
 		<!-- Our Version: -->
-		<otj.version>2.3.0</otj.version>
+		<otj.version>2.4.0</otj.version>
 
 		<!-- Versions of dependencies: -->
 		<bcel.version>5.2</bcel.version>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.23.0</tycho.version>
 		
 		<!-- Absolut paths for providing startup arguments to the JVM -->
 		<otj.runtime.location>${settings.localRepository}/org/eclipse/objectteams/objectteams-runtime/${otj.version}/objectteams-runtime-${otj.version}.jar</otj.runtime.location>
@@ -219,7 +219,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.3</version>
 				</plugin>
 				<plugin>
 	        		<groupId>org.apache.maven.plugins</groupId>
