@@ -5355,4 +5355,109 @@ public void testBug469753() {
 			"}\n"
 		});
 }
+public void testBug470826() {
+	runConformTest(
+		new String[] {
+			"EcjVsCollect.java",
+			"import java.util.ArrayList;\n" + 
+			"import java.util.stream.Stream;\n" + 
+			"\n" + 
+			"public class EcjVsCollect {\n" + 
+			"\n" + 
+			"  public static void main(String[] args) {\n" + 
+			"    try (final Stream<Record<String>> stream = getStream()) {\n" + 
+			"      stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);\n" + 
+			"//      ArrayList<Record<String>> foo = stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);\n" + 
+			"    }\n" + 
+			"  }\n" + 
+			"\n" + 
+			"  private static <K> Stream<Record<K>> getStream() {\n" + 
+			"    return Stream.empty();\n" + 
+			"  }\n" + 
+			"\n" + 
+			"  private interface Record<K> {\n" + 
+			"    K getKey();\n" + 
+			"  }\n" + 
+			"}\n"
+		});
+}
+public void testBug470542() {
+	runNegativeTest(
+		new String[] {
+			"X.java",
+			"import java.util.function.Consumer;\n" + 
+			"\n" + 
+			"public class X {\n" + 
+			"	void test() {\n" + 
+			"		process(missing::new);\n" + 
+			"	}\n" + 
+			"	\n" + 
+			"	<T> void process(Consumer<T> c) { }\n" + 
+			"}\n"
+		},
+		"----------\n" + 
+		"1. ERROR in X.java (at line 5)\n" + 
+		"	process(missing::new);\n" + 
+		"	        ^^^^^^^\n" + 
+		"missing cannot be resolved\n" + 
+		"----------\n");
+}
+public void testBug478848() {
+	runConformTest(
+		new String[] {
+			"InferenceBug.java",
+			"import java.util.*;\n" + 
+			"public class InferenceBug {\n" + 
+			"    \n" + 
+			"    static class Wrapper<T> {\n" + 
+			"        T value;\n" + 
+			"        public T getValue() {\n" + 
+			"            return null;\n" + 
+			"        }\n" + 
+			"    }\n" + 
+			"    \n" + 
+			"    static class C1 {\n" + 
+			"        //an optional array of String wrappers\n" + 
+			"        public Optional<? extends Wrapper<String>[]> optionalArrayOfStringWrappers() {\n" + 
+			"            return Optional.empty();\n" + 
+			"        }\n" + 
+			"    }\n" + 
+			"    \n" + 
+			"    public static void main(String[] args) {\n" + 
+			"        C1 c1 = new C1();\n" + 
+			"        try {\n" + 
+			"            for (Wrapper<String> attribute: c1.optionalArrayOfStringWrappers().get()) {\n" + 
+			"                // error in previous line:\n" + 
+			"                // Can only iterate over an array or an instance of java.lang.Iterable\n" +
+			"            }\n" + 
+			"        } catch (NoSuchElementException nsee) {\n" +
+			"            System.out.print(\"No such element\");\n" +
+			"        }\n" + 
+			"    }\n" + 
+			"}\n"
+		},
+		"No such element");
+}
+public void testBug479167() {
+	runConformTest(
+		new String[] {
+			"ToArray.java",
+			"import java.io.Serializable;\n" + 
+			"interface ArrayFunction<E> {\n" + 
+			"	<S extends E> E[] apply(@SuppressWarnings(\"unchecked\") S... es);\n" + 
+			"}\n" + 
+			"public class ToArray<E extends Cloneable & Serializable> implements ArrayFunction<E> {\n" + 
+			"	public final @SafeVarargs @Override <S extends E> E[] apply(S... es) {\n" + 
+			"		return es;\n" + 
+			"	}\n" + 
+			"\n" + 
+			"	public static void main(String[] args) {\n" + 
+			"		ArrayFunction<String[]> toArray = new ToArray<>();\n" + 
+			"		String[][] array = toArray.apply(args);\n" + 
+			"		System.out.print(array.getClass().getName());\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		"[[Ljava.lang.String;");
+}
 }

@@ -5199,11 +5199,16 @@ public void testDefault07_bin() {
 			"}\n"
 		},
 		getCompilerOptions(),
-		"----------\n" +  // FIXME: this should not be a warning, a case of unrecognized boxing
+		"----------\n" +
 		"1. WARNING in Y.java (at line 5)\n" + 
 		"	@NonNull Number nnn = inner.process(Integer.valueOf(3), new ArrayList<@Nullable Integer>()); // WARN on 1. arg; ERR on 2. arg\n" + 
 		"	                                    ^^^^^^^^^^^^^^^^^^\n" + 
 		"Null type safety (type annotations): The expression of type \'Integer\' needs unchecked conversion to conform to \'@NonNull Integer\'\n" + 
+		"----------\n" + 
+		"2. ERROR in Y.java (at line 5)\n" + 
+		"	@NonNull Number nnn = inner.process(Integer.valueOf(3), new ArrayList<@Nullable Integer>()); // WARN on 1. arg; ERR on 2. arg\n" + 
+		"	                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" + 
+		"Null type mismatch (type annotations): required \'List<? extends @NonNull Number>\' but this expression has type \'ArrayList<@Nullable Integer>\', corresponding supertype is \'List<@Nullable Integer>\'\n" + 
 		"----------\n");
 }
 public void testBug431269() {
@@ -8101,5 +8106,275 @@ public void testBug467032() {
 				"  Class1 x;"+
 				"}\n"
 			}, getCompilerOptions(), "");
+}
+public void testBug446217() {
+	runConformTestWithLibs(
+		new String[] {
+			"sol/package-info.java",
+			"@org.eclipse.jdt.annotation.NonNullByDefault\n" + 
+			"package sol;",
+			"sol/FuncList.java",
+			"\n" + 
+			"package sol;\n" + 
+			"\n" + 
+			"interface FuncList<A> {}\n" + 
+			"	\n"	+
+			"@SuppressWarnings(\"unused\")\n" + 
+			"final class Node<A> implements FuncList<A> {\n" + 
+			"	private final A a;\n" + 
+			"	private final FuncList<A> tail;\n" + 
+			"	\n" + 
+			"	Node(final A a, final FuncList<A> tail) {\n" + 
+			"		this.a = a;\n" + 
+			"		this.tail = tail;\n" + 
+			"	}\n" + 
+			"}\n" + 
+			"\n" + 
+			"final class Empty<A> implements FuncList<A> {\n" + 
+			"	Empty() {}\n" + 
+			"}\n",
+			"sol/Test.java",
+			"package sol;\n" + 
+			"\n" + 
+			"public class Test {\n" + 
+			"	public static void main(final String[] args) {\n" + 
+			"		 System.out.println(new Node<>(\"A\", new Empty<>()));\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(), "");
+}
+public void testBug456584() {
+	runConformTestWithLibs(
+		new String[] {
+			"Test.java",
+			"import java.util.*;\n" + 
+			"import java.util.function.*;\n" + 
+			"import org.eclipse.jdt.annotation.*;\n" + 
+			"\n" + 
+			"@NonNullByDefault\n" + 
+			"public class Test {\n" + 
+			"\n" + 
+			"  public static final <T,R> @NonNull R applyRequired(final T input, final Function<? super T,? extends R> function) { // Warning on '@NonNull R': \"The nullness annotation is redundant with a default that applies to this location\"\n" + 
+			"    return Objects.requireNonNull(function.apply(input));\n" + 
+			"  }\n" + 
+			"\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"----------\n" + 
+		"1. WARNING in Test.java (at line 9)\n" + 
+		"	return Objects.requireNonNull(function.apply(input));\n" + 
+		"	                              ^^^^^^^^^^^^^^^^^^^^^\n" + 
+		"Null type safety (type annotations): The expression of type \'capture#of ? extends R\' needs unchecked conversion to conform to \'@NonNull capture#of ? extends R\'\n" + 
+		"----------\n");
+}
+public void testBug447661() {
+	runConformTestWithLibs(
+		new String[] {
+			"Two.java",
+			"import java.util.*;\n" +
+			"public class Two {\n" + 
+			"\n" + 
+			"	@org.eclipse.jdt.annotation.NonNullByDefault\n" + 
+			"	public static Set<String> getSet() {\n" + 
+			"		return new HashSet<>();\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"");
+	runConformTestWithLibs(
+		new String[] {
+			"One.java",
+			"import java.util.*;\n" +
+			"@org.eclipse.jdt.annotation.NonNullByDefault\n" + 
+			"public class One {\n" + 
+			"\n" + 
+			"	public void test() {\n" + 
+			"		Set<String> set = Two.getSet();\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"");
+}
+public void testBug436091() {
+	runConformTestWithLibs(
+		new String[] {
+			"p/package-info.java",
+			"@org.eclipse.jdt.annotation.NonNullByDefault\n" + 
+			"package p;\n",
+
+			"p/Program.java",
+			"package p;\n" +
+			"public class Program {\n" + 
+			"	private final ProgramNode program;\n" + 
+			"	" + 
+			"	public Program(final ProgramNode astRoot) {\n" + 
+			"		program = astRoot;\n" + 
+			"	}\n" + 
+			"	" + 
+			"	public Integer execute() {\n" + 
+			"		return program.accept(ExecutionEvaluationVisitor.VISITOR);\n" + 
+			"	}\n" + 
+			"	" + 
+			"	class ProgramNode {\n" + 
+			"		public <R> R accept(final ConcreteNodeVisitor<R> visitor) {\n" + 
+			"			return visitor.visit(this);\n" + 
+			"		}\n" + 
+			"	}\n" + 
+			"}\n",
+			
+			"p/ConcreteNodeVisitor.java",
+			"package p;\n" +
+			"import p.Program.ProgramNode;\n" + 
+			"public interface ConcreteNodeVisitor<R> {\n" + 
+			"	R visit(ProgramNode node);\n" + 
+			"}\n",
+			
+			"p/ExecutionEvaluationVisitor.java",
+			"package p;\n" + 
+			"" + 
+			"import org.eclipse.jdt.annotation.NonNull;\n" + 
+			"" + 
+			"import p.Program.ProgramNode;\n" + 
+			"" + 
+			"public enum ExecutionEvaluationVisitor implements ConcreteNodeVisitor<Integer> {\n" + 
+			"	" + 
+			"	VISITOR;\n" + 
+			"	" + 
+			"	@Override" + 
+			"	public Integer visit(final ProgramNode node) {\n" + 
+			"		@SuppressWarnings(\"null\")\n" + 
+			"		@NonNull\n" + 
+			"		final Integer i = Integer.valueOf(0);\n" + 
+			"		return i;\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"");
+	// re-compile only one of the above:
+	runConformTestWithLibs(
+		new String[] {
+			"p/Program.java",
+			"package p;\n" +
+			"public class Program {\n" + 
+			"	private final ProgramNode program;\n" + 
+			"	" + 
+			"	public Program(final ProgramNode astRoot) {\n" + 
+			"		program = astRoot;\n" + 
+			"	}\n" + 
+			"	" + 
+			"	public Integer execute() {\n" + 
+			"		return program.accept(ExecutionEvaluationVisitor.VISITOR);\n" + 
+			"	}\n" + 
+			"	" + 
+			"	class ProgramNode {\n" + 
+			"		public <R> R accept(final ConcreteNodeVisitor<R> visitor) {\n" + 
+			"			return visitor.visit(this);\n" + 
+			"		}\n" + 
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"");
+}
+public void test483952 () {
+	runConformTestWithLibs(
+		new String[] {
+			"test/Test.java",
+			"package test;\n" +
+			"import java.util.function.Function;\n" +
+			"import org.eclipse.jdt.annotation.Nullable;\n" +
+			"public class Test {\n" +
+			"	void test1() {\n" +
+			"		Function function = x -> x;\n" +
+			"		String @Nullable [] z = test2(function, \"\");\n" +
+			"	}\n" +
+			"	<T> T @Nullable [] test2(Function<T, T> function, T t) {\n" +
+			"		return null;\n" +
+			"	}\n" +
+			"}"
+
+		},
+		getCompilerOptions(),
+		"----------\n" + 
+		"1. WARNING in test\\Test.java (at line 6)\n" + 
+		"	Function function = x -> x;\n" + 
+		"	^^^^^^^^\n" + 
+		"Function is a raw type. References to generic type Function<T,R> should be parameterized\n" + 
+		"----------\n");
+}
+public void testBug484108() {
+	runConformTestWithLibs(
+		new String[] {
+			"test/Test.java",
+			"package test;\n" +
+			"\n" + 
+			"import org.eclipse.jdt.annotation.NonNull;\n" + 
+			"\n" + 
+			"public interface Test <T0 extends Other> {\n" + 
+			"    public void a ( @NonNull T0 test );\n" + 
+			"}\n",
+			"test/Other.java",
+			"package test;\n" + 
+			"\n" + 
+			"public interface Other { }\n"
+		},
+		getCompilerOptions(),
+		"");
+	runConformTestWithLibs(
+		new String[] {
+			"test/TestImpl.java",
+			"package test;\n" + 
+			"\n" + 
+			"import org.eclipse.jdt.annotation.NonNull;\n" +
+			"import java.lang.reflect.*;\n" + 
+			"\n" + 
+			"public class TestImpl <T extends Other> implements Test<T> {\n" + 
+			"\n" + 
+			"    /**\n" + 
+			"     * {@inheritDoc}\n" + 
+			"     *\n" + 
+			"     * @see test.Test#a(java.lang.Object)\n" + 
+			"     */\n" + 
+			"    @Override\n" + 
+			"    public void a ( @NonNull T test ) {\n" + 
+			"    }\n" +
+			"	public static void main(String... args) {\n" +
+			"		Class<?> c = TestImpl.class;\n" +
+			"		Method[] ms = c.getDeclaredMethods();\n" +
+			"		System.out.println(ms.length);\n" +
+			"	}\n" + 
+			"}\n"
+		},
+		getCompilerOptions(),
+		"",
+		"2");
+}
+public void testBug485056() {
+	runConformTestWithLibs(
+		new String[] {
+			"TestExplainedValue.java",
+			"import java.io.Serializable;\n" +
+		
+			"import org.eclipse.jdt.annotation.NonNull;\n" +
+			"import org.eclipse.jdt.annotation.Nullable;\n" +
+		
+			"class ExplainedValue<T extends Serializable> {\n" +
+			"	public @Nullable T featureValue;\n" +
+			"}\n" +
+		
+			"public class TestExplainedValue {\n" +
+			"	static @Nullable Serializable g(ExplainedValue<? extends @NonNull Serializable> explainedValue) {\n" +
+			"		return explainedValue.featureValue;\n" +
+			"	}\n" +
+			"}"
+		}, 
+		getCompilerOptions(), 
+		""
+	);				
 }
 }
