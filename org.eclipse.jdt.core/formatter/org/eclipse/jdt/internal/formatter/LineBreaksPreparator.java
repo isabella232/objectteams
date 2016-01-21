@@ -76,6 +76,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.eclipse.jdt.core.dom.WithinStatement;
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
+import org.eclipse.jdt.core.dom.AbstractMethodMappingDeclaration;
 
 public class LineBreaksPreparator extends ASTVisitor {
 	final private TokenManager tm;
@@ -172,6 +173,10 @@ public class LineBreaksPreparator extends ASTVisitor {
 				} else if (bodyDeclaration instanceof MethodDeclaration
 						|| bodyDeclaration instanceof AnnotationTypeMemberDeclaration) {
 					blankLines = this.options.blank_lines_before_method;
+//{ObjectTeams: method mappings like methods:
+				} else if (bodyDeclaration instanceof AbstractMethodMappingDeclaration) {
+					blankLines = this.options.blank_lines_before_method;
+// SH}
 				}
 
 				if (!sameChunk(previous, bodyDeclaration))
