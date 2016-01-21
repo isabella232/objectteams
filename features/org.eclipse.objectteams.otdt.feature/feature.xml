@@ -64,7 +64,7 @@ Project Leader:
 
    <includes
          id="org.eclipse.objectteams.otdt.core.patch"
-         version="2.4.1.qualifier"/>
+         version="2.4.2.qualifier"/>
 
    <plugin
          id="org.eclipse.objectteams.otdt"
