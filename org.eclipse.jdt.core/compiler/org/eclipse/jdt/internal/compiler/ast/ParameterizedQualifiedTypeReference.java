@@ -29,6 +29,7 @@ import org.eclipse.jdt.internal.compiler.ASTVisitor;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.lookup.*;
+import org.eclipse.objectteams.otdt.internal.core.compiler.ast.TypeAnchorReference;
 
 /**
  * OTDT changes: support base class decapsulation through type arguments
@@ -308,6 +309,13 @@ public class ParameterizedQualifiedTypeReference extends ArrayQualifiedTypeRefer
 				ReferenceBinding currentOriginal = (ReferenceBinding)currentType.original();
 				for (int j = 0; j < argLength; j++) {
 				    TypeReference arg = args[j];
+//{ObjectTeams:
+				    if (arg instanceof TypeAnchorReference) {
+				    	scope.problemReporter().valueParamWrongPosition((TypeAnchorReference) arg);
+				    	argHasError = true;
+				    	continue;
+				    }
+// SH}
 				    TypeBinding argType = isClassScope
 						? arg.resolveTypeArgument((ClassScope) scope, currentOriginal, j)
 						: arg.resolveTypeArgument((BlockScope) scope, currentOriginal, j);

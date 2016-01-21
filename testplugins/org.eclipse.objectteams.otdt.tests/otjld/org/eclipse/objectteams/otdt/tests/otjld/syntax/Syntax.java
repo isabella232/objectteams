@@ -1504,4 +1504,35 @@ public class Syntax extends AbstractOTJLDTest {
     		},
     		"");
     }
+
+    public void testBug475634a() {
+    	runNegativeTest(
+    		new String[] {
+    			"X.java",
+    			"public team class X {\n" +
+    			"    protected class R playedBy java.util.List<@Ann> {}\n" +
+				"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in X.java (at line 2)\n" + 
+			"	protected class R playedBy java.util.List<@Ann> {}\n" + 
+			"	                                          ^^^^\n" + 
+			"Illegal position for value parameter @Ann: must be a parameter of a single name type reference(OTJLD A.9(a)).\n" + 
+			"----------\n");
+    }
+
+    public void testBug475634b() {
+    	runNegativeTest(
+    		new String[] {
+    			"X.java",
+    			"public team class X extends java.util.List<@Ann> {\n" +
+				"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in X.java (at line 1)\n" + 
+			"	public team class X extends java.util.List<@Ann> {\n" + 
+			"	                                           ^^^^\n" + 
+			"Illegal position for value parameter @Ann: must be a parameter of a single name type reference(OTJLD A.9(a)).\n" + 
+			"----------\n");
+    }
 }
