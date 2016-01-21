@@ -33,7 +33,6 @@ import org.eclipse.jdt.internal.compiler.env.AccessRestriction;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions.WeavingScheme;
 import org.eclipse.jdt.internal.compiler.lookup.BinaryTypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
-import org.eclipse.jdt.internal.compiler.lookup.CaptureBinding;
 import org.eclipse.jdt.internal.compiler.lookup.ClassScope;
 import org.eclipse.jdt.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.jdt.internal.compiler.lookup.MemberTypeBinding;
@@ -46,6 +45,7 @@ import org.eclipse.jdt.internal.compiler.lookup.TagBits;
 import org.eclipse.jdt.internal.compiler.lookup.TypeBinding;
 import org.eclipse.jdt.internal.compiler.lookup.TypeConstants;
 import org.eclipse.jdt.internal.compiler.lookup.TypeIds;
+import org.eclipse.jdt.internal.compiler.lookup.TypeVariableBinding;
 import org.eclipse.jdt.internal.compiler.parser.Parser;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
 import org.eclipse.objectteams.otdt.core.compiler.OTNameUtils;
@@ -485,11 +485,10 @@ public class Dependencies implements ITranslationStates {
         TypeBinding proto = type.prototype();
         if (proto instanceof ReferenceBinding)
         	type = (ReferenceBinding) proto;
-        if (type instanceof CaptureBinding) {
+        if (type.isTypeVariable()) {
         	boolean success = true;
-        	CaptureBinding capture = (CaptureBinding)type;
-        	success &= ensureBindingState(capture.superclass, state);
-        	for (ReferenceBinding superIfc : capture.superInterfaces) {
+        	success &= ensureBindingState(((TypeVariableBinding) type).superclass, state);
+        	for (ReferenceBinding superIfc : ((TypeVariableBinding) type).superInterfaces) {
 				success &= ensureBindingState(superIfc, state);
 			}
         	return success;

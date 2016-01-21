@@ -255,4 +255,23 @@ public class OTNullTypeAnnotationTest extends AbstractOTJLDNullAnnotationTest {
 			"----------\n");
 	}
 
+    public void testBug486292() {
+    	runConformTestWithLibs(
+    		new String[] {
+    			"X.java",
+    			"import java.util.*;\n" +
+    			"import org.eclipse.jdt.annotation.*;\n" +
+    			"public class X {\n" +
+    			"  public static <C extends Collection<?>>@NonNull C requireNonEmpty(@Nullable C value) {\n" + 
+    			"  	if ((value == null))\n" + 
+    			"   	   throw new NullPointerException();\n" + 
+    			"  	if (value.isEmpty())\n" + 
+    			"   	   throw new IllegalArgumentException();\n" + 
+    			"  	return value;\n" + 
+    			"  }\n" +
+    			"}\n"
+    		},
+    		getCompilerOptions(),
+    		"");
+    }
 }
