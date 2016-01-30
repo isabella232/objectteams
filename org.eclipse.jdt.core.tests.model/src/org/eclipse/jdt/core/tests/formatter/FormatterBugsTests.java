@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2015 IBM Corporation and others.
+ * Copyright (c) 2000, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12159,6 +12159,147 @@ public void testBug481221b() {
 		"						AAA,\r\n" + 
 		"						;\r\n" + 
 		"	}\r\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/485163 - [formatter] Incorrect indentation after line wrap
+ */
+public void testBug485163() {
+	this.formatterPrefs.indent_empty_lines = true;
+	this.formatterPrefs.blank_lines_before_field = 1;
+	String source =
+		"public class Test {\r\n" + 
+		"\r\n" + 
+		"	public String sssss1 = \".................................................\" + \"...........................................\";\r\n" + 
+		"	public String sssss2 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"	public String sssss3 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"	public void foo() {\r\n" + 
+		"\r\n" + 
+		"		String sssss = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"		Object o =\r\n" + 
+		"\r\n" + 
+		"		new Object() {\r\n" + 
+		"\r\n" + 
+		"			int a;\r\n" + 
+		"\r\n" + 
+		"			void foo() {\r\n" + 
+		"\r\n" + 
+		"				String sssss1 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"				String sssss2 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"			}\r\n" + 
+		"\r\n" + 
+		"		};\r\n" + 
+		"\r\n" + 
+		"		new Object() {\r\n" + 
+		"\r\n" + 
+		"			int a;\r\n" + 
+		"\r\n" + 
+		"			void foo() {\r\n" + 
+		"\r\n" + 
+		"				String sssss1 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"				String sssss2 = \".................................................\" + \"...........................................\";\r\n" + 
+		"\r\n" + 
+		"			}\r\n" + 
+		"\r\n" + 
+		"		};\r\n" + 
+		"	}\r\n" + 
+		"}";
+	formatSource(source,
+		"public class Test {\r\n" + 
+		"	\r\n" + 
+		"	public String sssss1 = \".................................................\"\r\n" + 
+		"			+ \"...........................................\";\r\n" + 
+		"	\r\n" + 
+		"	public String sssss2 = \".................................................\"\r\n" + 
+		"			+ \"...........................................\";\r\n" + 
+		"	\r\n" + 
+		"	public String sssss3 = \".................................................\"\r\n" + 
+		"			+ \"...........................................\";\r\n" + 
+		"	\r\n" + 
+		"	public void foo() {\r\n" + 
+		"		\r\n" + 
+		"		String sssss = \".................................................\"\r\n" + 
+		"				+ \"...........................................\";\r\n" + 
+		"		\r\n" + 
+		"		Object o =\r\n" + 
+		"				\r\n" + 
+		"				new Object() {\r\n" + 
+		"					\r\n" + 
+		"					int a;\r\n" + 
+		"					\r\n" + 
+		"					void foo() {\r\n" + 
+		"						\r\n" + 
+		"						String sssss1 = \".................................................\"\r\n" + 
+		"								+ \"...........................................\";\r\n" + 
+		"						\r\n" + 
+		"						String sssss2 = \".................................................\"\r\n" + 
+		"								+ \"...........................................\";\r\n" + 
+		"						\r\n" + 
+		"					}\r\n" + 
+		"					\r\n" + 
+		"				};\r\n" + 
+		"		\r\n" + 
+		"		new Object() {\r\n" + 
+		"			\r\n" + 
+		"			int a;\r\n" + 
+		"			\r\n" + 
+		"			void foo() {\r\n" + 
+		"				\r\n" + 
+		"				String sssss1 = \".................................................\"\r\n" + 
+		"						+ \"...........................................\";\r\n" + 
+		"				\r\n" + 
+		"				String sssss2 = \".................................................\"\r\n" + 
+		"						+ \"...........................................\";\r\n" + 
+		"				\r\n" + 
+		"			}\r\n" + 
+		"			\r\n" + 
+		"		};\r\n" + 
+		"	}\r\n" + 
+		"}"
+	);
+}
+/**
+ * https://bugs.eclipse.org/479898 - [formatter] removes whitespace between final and first exception in multi-line multi-catch
+ */
+public void testBug479898() {
+	this.formatterPrefs.alignment_for_union_type_in_multicatch = Alignment.M_COMPACT_SPLIT + Alignment.M_INDENT_ON_COLUMN;
+	String source =
+		"public class FormattingTest {\r\n" + 
+		"	public void formatterTest() {\r\n" + 
+		"		try {\r\n" + 
+		"		} catch (final	InstantiationException | IllegalAccessException | IllegalArgumentException\r\n" + 
+		"						| NoSuchMethodException e) {\r\n" + 
+		"		}\r\n" + 
+		"	}\r\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/485276 - [formatter] another ArrayIndexOutOfBoundsException while formatting code
+ */
+public void testBug485276() {
+	this.formatterPrefs.use_tabs_only_for_leading_indentations = true;
+	this.formatterPrefs.alignment_for_expressions_in_array_initializer = Alignment.M_COMPACT_SPLIT + Alignment.M_INDENT_BY_ONE;
+	String source =
+		"public class PostSaveListenerCleanUpExceptionTest {\r\n" + 
+		"	public Object[][] dataProvider() {\r\n" + 
+		"		return new Object[][] { { new String() // comment 1\r\n" + 
+		"				}, { new String() } };\r\n" + 
+		"	}\r\n" + 
+		"\r\n" + 
+		"	Object o = new Object() {\r\n" + 
+		"		public Object[][] dataProvider() {\r\n" + 
+		"			return new Object[][] { { new String() // comment 1\r\n" + 
+		"					}, { new String() } };\r\n" + 
+		"		}\r\n" + 
+		"	};\r\n" + 
 		"}";
 	formatSource(source);
 }
