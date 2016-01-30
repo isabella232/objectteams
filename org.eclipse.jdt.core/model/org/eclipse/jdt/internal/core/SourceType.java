@@ -430,7 +430,7 @@ public IJavaElement getHandleFromMemento(String token, MementoTokenizer memento,
 				return new CalloutMapping(0, 0, 0, 0, this, corrJavaMethod, roleMethod, (baseMethods.isEmpty() ? null : baseMethods.get(0)), hasSign, isOverride, 0/*declaredModifiers*/, false/*addAsChild*/);
 			case IOTJavaElement.CALLOUT_TO_FIELD_MAPPING:
 				IFieldAccessSpec baseField = CalloutToFieldMapping.createFieldData(memento, isSetter);
-				return new CalloutToFieldMapping(0, 0, 0, 0, this, corrJavaMethod, roleMethod, baseField, hasSign, isOverride, false/*addAsChild*/);
+				return new CalloutToFieldMapping(0, 0, 0, 0, this, corrJavaMethod, roleMethod, baseField, hasSign, isOverride, 0/*declaredModifiers*/, false/*addAsChild*/);
 			default:
 				throw new InternalCompilerError("Unexpected mapping kind");
 			}

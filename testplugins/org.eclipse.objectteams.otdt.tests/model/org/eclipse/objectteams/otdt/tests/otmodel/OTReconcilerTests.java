@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2015 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2004, 2016 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute and Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -1933,6 +1933,112 @@ public class OTReconcilerTests extends ReconcilerTests {
 					"----------\n",
 					this.problemRequestor);
 
+    	} finally {
+    		deleteProject("P");
+    	}
+    }
+
+    public void testCalloutVisibility() throws CoreException, InterruptedException {
+    	try {
+			// Resources creation
+			IJavaProject p = createOTJavaProject("P", new String[] {"src"}, new String[] {"JCL17_LIB"}, "1.7", "bin");
+			IProject project = p.getProject();
+			IProjectDescription prjDesc = project.getDescription();
+			prjDesc.setBuildSpec(OTDTPlugin.createProjectBuildCommands(prjDesc));
+			project.setDescription(prjDesc, null);
+			p.setOption(JavaCore.COMPILER_PB_UNUSED_LOCAL, JavaCore.IGNORE);
+	
+			OTREContainer.initializeOTJProject(project);
+			
+			this.createFolder("/P/src/b");
+			String b1SourceString =	
+				"package b;\n" +
+				"public class B1 {\n" +
+    			"	int f0;\n" +
+    			"	private int f1;\n" +
+    			"	private int f2;\n" +
+    			"	private int f3;\n" +
+				"}\n";
+			this.createFile("P/src/b/B1.java", b1SourceString);
+
+			this.createFolder("/P/src/p");
+			String team1SourceString =	
+				"package p;\n" +
+				"import base b.B1;\n" +
+    			"@SuppressWarnings(\"decapsulation\")\n" +
+				"public team class MyTeam1 {\n" +
+				"	protected class R playedBy B1 {\n" +
+    			"		int getF0() -> get int f0;\n" + // package vis
+    			"		int getF1() -> get int f1;\n" + // ERR: private from private base field
+    			"		private int getF2() -> get int f2;\n" + // ERR: private
+    			"		protected int getF3() -> get int f3;\n" + // protected
+    			"\n" +
+    			"		int m1() { return 1; }\n" +
+    			"		private int m2() { return 2; }\n" +
+    			"		protected int m3() { return 3; }\n" +
+				"	}\n" +
+				"}\n";
+			this.createFile("P/src/p/MyTeam1.java", team1SourceString);
+			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
+			p.close();
+			p.open(null);
+
+			this.createFolder("/P/src/p2");
+			String team2SourceString =	
+					"package p;\n" +
+					"import p.MyTeam1;\n" +
+					"public team class MyTeam2 extends MyTeam1 {\n" +
+	    			"	@Override\n" +
+	    			"	protected class R {\n" + // no probs in implicit inheritance
+	    			"		int test1() {\n" +
+	    			"			return getF0() +\n" +
+	    			"					getF1() +\n" +
+	    			"					getF2() +\n" +
+	    			"					getF3();\n" +
+	    			"		}\n" +
+	    			"		int test2() {\n" +
+	    			"			return m1() +\n" +
+	    			"					m2() +\n" +
+	    			"					m3();\n" +
+	    			"		}\n" +
+	    			"	}\n" +
+	    			"	protected class R2 extends R {\n" +
+	    			"		int test3() {\n" +
+	    			"			return getF1() +\n" +
+	    			"					getF2() +\n" +
+	    			"					getF3();\n" +
+	    			"		}\n" +
+	    			"		int test4() {\n" +
+	    			"			return m1() +\n" +
+	    			"					m2() +\n" +
+	    			"					m3();\n" +
+	    			"		}\n" +
+	    			"	}\n" +
+					"}\n";
+			String teamFilename = "/P/src/p/MyTeam2.java";
+			this.createFile(teamFilename, team2SourceString);
+			
+			this.problemRequestor.initialize(team2SourceString.toCharArray());
+			getCompilationUnit(teamFilename).getWorkingCopy(this.wcOwner, null);
+
+			assertProblems("Expecting problems",
+		    		"----------\n" + 
+    				"1. ERROR in /P/src/p/MyTeam2.java (at line 20)\n" + 
+    				"	return getF1() +\n" + 
+    				"	       ^^^^^\n" + 
+    				"The method getF1() from the role type MyTeam2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+    				"----------\n" + 
+    				"2. ERROR in /P/src/p/MyTeam2.java (at line 21)\n" + 
+    				"	getF2() +\n" + 
+    				"	^^^^^\n" + 
+    				"The method getF2() from the role type MyTeam2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+    				"----------\n" + 
+    				"3. ERROR in /P/src/p/MyTeam2.java (at line 26)\n" + 
+    				"	m2() +\n" + 
+    				"	^^\n" + 
+    				"The method m2() from the role type MyTeam2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+    				"----------\n",
+					this.problemRequestor);
     	} finally {
     		deleteProject("P");
     	}

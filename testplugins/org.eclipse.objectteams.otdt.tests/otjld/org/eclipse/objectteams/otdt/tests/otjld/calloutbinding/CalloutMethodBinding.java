@@ -1,13 +1,12 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2011 IT Service Omikron GmbH and others.
+ * Copyright 2004, 2016 IT Service Omikron GmbH and others.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id$
  * 
  * Please visit http://www.eclipse.org/objectteams for updates and contact.
  * 
@@ -3522,5 +3521,82 @@ public class CalloutMethodBinding extends AbstractOTJLDTest {
 			    "    \n"
             },
             "OK");
+    }
+
+    public void testCalloutVisibility() {
+    	runNegativeTest(
+    		new String[] {
+    			"b/B.java",
+    			"package b;\n" +
+    			"@SuppressWarnings(\"unused\")\n" +
+    			"public class B {\n" +
+    			"	int f0;\n" +
+    			"	private int f1;\n" +
+    			"	private int f2;\n" +
+    			"	private int f3;\n" +
+    			"}\n",
+    			"p1/Team1.java",
+    			"package p1;\n" +
+    			"import base b.B;\n" +
+    			"@SuppressWarnings(\"decapsulation\")\n" +
+    			"public team class Team1 {\n" +
+    			"	protected class R playedBy B {\n" +
+    			"		int getF0() -> get int f0;\n" + // package vis
+    			"		int getF1() -> get int f1;\n" + // ERR: private from private base field
+    			"		private int getF2() -> get int f2;\n" + // ERR: private
+    			"		protected int getF3() -> get int f3;\n" + // protected
+    			"\n" +
+    			"		int m1() { return 1; }\n" +
+    			"		private int m2() { return 2; }\n" +
+    			"		protected int m3() { return 3; }\n" +
+    			"	}\n" +
+    			"}\n",
+    			"p2/Team2.java",
+    			"package p2;\n" +
+    			"public team class Team2 extends p1.Team1 {\n" +
+    			"	@Override\n" +
+    			"	protected class R {\n" + // no probs in implicit inheritance
+    			"		int test1() {\n" +
+    			"			return getF0() +\n" +
+    			"					getF1() +\n" +
+    			"					getF2() +\n" +
+    			"					getF3();\n" +
+    			"		}\n" +
+    			"		int test2() {\n" +
+    			"			return m1() +\n" +
+    			"					m2() +\n" +
+    			"					m3();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"	protected class R2 extends R {\n" +
+    			"		int test3() {\n" +
+    			"			return getF1() +\n" +
+    			"					getF2() +\n" +
+    			"					getF3();\n" +
+    			"		}\n" +
+    			"		int test4() {\n" +
+    			"			return m1() +\n" +
+    			"					m2() +\n" +
+    			"					m3();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in p2\\Team2.java (at line 19)\n" + 
+			"	return getF1() +\n" + 
+			"	       ^^^^^\n" + 
+			"The method getF1() from the role type Team2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+			"----------\n" + 
+			"2. ERROR in p2\\Team2.java (at line 20)\n" + 
+			"	getF2() +\n" + 
+			"	^^^^^\n" + 
+			"The method getF2() from the role type Team2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+			"----------\n" + 
+			"3. ERROR in p2\\Team2.java (at line 25)\n" + 
+			"	m2() +\n" + 
+			"	^^\n" + 
+			"The method m2() from the role type Team2.R is not visible (OTJLD 1.2.1(e)).\n" + 
+			"----------\n");
     }
 }

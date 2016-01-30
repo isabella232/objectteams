@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  * 
- * Copyright 2004, 2012 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2004, 2016 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany, and others.
@@ -41,6 +41,7 @@ import org.eclipse.objectteams.otdt.internal.core.util.MethodData;
 public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICalloutToFieldMapping
 {
 	private boolean   isOverride;
+	private int 	  declaredModifiers;
     private IField    baseField;
     private IFieldAccessSpec baseFieldHandle;
 
@@ -55,9 +56,10 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
             IFieldAccessSpec baseFieldHandle,
             boolean hasSignature,
             boolean isOverride,
+            int declaredModifiers,
             boolean addAsChild)
 	{
-		this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_TO_FIELD_MAPPING, role, correspondingJavaElem, roleMethodHandle, baseFieldHandle, hasSignature, isOverride, addAsChild);
+		this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_TO_FIELD_MAPPING, role, correspondingJavaElem, roleMethodHandle, baseFieldHandle, hasSignature, isOverride, declaredModifiers, addAsChild);
 	}
 
 	protected CalloutToFieldMapping(
@@ -71,9 +73,10 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
 			MethodData roleMethodHandle,
 			IFieldAccessSpec baseFieldHandle,
 			boolean hasSignature,
-			boolean isOverride)
+			boolean isOverride,
+            int declaredModifiers)
 	{
-		this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_TO_FIELD_MAPPING, parentRole, correspondingJavaElem, roleMethodHandle, baseFieldHandle, hasSignature, isOverride, true);
+		this(declarationSourceStart, sourceStart, sourceEnd, declarationSourceEnd, CALLOUT_TO_FIELD_MAPPING, parentRole, correspondingJavaElem, roleMethodHandle, baseFieldHandle, hasSignature, isOverride, declaredModifiers, true);
 	}
 	
 	protected CalloutToFieldMapping(
@@ -88,6 +91,7 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
             IFieldAccessSpec baseFieldHandle,
             boolean hasSignature,
             boolean isOverride,
+            int declaredModifiers,
             boolean addAsChild)
 	{
 		super(declarationSourceStart,
@@ -103,12 +107,18 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
         
 		this.isOverride      = isOverride;
         this.baseFieldHandle = baseFieldHandle;
+        this.declaredModifiers = declaredModifiers;
 	}
     
     public boolean isOverride() {
     	return this.isOverride;
     }
     
+    @Override
+    public int getFlags() throws JavaModelException {
+    	return this.declaredModifiers;
+    }
+
     @SuppressWarnings("nls")
 	public String getElementName()
     {
@@ -259,6 +269,7 @@ public class CalloutToFieldMapping extends AbstractCalloutMapping implements ICa
 			        this.baseFieldHandle, 
 			        hasSignature(), 		
 			        isOverride(),
+			        this.declaredModifiers,
 			        new String(uniqueKey));
 
 		return resolvedHandle;

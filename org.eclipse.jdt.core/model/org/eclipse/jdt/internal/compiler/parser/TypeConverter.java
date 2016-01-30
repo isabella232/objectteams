@@ -17,6 +17,7 @@ package org.eclipse.jdt.internal.compiler.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
@@ -795,6 +796,7 @@ public abstract class TypeConverter {
 		result.sourceStart            = callout.getSourceStart();
         result.sourceEnd              = callout.getSourceEnd();
         result.declarationSourceEnd   = callout.getDeclarationSourceEnd();
+        result.declaredModifiers 	  = callout.getFlags() & (Flags.AccPublic | Flags.AccProtected | Flags.AccPrivate);
         result.hasSignature           = hasSignature;
     	result.setCalloutKind(callout.isOverride());
         result.compilationResult = compilationResult;
