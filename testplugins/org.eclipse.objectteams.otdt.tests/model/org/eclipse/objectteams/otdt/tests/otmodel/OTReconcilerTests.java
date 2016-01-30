@@ -1880,4 +1880,61 @@ public class OTReconcilerTests extends ReconcilerTests {
     		deleteProject("P");
     	}
     }
+
+    public void testUnresolvedSuperTeam() throws CoreException, InterruptedException {
+    	try {
+			// Resources creation
+			IJavaProject p = createOTJavaProject("P", new String[] {"src"}, new String[] {"JCL17_LIB"}, "1.7", "bin");
+			IProject project = p.getProject();
+			IProjectDescription prjDesc = project.getDescription();
+			prjDesc.setBuildSpec(OTDTPlugin.createProjectBuildCommands(prjDesc));
+			project.setDescription(prjDesc, null);
+			p.setOption(JavaCore.COMPILER_PB_UNUSED_LOCAL, JavaCore.IGNORE);
+
+			OTREContainer.initializeOTJProject(project);
+
+			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
+
+			this.createFolder("/P/src/p2");
+			String team2SourceString =	
+					"package p2;\n" +
+					"public team class MyTeam2 extends MyTeam1 {\n" +
+					"	protected class R2 extends R1 {\n" +
+					"		boolean test() {\n" +
+					"			return getFlag();\n" +
+					"		}\n" +
+					"	}\n" +
+					"}\n";
+			this.createFile("/P/src/p2/MyTeam2.java", team2SourceString);
+
+			this.problemRequestor.initialize(team2SourceString.toCharArray());
+			getCompilationUnit("/P/src/p2/MyTeam2.java").getWorkingCopy(this.wcOwner, null);
+			assertProblems("Expecting problems", 
+					"----------\n" + 
+					"1. ERROR in /P/src/p2/MyTeam2.java (at line 2)\n" + 
+					"	public team class MyTeam2 extends MyTeam1 {\n" + 
+					"	                                  ^^^^^^^\n" + 
+					"MyTeam1 cannot be resolved to a type\n" + 
+					"----------\n" + 
+					"2. ERROR in /P/src/p2/MyTeam2.java (at line 3)\n" + 
+					"	protected class R2 extends R1 {\n" + 
+					"	                ^^\n" + 
+					"The hierarchy of the type R2 is inconsistent\n" + 
+					"----------\n" + 
+					"3. ERROR in /P/src/p2/MyTeam2.java (at line 3)\n" + 
+					"	protected class R2 extends R1 {\n" + 
+					"	                           ^^\n" + 
+					"R1 cannot be resolved to a type\n" + 
+					"----------\n" + 
+					"4. ERROR in /P/src/p2/MyTeam2.java (at line 5)\n" + 
+					"	return getFlag();\n" + 
+					"	       ^^^^^^^\n" + 
+					"The method getFlag() is undefined for the type MyTeam2.R2\n" + 
+					"----------\n",
+					this.problemRequestor);
+
+    	} finally {
+    		deleteProject("P");
+    	}
+    }
 }

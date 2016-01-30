@@ -456,8 +456,10 @@ public class TeamMethodGenerator {
     }
 	void addPrivateField(TypeDeclaration teamDecl, AstGenerator gen, TypeReference type, char[] name, Expression init) {
     	FieldDeclaration field = gen.field(AccPrivate, type, name, init);
-    	AstEdit.addField(teamDecl, field, true, false, false);
-    	field.binding.modifiers |= ExtraCompilerModifiers.AccLocallyUsed;     	
+    	boolean teamHasProblems = teamDecl.ignoreFurtherInvestigation;
+    	AstEdit.addField(teamDecl, field, !teamHasProblems, false, false);
+    	if (!teamHasProblems)
+    		field.binding.modifiers |= ExtraCompilerModifiers.AccLocallyUsed;     	
     }
 	QualifiedTypeReference weakHashMapTypeReference(AstGenerator gen) {
 		return gen.parameterizedQualifiedTypeReference(
