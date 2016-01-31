@@ -354,6 +354,8 @@ public class CallinMarkerTests extends FileBasedUITest
     		List<IStatus> status = new ArrayList<IStatus>();
     		public void logging(IStatus status, String plugin) {
     			this.status.add(status);    		
+    			for (IStatus sub : status.getChildren())
+    				this.status.add(sub);
     		}
     	}
     	
@@ -390,6 +392,8 @@ public class CallinMarkerTests extends FileBasedUITest
     		List<IStatus> status = new ArrayList<IStatus>();
     		public void logging(IStatus status, String plugin) {
     			this.status.add(status);    		
+    			for (IStatus sub : status.getChildren())
+    				this.status.add(sub);
     		}
     	}
     	
@@ -429,7 +433,9 @@ public class CallinMarkerTests extends FileBasedUITest
     		List<IStatus> status = new ArrayList<IStatus>();
     		public void logging(IStatus status, String plugin) {
     			if (status.getSeverity() == IStatus.ERROR)
-    				this.status.add(status);    		
+    				this.status.add(status);
+    			for (IStatus sub : status.getChildren())
+    				this.status.add(sub);
     		}
     	}
     	
