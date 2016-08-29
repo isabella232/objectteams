@@ -118,6 +118,7 @@ import org.eclipse.jdt.internal.compiler.ast.ConstructorDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.EqualExpression;
 import org.eclipse.jdt.internal.compiler.ast.ExplicitConstructorCall;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
+import org.eclipse.jdt.internal.compiler.ast.ExpressionContext;
 import org.eclipse.jdt.internal.compiler.ast.FakedTrackingVariable;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.FieldReference;
@@ -140,6 +141,7 @@ import org.eclipse.jdt.internal.compiler.ast.ParameterizedQualifiedTypeReference
 import org.eclipse.jdt.internal.compiler.ast.ParameterizedSingleTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.QualifiedAllocationExpression;
 import org.eclipse.jdt.internal.compiler.ast.QualifiedNameReference;
+import org.eclipse.jdt.internal.compiler.ast.QualifiedSuperReference;
 import org.eclipse.jdt.internal.compiler.ast.QualifiedTypeReference;
 import org.eclipse.jdt.internal.compiler.ast.Receiver;
 import org.eclipse.jdt.internal.compiler.ast.Reference;
@@ -3294,6 +3296,14 @@ public void defaultMethodsNotBelow18(MethodDeclaration md) {
 			md.sourceStart,
 			md.sourceEnd);
 }
+public void interfaceSuperInvocationNotBelow18(QualifiedSuperReference qualifiedSuperReference) {
+	this.handle(
+			IProblem.InterfaceSuperInvocationNotBelow18,
+			NoArgument,
+			NoArgument,
+			qualifiedSuperReference.sourceStart,
+			qualifiedSuperReference.sourceEnd);
+}
 public void staticInterfaceMethodsNotBelow18(MethodDeclaration md) {
 	this.handle(
 			IProblem.StaticInterfaceMethodNotBelow18,
@@ -4621,6 +4631,20 @@ public void invalidMethod(MessageSend messageSend, MethodBinding method, Scope s
 					(int) (messageSend.nameSourcePosition >>> 32),
 					(int) messageSend.nameSourcePosition);
 			return;
+		case ProblemReasons.InterfaceMethodInvocationNotBelow18:
+			this.handle(
+					IProblem.InterfaceStaticMethodInvocationNotBelow18,
+					new String[] {
+							new String(method.declaringClass.readableName()),
+					        new String(method.selector),
+					},
+					new String[] {
+							new String(method.declaringClass.shortReadableName()),
+					        new String(method.selector),
+					},
+					(int) (messageSend.nameSourcePosition >>> 32),
+					(int) messageSend.nameSourcePosition);
+			return;
 		case ProblemReasons.ReceiverTypeNotVisible :
 			this.handle(
 				IProblem.NotVisibleType,	// cannot occur in javadoc comments
@@ -4768,8 +4792,18 @@ public void invalidMethod(MessageSend messageSend, MethodBinding method, Scope s
 			// FIXME(stephan): construct suitable message (https://bugs.eclipse.org/404675)
 			problemMethod = (ProblemMethodBinding) method;
 			shownMethod = problemMethod.closestMatch;
-			if (problemMethod.returnType == shownMethod.returnType) //$IDENTITY-COMPARISON$
+			if (problemMethod.returnType == shownMethod.returnType) { //$IDENTITY-COMPARISON$
+				if (messageSend.expressionContext == ExpressionContext.VANILLA_CONTEXT) {
+					TypeVariableBinding[] typeVariables = method.shallowOriginal().typeVariables;
+					String typeArguments = typesAsString(typeVariables, false);
+					this.handle(IProblem.CannotInferInvocationType, 
+							new String[] { typeArguments, String.valueOf(shownMethod.original().readableName()) },
+							new String[] { typeArguments, String.valueOf(shownMethod.original().shortReadableName()) },
+							messageSend.sourceStart,
+							messageSend.sourceEnd);
+				}
 				return; // funnily this can happen in a deeply nested call, because the inner lies by stealing its closest match and the outer does not know so. See GRT1_8.testBug430296
+			}
 			TypeBinding shownMethodReturnType = shownMethod.returnType.capture(scope, messageSend.sourceStart, messageSend.sourceEnd);
 			this.handle(
 				IProblem.TypeMismatch,
@@ -14727,6 +14761,10 @@ public void incompatibleReturnType(ReferenceExpression expression, MethodBinding
 }
 
 public void illegalSuperAccess(TypeBinding superType, TypeBinding directSuperType, ASTNode location) {
+	if (directSuperType.problemId() == ProblemReasons.InterfaceMethodInvocationNotBelow18) {
+		interfaceSuperInvocationNotBelow18((QualifiedSuperReference) location);
+		return;
+	}
 	if (directSuperType.problemId() != ProblemReasons.AttemptToBypassDirectSuper)
 		needImplementation(location);
 	handle(IProblem.SuperAccessCannotBypassDirectSuper, 

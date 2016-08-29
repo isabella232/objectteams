@@ -2714,6 +2714,8 @@ public void generateSyntheticBodyForDeserializeLambda(SyntheticMethodBinding met
 				methodKind = ClassFileConstants.MethodHandleRefKindInvokeStatic;
 			} else if (mb.isPrivate()) {
 				methodKind = ClassFileConstants.MethodHandleRefKindInvokeSpecial;
+			} else if (mb.isConstructor()) {
+				methodKind = ClassFileConstants.MethodHandleRefKindNewInvokeSpecial;
 			} else {
 				methodKind = ClassFileConstants.MethodHandleRefKindInvokeVirtual;
 			}

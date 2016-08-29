@@ -634,7 +634,7 @@ public abstract class Scope {
 
 				case Binding.TYPE:
 					if (!originalType.isMemberType()) break;
-					ReferenceBinding originalReferenceType = (ReferenceBinding) originalType;
+					ReferenceBinding originalReferenceType = (ReferenceBinding) originalType.unannotated();
 					originalEnclosing = originalType.enclosingType();
 					substitutedEnclosing = originalEnclosing;
 					if (originalEnclosing != null) {
@@ -651,7 +651,7 @@ public abstract class Scope {
 					}
 					break;
 				case Binding.GENERIC_TYPE:
-					originalReferenceType = (ReferenceBinding) originalType;
+					originalReferenceType = (ReferenceBinding) originalType.unannotated();
 					originalEnclosing = originalType.enclosingType();
 					substitutedEnclosing = originalEnclosing;
 					if (originalEnclosing != null) {
@@ -1951,8 +1951,14 @@ public abstract class Scope {
 				findDefaultAbstractMethod(receiverType, selector, argumentTypes, invocationSite, classHierarchyStart, found, null);
 				if (interfaceMethod != null) return interfaceMethod;
 				MethodBinding candidate = candidates[0];
-				return new ProblemMethodBinding(candidates[0], candidates[0].selector, candidates[0].parameters, 
-						candidate.isStatic() && candidate.declaringClass.isInterface() ? ProblemReasons.NonStaticOrAlienTypeReceiver : ProblemReasons.NotVisible);
+				int reason = ProblemReasons.NotVisible;
+				if (candidate.isStatic() && candidate.declaringClass.isInterface()) {
+					if (soureLevel18)
+						reason = ProblemReasons.NonStaticOrAlienTypeReceiver;
+					else
+						reason = ProblemReasons.InterfaceMethodInvocationNotBelow18;
+				}
+				return new ProblemMethodBinding(candidate, candidate.selector, candidate.parameters, reason);
 			case 1 :
 				if (searchForDefaultAbstractMethod)
 					return findDefaultAbstractMethod(receiverType, selector, argumentTypes, invocationSite, classHierarchyStart, found, new MethodBinding [] { candidates[0] });

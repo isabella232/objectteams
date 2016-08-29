@@ -422,6 +422,7 @@ public void _test011_problem_categories() {
 		expectedProblemAttributes.put("CannotImplementIncompatibleNullness", new ProblemAttributes(CategorizedProblem.CAT_POTENTIAL_PROGRAMMING_PROBLEM));
 		expectedProblemAttributes.put("CannotImportPackage", new ProblemAttributes(CategorizedProblem.CAT_IMPORT));
 		expectedProblemAttributes.put("CannotInferElidedTypes", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
+		expectedProblemAttributes.put("CannotInferInvocationType", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
 		expectedProblemAttributes.put("CannotInvokeSuperConstructorInEnum", new ProblemAttributes(CategorizedProblem.CAT_MEMBER));
 		expectedProblemAttributes.put("CannotOverrideAStaticMethodWithAnInstanceMethod", new ProblemAttributes(CategorizedProblem.CAT_MEMBER));
 		expectedProblemAttributes.put("CannotReadSource", new ProblemAttributes(CategorizedProblem.CAT_INTERNAL));
@@ -648,6 +649,8 @@ public void _test011_problem_categories() {
 		expectedProblemAttributes.put("InterfaceNotFound", DEPRECATED);
 		expectedProblemAttributes.put("InterfaceNotFunctionalInterface", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
 		expectedProblemAttributes.put("InterfaceNotVisible", DEPRECATED);
+		expectedProblemAttributes.put("InterfaceStaticMethodInvocationNotBelow18", new ProblemAttributes(CategorizedProblem.CAT_SYNTAX));
+		expectedProblemAttributes.put("InterfaceSuperInvocationNotBelow18", new ProblemAttributes(CategorizedProblem.CAT_SYNTAX));
 		expectedProblemAttributes.put("InternalTypeNameProvided", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
 		expectedProblemAttributes.put("IntersectionCastNotBelow18", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
 		expectedProblemAttributes.put("InvalidAnnotationMemberType", new ProblemAttributes(CategorizedProblem.CAT_TYPE));
@@ -1341,6 +1344,7 @@ public void test012_compiler_problems_tuning() {
 		expectedProblemAttributes.put("CannotImportPackage", SKIP);
 		expectedProblemAttributes.put("CannotImplementIncompatibleNullness", new ProblemAttributes(JavaCore.COMPILER_PB_NULL_SPECIFICATION_VIOLATION));
 		expectedProblemAttributes.put("CannotInferElidedTypes", SKIP);
+		expectedProblemAttributes.put("CannotInferInvocationType", SKIP);
 		expectedProblemAttributes.put("CannotInvokeSuperConstructorInEnum", SKIP);
 		expectedProblemAttributes.put("CannotOverrideAStaticMethodWithAnInstanceMethod", SKIP);
 		expectedProblemAttributes.put("CannotReadSource", SKIP);
@@ -1565,6 +1569,8 @@ public void test012_compiler_problems_tuning() {
 		expectedProblemAttributes.put("InterfaceNotFound", SKIP);
 		expectedProblemAttributes.put("InterfaceNotFunctionalInterface", SKIP);
 		expectedProblemAttributes.put("InterfaceNotVisible", SKIP);
+		expectedProblemAttributes.put("InterfaceStaticMethodInvocationNotBelow18", SKIP);
+		expectedProblemAttributes.put("InterfaceSuperInvocationNotBelow18", SKIP);
 		expectedProblemAttributes.put("InternalTypeNameProvided", SKIP);
 		expectedProblemAttributes.put("IntersectionCastNotBelow18", SKIP);
 		expectedProblemAttributes.put("InvalidAnnotationMemberType", SKIP);
