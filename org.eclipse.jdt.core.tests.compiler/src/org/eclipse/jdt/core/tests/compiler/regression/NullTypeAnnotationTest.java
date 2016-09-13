@@ -12374,6 +12374,14 @@ public void testBug497698() {
 			"",
 		}, 
 		getCompilerOptions(),
+//{ObjectTeams: JDT invokes resolveTypesFor() twice, thus masking the returnTypeProblem
+		"----------\n" + 
+		"1. ERROR in test\\And.java (at line 8)\n" + 
+		"	Or.create();\n" + 
+		"	   ^^^^^^\n" + 
+		"The method create() is undefined for the type Or\n" + 
+		"----------\n" + 
+// SH}
 		"----------\n" + 
 		"1. ERROR in test\\Or.java (at line 7)\n" + 
 		"	public static <V> Or<V> create() {\n" + 
@@ -12416,6 +12424,13 @@ public void testBug497698raw() {
 		"	new Or().create();\n" + 
 		"	    ^^\n" + 
 		"Or is a raw type. References to generic type Or<D,V> should be parameterized\n" + 
+//{ObjectTeams: JDT invokes resolveTypesFor() twice, thus masking the returnTypeProblem
+		"----------\n" + 
+		"2. ERROR in test\\And.java (at line 8)\n" + 
+		"	new Or().create();\n" + 
+		"	         ^^^^^^\n" + 
+		"The method create() is undefined for the type Or\n" + 
+// SH}
 		"----------\n" + 
 		"----------\n" + 
 		"1. ERROR in test\\Or.java (at line 7)\n" + 
@@ -12461,6 +12476,13 @@ public void testBug497698nestedinraw() {
 		"	public static void createAnd(X.Or x) {\n" + 
 		"	                             ^^^^\n" + 
 		"X.Or is a raw type. References to generic type X<Z>.Or<D,V> should be parameterized\n" + 
+//{ObjectTeams: JDT invokes resolveTypesFor() twice, thus masking the returnTypeProblem
+		"----------\n" + 
+		"2. ERROR in test\\And.java (at line 8)\n" + 
+		"	x.create();\n" + 
+		"	  ^^^^^^\n" + 
+		"The method create() is undefined for the type X.Or\n" + 
+// SH}
 		"----------\n" + 
 		"----------\n" + 
 		"1. ERROR in test\\X.java (at line 8)\n" + 
