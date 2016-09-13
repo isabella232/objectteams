@@ -268,7 +268,7 @@ public void test008() throws JavaModelException {
 			"[POTENTIAL_METHOD_DECLARATION]{, LX;, ()V, , null, " + (R_DEFAULT + 9) + "}\n" +
 			"abstract[KEYWORD]{abstract, null, null, abstract, null, " + (R_DEFAULT + 19) + "}\n" +
 //{ObjectTeams:
-			"callin[KEYWORD]{callin, null, null, callin, null, 24}\n" +
+			"callin[KEYWORD]{callin, null, null, callin, null, " + (R_DEFAULT + 19) +"}\n" +
 // SH}
 			"class[KEYWORD]{class, null, null, class, null, " + (R_DEFAULT + 19) + "}\n" +
 			"enum[KEYWORD]{enum, null, null, enum, null, " + (R_DEFAULT + 19) + "}\n" +
@@ -282,7 +282,7 @@ public void test008() throws JavaModelException {
 			"strictfp[KEYWORD]{strictfp, null, null, strictfp, null, " + (R_DEFAULT + 19) + "}\n" +
 			"synchronized[KEYWORD]{synchronized, null, null, synchronized, null, " + (R_DEFAULT + 19) + "}\n" +
 //{ObjectTeams:
-			"team[KEYWORD]{team, null, null, team, null, 24}\n" +
+			"team[KEYWORD]{team, null, null, team, null, " + (R_DEFAULT + 19) +"}\n" +
 // SH}
 			"transient[KEYWORD]{transient, null, null, transient, null, " + (R_DEFAULT + 19) + "}\n" +
 			"volatile[KEYWORD]{volatile, null, null, volatile, null, " + (R_DEFAULT + 19) + "}\n" +
@@ -322,7 +322,7 @@ public void test009() throws JavaModelException {
 			"[POTENTIAL_METHOD_DECLARATION]{, LX;, ()V, , null, " + (R_DEFAULT + 9) + "}\n" +
 			"abstract[KEYWORD]{abstract, null, null, abstract, null, " + (R_DEFAULT + 19) + "}\n" +
 //{ObjectTeams:
-			"callin[KEYWORD]{callin, null, null, callin, null, 24}\n" +
+			"callin[KEYWORD]{callin, null, null, callin, null, " + (R_DEFAULT + 19) +"}\n" +
 // SH}
 			"class[KEYWORD]{class, null, null, class, null, " + (R_DEFAULT + 19) + "}\n" +
 			"enum[KEYWORD]{enum, null, null, enum, null, " + (R_DEFAULT + 19) + "}\n" +
@@ -336,7 +336,7 @@ public void test009() throws JavaModelException {
 			"strictfp[KEYWORD]{strictfp, null, null, strictfp, null, " + (R_DEFAULT + 19) + "}\n" +
 			"synchronized[KEYWORD]{synchronized, null, null, synchronized, null, " + (R_DEFAULT + 19) + "}\n" +
 //{ObjectTeams:
-			"team[KEYWORD]{team, null, null, team, null, 24}\n" +
+			"team[KEYWORD]{team, null, null, team, null, " + (R_DEFAULT + 19) +"}\n" +
 // SH}
 			"transient[KEYWORD]{transient, null, null, transient, null, " + (R_DEFAULT + 19) + "}\n" +
 			"volatile[KEYWORD]{volatile, null, null, volatile, null, " + (R_DEFAULT + 19) + "}\n" +

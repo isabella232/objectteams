@@ -767,10 +767,10 @@ public void testCompletionCalloutToFieldDeclaration() throws JavaModelException 
     this.wc.codeComplete(cursorLocation, requestor, this.wcOwner);
 
 	assertResults(
-			"getS[POTENTIAL_METHOD_DECLARATION]{getS, LCompletionTeamCalloutToField$CompletionRole;, ()V, getS, [129, 133], "+
-			+(R_DEFAULT+R_RESOLVED+R_INTERESTING+R_METHOD_OVERIDE)+"}\n"+
 			"get_str[CALLOUT_GET]{String get_str() -> get String _str;, LBaseTrac38;, ()Ljava.lang.String;, get_str, [129, 133], " +
 			(R_DEFAULT+R_RESOLVED+R_INTERESTING+R_SUBSTRING+R_UNQUALIFIED+R_NON_RESTRICTED)+"}\n"+
+			"getS[POTENTIAL_METHOD_DECLARATION]{getS, LCompletionTeamCalloutToField$CompletionRole;, ()V, getS, [129, 133], "+
+			+(R_DEFAULT+R_RESOLVED+R_INTERESTING+R_METHOD_OVERIDE)+"}\n"+
 			"getStr[CALLOUT_GET]{String getStr() -> get String str;, LBaseTrac38;, ()Ljava.lang.String;, getStr, [129, 133], " +
 			(R_DEFAULT+R_RESOLVED+R_INTERESTING+R_CASE+R_UNQUALIFIED+R_NON_RESTRICTED)+"}",
 			requestor.getResults());	
