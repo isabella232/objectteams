@@ -48,8 +48,10 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.BaseBundle;
 import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.TeamBinding;
+import org.eclipse.objectteams.internal.osgi.weaving.Util.ProfileKind;
 import org.eclipse.objectteams.otequinox.Constants;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * An instance of this class holds the information loaded from extensions
@@ -167,6 +169,17 @@ public class AspectBindingRegistry {
 				log(IStatus.INFO, "registered:\n"+binding);
 			} catch (Throwable t) {
 				log(t, "Invalid aspectBinding extension");
+			}
+			if (packageAdmin != null && aspectBundle != null && !binding.hasScannedTeams) {
+				@SuppressWarnings("deprecation")
+				Bundle[] baseBundles = packageAdmin.getBundles(baseBundleId, null);
+				if (baseBundles == null || baseBundles.length == 0 || (baseBundles[0].getState() < Bundle.RESOLVED)) {
+					log(IStatus.ERROR, "base bundle "+baseBundleId+" is not resolved - weaving may be incomplete.");
+				} else {
+					BundleWiring baseBundleWiring = baseBundles[0].adapt(BundleWiring.class);
+					Collection<String> boundBases = binding.scanTeamClasses(aspectBundle, DelegatingTransformer.newTransformer(OTWeavingHook.USE_DYNAMIC_WEAVER, hook, baseBundleWiring));
+					addBoundBaseClasses(boundBases);
+				}
 			}
 		}
 		// second round to connect sub/super teams to aspect bindings:

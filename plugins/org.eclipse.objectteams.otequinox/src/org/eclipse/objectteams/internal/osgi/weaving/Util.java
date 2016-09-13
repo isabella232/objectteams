@@ -60,7 +60,8 @@ public class Util
 		long now= System.nanoTime();
 		long delta= (now-startTime);// / getActiveCount();
 		long total= (profileTimes[kind.ordinal()]+= delta);
-		msg = msg.substring(msg.lastIndexOf('.')+1);
+		if (kind != ProfileKind.Scan)
+			msg = msg.substring(msg.lastIndexOf('.')+1);
 //		doLog(INFO, "Profile "+kind.name()+": "+m(delta)+"("+m(total)+"/"+m(now-systemStartTime)+") ["+msg+"]");
 		System.out.println("OT/Equinox Profile "+kind.name()+": "+m(delta)+"("+m(total)+"/"+m(now-systemStartTime)+") ["+msg+"]");;
 	}
