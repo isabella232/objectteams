@@ -24,7 +24,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
-import org.objectweb.asm.commons.Method;
 
 /**
  * Add code into all direct implementors of Runnable.run() / Thread.run()
@@ -73,10 +72,10 @@ public class AddThreadNotificationAdapter extends ClassVisitor {
         	final MethodVisitor methodVisitor = cv.visitMethod(access, methodName, desc, null, null);
             return new AdviceAdapter(this.api, methodVisitor, access, methodName, desc) {
             	@Override
-            	public void invokeConstructor(Type type, Method method) {
-            		super.invokeConstructor(type, method);
+            	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itfc) {
+            		super.visitMethodInsn(opcode, owner, name, desc, itfc);
             		// ... that contains a super(..) call (rather than this(..)):
-            		if (type.getInternalName().equals(clazz.getInternalSuperClassName())) {
+            		if (opcode == Opcodes.INVOKESPECIAL && INIT.equals(name) && owner.equals(clazz.getInternalSuperClassName())) {
             			// insert:
             			// this._OT$creationThread = Thread.currentThread();
             			methodVisitor.visitIntInsn(Opcodes.ALOAD, 0);

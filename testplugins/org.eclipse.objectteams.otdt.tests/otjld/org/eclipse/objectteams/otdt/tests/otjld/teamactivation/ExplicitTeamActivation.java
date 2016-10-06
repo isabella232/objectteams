@@ -2692,12 +2692,13 @@ public class ExplicitTeamActivation extends AbstractOTJLDTest {
 			    "		org.objectteams.Team t = new Team5218ita1();\n" +
 			    "		t.setInheritableActivation(true);\n" +
 			    "		t.activate();\n" +
-			    "		new Thread(new Runnable() { \n" +
+			    "		Thread th = new Thread(new Runnable() { \n" +
 			    "	    	public void run() {\n" +
 			    "				new T5218ita1().o();\n" +
 			    "	    	}\n" +
-			    "		}).start();\n" +
-			    "       Thread.sleep(10);\n" +
+			    "		});\n" +
+			    "		th.start();\n" +
+			    "       th.join();\n" +
 			    "    }\n" +
 			    "}\n" +
 			    "  \n",
@@ -2729,12 +2730,13 @@ public class ExplicitTeamActivation extends AbstractOTJLDTest {
 			    "    public static void main(String[] args) throws InterruptedException {\n" +
 			    "		org.objectteams.Team t = new Team5218ita2();\n" +
 			    "		t.activate();\n" +
-			    "		new Thread(new Runnable() { \n" +
+			    "		Thread th = new Thread(new Runnable() { \n" +
 			    "	    	public void run() {\n" +
 			    "				new T5218ita2().o();\n" +
 			    "	    	}\n" +
-			    "		}).start();\n" +
-			    "   	Thread.sleep(10);\n" +
+			    "		});\n" +
+			    "		th.start();\n" +
+			    "   	th.join();\n" +
 			    "    }\n" +
 			    "}\n" +
 			    "  \n",
