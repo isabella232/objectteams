@@ -561,4 +561,78 @@ public class InheritanceHierarchyOfTeams extends AbstractOTJLDTest {
             },
             "cycle");
     }
+
+    public void testBug506740() {
+    	runConformTest(
+    		new String[] {
+    			"b/Base.java",
+    			"package b;\n" +
+    			"public class Base {\n" +
+    			"	private String f1 = \"f1\";\n" +
+    			"	private String f2 = \"f2\";\n" +
+    			"	private String f3 = \"f3\";\n" +
+    			"	private String f4 = \"f4\";\n" +
+    			"	private String f5 = \"f5\";\n" +
+    			"}\n",
+    			"t/Team1.java",
+    			"package t;\n" +
+    			"public team class Team1 {\n" +
+    			"	@SuppressWarnings(\"decapsulation\")\n" +
+    			"	protected class R playedBy b.Base {\n" +
+    			"		protected R() { base(); }\n" +
+    			"		protected String getF1() -> get String f1;\n" +
+    			"		protected String getF2() -> get String f2;\n" +
+    			"	}\n" +
+    			"}\n"
+    		});
+    	runConformTest(
+    		false, // no flush
+    		new String[] {
+    			"t/Team2.java",
+    			"package t;\n" +
+    			"public team class Team2 extends Team1 {\n" +
+    			"	@Override\n" +
+    			"	@SuppressWarnings(\"decapsulation\")\n" +
+    			"	protected class R {\n" +
+    			"		protected String getF3() -> get String f3;\n" +
+    			"		protected String getF4() -> get String f4;\n" +
+    			"	}\n" +
+    			"	void test() {\n" +
+    			"		R r = new R();\n" +
+    			"		System.out.print(r.getF1()+r.getF2()+r.getF3()+r.getF4());\n" +
+    			"	}\n" +
+    			"	public static void main(String... args) {\n" +
+    			"		new Team2().test();\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"",
+    		"f1f2f3f4",
+    		"",
+    		null /* javacOptions */);
+    	runConformTest(
+    		false, // no flush
+    		new String[] {
+    			"t/Team3.java",
+    			"package t;\n" +
+    			"public team class Team3 extends Team2 {\n" +
+    			"	@Override\n" +
+    			"	@SuppressWarnings(\"decapsulation\")\n" +
+    			"	protected class R {\n" +
+    			"		protected String getF5() -> get String f5;\n" +
+    			"	}\n" +
+    			"	void test() {\n" +
+    			"		R r = new R();\n" +
+    			"		System.out.print(r.getF1()+r.getF2()+r.getF3()+r.getF4()+r.getF5());\n" +
+    			"	}\n" +
+    			"	public static void main(String... args) {\n" +
+    			"		new Team3().test();\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"",
+    		"f1f2f3f4f5",
+    		"",
+    		null /* javacOptions */);
+    }
 }

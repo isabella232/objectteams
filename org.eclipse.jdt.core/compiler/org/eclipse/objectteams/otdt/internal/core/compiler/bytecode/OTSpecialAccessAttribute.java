@@ -63,7 +63,7 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 	/**
 	 * For OTREDyn, each attribute of this type maintains a set of locally unique (per team) access IDs.
 	 * These IDs are later made unique per team-hierarchy by adding {@link #accessIdOffset}.
-	 * This for of ids is then stored in the attribute.
+	 * This form of ids is then stored in the attribute.
 	 * Stored ids are consumed and translated by OTREDyn to obtain those global IDs that uniquely identify the
 	 * base feature within a generated _OT$access or _OT$accessStatic method.
 	 * 
@@ -378,12 +378,14 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		int kind = consumeByte();
 		switch(kind) {
 		case DYN_DECAPSULATION_METHOD_ACCESS:
+			this.nextAccessId++;
 			this._readOffset += 2; // extra id
 				//$FALL-THROUGH$
 		case DECAPSULATION_METHOD_ACCESS:
 			this._readOffset += 6;
 			break;
 		case DYN_CALLOUT_FIELD_ACCESS:
+			this.nextAccessId++;
 			this._readOffset += 2; // extra id
 				//$FALL-THROUGH$
 		case CALLOUT_FIELD_ACCESS:
@@ -403,8 +405,11 @@ public class OTSpecialAccessAttribute extends AbstractAttribute {
 		// don't see a need to evaluate all this:
 //		for (TeamFieldDesc field : _teamFields)
 //			field.evaluate(binding, environment);
-		if (((ReferenceBinding)binding).isRole())
-			((ReferenceBinding)binding).roleModel.setSpecialAccess(this);
+		ReferenceBinding referenceBinding = (ReferenceBinding)binding;
+		if (referenceBinding.isRole())
+			referenceBinding.roleModel.setSpecialAccess(this);
+		if (referenceBinding.isTeam())
+			referenceBinding._teamModel.setSpecialAccess(this);
 		if (this._baseclassNames != null)
 			for (int i=0; i<this._baseclassNames.size(); i++) {
 				char[] name = this._baseclassNames.get(i);
