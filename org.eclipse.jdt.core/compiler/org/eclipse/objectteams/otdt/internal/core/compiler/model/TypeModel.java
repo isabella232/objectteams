@@ -75,10 +75,20 @@ public class TypeModel extends ModelElement {
     	{
     		throw new InternalCompilerError("Unexpectedly missing line number information");  //$NON-NLS-1$
     	}
+    	this._state = new StateMemento();
     }
     /* Constructor for regular instances. */
     public TypeModel (ReferenceBinding bind) {
         this._binding = bind;
+    	this._state = new StateMemento();
+    }
+    /** clone constructor: */
+    public TypeModel (TypeModel prototype, ReferenceBinding protoBinding) {
+    	this._binding = protoBinding;
+    	this._state = prototype._state;
+    	this._compilerVersion = prototype._compilerVersion;
+    	this.weavingScheme = prototype.weavingScheme;
+    	this._ast = prototype._ast;
     }
 
     /** Store the byte code attribute which maps constant pool entries (Class_info) to type anchors. */
@@ -95,7 +105,7 @@ public class TypeModel extends ModelElement {
     private HashSet<ReferenceBinding> _referencedTeams = null;
 
     /** translation state of this model element */
-    final public StateMemento _state= new StateMemento();
+    final public StateMemento _state;
 
     /** Record here all types which are defined local to a method (TypeDeclaration). */
     private LinkedList<TypeDeclaration> _localPlainTypes = new LinkedList<TypeDeclaration>();

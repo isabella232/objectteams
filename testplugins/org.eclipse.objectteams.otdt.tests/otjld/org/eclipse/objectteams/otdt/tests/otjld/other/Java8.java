@@ -19,6 +19,7 @@ import java.util.Map;
 
 import junit.framework.Test;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.tests.util.CompilerTestSetup;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.objectteams.otdt.core.ext.WeavingScheme;
@@ -386,5 +387,32 @@ public class Java8 extends AbstractOTJLDTest {
 	    		"}\n"
     		},
     		"0b1b2b3b4");
+    }
+    
+    public void testBug506747() {
+    	Map<String,String> options = getCompilerOptions();
+    	options.put(JavaCore.COMPILER_ANNOTATION_NULL_ANALYSIS, JavaCore.ENABLED); // enable AnnotatableTypeSystem
+    	runNegativeTest(
+    		new String[] {
+    			"p/X.java",
+    			"package p;\n" +
+    			"import java.lang.annotation.*;\n" +
+    			"@Target(ElementType.TYPE_USE)\n" +
+    			"@interface Ann {}\n" +
+    			"public class X {\n" +
+    			"	void m(final @Ann X X) {\n" +
+    			"		X.Inner i;\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in p\\X.java (at line 7)\n" + 
+			"	X.Inner i;\n" + 
+			"	^^^^^^^\n" + 
+			"X.Inner cannot be resolved to a type\n" + 
+			"----------\n",
+			null, // libs
+			true, // flush
+    		options);
     }
 }

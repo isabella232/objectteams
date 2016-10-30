@@ -168,6 +168,9 @@ abstract public class ReferenceBinding extends AbstractOTReferenceBinding {
 	this.compatibleCache = prototype.compatibleCache;
 	this.typeBits = prototype.typeBits;
 	this.singleAbstractMethod = prototype.singleAbstractMethod;
+//{ObjectTeams: most subclasses need model to be set:
+	this.model = new TypeModel(prototype.model, this);
+// SH}
 }
 
 public ReferenceBinding() {
