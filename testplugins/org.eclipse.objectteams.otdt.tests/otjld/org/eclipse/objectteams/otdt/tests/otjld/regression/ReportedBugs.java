@@ -5486,4 +5486,26 @@ public class ReportedBugs extends AbstractOTJLDTest {
     		options,
     		null);
     }
+
+    public void testBug506746() {
+    	runNegativeTest(
+    		new String[] {
+    			"C1.java",
+    			"class f {\n" +
+    			"	static class b {}\n" +
+    			"}\n" +
+    			"public class C1 {\n" + 
+    			"	void m() {\n" + 
+    			"		C1<String> f;\n" + 
+    			"		f.b c = new f.b(); \n" + 
+    			"	}\n" + 
+    			"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in C1.java (at line 6)\n" + 
+			"	C1<String> f;\n" + 
+			"	^^\n" + 
+			"The type C1 is not generic; it cannot be parameterized with arguments <String>\n" + 
+			"----------\n");
+    }
 }

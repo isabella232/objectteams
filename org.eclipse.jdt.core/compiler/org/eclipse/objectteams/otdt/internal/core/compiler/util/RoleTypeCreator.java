@@ -1066,7 +1066,7 @@ public class RoleTypeCreator implements TagBits {
 	    // null any more but only problems.
 
 	    ProblemReferenceBinding foundProblem= null;
-	    if (anchor.isValidBinding() && !anchor.isFinal()) {
+	    if (anchor.hasValidReferenceType() && !anchor.isFinal()) {
 	    	// t.T with t not a Team => plain Java error
 	    	if (!anchor.isTeam() && variableStart == tokens.length-2)
 	    		return new ProblemReferenceBinding(tokens, null, ProblemReasons.NotFound);
