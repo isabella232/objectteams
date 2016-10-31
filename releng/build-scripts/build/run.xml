@@ -90,9 +90,12 @@ directory for tempory files during testing:
 
 		<property name="installmode" value="clean" />
 	
+		<!--
 		<property name="saxon.jar.name" value="saxon8.jar" />
 		<property name="saxon.jar.path" value="${user.home}/.ant/lib/${saxon.jar.name}" />
 		<available file="${saxon.jar.path}" property="_hasSaxon.jar" />
+		-->
+		<property name="_hasSaxon.jar" value="true"/>
 		
 		<!-- ant's os.arch is slightly different than osgi's arch -->
 		<condition property="arch" value="x86_64"> <!-- HACK: hard coding 64-bit architecture -->
