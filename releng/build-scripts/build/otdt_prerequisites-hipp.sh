@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright (c) 2010 Stephan Herrmann and others.
+# Copyright (c) 2010, 2016 Stephan Herrmann and others.
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
 # which accompanies this distribution, and is available at
@@ -43,15 +43,6 @@ ANT_PROFILE="-verbose"
 
 # EXPORT: Nice-level for the Ant process:
 NICE="10"
-
-# EXPORT: virtual or real X server (XVFB, XVNC or X11):
-if test `which Xvfb` && test `which xvfb-run` &> /dev/null; then
-	X11=XVFB
-elif test `which Xvnc` &> /dev/null; then
-	X11=XVNC
-else
-	X11=X11
-fi
 
 # VERSIONS:
 # Eclipse SDK build identifier (used for substitution in otdt.map.in etc.):

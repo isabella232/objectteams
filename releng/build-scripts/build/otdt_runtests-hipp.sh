@@ -24,7 +24,6 @@
 # ECLIPSE_TESTLIB_ZIP   archive file of the eclipse test framework (full path)
 # PUBLISHED_UPDATES 	directory of previously published plugins&features
 # ANT_PROFILE           configure the ant process
-# X11                   XVFB, XVNC or X11
 # NICE                  niceness value for nice -n ${NICE}
 # =============================================================================
 # OUTPUT: Variables passed to the toplevel ant script
@@ -65,9 +64,7 @@ notifyTestRunFailure()
 
 cleanup()
 {
-	if test $X11 = "XVNC"; then
-		vncserver -kill $VNC_DISPLAY
-	fi
+	echo "cleanup(): Currently no cleanup is configured"
 }
 
 _prefix=`dirname $0`
@@ -93,9 +90,6 @@ DO_BUILD="true"
 #LOCAL: should the tests be run?
 DO_RUN="true"
 
-#LOCAL: Display to be used by VNC:
-VNC_DISPLAY=:23
-
 
 while test $# -gt 0; do
 	case "$1" in 
@@ -106,10 +100,6 @@ while test $# -gt 0; do
         ;;
 	-nobuild)
 		DO_BUILD="false"
-		shift
-		;;
-	-x11)
-	    X11=X11
 		shift
 		;;
 	-tmp)
@@ -166,26 +156,8 @@ export ANT_OPTS
 
 CMD="nice -n ${NICE} ant -f ${BUILDFILE} ${ANT_OPTIONS} ${MAIN_TARGET}"
 
-if test "$X11" = "XVFB" && test `which xvfb-run` > /dev/null; then
-        echo "Running xvfb-run $CMD"
-
-        # make sure that xauth can be found
-        export PATH="$PATH:/usr/bin/X11"
-        # try to start with DISPLAY=10 instead of default 99 -- seems to not work everywhere
-        exec xvfb-run -n 10 -e xvfb.log --auto-servernum $CMD < /dev/null > ${OT_SUITE_LOG} 2>&1 || { notifyTestRunFailure; }
-elif test "$X11" = "XVNC"; then
-		echo "starting vncserver $VNC_DISPLAY"
-		vncserver $VNC_DISPLAY
-		DISPLAY=$VNC_DISPLAY
-		export DISPLAY
-		exec $CMD < /dev/null > ${OT_SUITE_LOG} 2>&1  && { cleanup; } || { notifyTestRunFailure; }
-		echo "Cleaning up after successful run..."
-		/bin/rm -rf ${OT_TESTSUITE_DIR}/build-root/eclipse
-else
-        echo "##### You don't have xvfb nor vnc, the GUI tests will appear on your display... ####"
-        echo "Running $CMD"
-        eval "$CMD" < /dev/null
-fi
+echo "Running $CMD"
+eval "$CMD" < /dev/null
 
 trap - INT
 
