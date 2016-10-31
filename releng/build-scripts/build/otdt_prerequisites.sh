@@ -27,6 +27,9 @@ TEST_TMPDIR="/tmp/objectteams"
 # EXPORT: directory for metadata from previous builds:
 METADATA="${BASEDIR}/metadata"
 
+# EXPORT:
+FETCH_CACHE_LOCATION=/shared/tools/objectteams/gitCache
+
 # EXPORT: mail address to receive notification about build result (currently only build failures):
 OT_RECIPIENT="nobody@nowhere.net"
 

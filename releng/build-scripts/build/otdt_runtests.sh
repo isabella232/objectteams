@@ -155,7 +155,8 @@ ANT_OPTIONS="${ANT_PROFILE} \
     -Dpublished.updates=${PUBLISHED_UPDATES} \
     -Ddo.run.tests=${DO_RUN} \
     -Ddo.build.all=${DO_BUILD} \
-    -Dtest.tmpDir=${TEST_TMPDIR}"
+    -Dtest.tmpDir=${TEST_TMPDIR} \
+    -DfetchCacheLocation=${FETCH_CACHE_LOCATION}"
 
 ANT_OPTS="-Xmx1024m"
 export ANT_OPTS

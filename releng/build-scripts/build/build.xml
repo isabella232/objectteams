@@ -25,6 +25,8 @@
 		configs:		what to build
 		baseos, basews, basearch: what platform we're on
 		
+		fetchCacheLocation
+		
 	-->
 	<loadproperties srcfile="${OTScriptDir}/buildVersions.properties" />
 	<loadproperties srcfile="${builder}/build.properties" />
@@ -45,6 +47,7 @@
 
             <!--set the compiler and compiler arguments-->
             <!--the default compiler is set to the one used by eclipse rel. eng. -->
+    		<property name="fetchCacheLocation" value="${fetchCacheLocation}" />
             <loadproperties srcfile="${OTScriptDir}/compiler.${component.short}.properties" />
             <echo message="javacSource=${javacSource}" />
 
