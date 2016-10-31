@@ -27,6 +27,9 @@ TEST_TMPDIR=${JAVA_TMPDIR}
 # EXPORT: directory for metadata from previous builds:
 METADATA="${BASEDIR}/metadata"
 
+# EXPORT:
+FETCH_CACHE_LOCATION=${HOME}/gitCache
+
 # Base dir for finding previous platform build:
 DROPS4=/home/data/httpd/download.eclipse.org/eclipse/downloads/drops4
 

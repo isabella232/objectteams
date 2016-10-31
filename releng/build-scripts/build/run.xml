@@ -29,6 +29,8 @@ should test be run (true|false)?
 		do.run.tests     = ${do.run.tests}
 directory for tempory files during testing:
 		test.tmpDir		 = ${test.tmpDir}
+git working area
+		fetchCacheLocation = ${fetchCacheLocation}
 ------------------------------------------------------------------------------
 		</echo>
 	</target>
