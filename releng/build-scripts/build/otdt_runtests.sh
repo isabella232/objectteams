@@ -136,6 +136,8 @@ then
     rm -rf updateSiteTests
     rm -rf updateSiteCompiler
 	rm -rf metadata
+else
+	rm -f test-root/eclipse/results/*
 fi
 
 # preload metadata for appending:
