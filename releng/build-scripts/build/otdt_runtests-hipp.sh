@@ -153,7 +153,8 @@ ANT_OPTIONS="${ANT_PROFILE} \
     -Ddo.build.all=${DO_BUILD} \
     -Dtest.tmpDir=${TEST_TMPDIR} \
     -DfetchCacheLocation=${FETCH_CACHE_LOCATION} \
-    -Dmap.file.path=${MAP_FILE_PATH}"
+    -Dmap.file.path=${MAP_FILE_PATH}" \
+    -D_hasSaxon.jar=true
 
 ANT_OPTS="-Xmx1024m"
 export ANT_OPTS
