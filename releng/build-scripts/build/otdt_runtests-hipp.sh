@@ -115,6 +115,11 @@ while test $# -gt 0; do
 	
 done
 
+if [ "${MAIN_TARGET}" == "ot-junit-run" ]
+then
+	DO_BUILD="false"
+fi
+
 # start working:
 
 test -d "$TMPDIR" || mkdir -p "$TMPDIR"
@@ -153,7 +158,7 @@ ANT_OPTIONS="${ANT_PROFILE} \
     -Ddo.build.all=${DO_BUILD} \
     -Dtest.tmpDir=${TEST_TMPDIR} \
     -DfetchCacheLocation=${FETCH_CACHE_LOCATION} \
-    -Dmap.file.path=${MAP_FILE_PATH}" \
+    -Dmap.file.path=${MAP_FILE_PATH} \
     -D_hasSaxon.jar=true
 
 ANT_OPTS="-Xmx1024m"
