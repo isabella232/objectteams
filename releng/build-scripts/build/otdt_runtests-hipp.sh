@@ -150,7 +150,7 @@ ANT_OPTIONS="${ANT_PROFILE} \
     -Ddo.run.tests=${DO_RUN} \
     -Ddo.build.all=${DO_BUILD} \
     -Dtest.tmpDir=${TEST_TMPDIR} \
-    -DfetchCacheLocation=${FETCH_CACHE_LOCATION}
+    -DfetchCacheLocation=${FETCH_CACHE_LOCATION} \
     -Dmap.file.path=${MAP_FILE_PATH}"
 
 ANT_OPTS="-Xmx1024m"
