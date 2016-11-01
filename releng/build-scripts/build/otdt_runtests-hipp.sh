@@ -23,6 +23,8 @@
 # ECLIPSE_SDK_TGZ       archive file of the base eclipse SDK build (full path)
 # ECLIPSE_TESTLIB_ZIP   archive file of the eclipse test framework (full path)
 # PUBLISHED_UPDATES 	directory of previously published plugins&features
+# FETCH_CACHE_LOCATION	git working area holding caches for fetch
+# MAP_FILE_PATH			path to the otdt.map file (original location of otdt.map.in)
 # ANT_PROFILE           configure the ant process
 # NICE                  niceness value for nice -n ${NICE}
 # =============================================================================
@@ -38,6 +40,9 @@
 ##		-Dpublished.updates		path to previously published things
 ##      -Ddo.build.all          true|false: should OTDT and tests be built?
 ##      -Ddo.run.tests          true|false: should test be run?
+##    	-DfetchCacheLocation    git working area holding caches for fetch
+##		-Dmap.file.path			path to the otdt.map file (original location of otdt.map.in)
+##		-D_hasSaxon.jar			to prevent copying of saxon8.jar (was needed on build.eclipse.org)
 # =============================================================================
 
 usage()
@@ -90,35 +95,16 @@ DO_BUILD="true"
 #LOCAL: should the tests be run?
 DO_RUN="true"
 
-
-while test $# -gt 0; do
-	case "$1" in 
-    -b)
-        MAIN_TARGET="ot-junit-build"
-        DO_RUN="false"
-        shift
-        ;;
-	-nobuild)
+case ${MAIN_TARGET} in
+	"ot-junit-run")
 		DO_BUILD="false"
-		shift
 		;;
-	-tmp)
-        shift
-        TEST_TMPDIR="$1"
-        shift
-        ;;
-	*)
-		echo "Unknown argument: $1"
-		usage
-		exit 1
-	esac
-	
-done
-
-if [ "${MAIN_TARGET}" == "ot-junit-run" ]
-then
-	DO_BUILD="false"
-fi
+	"ot-compiler-build")
+		;&
+	"ot-junit-build")
+		DO_RUN="false"
+		;;
+esac
 
 # start working:
 
@@ -135,6 +121,7 @@ then
     rm -rf updateSiteTests
     rm -rf updateSiteCompiler
 	rm -rf metadata
+	rm -rf ecj
 else
 	rm -f test-root/eclipse/results/*
 fi
