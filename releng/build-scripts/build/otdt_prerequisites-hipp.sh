@@ -30,6 +30,9 @@ METADATA="${BASEDIR}/metadata"
 # EXPORT:
 FETCH_CACHE_LOCATION=${HOME}/gitCache
 
+# EXPORT:
+MAP_FILE_PATH=${BASEDIR}/releng/map/otdt.map
+
 # Base dir for finding previous platform build:
 DROPS4=/home/data/httpd/download.eclipse.org/eclipse/downloads/drops4
 

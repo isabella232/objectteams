@@ -31,6 +31,9 @@ directory for tempory files during testing:
 		test.tmpDir		 = ${test.tmpDir}
 git working area
 		fetchCacheLocation = ${fetchCacheLocation}
+path to map file (with substitutions):
+		map.file.path	 = ${map.file.path}
+
 ------------------------------------------------------------------------------
 		</echo>
 	</target>

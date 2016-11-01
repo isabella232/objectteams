@@ -30,6 +30,9 @@ METADATA="${BASEDIR}/metadata"
 # EXPORT:
 FETCH_CACHE_LOCATION=/shared/tools/objectteams/gitCache
 
+# EXPORT:
+MAP_FILE_PATH=/shared/tools/objectteams/releng/map/otdt.map
+
 # EXPORT: mail address to receive notification about build result (currently only build failures):
 OT_RECIPIENT="nobody@nowhere.net"
 
