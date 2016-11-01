@@ -159,7 +159,7 @@ ANT_OPTIONS="${ANT_PROFILE} \
     -Dtest.tmpDir=${TEST_TMPDIR} \
     -DfetchCacheLocation=${FETCH_CACHE_LOCATION} \
     -Dmap.file.path=${MAP_FILE_PATH} \
-    -D_hasSaxon.jar=true
+    -D_hasSaxon.jar=true"
 
 ANT_OPTS="-Xmx1024m"
 export ANT_OPTS
