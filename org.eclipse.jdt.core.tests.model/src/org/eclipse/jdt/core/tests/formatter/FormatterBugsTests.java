@@ -12469,4 +12469,75 @@ public void testBug494831() {
 		"}";
 	formatSource(source);
 }
+/**
+ * https://bugs.eclipse.org/497245 - [formatter] Comment between "if" and statement breaks formatting
+ */
+public void testBug497245a() {
+	String source =
+		"public class Test {\r\n" + 
+		"	void method() {\r\n" + 
+		"		if (true)\r\n" + 
+		"			// comment\r\n" + 
+		"			if (false)\r\n" + 
+		"				method();\r\n" + 
+		"	}\r\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/497245 - [formatter] Comment between "if" and statement breaks formatting
+ */
+public void testBug497245b() {
+	this.formatterPrefs.keep_then_statement_on_same_line = true;
+	String source =
+		"public class Test {\r\n" + 
+		"	void method() {\r\n" + 
+		"		if (true)\r\n" + 
+		"			// comment\r\n" + 
+		"			if (false) method();\r\n" + 
+		"	}\r\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/500443 - [formatter] NPE on block comment before 'force-wrap' element
+ */
+public void testBug500443() {
+	this.formatterPrefs.alignment_for_enum_constants = Alignment.M_ONE_PER_LINE_SPLIT + Alignment.M_FORCE;
+	this.formatterPrefs.alignment_for_superclass_in_type_declaration = Alignment.M_ONE_PER_LINE_SPLIT + Alignment.M_FORCE;
+	String source =
+		"public class SomeClass\n" + 
+		"		/* */ extends\n" + 
+		"		Object {\n" + 
+		"	enum MyEnum {\n" + 
+		"		/* 1 */ ONE\n" + 
+		"	}\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/500135 - [formatter] 'Parenthesis positions' ignores single member annotations
+ */
+public void testBug500135() {
+	this.formatterPrefs.parenthesis_positions_in_annotation = DefaultCodeFormatterConstants.SEPARATE_LINES;
+	String source =
+		"@SomeAnnotation(\n" + 
+		"	\"some value\"\n" + 
+		")\n" + 
+		"public class Test {\n" + 
+		"}";
+	formatSource(source);
+}
+/**
+ * https://bugs.eclipse.org/500853 - [Formatter] java code formatter doesn't honour new parentheses settings
+ */
+public void testBug500853() {
+	this.formatterPrefs.parenthesis_positions_in_method_declaration = new String(DefaultCodeFormatterConstants.PRESERVE_POSITIONS);
+	String source =
+		"public class SomeClass {\n" + 
+		"	void foo() {\n" + 
+		"	}\n" + 
+		"}";
+	formatSource(source);
+}
 }

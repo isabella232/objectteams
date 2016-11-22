@@ -638,19 +638,21 @@ public class WrapPreparator extends ASTVisitor {
 
 	@Override
 	public boolean visit(IfStatement node) {
-		if (!(node.getThenStatement() instanceof Block)) {
-			int thenIndex = this.tm.firstIndexIn(node.getThenStatement(), -1);
-			if (this.tm.get(thenIndex).getLineBreaksBefore() == 0) {
-				this.wrapIndexes.add(thenIndex);
+		Statement thenStatement = node.getThenStatement();
+		Statement elseStatement = node.getElseStatement();
+		if (!(thenStatement instanceof Block)) {
+			boolean keepThenOnSameLine = this.options.keep_then_statement_on_same_line
+					|| (this.options.keep_simple_if_on_one_line && elseStatement == null);
+			if (keepThenOnSameLine) {
+				this.wrapIndexes.add(this.tm.firstIndexIn(thenStatement, -1));
 				this.wrapParentIndex = this.tm.firstIndexAfter(node.getExpression(), TokenNameRPAREN);
-				this.wrapGroupEnd = this.tm.lastIndexIn(node.getThenStatement(), -1);
+				this.wrapGroupEnd = this.tm.lastIndexIn(thenStatement, -1);
 				handleWrap(this.options.alignment_for_compact_if, node);
 			}
 		}
-		Statement elseStatement = node.getElseStatement();
 		if (elseStatement != null && !(elseStatement instanceof Block) && !(elseStatement instanceof IfStatement)) {
-			int elseIndex = this.tm.firstIndexIn(elseStatement, -1);
-			if (this.tm.get(elseIndex).getLineBreaksBefore() == 0) {
+			if (this.options.keep_else_statement_on_same_line) {
+				int elseIndex = this.tm.firstIndexIn(elseStatement, -1);
 				this.wrapIndexes.add(elseIndex);
 				this.wrapParentIndex = this.tm.firstIndexAfter(node.getExpression(), TokenNameRPAREN);
 				this.wrapGroupEnd = this.tm.lastIndexIn(elseStatement, -1);
@@ -897,7 +899,7 @@ public class WrapPreparator extends ASTVisitor {
 		if (policy == null)
 			return;
 
-		setTokenWrapPolicy(this.wrapIndexes.get(0), policy, true);
+		setTokenWrapPolicy(0, policy, true);
 
 		boolean wrapPreceedingComments = !(parentNode instanceof InfixExpression)
 				|| !this.options.wrap_before_binary_operator;
@@ -905,7 +907,7 @@ public class WrapPreparator extends ASTVisitor {
 			penalty = this.wrapPenalties.size() > i ? this.wrapPenalties.get(i) : 1;
 			if (penalty != policy.penaltyMultiplier || i == 1)
 				policy = getWrapPolicy(wrappingOption, penalty, false, parentNode);
-			setTokenWrapPolicy(this.wrapIndexes.get(i), policy, wrapPreceedingComments);
+			setTokenWrapPolicy(i, policy, wrapPreceedingComments);
 		}
 
 		boolean forceWrap = (wrappingOption & Alignment.M_FORCE) != 0;
@@ -937,7 +939,8 @@ public class WrapPreparator extends ASTVisitor {
 		}
 	}
 
-	private void setTokenWrapPolicy(int index, WrapPolicy policy, boolean wrapPreceedingComments) {
+	private void setTokenWrapPolicy(int wrapIndexesIndex, WrapPolicy policy, boolean wrapPreceedingComments) {
+		int index = this.wrapIndexes.get(wrapIndexesIndex);
 		if (wrapPreceedingComments) {
 			for (int i = index - 1; i >= 0; i--) {
 				Token previous = this.tm.get(i);
@@ -948,6 +951,7 @@ public class WrapPreparator extends ASTVisitor {
 				if (previous.getLineBreaksBefore() > 0)
 					previous.setWrapPolicy(policy);
 			}
+			this.wrapIndexes.set(wrapIndexesIndex, index);
 		}
 
 		Token token = this.tm.get(index);

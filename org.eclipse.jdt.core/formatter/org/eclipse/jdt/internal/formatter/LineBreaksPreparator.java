@@ -448,10 +448,6 @@ public class LineBreaksPreparator extends ASTVisitor {
 	@Override
 	public boolean visit(NormalAnnotation node) {
 		handleAnnotation(node);
-
-		int lParen = this.tm.firstIndexAfter(node.getTypeName(), TokenNameLPAREN);
-		int rParen = this.tm.lastIndexIn(node, TokenNameRPAREN);
-		handleParenthesesPositions(lParen, rParen, this.options.parenthesis_positions_in_annotation);
 		return true;
 	}
 
@@ -551,6 +547,12 @@ public class LineBreaksPreparator extends ASTVisitor {
 		}
 		if (breakAfter)
 			this.tm.lastTokenIn(node, -1).breakAfter();
+
+		if (!(node instanceof MarkerAnnotation)) {
+			int lParen = this.tm.firstIndexAfter(node.getTypeName(), TokenNameLPAREN);
+			int rParen = this.tm.lastIndexIn(node, TokenNameRPAREN);
+			handleParenthesesPositions(lParen, rParen, this.options.parenthesis_positions_in_annotation);
+		}
 	}
 
 	@Override
@@ -819,7 +821,7 @@ public class LineBreaksPreparator extends ASTVisitor {
 				//$FALL-THROUGH$
 			case DefaultCodeFormatterConstants.SEPARATE_LINES:
 			case DefaultCodeFormatterConstants.PRESERVE_POSITIONS:
-				boolean always = positionsSetting != DefaultCodeFormatterConstants.PRESERVE_POSITIONS;
+				boolean always = !positionsSetting.equals(DefaultCodeFormatterConstants.PRESERVE_POSITIONS);
 				Token afterOpening = this.tm.get(openingParenIndex + 1);
 				if (always || this.tm.countLineBreaksBetween(this.tm.get(openingParenIndex), afterOpening) > 0) {
 					afterOpening.setWrapPolicy(
