@@ -3,7 +3,7 @@
 # ---- versions of test bundles compiled from an existing GIT tag: ----
 #org.eclipse.jdt.core.tests.builder=3.10.4.@SDK_QUALIFIER@
 org.eclipse.jdt.debug.tests=3.10.1.@SDK_QUALIFIER@
-org.eclipse.jdt.ui.tests=3.12.1.@SDK_QUALIFIER@
+org.eclipse.jdt.ui.tests=3.12.2.@SDK_QUALIFIER@
 org.eclipse.jdt.ui.tests.refactoring=3.12.0.@SDK_QUALIFIER@
 org.eclipse.test.performance=3.11.0.@SDK_QUALIFIER@
 # ----
