@@ -1960,7 +1960,7 @@ public class Dependencies implements ITranslationStates {
         		if ((type.bits & ASTNode.IsLocalType) != 0) {
         			MethodScope methodScope = type.scope.methodScope();
         			if (methodScope != null)
-        				transformer.checkPushCallinMethod(methodScope.referenceMethod());
+        				transformer.checkPushCallinMethod(methodScope.referenceMethod(), true);
         		}
         		type.traverse(transformer, type.scope.compilationUnitScope());
         	} else if (clazz.isTeam()) {

@@ -8360,4 +8360,31 @@ public class CallinMethodBinding extends AbstractOTJLDTest {
     		},
     		"exdone");
     }
+
+    public void testBug495624() {
+    	runConformTest(
+    		new String[] {
+    			"test495624/MyTeam.java",
+    			"package test495624;\n" +
+    			"public team class MyTeam {\n" + 
+    			"	protected class R {\n" + 
+    			"		callin void ci(final boolean b1, final boolean b2) {\n" + 
+    			"			base.ci(b1,b2);\n" + 
+    			"			new Runnable() {\n" + 
+    			"				public void run() {\n" + 
+    			"					if (b1) {\n" + 
+    			"						if (b2)\n" + 
+    			"							return; // (1)\n" + 
+    			"						else\n" + 
+    			"							return; // (2)\n" + 
+    			"					}\n" + 
+    			"				}\n" + 
+    			"			}.run();\n" + 
+    			"		}\n" + 
+    			"	}\n" + 
+    			"}\n"
+    		},
+    		"");
+
+    }
 }

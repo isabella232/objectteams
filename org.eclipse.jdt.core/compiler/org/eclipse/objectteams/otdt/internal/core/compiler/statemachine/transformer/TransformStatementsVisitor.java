@@ -77,6 +77,7 @@ public class TransformStatementsVisitor
 
     // -- fields and methods for scope management ---
     private Stack<MethodDeclaration> _methodDeclarationStack = new Stack<MethodDeclaration>();
+    private boolean isLocalTypeInCallin = false;
 
     private WeavingScheme weavingScheme;
     
@@ -90,11 +91,13 @@ public class TransformStatementsVisitor
      * avoid NPEs and spurious error messages.
      *
      * @param methodDeclaration
+     * @param localInCallin if the method is the enclosing (callin?) method of a local type
      */
-	public void checkPushCallinMethod(AbstractMethodDeclaration methodDeclaration) {
+	public void checkPushCallinMethod(AbstractMethodDeclaration methodDeclaration, boolean localInCallin) {
 		if (   isGoodCallin(methodDeclaration))
 		{
     		this._methodDeclarationStack.push((MethodDeclaration)methodDeclaration);
+    		this.isLocalTypeInCallin = localInCallin;
 		}
 	}
 
@@ -209,7 +212,7 @@ public class TransformStatementsVisitor
     /** May need to 'generalize' a return expression. */
     @Override
     public boolean visit(ReturnStatement returnStatement, BlockScope scope) {
-    	if (this._methodDeclarationStack.isEmpty())
+    	if (this._methodDeclarationStack.isEmpty() || this.isLocalTypeInCallin)
     		return true;
     	MethodDeclaration methodDecl = this._methodDeclarationStack.peek();
     	if (!isGoodCallin(methodDecl))
@@ -239,7 +242,7 @@ public class TransformStatementsVisitor
     @Override
     public boolean visit(MethodDeclaration methodDeclaration, ClassScope scope) {
     	methodDeclaration.bits |= ASTNode.HasBeenTransformed;
-    	checkPushCallinMethod(methodDeclaration);
+    	checkPushCallinMethod(methodDeclaration, false);
     	return true;
     }
 
