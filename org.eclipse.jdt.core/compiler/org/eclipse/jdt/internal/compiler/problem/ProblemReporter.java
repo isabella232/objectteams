@@ -11270,9 +11270,13 @@ public void baseConstructorCallInWrongMethod(
     				((AbstractMethodDeclaration)enclosingMethod).binding.readableName());
     	else
     		arguments[0] = new String(((AbstractMethodDeclaration)enclosingMethod).selector);
-    else
+    else if (this.referenceContext instanceof TypeDeclaration)
         arguments[0] = "<clinit> of "+ //$NON-NLS-1$
                 new String(((TypeDeclaration)this.referenceContext).binding.readableName());
+    else if (this.referenceContext instanceof LambdaExpression)
+        arguments[0] = this.referenceContext.toString();
+    else
+    	arguments[0] = "<unexpected source location>"; //$NON-NLS-1$
 
     this.handle(
         IProblem.BaseCtorInWrongMethod,

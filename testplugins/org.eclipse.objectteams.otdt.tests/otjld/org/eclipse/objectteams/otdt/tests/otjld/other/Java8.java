@@ -415,4 +415,46 @@ public class Java8 extends AbstractOTJLDTest {
 			true, // flush
     		options);
     }
+
+    public void testBug506749a() {
+    	runNegativeTest(
+    		new String[] {
+    			"Bug506749.java",
+    			"public team class Bug506749 {\n" +
+    			"	protected class R {\n" +
+    			"		void test() {\n" +
+    			"			Runnable r = () -> base();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in Bug506749.java (at line 4)\n" + 
+			"	Runnable r = () -> base();\n" + 
+			"	                   ^^^^\n" + 
+			"Illegal base constructor call: enclosing '() -> <no expression yet>' is not a constructor of a bound role (OTJLD 2.4.2).\n" + 
+			"----------\n");
+    }
+
+    public void testBug506749b() {
+    	runNegativeTest(
+    		new String[] {
+    			"Bug506749.java",
+    			"public team class Bug506749 {\n" +
+    			"	protected class R {\n" +
+    			"		void test() {\n" +
+    			"			Runnable r = () -> { base(); };\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+    		"----------\n" + 
+			"1. ERROR in Bug506749.java (at line 4)\n" + 
+			"	Runnable r = () -> { base(); };\n" + 
+			"	                     ^^^^\n" + 
+			"Illegal base constructor call: enclosing \'() -> {\n" + 
+			"  <no expression yet>;\n" + 
+			"}\' is not a constructor of a bound role (OTJLD 2.4.2).\n" + 
+			"----------\n");
+    }
 }
