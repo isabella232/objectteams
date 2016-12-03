@@ -492,6 +492,11 @@ void checkForMissingHashCodeMethod() {
 void checkForRedundantSuperinterfaces(ReferenceBinding superclass, ReferenceBinding[] superInterfaces) {
 	if (superInterfaces == Binding.NO_SUPERINTERFACES) return;
 
+//{ObjectTeams: implicit inheritance among roles is not visible at AST level
+	if (this.type.isRole()) 
+		return;
+	// TODO: should do this check during copyinheritance.TypeLevel!
+// SH}
 	SimpleSet interfacesToCheck = new SimpleSet(superInterfaces.length);
 	SimpleSet redundantInterfaces = null;  // bark but once.
 	for (int i = 0, l = superInterfaces.length; i < l; i++) {
@@ -506,10 +511,6 @@ void checkForRedundantSuperinterfaces(ReferenceBinding superclass, ReferenceBind
 				}
 				redundantInterfaces.add(implementedInterface);
 				TypeReference[] refs = this.type.scope.referenceContext.superInterfaces;
-//{ObjectTeams: implicit inheritance among role interfaces is not visible at AST level
-				if (refs == null) 
-					continue;
-// SH}
 				for (int r = 0, rl = refs.length; r < rl; r++) {
 					if (TypeBinding.equalsEquals(refs[r].resolvedType, toCheck)) {
 						problemReporter().redundantSuperInterface(this.type, refs[j], implementedInterface, toCheck);
