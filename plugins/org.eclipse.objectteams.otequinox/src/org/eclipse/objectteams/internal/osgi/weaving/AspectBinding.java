@@ -81,7 +81,7 @@ public class AspectBinding {
 		boolean importsAddedToSuper;
 		boolean importsAddedToSub;
 
-		final List<String> baseClassNames = new ArrayList<>();
+		final Set<String> baseClassNames = new HashSet<>();
 		
 		public final List<String> superBases = new ArrayList<>(); // logging / debugging only
 
@@ -98,23 +98,27 @@ public class AspectBinding {
 
 		/** After scanning class file attributes: add the names of all bound base classes. */
 		public void addBaseClassNames(Collection<String> baseClassNames) {
-			this.baseClassNames.addAll(baseClassNames);
 			AspectBinding.this.allBaseClassNames.addAll(baseClassNames);
 			for (String baseClassName : baseClassNames) {
-				Set<TeamBinding> teams = baseBundle.teamsPerBase.get(baseClassName);
-				if (teams == null)
-					baseBundle.teamsPerBase.put(baseClassName, teams = new HashSet<>());
-				teams.add(this);
+				if (this.baseClassNames.add(baseClassName)) {
+					Set<TeamBinding> teams = baseBundle.teamsPerBase.get(baseClassName);
+					if (teams == null)
+						baseBundle.teamsPerBase.put(baseClassName, teams = new HashSet<>());
+					teams.add(this);
+				}
 			}
 		}
 
 		void connectEquivalent(TeamBinding equivalent) {
-			this.equivalenceSet.add(equivalent);
+			if (this == equivalent)
+				return;
+			if (!this.equivalenceSet.add(equivalent))
+				return;
 			boolean locallyHaveBases = !this.baseClassNames.isEmpty();
 			if (!equivalent.baseClassNames.isEmpty())
-				this.baseClassNames.addAll(equivalent.baseClassNames);
+				this.addBaseClassNames(equivalent.baseClassNames);
 			if (locallyHaveBases)
-				equivalent.baseClassNames.addAll(this.baseClassNames);
+				equivalent.addBaseClassNames(this.baseClassNames);
 		}
 
 		@SuppressWarnings("unchecked")
