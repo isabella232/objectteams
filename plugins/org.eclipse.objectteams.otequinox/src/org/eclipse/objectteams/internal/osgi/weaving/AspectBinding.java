@@ -108,6 +108,15 @@ public class AspectBinding {
 			}
 		}
 
+		void connectEquivalent(TeamBinding equivalent) {
+			this.equivalenceSet.add(equivalent);
+			boolean locallyHaveBases = !this.baseClassNames.isEmpty();
+			if (!equivalent.baseClassNames.isEmpty())
+				this.baseClassNames.addAll(equivalent.baseClassNames);
+			if (locallyHaveBases)
+				equivalent.baseClassNames.addAll(this.baseClassNames);
+		}
+
 		@SuppressWarnings("unchecked")
 		public @Nullable Class<? extends Team> loadTeamClass() {
 			if (teamClass != null) return teamClass;
@@ -296,8 +305,10 @@ public class AspectBinding {
 
 			// do we have TeamBindings representing the same team class (from different aspect bindings)?
 			Set<TeamBinding> equivalenceSet = teamLookup.get(team.teamName);
-			if (equivalenceSet != null)
-				team.equivalenceSet.addAll(equivalenceSet);
+			if (equivalenceSet != null) {
+				for (TeamBinding equivalent : equivalenceSet)
+					team.connectEquivalent(equivalent); // TODO: nullness will be handled from Set<@NonNull TeamBinding>
+			}
 			if (team.equivalenceSet.size() > 1)
 				log(IStatus.INFO, "team "+team.teamName+" participates in "+team.equivalenceSet.size()+" aspect bindings.");
 

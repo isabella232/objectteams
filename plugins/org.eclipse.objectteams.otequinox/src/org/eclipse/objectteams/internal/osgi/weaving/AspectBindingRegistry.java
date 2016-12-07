@@ -328,11 +328,13 @@ public class AspectBindingRegistry {
 	}
 	
 	public BaseBundle getBaseBundle(String bundleName) {
-		BaseBundle bundle = baseBundleLookup.get(bundleName);
-		if (bundle == null) {
-			bundle = new BaseBundle(bundleName);
-			baseBundleLookup.put(bundleName, bundle);
+		synchronized (baseBundleLookup) {
+			BaseBundle bundle = baseBundleLookup.get(bundleName);
+			if (bundle == null) {
+				bundle = new BaseBundle(bundleName);
+				baseBundleLookup.put(bundleName, bundle);
+			}
+			return bundle;
 		}
-		return bundle;
 	}
 }
