@@ -204,7 +204,7 @@ public class TypeModel extends ModelElement {
             AbstractMethodDeclaration[] methods = this._ast.methods;
             if (methods != null) {
                 for (int i=0; i<methods.length; i++) {
-                    if (methods[i].scope != null) {
+                    if (methods[i] != null && methods[i].scope != null) {
                         ClassScope[] scopes = methods[i].scope.getAllLocalTypes();
                         for (int j=0; j<scopes.length; j++) {
                             TypeDeclaration type = scopes[j].referenceContext;
