@@ -107,7 +107,7 @@ public class MethodMappingResolver
 			if(methodMapping.isCallout())
 			{
 				if (this._role._playedByEnclosing) {
-					this._roleScope.problemReporter().calloutToEnclosing((CalloutMappingDeclaration)methodMapping, this._role);
+					methodMapping.scope.problemReporter().calloutToEnclosing((CalloutMappingDeclaration)methodMapping, this._role);
 					result = false;
 				} else {
 					result &= resolveCalloutMapping((CalloutMappingDeclaration) methodMapping);

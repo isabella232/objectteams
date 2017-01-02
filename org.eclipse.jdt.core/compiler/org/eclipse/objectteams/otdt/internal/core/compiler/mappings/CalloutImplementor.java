@@ -179,7 +179,7 @@ public class CalloutImplementor extends MethodMappingImplementor
 		// This binding is part of the interface part of a role:
 		MethodBinding roleMethodBinding = calloutMappingDeclaration.getRoleMethod();
 
-        if(roleMethodBinding == null) // CLOVER: never true in jacks suite
+        if(roleMethodBinding == null)
         {
         	// problemreporting already done in find-Base/Role-MethodBinding
             assert(calloutMappingDeclaration.ignoreFurtherInvestigation);
