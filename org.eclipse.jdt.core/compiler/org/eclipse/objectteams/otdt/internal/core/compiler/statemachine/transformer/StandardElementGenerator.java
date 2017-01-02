@@ -214,18 +214,21 @@ public class StandardElementGenerator {
 		if (dimensions > 0)
 			methodName = CharOperation.concat(methodName, String.valueOf(dimensions).toCharArray(), '$');
 		ReferenceBinding teamBinding = teamModel.getBinding();
-		while (teamBinding != null) {
-			MethodBinding[] methods = teamBinding.getMethods(methodName);
-			if (methods != null && methods.length == 1) {
-				if (TypeBinding.equalsEquals(methods[0].declaringClass, teamModel.getBinding()) || searchSuper)
-					return methods[0];
-				// go ahead and generate a new method, but use superMethod for weakening after generating:
-				superMethod = methods[0];
-				break;
+		{
+			ReferenceBinding currentTeam = teamBinding;
+			while (currentTeam != null) {
+				MethodBinding[] methods = currentTeam.getMethods(methodName);
+				if (methods != null && methods.length == 1) {
+					if (TypeBinding.equalsEquals(methods[0].declaringClass, teamModel.getBinding()) || searchSuper)
+						return methods[0];
+					// go ahead and generate a new method, but use superMethod for weakening after generating:
+					superMethod = methods[0];
+					break;
+				}
+				if (!searchSuper && !shouldWeaken)
+					break;
+				currentTeam = currentTeam.superclass();
 			}
-			if (!searchSuper && !shouldWeaken)
-				break;
-			teamBinding = teamBinding.superclass();
 		}
 
 		TypeDeclaration teamClass = teamModel.getAst();
