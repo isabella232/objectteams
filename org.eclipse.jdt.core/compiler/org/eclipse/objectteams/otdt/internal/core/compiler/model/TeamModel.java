@@ -234,12 +234,10 @@ public class TeamModel extends TypeModel {
 		} else {
             superBinding = this._binding.superclass();
 		}
-	    if (superBinding == null)
-            return null;
+	    if (superBinding instanceof ReferenceBinding)
+	    	return ((ReferenceBinding)superBinding).getTeamModel();
 
-		assert( superBinding.isClass() ); // then we can cast to ReferenceBinding
-
-		return ((ReferenceBinding)superBinding).getTeamModel();
+		return null;
 	}
 
 	/**
