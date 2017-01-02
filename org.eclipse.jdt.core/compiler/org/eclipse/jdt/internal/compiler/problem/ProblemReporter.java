@@ -4444,8 +4444,22 @@ public void invalidMethod(MessageSend messageSend, MethodBinding method, Scope s
 		return;
 	// creator calls should be reported as constructors:
 	if (CopyInheritance.isCreator(method)) {
-		// must be handled in AllocationExpression:
-		assert (method.problemId() != ProblemReasons.NonStaticReferenceInStaticContext);
+		switch (method.problemId()) {
+			// for roles we detect this earlier than JDT
+			case ProblemReasons.NonStaticReferenceInConstructorInvocation:
+			case ProblemReasons.NonStaticReferenceInStaticContext:
+				if (   method.declaringClass != null
+					&& method.declaringClass.isRole())
+				{
+					ASTNode invocation = (messageSend instanceof CopyInheritance.RoleConstructorCall)
+							? ((RoleConstructorCall)messageSend).allocationOrig
+							: messageSend;
+					noSuchEnclosingInstance(method.declaringClass.enclosingType(), invocation, 
+							method.problemId() == ProblemReasons.NonStaticReferenceInConstructorInvocation);
+					return;
+				}
+				break;
+		}
 
 		if (messageSend.actualReceiverType instanceof SourceTypeBinding) {
 			TypeDeclaration receiverType = null;
