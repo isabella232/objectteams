@@ -17,7 +17,6 @@ package org.eclipse.objectteams.otredyn.bytecode.asm;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,10 +145,7 @@ public class AddGlobalTeamActivationAdapter extends ClassVisitor {
 	 */
 	private static List<String> getTeamsFromConfigFile() {
 		List<String> result = new ArrayList<String>();
-		BufferedReader in = null;
-		try {
-			FileInputStream fstream = new FileInputStream(TEAM_CONFIG_FILE);
-			in = new BufferedReader(new InputStreamReader(fstream));
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(TEAM_CONFIG_FILE)))) {
  			while (in.ready()) {
 				String nextLine = in.readLine();
 				String nextTeam = nextLine.trim();
@@ -161,13 +157,6 @@ public class AddGlobalTeamActivationAdapter extends ClassVisitor {
 			}
 		} catch (Exception e) {
 			System.err.println("File input error: config file '" + TEAM_CONFIG_FILE + "' can not be found!");
-		} finally {
-			if (in != null)
-				try {
-					in.close();
-				} catch (IOException e) {
-					// nothing
-				}
 		}
 		return result;
 	}

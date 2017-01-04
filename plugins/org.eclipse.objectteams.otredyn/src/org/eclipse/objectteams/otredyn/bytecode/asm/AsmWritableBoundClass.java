@@ -18,7 +18,6 @@ package org.eclipse.objectteams.otredyn.bytecode.asm;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.List;
@@ -349,22 +348,15 @@ class AsmWritableBoundClass extends AsmBoundClass {
 		if (!dumping)
 			return;
 
-		FileOutputStream fos = null;
-		try {
-			String name = getName().replaceAll("/", ".");
-			File dir = new File("otdyn");
-			if (!dir.exists())
-				dir.mkdir();
-			String filename = "otdyn/" + name + postfix+".#"+(n++);
-			fos = new FileOutputStream(filename);
+		String name = getName().replaceAll("/", ".");
+		File dir = new File("otdyn");
+		if (!dir.exists())
+			dir.mkdir();
+		String filename = "otdyn/" + name + postfix+".#"+(n++);
+		try (FileOutputStream fos = new FileOutputStream(filename)) {
 			fos.write(bytecode);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (fos != null)
-				try {
-					fos.close();
-				} catch (IOException e) { /* ignore */}
 		}
 	}
 

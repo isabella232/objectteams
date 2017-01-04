@@ -58,14 +58,16 @@ public class LoaderAwareClassWriter extends ClassWriter {
 		ClassInformation ci2;
 		// need to load class bytes:
 		try {
-			InputStream s1 = this.loader.getResourceAsStream(type1+".class");
-			ci1 = this.analyzer.getClassInformation(s1, type1);
-			if (ci1 == null)
-				return OBJECT_SLASH;
-			InputStream s2 = this.loader.getResourceAsStream(type2+".class");
-			ci2 = this.analyzer.getClassInformation(s2, type2);
-			if (ci2 == null)
-				return OBJECT_SLASH;
+			try (InputStream s1 = this.loader.getResourceAsStream(type1+".class")) {
+				ci1 = this.analyzer.getClassInformation(s1, type1);
+				if (ci1 == null)
+					return OBJECT_SLASH;
+			}
+			try (InputStream s2 = this.loader.getResourceAsStream(type2+".class")) {
+				ci2 = this.analyzer.getClassInformation(s2, type2);
+				if (ci2 == null)
+					return OBJECT_SLASH;
+			}
 		} catch (Exception e) {
 		    throw new RuntimeException(e.toString());
 		}
@@ -117,13 +119,11 @@ public class LoaderAwareClassWriter extends ClassWriter {
 		for (String type : types) {
 			ClassInformation ci = this.knownClasses.get(type);
 			if (ci == null) {
-				InputStream s;
-				try {
-					s = this.loader.getResourceAsStream(type+".class");
+				try (InputStream s = this.loader.getResourceAsStream(type+".class")) {
+					ci = this.analyzer.getClassInformation(s, type);
 		        } catch (Exception e) {
 		            throw new RuntimeException(e.toString());
 				}
-				ci = this.analyzer.getClassInformation(s, type);
 				this.knownClasses.put(type, ci);
 			}
 			if (ci != null) {

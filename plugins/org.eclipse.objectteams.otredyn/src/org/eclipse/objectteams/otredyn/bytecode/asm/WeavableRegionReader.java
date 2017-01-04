@@ -17,7 +17,6 @@ package org.eclipse.objectteams.otredyn.bytecode.asm;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,10 +59,7 @@ public class WeavableRegionReader {
 		if (WEAVABLE_FILE == null)
 			return Collections.emptyList();
 		List<String> result = new ArrayList<String>();
-		BufferedReader in = null;
-		try {
-			FileInputStream fstream = new FileInputStream(WEAVABLE_FILE);
-			in = new BufferedReader(new InputStreamReader(fstream));
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(WEAVABLE_FILE)))) {
  			while (in.ready()) {
 				String nextLine = in.readLine();
 				String nextTeam = nextLine.trim();
@@ -75,13 +71,6 @@ public class WeavableRegionReader {
 			}
 		} catch (Exception e) {
 			System.err.println("File input error: weavable file '" + WEAVABLE_FILE + "' can not be found!");
-		} finally {
-			if (in != null)
-				try {
-					in.close();
-				} catch (IOException e) {
-					// nothing
-				}
 		}
 		return result;
 	}
