@@ -81,6 +81,7 @@ public abstract class MethodMapping extends OTJavaElement implements IMethodMapp
     private int              declarationSourceEnd;
     private IMethod          roleMethod;
 	protected MethodData     roleMethodHandle;
+	private boolean			 hasSearchedRoleMethod;
 	private boolean          hasSignature;
 
     public MethodMapping(int        declarationSourceStart,
@@ -198,17 +199,14 @@ public abstract class MethodMapping extends OTJavaElement implements IMethodMapp
     
 	public IMethod getRoleMethod()
     {
-    	if (this.roleMethod == null)
-    	{
-    		try
-            {
+    	if (!this.hasSearchedRoleMethod) {
+    		try {
                 this.roleMethod = findRoleMethod();
-                assert (this.roleMethod != null);
-            }
-            catch (JavaModelException ex)
-            {
+            } catch (JavaModelException ex) {
             	Util.log(ex, "Failed to lookup original role method element!"); //$NON-NLS-1$
-            }
+            } finally {
+    			this.hasSearchedRoleMethod = true;
+    		}
     	}
     	
         return this.roleMethod;
@@ -222,9 +220,12 @@ public abstract class MethodMapping extends OTJavaElement implements IMethodMapp
     
     public IMethod getRoleMethodThrowingException() throws JavaModelException
     {
-    	if (this.roleMethod == null)
-    	{
-			this.roleMethod = findRoleMethod();
+    	if (!this.hasSearchedRoleMethod) {
+    		try {
+    			this.roleMethod = findRoleMethod();
+    		} finally {
+    			this.hasSearchedRoleMethod = true;
+    		}
     	}
     	
         return this.roleMethod;
