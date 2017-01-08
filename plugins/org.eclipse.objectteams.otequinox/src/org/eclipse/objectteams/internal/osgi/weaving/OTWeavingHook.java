@@ -480,8 +480,15 @@ System.err.println("OT/Equinox: ot.weaving="+weaving);
 			}
 			beingDefined.remove(className);
 			IReweavingTask task = pendingReweavingTasks.remove(className);
-			if (task != null)
-				task.reweave(wovenClass.getDefinedClass());
+			if (task != null) {
+				try {
+					task.reweave(wovenClass.getDefinedClass());
+				} catch (IllegalClassFormatException e) {
+					log(e, "Failed to reweave class "+wovenClass.getClassName());
+					TransformerPlugin.flushLog();
+					return;
+				}
+			}
 			instantiateScheduledTeams(className);
 
 			TransformerPlugin.flushLog();

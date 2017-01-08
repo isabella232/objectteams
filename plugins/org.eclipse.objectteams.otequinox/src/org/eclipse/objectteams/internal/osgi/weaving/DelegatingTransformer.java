@@ -78,7 +78,7 @@ public abstract class DelegatingTransformer {
 		public Collection<String> fetchAdaptedBases() {
 			return transformer.fetchAdaptedBases();
 		}
-		public byte[] transform(final Bundle bundle, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] bytes) {
+		public byte[] transform(final Bundle bundle, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] bytes) throws IllegalClassFormatException {
 			// TODO provide classID
 			return transformer.transform(getBundleLoader(bundle), className, className.replace('.', '/'), classBeingRedefined, bytes);
 		}

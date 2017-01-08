@@ -19,6 +19,7 @@ package org.eclipse.objectteams.otredyn.bytecode.asm;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,9 +139,10 @@ class AsmWritableBoundClass extends AsmBoundClass {
 
 	/**
 	 * Executes all pending transformations.
+	 * @throws IllegalClassFormatException various bytecode problems, e.g., unexpected RET instruction etc.
 	 */
 	@Override
-	protected void endTransformation(final Class<?> definedClass) {
+	protected void endTransformation(final Class<?> definedClass) throws IllegalClassFormatException {
 		assert (isTransformationActive) : "No transformation active";
 		
 		if (multiAdapter == null || nodes == null)
@@ -148,13 +150,11 @@ class AsmWritableBoundClass extends AsmBoundClass {
 		if (multiAdapter.hasVisitors() || !nodes.isEmpty()) {
 			// //TODO (ofra): Do everything in one transformation
 			// Do all transformation with the Core API of ASM
-//			try {
+			try {
 				reader.accept(multiAdapter, ClassReader.SKIP_FRAMES);
-//			} catch (RuntimeException e) {
-//				System.err.println("Cannot transform class "+this+":");
-//				e.printStackTrace();
-//				return;
-//			}
+			} catch (RuntimeException e) {
+				throw new IllegalClassFormatException("Cannot transform class "+this+":"+e.getMessage());
+			}
 			setBytecode(writer.toByteArray());
 			//Do all transformations with the Tree API of ASM
 			for (AbstractTransformableClassNode node : nodes) {
@@ -215,7 +215,7 @@ class AsmWritableBoundClass extends AsmBoundClass {
 		releaseBytecode();
 	}
 
-	protected void superTransformation(Class<?> definedClass) {		
+	protected void superTransformation(Class<?> definedClass) throws IllegalClassFormatException {		
 		AbstractTeam mySuper = getSuperclass();
 		if (mySuper != null && mySuper.isLoaded()) {
 			boolean superNeedsWeaving = false;

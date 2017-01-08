@@ -16,6 +16,7 @@
  **********************************************************************/
 package org.eclipse.objectteams.otredyn.bytecode;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -365,8 +366,9 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	 * Add the empty method access
 	 * Add the empty method accessStatic
 	 * Add the empty method callAllBindings
+	 * @throws IllegalClassFormatException various bytecode problems, e.g., unexpected RET instruction etc.
 	 */
-	public void transformAtLoadTime() {
+	public void transformAtLoadTime() throws IllegalClassFormatException {
 		handleTaskList(null);
 	}
 
@@ -623,8 +625,9 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	 * Handle all open weaving tasks for this class.
 	 * It redefines the class, if it is not called while loading
 	 * @param definedClass previously defined class if available
+	 * @throws IllegalClassFormatException various bytecode problems, e.g., unexpected RET instruction etc.
 	 */
-	public void handleTaskList(Class<?> definedClass) {
+	public void handleTaskList(Class<?> definedClass) throws IllegalClassFormatException {
 		if (isTransformationActive()) return;
 
 		if (this.isUnweavable)
@@ -828,7 +831,7 @@ public abstract class AbstractBoundClass implements IBoundClass {
 				for (final AbstractBoundClass affected : affectedClasses)
 					if (affected.isLoaded) {
 						IReweavingTask task = new IReweavingTask() {
-							@Override public void reweave(Class<?> definedClass) {
+							@Override public void reweave(Class<?> definedClass) throws IllegalClassFormatException {
 								affected.handleTaskList(definedClass);
 							}
 						};
@@ -887,7 +890,11 @@ public abstract class AbstractBoundClass implements IBoundClass {
 		if (task == null)
 			task = new WeavingTask(type, binding.getMemberName(), binding.getMemberSignature(), 
 											binding.getBaseFlags(), binding.isHandleCovariantReturn(), binding.requiresBaseSuperCall());
-		addWeavingTask(task, false);
+		try {
+			addWeavingTask(task, false);
+		} catch (IllegalClassFormatException e) {
+			e.printStackTrace(); // we're called from TeamManager, which can neither log nor handle exceptions
+		}
 	}
 	
 	@Override
@@ -899,11 +906,15 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	public synchronized void commitTransaction() {
 		--this.transactionCount;
 		if (this.transactionCount == 0 && this.isLoaded) {
-			handleTaskList(null);
+			try {
+				handleTaskList(null);
+			} catch (IllegalClassFormatException e) {
+				e.printStackTrace(); // we're called from TeamManager, which can neither log nor handle exceptions
+			}
 		}
 	}
 	
-	private void addWeavingTask(WeavingTask task, boolean standBy) {
+	private void addWeavingTask(WeavingTask task, boolean standBy) throws IllegalClassFormatException {
 		boolean isNewTask = addWeavingTaskLazy(task);
 
 		if (this.isLoaded && isNewTask && !standBy && this.transactionCount == 0) {
@@ -1160,9 +1171,9 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	
 	protected abstract void startTransformation();
 
-	protected abstract void endTransformation(Class<?> definedClass);
+	protected abstract void endTransformation(Class<?> definedClass) throws IllegalClassFormatException;
 
-	protected abstract void superTransformation(Class<?> definedClass);
+	protected abstract void superTransformation(Class<?> definedClass) throws IllegalClassFormatException;
 
 	protected abstract void prepareAsPossibleBaseClass();
 
