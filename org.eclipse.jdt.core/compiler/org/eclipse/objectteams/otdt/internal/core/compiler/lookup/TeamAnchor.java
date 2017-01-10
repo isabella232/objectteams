@@ -215,9 +215,6 @@ public abstract class TeamAnchor extends Binding implements ITeamAnchor {
 			return ((Argument)stat).binding.bestNamePath;
 		}
 		Expression expr = (Expression)stat;
-		if (RoleTypeBinding.isRoleWithExplicitAnchor(expr.resolvedType)) {
-			return ((IRoleTypeBinding)expr.resolvedType).getAnchorBestName();
-		}
 		if (expr instanceof QualifiedNameReference) {
 			QualifiedNameReference qRef = (QualifiedNameReference)expr;
 			if (qRef.binding instanceof ITeamAnchor) {
