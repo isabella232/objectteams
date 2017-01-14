@@ -181,20 +181,24 @@ public class TeamManager implements ITeamManager {
 
 	private void handleBindingForBase(ITeam t, ITeamManager.TeamStateChange stateChange, IBinding binding, IBoundClass boundClass, IClassIdentifierProvider provider) {
 		IMethod method = boundClass.getMethod(binding.getMemberName(), binding.getMemberSignature(), binding.getBaseFlags(), binding.isHandleCovariantReturn());
-		int joinpointId = getJoinpointId(boundClass
-				.getMethodIdentifier(method));
+		int joinpointId = getJoinpointId(boundClass.getMethodIdentifier(method));
 		synchronized (method) {
-			changeTeamsForJoinpoint(t, binding.getPerTeamId(), joinpointId, stateChange);
-			List<Integer> subJoinpoints = joinpointToSubJoinpoints.get(joinpointId);
-			if (subJoinpoints != null)
-				for (Integer subJoinpoint : subJoinpoints)
-					changeTeamsForJoinpoint(t, binding.getPerTeamId(), subJoinpoint, stateChange);
+			stateChangeForJoinpoint(t, stateChange, binding, boundClass, method, joinpointId);
 		}
 		boundClass.handleAddingOfBinding(binding); // TODO: do we want/need to group all bindings into one action?
 
 		for (IBoundClass tsubBase : boundClass.getTSubsOfThis(classRepository, provider)) {
 			handleBindingForBase(t, stateChange, binding, tsubBase, provider);
 		}
+	}
+
+	private void stateChangeForJoinpoint(ITeam t, ITeamManager.TeamStateChange stateChange, IBinding binding,
+			IBoundClass boundClass, IMethod method, int joinpointId) {
+		changeTeamsForJoinpoint(t, binding.getPerTeamId(), joinpointId, stateChange);
+		List<Integer> subJoinpoints = joinpointToSubJoinpoints.get(joinpointId);
+		if (subJoinpoints != null)
+			for (Integer subJoinpoint : subJoinpoints)
+				stateChangeForJoinpoint(t, stateChange, binding, boundClass, method, subJoinpoint);
 	}
 	
 	/**
