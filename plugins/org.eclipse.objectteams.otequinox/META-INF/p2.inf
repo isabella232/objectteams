@@ -40,9 +40,8 @@ units.0.instructions.uninstall=\
 	uninstallBundle(bundle:${artifact})
 	
 instructions.install = \
-	addJvmArg(jvmArg:-Dot.weaving=otdre); \
+	removeJvmArg(jvmArg:-Dot.weaving=otdre); \
 	addJvmArg(jvmArg:-javaagent:${artifact.location}/otequinoxAgent.jar);
 instructions.uninstall = \
-	removeJvmArg(jvmArg:-Dot.weaving=otdre); \
 	removeJvmArg(jvmArg:-javaagent:${artifact.location}/otequinoxAgent.jar);
 	

@@ -21,7 +21,13 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingScheme;
+import org.eclipse.objectteams.otredyn.bytecode.asm.Attributes;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
 /**
@@ -98,5 +104,56 @@ public class ASMByteCodeAnalyzer {
 		classInformation = new ClassInformation(classReader);
 		classInformationMap.put(className, classInformation);
 		return classInformation;
+	}
+
+	public static WeavingScheme determineWeavingScheme(byte[] classBytes, String className) {
+		return determineWeavingScheme(classBytes, null, className);
+	}
+	public static @NonNull WeavingScheme determineWeavingScheme(InputStream classStream, String className) {
+		return determineWeavingScheme(null, classStream, className);
+	}
+	static @NonNull WeavingScheme determineWeavingScheme(byte[] classBytes, InputStream classStream, String className) {
+
+		class OTCompilerVersion extends Attribute {
+			WeavingScheme weavingScheme;
+			public OTCompilerVersion() {
+				super(Attributes.ATTRIBUTE_OT_COMPILER_VERSION);
+			}
+			@Override
+			protected Attribute read(ClassReader cr, int off, int len, char[] buf, int codeOff, Label[] labels) {
+				int encodedVersion  = cr.readUnsignedShort(off);
+				weavingScheme = ((encodedVersion & Attributes.OTDRE_FLAG) != 0) ? WeavingScheme.OTDRE : WeavingScheme.OTRE;
+				return this;
+			}
+		}
+		class MyClassVisitor extends ClassVisitor {
+			OTCompilerVersion compilerVersion;
+
+			private MyClassVisitor() {
+				super(org.eclipse.objectteams.otredyn.bytecode.asm.AsmBoundClass.ASM_API);
+			}
+
+			@Override
+			public void visitAttribute(Attribute attr) {
+				if (attr instanceof OTCompilerVersion)
+					compilerVersion = (OTCompilerVersion) attr;
+			}
+		}
+
+		try {
+			ClassReader classReader = classBytes != null ? new ClassReader(classBytes) : new ClassReader(classStream);
+			// TODO: consider optimizing by copying reduced internals
+			MyClassVisitor classVisitor = new MyClassVisitor();
+			classReader.accept(classVisitor, new Attribute[] { new OTCompilerVersion() }, ClassReader.SKIP_CODE);
+			OTCompilerVersion version = classVisitor.compilerVersion;
+			if (version != null) {
+				WeavingScheme scheme = version.weavingScheme;
+				if (scheme != null)
+					return scheme;
+			}
+		} catch (IOException e) {
+			// ignore
+		}
+		return WeavingScheme.Unknown;
 	}
 }

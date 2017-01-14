@@ -33,15 +33,15 @@ import org.objectweb.asm.Label;
  * This class contains all classes representing OT/J class file attributes
  * @author Oliver Frank
  */
-abstract class Attributes {
+public abstract class Attributes {
 	protected final static String ATTRIBUTE_OT_DYN_CALLIN_BINDINGS="OTDynCallinBindings";
 	protected final static String ATTRIBUTE_ROLE_BASE_BINDINGS = "CallinRoleBaseBindings";
 	protected final static String ATTRIBUTE_CALLIN_PRECEDENCE = "CallinPrecedence";
 	protected final static String ATTRIBUTE_OT_CLASS_FLAGS = "OTClassFlags";
 	protected final static String ATTRIBUTE_OT_SPECIAL_ACCESS = "OTSpecialAccess";
-	protected final static String ATTRIBUTE_OT_COMPILER_VERSION = "OTCompilerVersion";
+	public    final static String ATTRIBUTE_OT_COMPILER_VERSION = "OTCompilerVersion";
 	
-	private static final int OTDRE_FLAG = 0x8000; // high bit in OTCompilerVersion
+	public static final int OTDRE_FLAG = 0x8000; // high bit in OTCompilerVersion
 
 	protected final static Attribute[] attributes = { 
 		new CallinBindingsAttribute(0),

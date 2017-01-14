@@ -32,7 +32,7 @@ import org.objectweb.asm.Opcodes;
  * It parses the bytecode with ASM.
  * @author Oliver Frank
  */
-abstract class AsmBoundClass extends AbstractTeam {
+public abstract class AsmBoundClass extends AbstractTeam {
 	
 	public static final int ASM_API = Opcodes.ASM5;
 

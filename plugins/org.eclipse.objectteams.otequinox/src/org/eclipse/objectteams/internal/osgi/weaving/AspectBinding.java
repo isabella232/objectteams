@@ -18,6 +18,8 @@ package org.eclipse.objectteams.internal.osgi.weaving;
 
 import static org.eclipse.objectteams.otequinox.TransformerPlugin.log;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingScheme;
 import org.eclipse.objectteams.internal.osgi.weaving.Util.ProfileKind;
 import org.eclipse.objectteams.otequinox.ActivationKind;
 import org.eclipse.objectteams.otequinox.AspectPermission;
@@ -40,6 +43,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.hooks.weaving.WovenClass;
 import org.osgi.framework.namespace.PackageNamespace;
 import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.resource.Capability;
 
 /** 
@@ -276,6 +280,7 @@ public class AspectBinding {
 	public boolean hasScannedTeams;
 	public AspectPermission forcedExportsPermission = AspectPermission.UNDEFINED;
 	public boolean hasBeenDenied = false;
+	public WeavingScheme weavingScheme = WeavingScheme.Unknown;
 	
 	Set<TeamBinding> teamsInProgress = new HashSet<>(); // TODO cleanup teams that are done
 	
@@ -299,7 +304,25 @@ public class AspectBinding {
 		} catch (IllegalArgumentException iae) {	
 			log(iae, "Invalid activation kind "+activationSpecifier+" for team "+teamName);
 		}
+		checkWeavingScheme(teamName);
 		return this.teams[count] = new TeamBinding(teamName, kind, superTeamName);
+	}
+
+	private void checkWeavingScheme(String className) {
+		if (this.weavingScheme != WeavingScheme.Unknown)
+			return;
+		Bundle bundle = this.aspectBundle;
+		if (bundle == null)
+			return;
+		BundleWiring wiring = bundle.adapt(BundleWiring.class);
+		try (InputStream classStream = wiring.getClassLoader().getResourceAsStream(className.replace('.', '/')+".class")) {
+			this.weavingScheme = ASMByteCodeAnalyzer.determineWeavingScheme(classStream, className);
+			if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown)
+				OTWeavingHook.DEFAULT_WEAVING_SCHEME = this.weavingScheme;
+			TransformerPlugin.log(IStatus.INFO, "use weaving scheme "+this.weavingScheme+" for aspectBinding "+this.aspectPlugin+"<-"+this.basePluginName);
+		} catch (IOException e) {
+			// ignore
+		}
 	}
 
 	/** Connect all resolvable info in all contained TeamBindings using the given lookup table. */

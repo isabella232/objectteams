@@ -27,6 +27,7 @@ import java.util.Collection;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingReason;
+import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingScheme;
 import org.eclipse.objectteams.internal.osgi.weaving.Util.ProfileKind;
 import org.eclipse.objectteams.otredyn.bytecode.IRedefineStrategy;
 import org.eclipse.objectteams.otredyn.bytecode.RedefineStrategyFactory;
@@ -41,11 +42,15 @@ import org.osgi.framework.wiring.BundleWiring;
 public abstract class DelegatingTransformer {
 
 	/** Factory method for a fresh transformer. */
-	static @NonNull DelegatingTransformer newTransformer(boolean useDynamicWeaver, OTWeavingHook hook, BundleWiring wiring) {
-		if (useDynamicWeaver)
-			return new OTDRETransformer(getWeavingContext(hook, wiring));
-		else
-			return new OTRETransformer();
+	static @NonNull DelegatingTransformer newTransformer(WeavingScheme weavingScheme, OTWeavingHook hook, BundleWiring wiring) {
+		switch (weavingScheme) {
+			case OTDRE:
+				return new OTDRETransformer(getWeavingContext(hook, wiring));
+			case OTRE:
+				return new OTRETransformer();
+			default:
+				throw new NullPointerException("WeavingScheme must be defined");
+		}
 	}
 	
 	private static class OTRETransformer extends DelegatingTransformer {

@@ -74,16 +74,23 @@ import org.osgi.resource.Wire;
  */
 public class OTWeavingHook implements WeavingHook, WovenClassListener {
 
+	static @NonNull WeavingScheme DEFAULT_WEAVING_SCHEME = WeavingScheme.Unknown;
+	enum WeavingScheme { Unknown, OTRE, OTDRE };
 
-	// TODO: this master-switch, which selects the weaver, should probably be replaced by s.t. else?
-	static final boolean USE_DYNAMIC_WEAVER;
 	static final ThreadWeaving WEAVE_THREAD_NOTIFICATION;
 	enum ThreadWeaving { Never, Base, Always }
+	
 	static final Map<String,Set<String>> KNOWN_LOGGING_CLASSES = new HashMap<>();
+	
 	static {
-		String weaving = System.getProperty("ot.weaving");
-System.err.println("OT/Equinox: ot.weaving="+weaving);
-		USE_DYNAMIC_WEAVER = (weaving != null) && weaving.toLowerCase().equals("otdre");
+		String weaving = System.getProperty("ot.weaving.force");
+		if (weaving != null) {
+			System.err.println("OT/Equinox: ot.weaving.force="+weaving);
+			if ("otdre".equalsIgnoreCase(weaving))
+				DEFAULT_WEAVING_SCHEME = WeavingScheme.OTDRE;
+			else if ("otre".equalsIgnoreCase(weaving))
+				DEFAULT_WEAVING_SCHEME = WeavingScheme.OTRE;
+		}
 		String threadWeaving = System.getProperty("otequinox.weave.thread");
 		if ("base".equalsIgnoreCase(threadWeaving))
 			WEAVE_THREAD_NOTIFICATION = ThreadWeaving.Base;
@@ -265,13 +272,17 @@ System.err.println("OT/Equinox: ot.weaving="+weaving);
 				if (reason == WeavingReason.Base && allAspectsAreDenied) {
 					return; // don't weave for denied bindings
 				} else if (reason == WeavingReason.Thread) {
+					if (DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown) {
+						log(IStatus.WARNING, "Not performing thread weaving for "+className+" (weaving scheme not yet knonw)");
+						return;
+					}
 					BaseBundle baseBundle = this.aspectBindingRegistry.getBaseBundle(bundleName);
-					BaseBundleLoadTrigger.addOTREImport(baseBundle, bundleName, wovenClass, USE_DYNAMIC_WEAVER);
+					BaseBundleLoadTrigger.addOTREImport(baseBundle, bundleName, wovenClass, DEFAULT_WEAVING_SCHEME == WeavingScheme.OTDRE);
 				} 
 
 				long time = 0;
 
-				DelegatingTransformer transformer = DelegatingTransformer.newTransformer(USE_DYNAMIC_WEAVER, this, bundleWiring);
+				DelegatingTransformer transformer = DelegatingTransformer.newTransformer(DEFAULT_WEAVING_SCHEME, this, bundleWiring);
 				Class<?> classBeingRedefined = null; // TODO prepare for otre-dyn
 				try {
 					String displayName = reason+" class "+className;
@@ -460,7 +471,7 @@ System.err.println("OT/Equinox: ot.weaving="+weaving);
 			String teamName = record.team.teamName;
 			log(IStatus.INFO, "Consider for instantiation/activation: team "+teamName);
 			try {
-				TeamLoader loader = new TeamLoader(deferredTeams, beingDefined, USE_DYNAMIC_WEAVER);
+				TeamLoader loader = new TeamLoader(deferredTeams, beingDefined, DEFAULT_WEAVING_SCHEME == WeavingScheme.OTDRE);
 				// Instantiate (we only get here if activationKind != NONE)
 				loader.instantiateAndActivate(record.aspectBinding, record.team, record.activationKind); // may re-insert to deferredTeams
 			} catch (Exception e) {

@@ -23,9 +23,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.BaseBundle;
+import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingScheme;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.hooks.weaving.WovenClass;
 
@@ -54,6 +56,19 @@ public class BaseBundleLoadTrigger {
 		this.admin = admin;
 	}
 	
+	WeavingScheme getWeavingScheme() {
+		@NonNull WeavingScheme scheme = OTWeavingHook.DEFAULT_WEAVING_SCHEME;
+		for (AspectBinding aspectBinding : aspectBindings) {
+			if (aspectBinding.weavingScheme != WeavingScheme.Unknown) {
+				scheme = aspectBinding.weavingScheme;
+				if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown)
+					OTWeavingHook.DEFAULT_WEAVING_SCHEME = scheme;
+				break;
+			}
+		}
+		return scheme;
+	}
+
 	/**
 	 * Signal that the given class is being loaded and trigger any necessary steps:
 	 * (1) add import to OTRE (now)
@@ -65,12 +80,12 @@ public class BaseBundleLoadTrigger {
 	public void fire(WovenClass baseClass, Set<String> beingDefined, OTWeavingHook hook) {
 
 		// (1) OTRE import added once per base bundle:
-		boolean useDynamicWeaver = OTWeavingHook.USE_DYNAMIC_WEAVER;
+		WeavingScheme weavingScheme = getWeavingScheme();
 		synchronized(this) {
 			final BaseBundle baseBundle2 = baseBundle;
 			if (!otreAdded) {
 				otreAdded = true;
-				addOTREImport(baseBundle2, baseBundleName, baseClass, useDynamicWeaver);
+				addOTREImport(baseBundle2, baseBundleName, baseClass, weavingScheme == WeavingScheme.OTDRE);
 			}
 		}
 		
@@ -100,18 +115,18 @@ public class BaseBundleLoadTrigger {
 				}
 				// (2) scan all teams in affecting aspect bindings:
 				if (!aspectBinding.hasScannedTeams) {
-					Collection<String> boundBases = aspectBinding.scanTeamClasses(aspectBundle, DelegatingTransformer.newTransformer(useDynamicWeaver, hook, baseClass.getBundleWiring()));
+					Collection<String> boundBases = aspectBinding.scanTeamClasses(aspectBundle, DelegatingTransformer.newTransformer(weavingScheme, hook, baseClass.getBundleWiring()));
 					aspectBindingRegistry.addBoundBaseClasses(boundBases);
 				}
 				
 				// (3) add dependencies to the base bundle:
-				if (!useDynamicWeaver) // OTDRE access aspects by generic interface in o.o.Team
+				if (weavingScheme == WeavingScheme.OTRE) // OTDRE accesses aspects by generic interface in o.o.Team
 					aspectBinding.addImports(baseClass);
 
 			}
 		}
 		// (4) try optional steps concerning all teams for this base (across all involved aspect bindings):
-		TeamLoader loading = new TeamLoader(deferredTeamClasses, beingDefined, useDynamicWeaver);
+		TeamLoader loading = new TeamLoader(deferredTeamClasses, beingDefined, weavingScheme == WeavingScheme.OTDRE);
 		final BaseBundle baseBundle3 = this.baseBundle;
 		if (baseBundle3 != null) {
 			loading.loadTeamsForBase(baseBundle3, baseClass, hook.getAspectPermissionManager());
