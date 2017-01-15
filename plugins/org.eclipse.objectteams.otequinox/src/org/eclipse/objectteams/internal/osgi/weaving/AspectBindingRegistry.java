@@ -177,7 +177,7 @@ public class AspectBindingRegistry {
 					log(IStatus.ERROR, "base bundle "+baseBundleId+" is not resolved - weaving may be incomplete.");
 				} else {
 					BundleWiring baseBundleWiring = baseBundles[0].adapt(BundleWiring.class);
-					Collection<String> boundBases = binding.scanTeamClasses(aspectBundle, DelegatingTransformer.newTransformer(OTWeavingHook.USE_DYNAMIC_WEAVER, hook, baseBundleWiring));
+					Collection<String> boundBases = binding.scanTeamClasses(aspectBundle, DelegatingTransformer.newTransformer(binding.weavingScheme, hook, baseBundleWiring));
 					addBoundBaseClasses(boundBases);
 				}
 			}
