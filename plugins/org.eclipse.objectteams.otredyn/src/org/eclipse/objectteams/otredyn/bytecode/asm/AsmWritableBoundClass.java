@@ -324,22 +324,15 @@ class AsmWritableBoundClass extends AsmBoundClass {
 		if (!dumping)
 			return;
 		
-		FileOutputStream fos = null;
-		try {
-			String name = getName().replaceAll("/", ".");
-			File dir = new File("otdyn");
-			if (!dir.exists())
-				dir.mkdir();
-			String filename = "otdyn/" + name + ".class";
-			fos = new FileOutputStream(filename);
+		String name = getName().replaceAll("/", ".");
+		File dir = new File("otdyn");
+		if (!dir.exists())
+			dir.mkdir();
+		String filename = "otdyn/" + name + ".class";
+		try (FileOutputStream fos = new FileOutputStream(filename)) {
 			fos.write(allocateAndGetBytecode());
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (fos != null)
-				try {
-					fos.close();
-				} catch (IOException e) { /* ignore */}
 		}
 	}
 
