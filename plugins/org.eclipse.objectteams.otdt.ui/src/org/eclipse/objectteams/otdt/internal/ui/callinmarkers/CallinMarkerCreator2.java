@@ -270,6 +270,14 @@ public class CallinMarkerCreator2 extends JavaEditorActivationListener
      */
     public void updateCallinMarkers(final IMarkableJavaElement target, IStatusLineManager statusLine)
     {
+    	IJavaElement javaElement = target.getJavaElement();
+		IJavaElement pack = javaElement.getAncestor(IJavaElement.PACKAGE_FRAGMENT);
+    	if (pack != null) {
+			if (pack.getElementName().startsWith("java.lang")) //$NON-NLS-1$
+				return;
+			if (pack.getElementName().equals("java.io") && javaElement.getElementName().startsWith("Serializable")) //$NON-NLS-1$ //$NON-NLS-2$
+				return;
+		}
 		CallinMarkerJob job = new CallinMarkerJob(target) {
 			protected void updateMarkers(IProgressMonitor monitor) throws Exception {
 				updateCallinMarkers(target, monitor);
