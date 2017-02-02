@@ -74,6 +74,9 @@ public class ObjectTeamsTransformer implements ClassFileTransformer {
 	
 	public byte[] transform(ClassLoader loader, String className, String classId, Class<?> classBeingRedefined,
             byte[] classfileBuffer) throws IllegalClassFormatException {
+		if (className == null) // seen from java.lang.invoke.LambdaForm.compileToBytecode()
+			return null;
+
 		if (loader == null)
 			loader = ClassLoader.getSystemClassLoader();
 
