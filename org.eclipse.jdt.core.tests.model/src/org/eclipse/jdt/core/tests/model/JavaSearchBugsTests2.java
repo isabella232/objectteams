@@ -54,7 +54,7 @@ public class JavaSearchBugsTests2 extends AbstractJavaSearchTests {
 	}
 	
 	static {
-		//TESTS_NAMES = new String[] {"testBug378390"};
+		TESTS_NAMES = new String[] {"testBug357547f"};
 	}
 
 	public static Test suite() {
