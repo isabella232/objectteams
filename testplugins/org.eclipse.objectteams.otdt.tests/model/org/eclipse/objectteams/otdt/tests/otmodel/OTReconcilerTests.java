@@ -1489,12 +1489,12 @@ public class OTReconcilerTests extends ReconcilerTests {
 				"2. ERROR in /P/SubTeam.java (at line 1)\n" + 
 				"	public team class SubTeam extends SuperTeam {\n" + 
 				"	                  ^^^^^^^\n" + 
-				"Team introduces binding ambiguity for role R0<@tthis[SubTeam]>, which may break clients of the super team (OTJLD 2.3.5(d)).\n" + 
+				"Team introduces binding ambiguity for role R1<@tthis[SubTeam]>, which may break clients of the super team (OTJLD 2.3.5(d)).\n" + 
 				"----------\n" + 
 				"3. ERROR in /P/SubTeam.java (at line 1)\n" + 
 				"	public team class SubTeam extends SuperTeam {\n" + 
 				"	                  ^^^^^^^\n" + 
-				"Team introduces binding ambiguity for role R1<@tthis[SubTeam]>, which may break clients of the super team (OTJLD 2.3.5(d)).\n" + 
+				"Team introduces binding ambiguity for role R0<@tthis[SubTeam]>, which may break clients of the super team (OTJLD 2.3.5(d)).\n" + 
 				"----------\n");
     	} finally {
     		deleteProject("P");
