@@ -5,6 +5,7 @@ feature@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/obje
 feature@org.eclipse.objectteams.otdt.source.feature=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.source.feature,tag=branches/maintenance/OTDT_2.5.x
 feature@org.eclipse.objectteams.otdt.core.patch=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.core.patch,tag=branches/maintenance/OTDT_2.5.x
 feature@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.feature,tag=branches/maintenance/OTDT_2.5.x
+feature@org.eclipse.objectteams.otequinox.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.otre.feature,tag=branches/maintenance/OTDT_2.5.x
 feature@org.eclipse.objectteams.otequinox.turbo=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otequinox.turbo.feature,tag=builds/201506091717
 
 !-- Also don't use version numbers for those plugins that hold the various otre jars: --
@@ -32,7 +33,8 @@ plugin@org.eclipse.objectteams.eclipse.monitor=GIT,repo=git://git.eclipse.org/gi
 !plugin@org.eclipse.objectteams.otdt.metrics.export=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics.export
 
 !** OT/J Plugins **!
-plugin@org.eclipse.objectteams.otequinox.branding=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=builds/201606070956
+plugin@org.eclipse.objectteams.otequinox.branding=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=branches/maintenance/OTDT_2.5.x
+plugin@org.eclipse.objectteams.otequinox.branding.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding.otre,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otdt.jdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.jdt.ui,tag=builds/201606070956
 plugin@org.eclipse.objectteams.otdt.ui.help=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui.help,tag=builds/201606070956
 plugin@org.eclipse.objectteams.otdt.apt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.apt,tag=builds/201606070956

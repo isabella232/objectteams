@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.objectteams.otequinox.otre"
+      label="%featureName"
+      version="2.5.3.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.objectteams.otequinox"
+      colocation-affinity="org.eclipse.rcp">
+
+   <description url="http://www.eclipse.org/objectteams">
+      This feature enables Equinox to run plugins written in OT/J.
+   </description>
+
+   <copyright>
+      The copyright is held by the Technische Unversität Berlin
+Author: Stephan Herrmann.
+   </copyright>
+
+   <license url="%licenseURL">
+   		%license
+   </license>
+
+   <url>
+      <update label="Object Teams Updates" url="http://download.eclipse.org/objectteams/updates/ot2.5"/>
+      <discovery label="Orbit Repository" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository"/>
+   </url>
+
+   <plugin
+         id="org.eclipse.objectteams.runtime"
+         download-size="89"
+         install-size="202"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otre"
+         download-size="89"
+         install-size="202"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.bcel"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox"
+         download-size="27"
+         install-size="52"
+         version="0.0.0"
+         unpack="true"/>
+
+   <plugin
+         id="org.eclipse.objectteams.otequinox.branding.otre"
+         download-size="15"
+         install-size="20"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.objectteams.eclipse.monitor"
+         download-size="12"
+         install-size="22"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

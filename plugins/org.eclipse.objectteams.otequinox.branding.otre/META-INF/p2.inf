@@ -1,0 +1,5 @@
+requires.1.namespace=org.eclipse.equinox.p2.iu
+requires.1.name=org.eclipse.objectteams.otequinox.branding
+requires.1.range=[2.5.0,3.0.0)
+requires.1.min=0
+requires.1.max=0

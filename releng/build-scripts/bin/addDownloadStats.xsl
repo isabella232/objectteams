@@ -43,6 +43,10 @@ Stephan Herrmann - adaptation for Object Teams
                 <xsl:call-template name="artifact_properties"/>
         </xsl:template>
 
+        <xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.objectteams.otequinox.otre']/properties">
+                <xsl:call-template name="artifact_properties"/>
+        </xsl:template>
+
         <xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.objectteams.otequinox.turbo']/properties">
                 <xsl:call-template name="artifact_properties"/>
         </xsl:template>
