@@ -28,6 +28,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.objectteams.internal.osgi.weaving.AspectBinding.BaseBundle;
 import org.eclipse.objectteams.internal.osgi.weaving.OTWeavingHook.WeavingScheme;
+import org.eclipse.objectteams.otequinox.TransformerPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.hooks.weaving.WovenClass;
 
@@ -61,8 +62,10 @@ public class BaseBundleLoadTrigger {
 		for (AspectBinding aspectBinding : aspectBindings) {
 			if (aspectBinding.weavingScheme != WeavingScheme.Unknown) {
 				scheme = aspectBinding.weavingScheme;
-				if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown)
+				if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown) {
 					OTWeavingHook.DEFAULT_WEAVING_SCHEME = scheme;
+					TransformerPlugin.doLog(IStatus.INFO, "Using weaving scheme "+scheme+" as detected from aspect bundle "+aspectBinding.aspectPlugin);				
+				}
 				break;
 			}
 		}

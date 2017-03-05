@@ -317,8 +317,10 @@ public class AspectBinding {
 		BundleWiring wiring = bundle.adapt(BundleWiring.class);
 		try (InputStream classStream = wiring.getClassLoader().getResourceAsStream(className.replace('.', '/')+".class")) {
 			this.weavingScheme = ASMByteCodeAnalyzer.determineWeavingScheme(classStream, className);
-			if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown)
+			if (OTWeavingHook.DEFAULT_WEAVING_SCHEME == WeavingScheme.Unknown) {
 				OTWeavingHook.DEFAULT_WEAVING_SCHEME = this.weavingScheme;
+				TransformerPlugin.doLog(IStatus.INFO, "Using weaving scheme "+this.weavingScheme+" as detected from class "+className);				
+			}
 			TransformerPlugin.log(IStatus.INFO, "use weaving scheme "+this.weavingScheme+" for aspectBinding "+this.aspectPlugin+"<-"+this.basePluginName);
 		} catch (IOException e) {
 			// ignore
