@@ -18,6 +18,8 @@
 package org.eclipse.jdt.internal.compiler.lookup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -94,6 +96,8 @@ public class CompilationUnitScope extends Scope {
 
 	boolean connectingHierarchy;
 	private ArrayList<Invocation> inferredInvocations;
+	/** Cache of interned inference variables. Access only via {@link InferenceVariable#get(TypeBinding, int, InvocationSite, Scope, ReferenceBinding)}. */
+	Map<InferenceVariable.InferenceVarKey, InferenceVariable> uniqueInferenceVariables = new HashMap<>();
 //{ObjectTeams: when used as a baseimport scope, remember the original scope during this current lookup
 	public Scope originalScope;
 // SH}
