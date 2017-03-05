@@ -14,9 +14,9 @@ plugin@org.eclipse.jdt.core,3.12.3.v_OTDT_r253_qualifier=GIT,repo=git://git.ecli
 !next plug-in don't specify version so that org.eclipse.objectteams.runtime/customBuildCallbacks.xml will find the plug-in directory:
 plugin@org.eclipse.objectteams.otdt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt,tag=branches/maintenance/OTDT_2.5.x
 
-plugin@org.eclipse.objectteams.otdt.debug=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=builds/201406101339
+plugin@org.eclipse.objectteams.otdt.debug=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otdt.debug.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.ui,tag=builds/201606070956
-plugin@org.eclipse.objectteams.otdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui,tag=builds/201606070956
+plugin@org.eclipse.objectteams.otdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otdt.doc=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.doc,tag=builds/201606070956
 !plugin@org.eclipse.objectteams.otdt.metrics=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics,tag=builds/201101290806
 
@@ -35,9 +35,9 @@ plugin@org.eclipse.objectteams.eclipse.monitor=GIT,repo=git://git.eclipse.org/gi
 !** OT/J Plugins **!
 plugin@org.eclipse.objectteams.otequinox.branding=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otequinox.branding.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox.branding.otre,tag=branches/maintenance/OTDT_2.5.x
-plugin@org.eclipse.objectteams.otdt.jdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.jdt.ui,tag=builds/201606070956
+plugin@org.eclipse.objectteams.otdt.jdt.ui=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.jdt.ui,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otdt.ui.help=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.ui.help,tag=builds/201606070956
-plugin@org.eclipse.objectteams.otdt.apt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.apt,tag=builds/201606070956
+plugin@org.eclipse.objectteams.otdt.apt=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.apt,tag=branches/maintenance/OTDT_2.5.x
 plugin@org.eclipse.objectteams.otdt.compiler.adaptor=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.compiler.adaptor,tag=builds/201606070956
 plugin@org.eclipse.objectteams.otdt.debug.adaptor=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.debug.adaptor,tag=builds/201606070956
 plugin@org.eclipse.objectteams.otdt.refactoring=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.refactoring,tag=builds/201606070956
