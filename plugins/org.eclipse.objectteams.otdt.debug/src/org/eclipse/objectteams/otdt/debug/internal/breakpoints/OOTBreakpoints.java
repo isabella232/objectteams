@@ -112,7 +112,7 @@ public class OOTBreakpoints
     {
     	Map<String, Boolean> finalizeMethodAttributes = getBreakpointAttributes();
     	finalizeMethodAttributes.put(OOTBreakpoints.ATTR_OT_BREAKPOINT_FINALIZE, Boolean.TRUE);
-    	return createOOTMethodBreakpoint(oot, getFinalizeMethodLineNumber(), finalizeMethodAttributes);    	
+    	return createOOTBreakpoint(oot, getFinalizeMethodLineNumber(), finalizeMethodAttributes);    	
     }
         
     public static IBreakpoint createOOTActivateBreakpoint(IType oot)throws CoreException
@@ -155,24 +155,6 @@ public class OOTBreakpoints
 				attributes);
 		breakpoint.setPersisted(false);
 		
-		return breakpoint;
-	}
-    
-	public static IBreakpoint createOOTMethodBreakpoint(IType oot, int linenumber, Map attributes)
-			throws CoreException
-	{
-		IResource teamResource = oot.getJavaProject().getResource();
-		IJavaBreakpoint breakpoint = JDIDebugModel.createMethodBreakpoint(
-				teamResource, 
-				oot.getFullyQualifiedName(), 
-				"finalize", 
-				"()V",
-				true /*entry*/, false /*exit*/, false /*native*/,
-				linenumber, 
-				-1, -1, 0, 
-				false /*register*/, 
-				attributes);
-		breakpoint.setPersisted(false);
 		return breakpoint;
 	}
 	
