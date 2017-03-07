@@ -38,7 +38,7 @@ public class Activator extends AbstractUIPlugin {
 	public static final String IMG_UNSIGNED_ADAPTED = "org.eclipse.objectteams.otequinox.branding.unsigned_adapted"; //$NON-NLS-1$
 
 	/** The plug-in ID */
-	public static final String PLUGIN_ID = "org.eclipse.objectteams.otequinox.branding"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.objectteams.otequinox.branding.otre"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
