@@ -25,7 +25,9 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.IInternalDebugUIConstants;
@@ -153,10 +155,27 @@ public class OTProjectCreationDecorator extends AbstractOTDTDebugTest {
         createLaunchConfiguration("copyinheritancetests.SubTeam");
         createLaunchConfiguration("copyinheritancetests.SubTeam2");
         createLaunchConfiguration("copyinheritancetests.SubTeam3");
+        waitForJDTInit();
 // SH}
     }
 
-    /**
+    protected void waitForJDTInit() throws Exception {
+		super.setUp();
+		boolean wasInterrupted = false;
+		do {
+			try {
+				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+//				Indexer.getInstance().waitForIndex(null);
+				wasInterrupted = false;
+			} catch (OperationCanceledException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				wasInterrupted = true;
+			}
+		} while (wasInterrupted);
+	}
+
+	/**
      * Create a project with non-default, mulitple output locations.
      * 
      * @throws Exception
