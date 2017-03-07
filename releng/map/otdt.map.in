@@ -69,8 +69,8 @@ plugin@org.eclipse.objectteams.otdt.debug.tests=GIT,repo=git://git.eclipse.org/g
 plugin@org.eclipse.objectteams.otdt.ui.tests.refactoring=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests.refactoring,tag=branches/maintenance/OTDT_2.5.x
 
 !** OT/J Test Plugins **!
-plugin@org.eclipse.objectteams.otdt.test.builder=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.test.builder
-plugin@org.eclipse.objectteams.otdt.ui.tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests
+plugin@org.eclipse.objectteams.otdt.test.builder=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.test.builder,tag=branches/maintenance/OTDT_2.5.x
+plugin@org.eclipse.objectteams.otdt.ui.tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=testplugins/org.eclipse.objectteams.otdt.ui.tests,tag=branches/maintenance/OTDT_2.5.x
 
 !-- Tests fetched from original GIT (some are required indirectly by jdt.ui.tests): --
 plugin@org.eclipse.jdt.core.tests.builder=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.core.tests.builder
