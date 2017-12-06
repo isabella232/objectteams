@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AspectExportBase Plug-in
 Bundle-SymbolicName: AspectExportBase; singleton:=true
+Automatic-Module-Name: AspectExportBase
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.ui
 Export-Package: aeb.api

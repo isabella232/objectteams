@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: UnresolvedBasePlugin Plug-in
 Bundle-SymbolicName: UnresolvedBasePlugin; singleton:=true
+Automatic-Module-Name: UnresolvedBasePlugin
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.objectteams.otequinox,
  org.eclipse.objectteams.runtime

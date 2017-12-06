@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trac213b2 Plug-in
 Bundle-SymbolicName: Trac213b2
+Automatic-Module-Name: Trac213b2
 Bundle-Version: 1.0.0
 Bundle-Activator: trac213b2.Activator2
 Require-Bundle: org.eclipse.core.runtime

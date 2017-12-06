@@ -1,6 +1,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Bug484275
 Bundle-SymbolicName: Bug484275;singleton:=true
+Automatic-Module-Name: Bug484275
 Bundle-Version: 1.0.0.qualifier
 Export-Package: teams
 Require-Bundle: Base484275;bundle-version="1.0.0"

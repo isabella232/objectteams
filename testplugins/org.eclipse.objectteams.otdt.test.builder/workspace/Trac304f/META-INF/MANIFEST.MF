@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trac304f
 Bundle-SymbolicName: Trac304f
+Automatic-Module-Name: Trac304f
 Bundle-Version: 1.0.0
 Fragment-Host: Trac304b
 Export-Package: fragment304

@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AspectExportAspect Plug-in
 Bundle-SymbolicName: AspectExportAspect; singleton:=true
+Automatic-Module-Name: AspectExportAspect
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.objectteams.otequinox,

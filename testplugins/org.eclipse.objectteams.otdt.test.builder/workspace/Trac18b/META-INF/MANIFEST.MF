@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trac18b Plug-in
 Bundle-SymbolicName: Trac18b; singleton:=true
+Automatic-Module-Name: Trac18b
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.ui
 Export-Package: trac18b.api

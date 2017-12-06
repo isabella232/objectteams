@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test wrong base import Plug-in
 Bundle-SymbolicName: WrongBaseImport1; singleton:=true
+Automatic-Module-Name: WrongBaseImport1
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.objectteams.otequinox,
  Trac18b,

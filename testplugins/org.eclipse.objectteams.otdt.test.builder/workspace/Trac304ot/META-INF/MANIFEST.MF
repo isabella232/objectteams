@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trac304ot
 Bundle-SymbolicName: Trac304ot;singleton:=true
+Automatic-Module-Name: Trac304ot
 Bundle-Version: 1.0.0
 Bundle-Activator: trac304ot.Activator
 Require-Bundle: org.eclipse.core.runtime,

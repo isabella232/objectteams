@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trac132 Aspect 1 Plug-in
 Bundle-SymbolicName: Trac132a1; singleton:=true
+Automatic-Module-Name: Trac132a1
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.objectteams.otequinox,

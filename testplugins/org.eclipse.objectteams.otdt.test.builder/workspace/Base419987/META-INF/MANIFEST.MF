@@ -1,6 +1,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Base
 Bundle-SymbolicName: Base419987
+Automatic-Module-Name: Base419987
 Bundle-Version: 1.0.0.qualifier
 Export-Package: internal;x-internal:=true
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

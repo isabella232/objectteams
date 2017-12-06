@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test Illegal Use Of ForcedExport Plug-in
 Bundle-SymbolicName: IllegalUseOfForcedExport; singleton:=true
+Automatic-Module-Name: IllegalUseOfForcedExport
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.objectteams.otequinox,
  Trac18b
