@@ -1820,11 +1820,14 @@ public void resolve() {
 		boolean hasEnumConstants = false;
 		FieldDeclaration[] enumConstantsWithoutBody = null;
 
-		if (this.memberTypes != null) {
 //{ObjectTeams: don't cache count, array may grow during this loop!
-/* orig:
+		int resolvedMemberCount = 0; // but remember for later :)
+// orig:
+		if (this.memberTypes != null) {
+/*
 			for (int i = 0, count = this.memberTypes.length; i < count; i++) {
   :giro */
+			resolvedMemberCount = this.memberTypes.length;
 			for (int i = 0; i < this.memberTypes.length; i++) {
 // SH}
 				this.memberTypes[i].resolve(this.scope);
@@ -1947,6 +1950,12 @@ public void resolve() {
 			return;
 		}
         StateMemento.methodResolveStart(this.binding);
+        // any role types found during field resolve? If so, catch up now:
+    	if (this.memberTypes != null && this.memberTypes.length > resolvedMemberCount 
+    			&& this.teamModel != null)
+    	{
+    		Dependencies.lateRolesCatchup(this.teamModel);
+    	}
 // SH}
 //{ObjectTeams: should we work?
       if (fieldsAndMethods) {
