@@ -4,7 +4,7 @@
   	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>2.5.0</version>
+		<version>2.6.1</version>
   	</parent>
   
 	<artifactId>objectteams-otdre-parent-pom</artifactId>
@@ -27,7 +27,7 @@
 			<comments>
 				This file is part of "Object Teams Development Tooling"-Software.
 
-				Copyright 2016 GK Software AG and others.
+				Copyright 2016, 2018 GK Software AG and others.
 				All rights reserved. This program and the accompanying materials
 				are made available under the terms of the Eclipse Public License v1.0
 				which accompanies this distribution, and is available at
@@ -71,10 +71,16 @@
 		<objectteams-otre.version>${otdre.version}</objectteams-otre.version>
 		
 		<!-- Select ASM: -->
-		<asm.version>5.0.1</asm.version>
+		<asm.version>6.0</asm.version>
 		<otj.bytecode.lib.groupId>org.ow2.asm</otj.bytecode.lib.groupId>
-		<otj.bytecode.lib.artifactId>asm-all</otj.bytecode.lib.artifactId>
+		<otj.bytecode.lib.artifactId>asm</otj.bytecode.lib.artifactId>
 		<otj.bytecode.lib.version>${asm.version}</otj.bytecode.lib.version>
+		
+		<asm.location>${settings.localRepository}/org/ow2/asm/asm/${asm.version}/asm-${asm.version}.jar</asm.location>
+		<asm.commons.location>${settings.localRepository}/org/ow2/asm/asm-commons/${asm.version}/asm-commons-${asm.version}.jar</asm.commons.location>
+		<asm.tree.location>${settings.localRepository}/org/ow2/asm/asm-tree/${asm.version}/asm-tree-${asm.version}.jar</asm.tree.location>
+		
+		<otj.bootcp.arg>-Xbootclasspath/a:${otj.runtime.location}:${asm.location}:${asm.commons.location}:${asm.tree.location}</otj.bootcp.arg>
     </properties>
 
 	<scm>
@@ -110,5 +116,32 @@
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
-
+	
+	<dependencies>
+		<!-- Since ASM is now split into several jars, we need to list additional ones here -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-commons</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-tree</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+			<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-util</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-analysis</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>

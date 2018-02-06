@@ -3,7 +3,7 @@
 	------
 	Olaf Otto & Stephan Herrmann
 	------
-	2016-06-12
+	2018-02-06
 	------
 
 Using the Object Teams OTDRE Parent POM
@@ -38,7 +38,7 @@ Using the Object Teams OTDRE Parent POM
 	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-otdre-parent-pom</artifactId>
-		<version>2.5.0</version>
+		<version>2.6.1</version>
 	</parent>
 +-----
 
@@ -67,6 +67,7 @@ Using the Object Teams OTDRE Parent POM
 
   []
   
-  The following module is indirectly used:
+  The following modules are indirectly used:
 
-  [org.ow2.asm:asm-all] the original {{{http://asm.ow2.org/}ASM}} byte code library.
+  [org.ow2.asm:asm] the original {{{http://asm.ow2.org/}ASM}} byte code library, along with its auxiliary modules <<<asm-commons>>>, <<<asm-tree>>>, <<<asm-util>>> and <<<asm-analysis>>>
+  
