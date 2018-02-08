@@ -142,6 +142,7 @@ public class AspectBindingRegistry {
 			bindings.add(binding);
 			// TODO(SH): maybe enforce that every bundle id is given only once?
 
+			boolean isSelfAdaptation = baseBundleId.toUpperCase().equals(SELF);
 			//teams:
 			try {
 				for (int j = 0, count = 0; count < teamCount; j++) {
@@ -160,7 +161,7 @@ public class AspectBindingRegistry {
 					}
 				}
 				
-				String realBaseBundleId = baseBundleId.toUpperCase().equals(SELF) ? aspectBundleId : baseBundleId;
+				String realBaseBundleId = isSelfAdaptation ? aspectBundleId : baseBundleId;
 				addBindingForBaseBundle(realBaseBundleId, binding);
 				addBindingForAspectBundle(aspectBundleId, binding);
 				hook.setBaseTripWire(packageAdmin, realBaseBundleId, baseBundle);
@@ -169,7 +170,7 @@ public class AspectBindingRegistry {
 			} catch (Throwable t) {
 				log(t, "Invalid aspectBinding extension");
 			}
-			if (packageAdmin != null && aspectBundle != null && !binding.hasScannedTeams) {
+			if (packageAdmin != null && aspectBundle != null && !binding.hasScannedTeams && !isSelfAdaptation) {
 				@SuppressWarnings("deprecation")
 				Bundle[] baseBundles = packageAdmin.getBundles(baseBundleId, null);
 				if (baseBundles == null || baseBundles.length == 0 || (baseBundles[0].getState() < Bundle.RESOLVED)) {
