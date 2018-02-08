@@ -349,10 +349,12 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 		List<AspectBinding> aspectBindings = aspectBindingRegistry.getAdaptingAspectBindings(bundle.getSymbolicName());
 		if (aspectBindings != null && !aspectBindings.isEmpty()) {
 			isBaseBundle = true;
-			// potential base class: look deeper:
-			for (AspectBinding aspectBinding : aspectBindings) {
-				if (!aspectBinding.hasScannedTeams && !aspectBinding.hasBeenDenied)
-					return WeavingReason.Base; // we may be first, go ahead and trigger the trip wire
+			if (bytes != null) { // with bytes == null we are invoked from OTDRE's IWeavingContext.isWeavable(), must not prematurely answer yes
+				// potential base class: look deeper:
+				for (AspectBinding aspectBinding : aspectBindings) {
+					if (!aspectBinding.hasScannedTeams && !aspectBinding.hasBeenDenied)
+						return WeavingReason.Base; // we may be first, go ahead and trigger the trip wire
+				}
 			}
 			if (isAdaptedBaseClass(aspectBindings, className, bytes, bundleWiring.getClassLoader()))
 				return WeavingReason.Base;					
