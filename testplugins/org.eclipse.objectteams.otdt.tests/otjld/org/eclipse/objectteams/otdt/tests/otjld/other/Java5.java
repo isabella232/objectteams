@@ -393,6 +393,117 @@ public class Java5 extends AbstractOTJLDTest {
             "cannot be resolved");
     }
 
+    // a base has a parameterized method, type variable used as type argument -  which is bound via callin
+    public void testA11_genericFeatureInBase3cih() {
+       
+       runConformTest(
+            new String[] {
+		"TeamA11gfib3ci.java",
+			    "\n" +
+			    "public team class TeamA11gfib3ci {\n" +
+			    "  protected class R playedBy TA11gfib3ci {\n" +
+			    "    <T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class<T> c)\n" +
+			    "			base when (c.isInstance(it));" +
+			    "    callin <T> T getIt(Object it, Class<T> c) {\n" +
+			    "      System.out.print(\">>\");\n" +
+			    "      return base.getIt(it, c);\n" +
+			    "    }\n" +
+			    "  }\n" +
+			    "  public static void main(String[] args) {\n" +
+			    "    new TeamA11gfib3ci().activate();\n" +
+			    "    System.out.print(new TA11gfib3ci().getIt(\"OK\", String.class));\n" +
+			    "  }\n" +
+			    "}\n" +
+			    "  \n",
+		"TA11gfib3ci.java",
+			    "\n" +
+			    "public class TA11gfib3ci {\n" +
+			    "  <T> T getIt(Object it, Class<T> c) { return c.cast(it); }\n" +
+			    "}\n" +
+			    "  \n"
+            },
+            ">>OK");
+    }
+
+    // a base has a parameterized method, base's type parameter omitted -  which is bound via callin
+    public void testA11_genericFeatureInBase3cii() {
+       
+       runNegativeTest(
+            new String[] {
+		"TeamA11gfib3ci.java",
+			    "\n" +
+			    "public team class TeamA11gfib3ci {\n" +
+			    "  protected class R playedBy TA11gfib3ci {\n" +
+			    "    <T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class c)\n" +
+			    "			base when (c.isInstance(it));" +
+			    "    callin <T> T getIt(Object it, Class<T> c) {\n" +
+			    "      System.out.print(\">>\");\n" +
+			    "      return base.getIt(it, c);\n" +
+			    "    }\n" +
+			    "  }\n" +
+			    "  public static void main(String[] args) {\n" +
+			    "    new TeamA11gfib3ci().activate();\n" +
+			    "    System.out.print(new TA11gfib3ci().getIt(\"OK\", String.class));\n" +
+			    "  }\n" +
+			    "}\n" +
+			    "  \n",
+		"TA11gfib3ci.java",
+			    "\n" +
+			    "public class TA11gfib3ci {\n" +
+			    "  <T> T getIt(Object it, Class<T> c) { return c.cast(it); }\n" +
+			    "}\n" +
+			    "  \n"
+            },
+            "----------\n" + 
+    		"1. WARNING in TeamA11gfib3ci.java (at line 4)\n" + 
+    		"	<T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class c)\n" + 
+    		"	                                                                 ^^^^^\n" + 
+    		"Class is a raw type. References to generic type Class<T> should be parameterized\n" + 
+    		"----------\n" + 
+    		"2. ERROR in TeamA11gfib3ci.java (at line 4)\n" + 
+    		"	<T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class c)\n" + 
+    		"	                                                                 ^^^^^\n" + 
+    		"Method specifier finds no direct match, argument of closest match is Class<Object> instead of Class (OTJLD 4.1(c)).\n" + 
+    		"----------\n");
+    }
+
+    // a base has a parameterized method, base's type parameter erased to Object -  which is bound via callin
+    public void testA11_genericFeatureInBase3cij() {
+       
+       runNegativeTest(
+            new String[] {
+		"TeamA11gfib3ci.java",
+			    "\n" +
+			    "public team class TeamA11gfib3ci {\n" +
+			    "  protected class R playedBy TA11gfib3ci {\n" +
+			    "    <T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class<Object> c)\n" +
+			    "			base when (c.isInstance(it));" +
+			    "    callin <T> T getIt(Object it, Class<T> c) {\n" +
+			    "      System.out.print(\">>\");\n" +
+			    "      return base.getIt(it, c);\n" +
+			    "    }\n" +
+			    "  }\n" +
+			    "  public static void main(String[] args) {\n" +
+			    "    new TeamA11gfib3ci().activate();\n" +
+			    "    System.out.print(new TA11gfib3ci().getIt(\"OK\", String.class));\n" +
+			    "  }\n" +
+			    "}\n" +
+			    "  \n",
+		"TA11gfib3ci.java",
+			    "\n" +
+			    "public class TA11gfib3ci {\n" +
+			    "  <T> T getIt(Object it, Class<T> c) { return c.cast(it); }\n" +
+			    "}\n" +
+			    "  \n"
+            },
+            "----------\n" + 
+    		"1. ERROR in TeamA11gfib3ci.java (at line 4)\n" + 
+    		"	<T> T getIt(Object it, Class<T> c) <- replace T getIt(Object it, Class<Object> c)\n" + 
+    		"	                                ^\n" + 
+    		"When mapping the 2. argument of getIt(Object, Class): cannot convert from java.lang.Class<java.lang.Object> to java.lang.Class<T> (OTJLD 4.5(d)).\n" + 
+    		"----------\n");
+    }
+
     // a base has a parameterized method  which is bound via callout
     // A.1.1-otjld-generic-feature-in-base-4
     public void testA11_genericFeatureInBase4() {
