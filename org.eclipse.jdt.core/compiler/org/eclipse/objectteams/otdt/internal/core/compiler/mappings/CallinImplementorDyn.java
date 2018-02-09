@@ -460,8 +460,12 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 								hasBasePredicate = true;
 							}
 				        }
-				        Expression resetFlag = 
-				        	CallinImplementor.setExecutingCallin(roleType.roleModel, blockStatements);				//   boolean _OT$oldIsExecutingCallin = _OT$setExecutingCallin(true);
+				        // below this line we are "inside" the callin execution:
+				        blockStatements.add(gen.assignment(gen.singleNameReference(CallinImplementor.OLD_IS_EXECUTING), // _OT$oldIsExecutingCallin = _OT$setExecutingCallin(true); // local declared at top level
+				        								   gen.messageSend(
+			        												gen.thisReference(),
+			        												IOTConstants.SET_EXECUTING_CALLIN,
+			        												new Expression[]{ gen.booleanLiteral(true) })));
 
 				        // ----------- receiver for role method call: -----------
 				        Expression receiver;
@@ -705,7 +709,7 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 						//		try { roleMessageSend(); }
 						//		catch(Exception _OT$caughtException) { throw new SneakyException(_OT$caughtException); }
 						//		finally { _OT$setExecutingCallin(_OT$oldIsExecutingCallin); } 
-						blockStatements.add(protectRoleMethodCall(messageSendStatements, roleMethodBinding, resetFlag, gen));
+						blockStatements.add(protectRoleMethodCall(messageSendStatements, roleMethodBinding, gen));
 						statements.add(gen.block(blockStatements.toArray(new Statement[blockStatements.size()])));
 						// collectively report the problem(s)
 						if (canLiftingFail && callinDecl.rolesWithLiftingProblem != null)
@@ -807,12 +811,22 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 					exceptionStatementss = new Statement[][]{{catchStatement1}};				
 				}
 				tryStats.add(switchStat);
+
+				LocalDeclaration flagVariable = gen.localVariable(CallinImplementor.OLD_IS_EXECUTING,
+														gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_BOOLEAN),
+														gen.nullLiteral());
+				Statement resetFlag = gen.ifStatement(gen.nonNullCheck(gen.singleNameReference(CallinImplementor.OLD_IS_EXECUTING)),
+										gen.messageSend(gen.thisReference(),
+														IOTConstants.SET_EXECUTING_CALLIN,
+														new Expression[]{ gen.singleNameReference(CallinImplementor.OLD_IS_EXECUTING) }));
 				methodDecl.statements = new Statement[] {
-							gen.tryCatch(
+							flagVariable,
+							gen.tryStatement(
 								tryStats.toArray(new Statement[tryStats.size()]),
 								// expected exception is ignored, do nothing (before/after) or proceed to callNext (replace)
 								exceptionArguments,
-								exceptionStatementss)
+								exceptionStatementss,
+								new Statement[] {resetFlag})
 						};
 				methodDecl.hasParsedStatements = true;
 				return true;
@@ -1009,7 +1023,7 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 	}
 
 	/** Convert custom exceptions into SneakyException as to bypass checking by the compiler. */
-	TryStatement protectRoleMethodCall(Statement[] statements, MethodBinding roleMethod, Statement finallyStat, AstGenerator gen) {
+	TryStatement protectRoleMethodCall(Statement[] statements, MethodBinding roleMethod, AstGenerator gen) {
 		Argument catch1Arg = gen.argument(CATCH_ARG, gen.qualifiedTypeReference(TypeConstants.JAVA_LANG_RUNTIMEEXCEPTION)); // incl. LiftingVetoException
 		Statement[] catch1Stat = new Statement[] {
 				gen.throwStatement(gen.singleNameReference(CATCH_ARG)) // rethrow as-is
@@ -1021,11 +1035,10 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 						new Expression[] { gen.singleNameReference(CATCH_ARG) }
 				))
 		};
-		return gen.tryStatement(
+		return gen.tryCatch(
 				statements,
 				new Argument[] {catch1Arg, catch2Arg}, 
-				new Statement[][] {catch1Stat, catch2Stat},
-				new Statement[] {finallyStat});
+				new Statement[][] {catch1Stat, catch2Stat});
 	}
 
 	private void generateCallOrigStatic(List<CallinMappingDeclaration> callinDecls, TeamModel aTeam) {

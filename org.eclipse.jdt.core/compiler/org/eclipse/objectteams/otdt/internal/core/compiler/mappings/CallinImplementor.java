@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  *
- * Copyright 2003, 2013 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2003, 2018 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -112,7 +112,7 @@ public class CallinImplementor extends MethodMappingImplementor
 	public static final String OT_LOCAL = "_OT$local$"; //$NON-NLS-1$
 	//_OT$role
 	static final char[] ROLE_VAR_NAME = CharOperation.concat(IOTConstants.OT_DOLLAR_NAME, IOTConstants.ROLE);
-	private static final char[] OLD_IS_EXECUTING = "_OT$oldIsExecuting".toCharArray(); //$NON-NLS-1$
+	static final char[] OLD_IS_EXECUTING = "_OT$oldIsExecuting".toCharArray(); //$NON-NLS-1$
 	private ClassScope _roleScope;
 
 	/**

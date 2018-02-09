@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Development Tooling"-Software
  *
- * Copyright 2004, 2016 Fraunhofer Gesellschaft, Munich, Germany,
+ * Copyright 2004, 2018 Fraunhofer Gesellschaft, Munich, Germany,
  * for its Fraunhofer Institute for Computer Architecture and Software
  * Technology (FIRST), Berlin, Germany and Technical University Berlin,
  * Germany.
@@ -305,10 +305,16 @@ public class AstGenerator extends AstFactory {
 		return result;
 	}
 	public Expression nullCheck(Expression value) {
+		return internalNullCheck(value, OperatorIds.EQUAL_EQUAL);
+	}
+	public Expression nonNullCheck(Expression value) {
+		return internalNullCheck(value, OperatorIds.NOT_EQUAL);
+	}
+	Expression internalNullCheck(Expression value, int operator) {
 		EqualExpression result = new EqualExpression(
 				value,
 				nullLiteral(),
-				OperatorIds.EQUAL_EQUAL) {
+				operator) {
 			protected void checkVariableComparison(BlockScope scope, FlowContext flowContext, FlowInfo flowInfo, FlowInfo initsWhenTrue, FlowInfo initsWhenFalse, LocalVariableBinding local, int nullStatus, Expression reference) {
 				// similar to super version: do mark flowInfo but avoid reporting any problems
 				switch (nullStatus) {
