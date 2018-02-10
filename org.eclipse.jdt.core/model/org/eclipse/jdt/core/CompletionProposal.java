@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 IBM Corporation and others.
+ * Copyright (c) 2004, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1241,7 +1241,7 @@ public class CompletionProposal {
 	}
 
 	/**
-	 * Returns the type signature or package name or module name (1.9) of the relevant
+	 * Returns the type signature or package name or module name (9) of the relevant
 	 * declaration in the context, or <code>null</code> if none.
 	 * <p>
 	 * This field is available for the following kinds of
@@ -1266,6 +1266,8 @@ public class CompletionProposal {
 	 * 	<li><code>METHOD_DECLARATION</code> - type signature
 	 * of the type that declares the method that is being
 	 * implemented or overridden</li>
+	 * 	<li><code>MODULE_DECLARATION</code> - 
+	 * possible name of the module that is being declared</li>
 	 * 	<li><code>MODULE_REF</code> - 
 	 * name of the module that is referenced</li>
 	 * 	<li><code>PACKAGE_REF</code> - dot-based package
@@ -1282,7 +1284,7 @@ public class CompletionProposal {
 	 * returned.
 	 * </p>
 	 *
-	 * @return a type signature or a package name or module name (1.9) (depending
+	 * @return a type signature or a package name or module name (9) (depending
 	 * on the kind of completion), or <code>null</code> if none
 	 * @see Signature
 	 */
@@ -1318,7 +1320,7 @@ public class CompletionProposal {
 	}
 
 	/**
-	 * Sets the type or package or module(1.9) signature of the relevant
+	 * Sets the type or package signature or module name (9) of the relevant
 	 * declaration in the context, or <code>null</code> if none.
 	 * <p>
 	 * If not set, defaults to none.
@@ -1328,7 +1330,7 @@ public class CompletionProposal {
 	 * its properties; this method is not intended to be used by other clients.
 	 * </p>
 	 *
-	 * @param signature the type or package  or module(1.9) signature, or
+	 * @param signature the type or package signature or module name(9) , or
 	 * <code>null</code> if none
 	 */
 	public void setDeclarationSignature(char[] signature) {

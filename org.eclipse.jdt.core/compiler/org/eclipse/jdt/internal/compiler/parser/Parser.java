@@ -7369,10 +7369,8 @@ protected void consumePackageDeclaration() {
 	// flush comments defined prior to import statements
 	impt.declarationEnd = this.endStatementPosition;
 	impt.declarationSourceEnd = flushCommentsDefinedPriorTo(impt.declarationSourceEnd);
-// JDT bug 526940
-	if (this.firstToken == TerminalTokens.TokenNameQUESTION)
-		this.unstackedAct = ACCEPT_ACTION;
-// TDJ
+	if (this.firstToken == TokenNameQUESTION)
+		this.unstackedAct = ACCEPT_ACTION; // force termination at goal
 }
 protected void consumePackageDeclarationName() {
 	// PackageDeclarationName ::= PackageComment 'package' Name RejectTypeAnnotations
@@ -14546,7 +14544,6 @@ try {
 			consumeRule(act);
 			act = this.unstackedAct;
 
-// JDT bug 526940
 			if (act == ACCEPT_ACTION) {
 				break ProcessTerminals;
 			}

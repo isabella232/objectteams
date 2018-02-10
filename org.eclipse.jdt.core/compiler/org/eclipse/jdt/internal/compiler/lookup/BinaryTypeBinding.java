@@ -55,10 +55,12 @@ import org.eclipse.jdt.internal.compiler.classfmt.ClassFileReader;
 import org.eclipse.jdt.internal.compiler.classfmt.FieldInfo;
 import org.eclipse.jdt.internal.compiler.classfmt.MethodInfo;
 import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider.IMethodAnnotationWalker;
+import org.eclipse.jdt.internal.compiler.classfmt.MethodInfoWithAnnotations;
 import org.eclipse.jdt.internal.compiler.classfmt.NonNullDefaultAwareTypeAnnotationWalker;
 import org.eclipse.jdt.internal.compiler.classfmt.TypeAnnotationWalker;
 import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
 import org.eclipse.jdt.internal.compiler.env.*;
+import org.eclipse.jdt.internal.compiler.impl.BooleanConstant;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.parser.Parser;
@@ -776,8 +778,27 @@ void cachePartsFrom(IBinaryType binaryType, boolean needFieldsAndMethods) {
 			this.version = reader.getVersion();
 		}
 // SH}
-		if (this.environment.globalOptions.storeAnnotations)
-			setAnnotations(createAnnotations(binaryType.getAnnotations(), this.environment, missingTypeNames));
+		if (this.environment.globalOptions.storeAnnotations) {
+			setAnnotations(createAnnotations(binaryType.getAnnotations(), this.environment, missingTypeNames), false);
+		} else if (sourceLevel >= ClassFileConstants.JDK9 && isDeprecated() && binaryType.getAnnotations() != null) {
+			// prior to Java 9 all standard annotations were marker annotations, not needing to be stored,
+			// but since Java 9 we need more information from the @Deprecated annotation:
+			for (IBinaryAnnotation annotation : binaryType.getAnnotations()) {
+				if (annotation.isDeprecatedAnnotation()) {
+					AnnotationBinding[] annotationBindings = createAnnotations(new IBinaryAnnotation[] { annotation }, this.environment, missingTypeNames);
+					setAnnotations(annotationBindings, true); // force storing
+					for (ElementValuePair elementValuePair : annotationBindings[0].getElementValuePairs()) {
+						if (CharOperation.equals(elementValuePair.name, TypeConstants.FOR_REMOVAL)) {
+							if (elementValuePair.value instanceof BooleanConstant && ((BooleanConstant) elementValuePair.value).booleanValue()) {
+								this.tagBits |= TagBits.AnnotationTerminallyDeprecated;
+								markImplicitTerminalDeprecation(this);
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
 		if (this.isAnnotationType())
 			scanTypeForContainerAnnotation(binaryType, missingTypeNames);
 	} finally {
@@ -787,6 +808,21 @@ void cachePartsFrom(IBinaryType binaryType, boolean needFieldsAndMethods) {
 		if (this.methods == null)
 			this.methods = Binding.NO_METHODS;
 	}
+}
+void markImplicitTerminalDeprecation(ReferenceBinding type) {
+	for (ReferenceBinding member : type.memberTypes()) {
+		member.tagBits |= TagBits.AnnotationTerminallyDeprecated;
+		markImplicitTerminalDeprecation(member);
+	}
+	MethodBinding[] methodsOfType = type.unResolvedMethods();
+	if (methodsOfType != null)
+		for (MethodBinding methodBinding : methodsOfType)
+			methodBinding.tagBits |= TagBits.AnnotationTerminallyDeprecated;
+
+	FieldBinding[] fieldsOfType = type.unResolvedFields();
+	if (fieldsOfType != null)
+		for (FieldBinding fieldBinding : fieldsOfType)
+			fieldBinding.tagBits |= TagBits.AnnotationTerminallyDeprecated;
 }
 
 /* When creating a method we need to pass in any default 'nullness' from a @NNBD immediately on this method. */
@@ -849,16 +885,22 @@ private void createFields(IBinaryField[] iFields, IBinaryType binaryType, long s
 						binaryField.getModifiers() | ExtraCompilerModifiers.AccUnresolved,
 						this,
 						binaryField.getConstant());
+				boolean forceStoreAnnotations = !this.environment.globalOptions.storeAnnotations
+						&& (this.environment.globalOptions.sourceLevel >= ClassFileConstants.JDK9
+						&& binaryField.getAnnotations() != null
+						&& (binaryField.getTagBits() & TagBits.AnnotationDeprecated) != 0);
 				if (firstAnnotatedFieldIndex < 0
 //{ObjectTeams: read annotations within roles to enable copying:
 /* orig:
-						&& this.environment.globalOptions.storeAnnotations
+						&& (this.environment.globalOptions.storeAnnotations || forceStoreAnnotations)
   :giro */
-						&& (   this.environment.globalOptions.storeAnnotations
+						&& (   this.environment.globalOptions.storeAnnotations || forceStoreAnnotations
 							|| this.isRole())
 // SH}
 						&& binaryField.getAnnotations() != null) {
 					firstAnnotatedFieldIndex = i;
+					if (forceStoreAnnotations)
+						storedAnnotations(true, true); // for Java 9 @Deprecated we need to force storing annotations
 				}
 				field.id = i; // ordinal
 				if (use15specifics)
@@ -882,7 +924,7 @@ private void createFields(IBinaryField[] iFields, IBinaryType binaryType, long s
 			if (firstAnnotatedFieldIndex >= 0) {
 				for (int i = firstAnnotatedFieldIndex; i <size; i++) {
 					IBinaryField binaryField = iFields[i];
-					this.fields[i].setAnnotations(createAnnotations(binaryField.getAnnotations(), this.environment, missingTypeNames));
+					this.fields[i].setAnnotations(createAnnotations(binaryField.getAnnotations(), this.environment, missingTypeNames), false);
 				}
 			}
 		}
@@ -1117,7 +1159,13 @@ private MethodBinding createMethod(IBinaryMethod method, IBinaryType binaryType,
 		result.receiver = this.environment.createAnnotatedType(this, createAnnotations(receiverAnnotations, this.environment, missingTypeNames));
 	}
 
-	if (this.environment.globalOptions.storeAnnotations) {
+	boolean forceStoreAnnotations = !this.environment.globalOptions.storeAnnotations
+										&& (this.environment.globalOptions.sourceLevel >= ClassFileConstants.JDK9
+										&& method instanceof MethodInfoWithAnnotations
+										&& (method.getTagBits() & TagBits.AnnotationDeprecated) != 0);
+	if (this.environment.globalOptions.storeAnnotations || forceStoreAnnotations) {
+		if (forceStoreAnnotations)
+			storedAnnotations(true, true); // for Java 9 @Deprecated we need to force storing annotations
 		IBinaryAnnotation[] annotations = method.getAnnotations();
 		if (method.isConstructor()) {
 			IBinaryAnnotation[] tAnnotations = walker.toMethodReturn().getAnnotationsAtCursor(this.id, false);
@@ -1989,16 +2037,16 @@ public void tagAsHavingDefectiveContainerType() {
 		this.containerAnnotationType = new ProblemReferenceBinding(this.containerAnnotationType.compoundName, this.containerAnnotationType, ProblemReasons.DefectiveContainerAnnotationType);
 }
 
-SimpleLookupTable storedAnnotations(boolean forceInitialize) {
+SimpleLookupTable storedAnnotations(boolean forceInitialize, boolean forceStore) {
 	
 	if (!isPrototype())
-		return this.prototype.storedAnnotations(forceInitialize);
+		return this.prototype.storedAnnotations(forceInitialize, forceStore);
 	
 	if (forceInitialize && this.storedAnnotations == null) {
 //{ObjectTeams: do support annotations for roles for the sake of copying:
 	  if (!this.isRole())
 // SH}
-		if (!this.environment.globalOptions.storeAnnotations)
+		if (!this.environment.globalOptions.storeAnnotations && !forceStore)
 			return null; // not supported during this compile
 		this.storedAnnotations = new SimpleLookupTable(3);
 	}

@@ -126,9 +126,6 @@ public ReferenceBinding resolve(LookupEnvironment environment, boolean convertGe
 			// create a proxy for the missing BinaryType
 			targetType = environment.createMissingType(null, this.compoundName);
 		}
-		if (targetType.id != TypeIds.NoId) {
-			this.id = targetType.id;
-		}
 		setResolvedType(targetType, environment);
 	}
 	if (convertGenericToRawType) {
@@ -154,7 +151,7 @@ public void swapUnresolved(UnresolvedReferenceBinding unresolvedType, ReferenceB
 	ReferenceBinding annotatedType = (ReferenceBinding) unannotatedType.clone(null);
 	this.resolvedType = annotatedType;
 	annotatedType.setTypeAnnotations(getTypeAnnotations(), environment.globalOptions.isAnnotationBasedNullAnalysisEnabled);
-	annotatedType.id = unannotatedType.id = this.id;
+
 	environment.updateCaches(this, annotatedType);
 	if (this.wrappers != null)
 		for (int i = 0, l = this.wrappers.length; i < l; i++)

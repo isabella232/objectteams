@@ -22,6 +22,7 @@ import org.eclipse.jdt.internal.compiler.env.IBinaryField;
 import org.eclipse.jdt.internal.compiler.env.IBinaryTypeAnnotation;
 import org.eclipse.jdt.internal.compiler.impl.*;
 import org.eclipse.jdt.internal.compiler.lookup.FieldBinding;
+import org.eclipse.jdt.internal.compiler.lookup.TagBits;
 import org.eclipse.jdt.internal.compiler.lookup.TypeIds;
 import org.eclipse.jdt.internal.compiler.util.Util;
 import org.eclipse.objectteams.otdt.core.compiler.IOTConstants;
@@ -47,14 +48,15 @@ public class FieldInfo extends ClassFileStruct implements IBinaryField, Comparab
 	protected int signatureUtf8Offset;
 	protected long tagBits;
 	protected Object wrappedConstantValue;
+	protected long version;
 
 //{ObjectTeams: field level attributes:
     /* After reading a field its OT-attributes are stored here. */
     private LinkedList<AbstractAttribute> fieldAttributes = new LinkedList<AbstractAttribute>();
 // SH}
 
-public static FieldInfo createField(byte classFileBytes[], int offsets[], int offset) {
-	FieldInfo fieldInfo = new FieldInfo(classFileBytes, offsets, offset);
+public static FieldInfo createField(byte classFileBytes[], int offsets[], int offset, long version) {
+	FieldInfo fieldInfo = new FieldInfo(classFileBytes, offsets, offset, version);
 	
 	int attributesCount = fieldInfo.u2At(6);
 	int readOffset = 8;
@@ -120,11 +122,13 @@ public static FieldInfo createField(byte classFileBytes[], int offsets[], int of
  * @param classFileBytes byte[]
  * @param offsets int[]
  * @param offset int
+ * @param version class file version
  */
-protected FieldInfo (byte classFileBytes[], int offsets[], int offset) {
+protected FieldInfo (byte classFileBytes[], int offsets[], int offset, long version) {
 	super(classFileBytes, offsets, offset);
 	this.accessFlags = -1;
 	this.signatureUtf8Offset = -1;
+	this.version = version;
 }
 private AnnotationInfo[] decodeAnnotations(int offset, boolean runtimeVisible) {
 	int numberOfAnnotations = u2At(offset + 6);
@@ -140,11 +144,12 @@ private AnnotationInfo[] decodeAnnotations(int offset, boolean runtimeVisible) {
 			long standardTagBits = newInfo.standardAnnotationTagBits;
 			if (standardTagBits != 0) {
 				this.tagBits |= standardTagBits;
-			} else {
-				if (newInfos == null)
-					newInfos = new AnnotationInfo[numberOfAnnotations - i];
-				newInfos[newInfoCount++] = newInfo;
+				if (this.version < ClassFileConstants.JDK9 || (standardTagBits & TagBits.AnnotationDeprecated) == 0)
+					continue;
 			}
+			if (newInfos == null)
+				newInfos = new AnnotationInfo[numberOfAnnotations - i];
+			newInfos[newInfoCount++] = newInfo;
 		}
 		if (newInfos != null) {
 			if (newInfoCount != newInfos.length)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2017 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@
 package org.eclipse.jdt.internal.compiler.lookup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -75,6 +76,8 @@ import org.eclipse.jdt.internal.compiler.ast.TypeReference.AnnotationPosition;
 import org.eclipse.jdt.internal.compiler.ast.Expression.DecapsulationState;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+import org.eclipse.jdt.internal.compiler.codegen.CodeStream;
+import org.eclipse.jdt.internal.compiler.codegen.Opcodes;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.impl.Constant;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions.WeavingScheme;
@@ -1807,6 +1810,20 @@ ReferenceBinding findTypeInTeamPackage(char[] name) {
 	return result;
 }
 //SH}
+public void generateSyntheticFinalFieldInitialization(CodeStream codeStream) {
+	if (this.synthetics == null || this.synthetics[SourceTypeBinding.FIELD_EMUL] == null)
+		return;
+	Collection<FieldBinding> syntheticFields = this.synthetics[SourceTypeBinding.FIELD_EMUL].values();
+	for (FieldBinding field : syntheticFields) {
+		if (CharOperation.prefixEquals(TypeConstants.SYNTHETIC_SWITCH_ENUM_TABLE, field.name)) {
+			MethodBinding[] accessors = (MethodBinding[]) this.synthetics[SourceTypeBinding.METHOD_EMUL].get(new String(field.name));
+			if (accessors == null || accessors[0] == null) // not a field for switch enum
+				continue;
+			codeStream.invoke(Opcodes.OPC_invokestatic, accessors[0], null /* default declaringClass */);
+			codeStream.fieldAccess(Opcodes.OPC_putstatic, field, null /* default declaringClass */);
+		}
+	}
+}
 /* Answer the synthetic field for <actualOuterLocalVariable>
 *	or null if one does not exist.
 */
@@ -3426,9 +3443,9 @@ public final int sourceStart() {
 
 	return this.scope.referenceContext.sourceStart;
 }
-SimpleLookupTable storedAnnotations(boolean forceInitialize) {
+SimpleLookupTable storedAnnotations(boolean forceInitialize, boolean forceStore) {
 	if (!isPrototype())
-		return this.prototype.storedAnnotations(forceInitialize);
+		return this.prototype.storedAnnotations(forceInitialize, forceStore);
 
 	if (forceInitialize && this.storedAnnotations == null && this.scope != null) { // scope null when no annotation cached, and type got processed fully (159631)
 		this.scope.referenceCompilationUnit().compilationResult.hasAnnotations = true;
@@ -3436,7 +3453,7 @@ SimpleLookupTable storedAnnotations(boolean forceInitialize) {
 //{ObjectTeams: do support annotations for roles for the sake of copying:
 	  if (!this.isRole())
 // SH}
-		if (!globalOptions.storeAnnotations)
+		if (!globalOptions.storeAnnotations && !forceStore)
 			return null; // not supported during this compile
 		this.storedAnnotations = new SimpleLookupTable(3);
 	}
