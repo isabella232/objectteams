@@ -59,14 +59,14 @@ Project Leader:
    </url>
 
    <requires>
-      <import feature="org.eclipse.jdt" version="3.13.2.v20171130-0906" patch="true"/>
+      <import feature="org.eclipse.jdt" version="3.13.3.v20180207-1700" patch="true"/>
    </requires>
 
    <plugin
          id="org.eclipse.jdt.core"
          download-size="5614"
          install-size="5614"
-         version="3.13.100.v_OTDT_r261_qualifier"
+         version="3.13.101.v_OTDT_r261_qualifier"
          unpack="false"/>
 
 </feature>
