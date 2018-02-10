@@ -18,7 +18,6 @@ package org.eclipse.objectteams.otdt.internal.ui.assist;
 
 import static org.eclipse.objectteams.otdt.ui.ImageConstants.CALLINMETHOD_IMG;
 
-import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -227,9 +226,11 @@ public team class OTQuickFixes  {
 			if (proposal instanceof AddImportCorrectionProposal) 
 			{
 				// if importRewrite suppressed a base import in a role file, don't propose empty changes, but redirect to the team:
-				ImportRewrite importRewrite = ((AddImportCorrectionProposal) proposal).getImportRewrite();
-				if (importRewrite != null && !importRewrite.myHasRecordedChanges())
-					proposal = TypeProposalSubProcessor.createImportInRoFisTeamProposal(cu, fullName, node, relevance, maxProposals);
+				if (OTModelManager.isRole(cu.findPrimaryType())) {
+					ImportRewrite importRewrite = ((AddImportCorrectionProposal) proposal).getImportRewrite();
+					if (importRewrite != null && !importRewrite.myHasRecordedChanges())
+						proposal = TypeProposalSubProcessor.createImportInRoFisTeamProposal(cu, fullName, node, relevance, maxProposals);
+				}
 				
 				// we cannot import roles, check if it is a role:
 				try {
