@@ -458,6 +458,21 @@ public abstract class AbstractBoundClass implements IBoundClass {
 	}
 
 	/**
+	 * Returns the internal name of the super class of this class IFF that super class is weavable,
+	 * otherwise it returns {@code null}.
+	 * It parses the bytecode, if that has not already been done
+	 * @return
+	 */
+	public String getInternalWeavableSuperClassName() {
+		if (!isSuperWeavable())
+			return null;
+		parseBytecode();
+		return internalSuperClassName;
+	}
+
+	protected abstract boolean isSuperWeavable();
+
+	/**
 	 * Returns the internal name of this class
 	 * @return
 	 */
