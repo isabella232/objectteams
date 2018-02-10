@@ -64,7 +64,7 @@ plugin@org.eclipse.jdt.ui.tests.refactoring=GIT,tag=@SDK_QUALIFIER@,repo=git://g
 !***************  OTDT Test CONTRIBUTION  ******************************************************** 
 
 
-feature@org.eclipse.objectteams.otdt-tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature
+feature@org.eclipse.objectteams.otdt-tests=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=features/org.eclipse.objectteams.otdt.feature/unit-tests-feature,tag=branches/maintenance/OTDT_2.6.x
 
 plugin@org.eclipse.jdt.core.tests.compiler=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.compiler,tag=branches/maintenance/OTDT_2.6.x
 plugin@org.eclipse.jdt.core.tests.model=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=org.eclipse.jdt.core.tests.model,tag=branches/maintenance/OTDT_2.6.x
