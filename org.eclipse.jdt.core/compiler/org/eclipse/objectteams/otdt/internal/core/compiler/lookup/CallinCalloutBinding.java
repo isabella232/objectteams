@@ -253,8 +253,8 @@ public class CallinCalloutBinding extends Binding
 				"->".toCharArray());
     }
 
-    public void setAnnotations(AnnotationBinding[] annotations) {
-    	this._declaringRoleClass.storeAnnotations(this, annotations);
+    public void setAnnotations(AnnotationBinding[] annotations, boolean forceStore) {
+    	this._declaringRoleClass.storeAnnotations(this, annotations, forceStore);
     }
 
     public AnnotationBinding[] getAnnotations() {
