@@ -987,6 +987,8 @@ public class Dependencies implements ITranslationStates {
                 	&& !StateHelper.isRequiredState(nextState)) // KEEPGOING
     		{
                	StateHelper.setStateRecursive(model.getAst(), nextState, true);
+                if (model.getState() <= oldState)
+                    throw new InternalCompilerError("Translation (type) does not advance past "+ITranslationStates.STATE_NAMES[oldState]); //$NON-NLS-1$
                	continue;
             }
 
