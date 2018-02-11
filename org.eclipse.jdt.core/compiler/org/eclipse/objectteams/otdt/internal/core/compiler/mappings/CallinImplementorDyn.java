@@ -669,8 +669,10 @@ public class CallinImplementorDyn extends MethodMappingImplementor {
 							{
 								if (isResultBoxed)
 									result = gen.createUnboxing(result, (BaseTypeBinding) baseReturn);
-								Expression mappedResult = new PotentialRoleReceiverExpression(
-															callinDecl.getResultExpression(baseSpec, isResultBoxed, gen/*stepOverGen*/),
+								Expression mappedResult = callinDecl.getResultExpression(baseSpec, isResultBoxed, gen/*stepOverGen*/);
+								if (!isStaticRoleMethod) 
+									mappedResult = new PotentialRoleReceiverExpression(
+															mappedResult,
 															roleVar,
 															gen.typeReference(roleType.getRealClass()));
 								messageSendStatements = new Statement[] {

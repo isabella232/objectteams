@@ -489,4 +489,46 @@ public class CallinWithTranslation extends AbstractOTJLDTest {
 			"rm1 t1.MyTeam$__OT__Mid$__OT__R\n" + 
 			"b1.MyBase");
     }
+
+    public void testBug531011_secondary() {
+    	runNegativeTest(
+    		new String[] {
+    			"Main.java",
+    			"public class Main {\n" +
+    			"	public static void main(String... args) {\n" +
+    			"		new t.Team1().activate();\n" +
+    			"		System.out.print(b.Base.<String>m());\n" +
+    			"	}\n" +
+    			"}\n",
+    			"b/Base.java",
+    			"package b;\n" +
+    			"public class Base {\n" +
+    			"	public static <T> T m() { return null; }\n" +
+    			"}\n",
+    			"t/Team1.java",
+    			"package t;\n" +
+    			"import base b.Base;\n" +
+    			"public team class Team1 {\n" +
+    			"	protected class R playedBy Base {\n" +
+    			"		R() { base(); }\n" +
+    			"		<T> T rm() <- replace T m()\n" +
+    			"			with { result -> result }\n" +
+    			"		static callin <T> T rm() {\n" +
+    			"			return base.rm();\n" +
+    			"		}\n" +
+    			"	}\n" +
+    			"}\n"
+    		},
+			"----------\n" + 
+			"1. ERROR in t\\Team1.java (at line 6)\n" + 
+			"	<T> T rm() <- replace T m()\n" + 
+			"	      ^^\n" + 
+			"T cannot be resolved to a type\n" + 
+			"----------\n" + 
+			"2. ERROR in t\\Team1.java (at line 6)\n" + 
+			"	<T> T rm() <- replace T m()\n" + 
+			"	      ^^\n" + 
+			"T cannot be resolved to a type\n" + 
+			"----------\n");
+    }
 }
