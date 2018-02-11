@@ -80,7 +80,7 @@ public class ComplexStructures extends AbstractOTJLDTest {
 			"I am a basic graph ...");
 	}
 	
-	public void testMultiLevelSuper() {
+	public void testMultiLevelSuper1() {
 		runConformTest(
 			new String[] {
 				"t/M.java",
@@ -155,4 +155,187 @@ public class ComplexStructures extends AbstractOTJLDTest {
 			},
 			"Role\nBase0.m()");
 	}
+
+	public void testMultiLevelSuper2() {
+		myWriteFiles(new String[] {"weavable.txt", "weavable.\nt\n"});
+		runConformTest(
+			new String[] {
+				"t/M.java",
+				"package t;\n" +
+				"import weavable.*;\n" +
+				"public class M {\n" +
+				"	public static void main(String... args) {\n" +
+				"		new Team1().activate();\n" +
+				"		new Base4().m(5);\n" +
+				"		new Base4().m(0);\n" +
+				"	}\n" +
+				"}\n",
+				"unweavable/Base0.java",
+				"package unweavable;\n" +
+				"public class Base0 {\n" +
+				"	public void m(int i) {\n" +
+				"		System.out.println(\"Base0.m()\");\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base1.java",
+				"package weavable;\n" +
+				"public class Base1 extends unweavable.Base0 {\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 1)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"unweavable/Base2.java",
+				"package unweavable;\n" +
+				"public class Base2 extends weavable.Base1 {\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 2)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base3.java",
+				"package weavable;\n" +
+				"public class Base3 extends unweavable.Base2 {\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 3)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base4.java",
+				"package weavable;\n" +
+				"public class Base4 extends Base3 {\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 4)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"t/Team0.java",
+				"package t;\n" +
+				"import base weavable.Base1;\n" +
+				"import base weavable.Base3;\n" +
+				"public team class Team0 {\n" +
+				"	protected class R0 playedBy Base1 {\n" +
+				"	}\n" +
+				"	protected class R1 extends R0 playedBy Base3 { }\n" +
+				"}\n",
+				"t/Team1.java",
+				"package t;\n" +
+				"import base weavable.Base4;\n" +
+				"public team class Team1 extends Team0 {\n" +
+				"	protected class R2 extends R1 playedBy Base4 {\n" +
+				"		void q(int i) <- replace void m(int i) base when (i == 5);\n" +
+				"		callin void q(int i) {\n" +
+				"			System.out.println(\"Role\");\n" +
+				"		}\n" +
+				"	}\n" +
+				"}\n",
+			},
+			"Role\nBase0.m()",
+			null,
+			false,
+			new String[] { "-Dot.weavable="+this.outputTestDirectory+"/weavable.txt" });
+	}
+
+	public void testMultiLevelSuper3() {
+		myWriteFiles(new String[] {"weavable.txt", "weavable.\nt\n"});
+		runConformTest(
+			new String[] {
+				"t/M.java",
+				"package t;\n" +
+				"import weavable.*;\n" +
+				"public class M {\n" +
+				"	public static void main(String... args) {\n" +
+				"		new Team1().activate();\n" +
+				"		new Base6().m(5);\n" +
+				"		new Base6().m(0);\n" +
+				"	}\n" +
+				"}\n",
+				"unweavable/Base0.java",
+				"package unweavable;\n" +
+				"public class Base0 {\n" +
+				"	public void m(int i) {\n" +
+				"		System.out.println(\"Base0.m()\");\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base1.java",
+				"package weavable;\n" +
+				"public class Base1 extends unweavable.Base0 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 1)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base2.java",
+				"package weavable;\n" +
+				"public class Base2 extends Base1 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 2)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"unweavable/Base3.java",
+				"package unweavable;\n" +
+				"public class Base3 extends weavable.Base2 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 3)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"unweavable/Base4.java",
+				"package unweavable;\n" +
+				"public class Base4 extends Base3 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 4)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base5.java",
+				"package weavable;\n" +
+				"public class Base5 extends unweavable.Base4 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 5)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"weavable/Base6.java",
+				"package weavable;\n" +
+				"public class Base6 extends Base5 {\n" +
+				"	@Override\n" +
+				"	public void m(int i) {\n" +
+				"		if (i != 6)\n" +
+				"			super.m(i);\n" +
+				"	}\n" +
+				"}\n",
+				"t/Team0.java",
+				"package t;\n" +
+				"import base weavable.Base1;\n" +
+				"import base weavable.Base5;\n" +
+				"public team class Team0 {\n" +
+				"	protected class R0 playedBy Base1 {\n" +
+				"	}\n" +
+				"	protected class R1 extends R0 playedBy Base5 { }\n" +
+				"}\n",
+				"t/Team1.java",
+				"package t;\n" +
+				"import base weavable.Base6;\n" +
+				"public team class Team1 extends Team0 {\n" +
+				"	protected class R2 extends R1 playedBy Base6 {\n" +
+				"		void q(int i) <- replace void m(int i) base when (i == 5);\n" +
+				"		callin void q(int i) {\n" +
+				"			System.out.println(\"Role\");\n" +
+				"		}\n" +
+				"	}\n" +
+				"}\n",
+			},
+			"Role\nBase0.m()",
+			null,
+			false,
+			new String[] { "-Dot.weavable="+this.outputTestDirectory+"/weavable.txt" });
+	}
+
 }

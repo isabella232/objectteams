@@ -356,7 +356,7 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 						return WeavingReason.Base; // we may be first, go ahead and trigger the trip wire
 				}
 			}
-			if (isAdaptedBaseClass(aspectBindings, className, bytes, bundleWiring.getClassLoader()))
+			if (isAdaptedBaseClass(aspectBindings, className, bytes != null, bytes, bundleWiring.getClassLoader()))
 				return WeavingReason.Base;					
 		}
 			
@@ -378,8 +378,10 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 		return false;
 	}
 
-	/** check need for weaving by finding an aspect binding affecting this exact base class or one of its supers. */
-	boolean isAdaptedBaseClass(List<AspectBinding> aspectBindings, String className, byte[] bytes, ClassLoader resourceLoader) {
+	/** check need for weaving by finding an aspect binding affecting this exact base class or one of its supers. 
+	 * @param searchSupers controls whether super classes should be considered, too.
+	 */
+	boolean isAdaptedBaseClass(List<AspectBinding> aspectBindings, String className, boolean searchSupers, byte[] bytes, ClassLoader resourceLoader) {
 		if (skipBaseClassCheck) return true; // have aspect bindings, flag requests to transform *all* classes in this base bundle
 		
 		if ("java.lang.Object".equals(className))
@@ -405,11 +407,11 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 					return false;
 				}
 			}
-			if (classInfo != null && !classInfo.isInterface()) {
+			if (searchSupers && classInfo != null && !classInfo.isInterface()) {
 				// TODO(performance): check common prefix to recognize when crossing the plugin-boundary?
 				String superClassName = classInfo.getSuperClassName();
 				if (superClassName != null)
-					return isAdaptedBaseClass(aspectBindings, superClassName, null, resourceLoader);
+					return isAdaptedBaseClass(aspectBindings, superClassName, searchSupers, null, resourceLoader);
 			}
 			return false;
 		} finally {
