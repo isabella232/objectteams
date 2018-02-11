@@ -1287,14 +1287,16 @@ private void internalAnalyseCode(FlowContext flowContext, FlowInfo flowInfo) {
 			}
 		}
 	}
-//{ObjectTeams: RoFi with incomplete method bodies don't analyze:
-  if (this.compilationUnit == null || this.compilationUnit.parseMethodBodies)
-// SH}
 	if (this.scope.compilerOptions().complianceLevel >= ClassFileConstants.JDK9) {
 		// synthesize <clinit> if one is not present. Required to initialize
 		// synthetic final fields as modifying final fields outside of a <clinit>
 		// is disallowed in Java 9
+//{ObjectTeams: robustness:
+/* orig:
 		if (this.methods == null || !this.methods[0].isClinit()) {
+  :giro */
+		if (this.methods == null || this.methods.length == 0 || !this.methods[0].isClinit()) {
+// SH}
 			Clinit clinit = new Clinit(this.compilationResult);
 			clinit.declarationSourceStart = clinit.sourceStart = this.sourceStart;
 			clinit.declarationSourceEnd = clinit.sourceEnd = this.sourceEnd;
@@ -1306,6 +1308,9 @@ private void internalAnalyseCode(FlowContext flowContext, FlowInfo flowInfo) {
 				System.arraycopy(this.methods, 0, methodDeclarations, 1, length);
 		}
 	}
+//{ObjectTeams: RoFi with incomplete method bodies don't analyze:
+	if (this.compilationUnit == null || this.compilationUnit.parseMethodBodies)
+// SH}
 	if (this.methods != null) {
 		UnconditionalFlowInfo outerInfo = flowInfo.unconditionalFieldLessCopy();
 		FlowInfo constructorInfo = nonStaticFieldInfo.unconditionalInits().discardNonFieldInitializations().addInitializationsFrom(outerInfo);
