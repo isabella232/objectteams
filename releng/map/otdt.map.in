@@ -21,7 +21,7 @@ plugin@org.eclipse.objectteams.otdt.doc=GIT,repo=git://git.eclipse.org/gitroot/o
 !plugin@org.eclipse.objectteams.otdt.metrics=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.metrics,tag=builds/201101290806
 
 plugin@org.eclipse.objectteams.runtime=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.runtime,tag=builds/201706061121
-plugin@org.eclipse.objectteams.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otre,tag=builds/201606070956
+plugin@org.eclipse.objectteams.otre=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otre,tag=branches/maintenance/OTDT_2.6.x
 plugin@org.eclipse.objectteams.otredyn=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otredyn,tag=branches/maintenance/OTDT_2.6.x
 !the following is also referenced in otdt.doc/buildDoc.xml (plugin-name without version):
 plugin@org.eclipse.objectteams.otequinox=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otequinox,tag=branches/maintenance/OTDT_2.6.x
