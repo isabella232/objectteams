@@ -146,7 +146,11 @@ public abstract class DelegatingTransformer {
 		return new IWeavingContext() {
 			@Override
 			public boolean isWeavable(String className) {
-				return className != null && hook.requiresWeaving(bundleWiring, className, null) != WeavingReason.None;
+				return isWeavable(className, false);
+			}
+			@Override
+			public boolean isWeavable(String className, boolean considerSupers) {
+				return className != null && hook.requiresWeaving(bundleWiring, className, null, considerSupers) != WeavingReason.None;
 			}
 			
 			@Override

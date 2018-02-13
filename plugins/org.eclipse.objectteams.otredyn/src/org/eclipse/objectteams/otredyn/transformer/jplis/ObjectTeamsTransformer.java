@@ -44,7 +44,11 @@ public class ObjectTeamsTransformer implements ClassFileTransformer {
 
 	public ObjectTeamsTransformer() {
 		this.weavingContext = new IWeavingContext() {
-			@Override public boolean isWeavable(String className) {
+			@Override
+			public boolean isWeavable(String className) {
+				return isWeavable(className, false); // considerSupers is ignored by us, FIXME: why that?
+			}
+			@Override public boolean isWeavable(String className, boolean considerSupers) {
 				return ObjectTeamsTransformer.isWeavable(className.replace('.', '/'))
 						&& WeavableRegionReader.isWeavable(className);
 			}
@@ -84,7 +88,7 @@ public class ObjectTeamsTransformer implements ClassFileTransformer {
 		AbstractBoundClass clazz = classRepo.peekBoundClass(classId);
 		String sourceClassName = className.replace('/','.');
 
-		if (!weavingContext.isWeavable(sourceClassName) || loader == null) {
+		if (!weavingContext.isWeavable(sourceClassName, false) || loader == null) {
 			if (clazz != null) {
 				if (isWeavable(className) && clazz.needsWeaving()) {
 					// only print out for now, exceptions thrown by us are silently caught by TransformerManager.

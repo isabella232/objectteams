@@ -265,7 +265,7 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 			}
 
 			byte[] bytes = wovenClass.getBytes();
-			WeavingReason reason = requiresWeaving(bundleWiring, className, bytes);
+			WeavingReason reason = requiresWeaving(bundleWiring, className, bytes, true);
 			if (reason != WeavingReason.None) {
 				// do whatever is needed *before* loading this class:
 				boolean allAspectsAreDenied = triggerBaseTripWires(bundleName, wovenClass);
@@ -335,7 +335,7 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 		return false;
 	}
 
-	WeavingReason requiresWeaving(BundleWiring bundleWiring, @NonNull String className, byte[] bytes) {
+	WeavingReason requiresWeaving(BundleWiring bundleWiring, @NonNull String className, byte[] bytes, boolean considerSupers) {
 		
 		// 1. consult the aspect binding registry (for per-bundle info):
 		@SuppressWarnings("null")@NonNull // FIXME: org.eclipse.osgi.internal.resolver.BundleDescriptionImpl.getBundle() can return null!
@@ -356,7 +356,7 @@ public class OTWeavingHook implements WeavingHook, WovenClassListener {
 						return WeavingReason.Base; // we may be first, go ahead and trigger the trip wire
 				}
 			}
-			if (isAdaptedBaseClass(aspectBindings, className, bytes != null, bytes, bundleWiring.getClassLoader()))
+			if (isAdaptedBaseClass(aspectBindings, className, considerSupers, bytes, bundleWiring.getClassLoader()))
 				return WeavingReason.Base;					
 		}
 			

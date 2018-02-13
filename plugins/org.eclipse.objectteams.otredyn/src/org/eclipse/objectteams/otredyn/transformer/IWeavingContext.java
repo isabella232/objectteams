@@ -1,7 +1,7 @@
 /**********************************************************************
  * This file is part of "Object Teams Dynamic Runtime Environment"
  * 
- * Copyright 2015 GK Software AG
+ * Copyright 2015, 2018 GK Software AG
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,8 +29,22 @@ public interface IWeavingContext {
 	 * @param className full qualified classname, dot-separated for packages 
 	 * 		and dollar-separated for nested classes. 
 	 * @return true if the given class is included in load-time weaving.
+	 * @deprecated please use {@link #isWeavable(String, boolean)}.
 	 */
+	@Deprecated
 	boolean isWeavable(String className);
+
+	/**
+	 * Is the given class included in load-time weaving, i.e., will
+	 * the weaving context pass the class to the transformer during
+	 * initial loading?
+	 * @param className full qualified classname, dot-separated for packages 
+	 * 		and dollar-separated for nested classes.
+	 * @param considerSupers controls whether super classes should be searched, too. 
+	 * @return true if the given class is included in load-time weaving.
+	 * @since 1.3.2
+	 */
+	boolean isWeavable(String className, boolean considerSupers);
 	
 	/**
 	 * When reweaving for className is required, check if this needs to

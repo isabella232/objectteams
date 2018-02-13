@@ -70,7 +70,7 @@ public class MoveCodeToCallOrigAdapter extends AbstractTransformableClassNode {
 			callOrig = ConstantMembers.callOrig;
 		}
 		if (weavingContext != null)
-			superIsWeavable = weavingContext.isWeavable(clazz.getSuperClassName());
+			superIsWeavable = weavingContext.isWeavable(clazz.getSuperClassName(), false);
 		if (superIsWeavable)
 			superclass = clazz.getSuperclass();
 		this.baseSuperRequired = baseSuperRequired;
