@@ -47,6 +47,8 @@ import base org.eclipse.pde.internal.ui.launcher.JREBlock;
 import base org.eclipse.pde.launching.AbstractPDELaunchConfiguration;
 import base org.eclipse.pde.launching.JUnitLaunchConfigurationDelegate;
 import base org.eclipse.pde.ui.launcher.AbstractLauncherTab;
+import base org.eclipse.pde.ui.launcher.MainTab;
+import base org.eclipse.pde.ui.launcher.OSGiSettingsTab;
 
 /**
  * This team adapts all Eclipse and OSGi launches (Launcher) and launch configurations (JREBlock and LauncherTab).
@@ -300,7 +302,8 @@ public team class PDELaunchingAdaptor {
 	 * <li>insert a new group after the JREBlock.</li>
 	 * <li>read (initializeFrom) and apply (performApply) the new flag.</li></ul>
 	 */
-	protected class LauncherTab extends OTREBlock playedBy AbstractLauncherTab {
+	@SuppressWarnings("abstractrelevantrole")
+	protected abstract class LauncherTab extends OTREBlock playedBy AbstractLauncherTab {
 
 		LauncherTab(AbstractLauncherTab b) {
 			// different label than default:
@@ -317,7 +320,6 @@ public team class PDELaunchingAdaptor {
 		void updateLaunchConfigurationDialog() -> void updateLaunchConfigurationDialog();
 		
 		// CFlow to let the JREBlock trigger building the GUI:
-		launcherTabCFlow <- replace createControl;
 		callin void launcherTabCFlow(Composite parent) {
 			try {
 				PDELaunchingAdaptor.this.currentTab = this;
@@ -326,15 +328,26 @@ public team class PDELaunchingAdaptor {
 				PDELaunchingAdaptor.this.currentTab = null;
 			}
 		}
-		
-		// connect triggers to inherited methods:
-		void initializeFrom(ILaunchConfiguration config) <- after void initializeFrom(ILaunchConfiguration config)
-			when (this._otreToggleButton != null); // i.e.: is this the tab containing the JREBlock?
 
 		@Override
 		boolean hasOTJProject(ILaunchConfiguration config) {
 			return true; // assume we might have an OT project - even without scanning through all projects; always want to enable our options
 		}
+	}
+	protected class MainTab extends LauncherTab playedBy MainTab {
+		launcherTabCFlow <- replace createControl;
+		// connect triggers to inherited methods:
+		void initializeFrom(ILaunchConfiguration config) <- after void initializeFrom(ILaunchConfiguration config)
+			when (this._otreToggleButton != null); // i.e.: is this the tab containing the JREBlock?
+
+		void performApply(ILaunchConfigurationWorkingCopy config) 
+				<- after void performApply(ILaunchConfigurationWorkingCopy config);		
+	}
+	protected class OSGiSettingsTab extends LauncherTab playedBy OSGiSettingsTab {
+		launcherTabCFlow <- replace createControl;
+		// connect triggers to inherited methods:
+		void initializeFrom(ILaunchConfiguration config) <- after void initializeFrom(ILaunchConfiguration config)
+			when (this._otreToggleButton != null); // i.e.: is this the tab containing the JREBlock?
 
 		void performApply(ILaunchConfigurationWorkingCopy config) 
 				<- after void performApply(ILaunchConfigurationWorkingCopy config);		
