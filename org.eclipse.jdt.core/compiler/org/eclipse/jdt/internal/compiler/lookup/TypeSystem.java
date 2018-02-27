@@ -69,34 +69,62 @@ public class TypeSystem {
 	
 	public final class HashedParameterizedTypes {
 		
-		private final class InternalParameterizedTypeBinding extends ParameterizedTypeBinding {
-						
+		private final class PTBKey extends ReferenceBinding { // extends ReferenceBinding so it can be used as wrapper
+			protected ReferenceBinding type; // must ensure the type is resolved
+			public TypeBinding[] arguments;
+			private ReferenceBinding enclosingType;
 //{ObjectTeams: announce dependent types as parameterizations, too:
 			ITeamAnchor teamAnchor;
 			int valueParamPosition = -1;
 
-			public InternalParameterizedTypeBinding(ReferenceBinding genericType, TypeBinding[] typeArguments, ITeamAnchor teamAnchor, int valueParamPosition,
+			public PTBKey(ReferenceBinding type, TypeBinding[] arguments, ITeamAnchor teamAnchor, int valueParamPosition,
 					ReferenceBinding enclosingType, LookupEnvironment environment) {
-/* orig:
-			public InternalParameterizedTypeBinding(ReferenceBinding genericType, TypeBinding[] typeArguments, ReferenceBinding enclosingType, LookupEnvironment environment) {
-				super(genericType, typeArguments, enclosingType, environment);
- */
-// :giro
-				super(genericType, typeArguments, teamAnchor, enclosingType, environment);
 				this.teamAnchor = teamAnchor;
 				this.valueParamPosition = valueParamPosition;
+/* orig:
+			public PTBKey(ReferenceBinding type, TypeBinding[] arguments, ReferenceBinding enclosingType, LookupEnvironment environment) {
+  :giro */
 // SH}
-			}
-			
-			public boolean equals(Object other) {
-				ParameterizedTypeBinding that = (ParameterizedTypeBinding) other;  // homogeneous container. 
-//{ObjectTeams: more checks:
-				ITeamAnchor thatAnchor = null;
-				int thatValueParamPos = -1;
-				if (that instanceof InternalParameterizedTypeBinding) {
-					thatValueParamPos = ((InternalParameterizedTypeBinding)that).valueParamPosition; 
-					thatAnchor = ((InternalParameterizedTypeBinding)that).teamAnchor;
+				this.type = type;
+				this.arguments = arguments;
+				this.enclosingType = enclosingType;
+
+				if(environment != null) {
+					// only add as wrapper when used in put()
+					if (type instanceof UnresolvedReferenceBinding)
+						((UnresolvedReferenceBinding) type).addWrapper(this, environment);
+					if (arguments != null) {
+						for (int i = 0, l = arguments.length; i < l; i++) {
+							if (arguments[i] instanceof UnresolvedReferenceBinding)
+								((UnresolvedReferenceBinding) arguments[i]).addWrapper(this, environment);
+							if (arguments[i].hasNullTypeAnnotations())
+								this.tagBits |= TagBits.HasNullTypeAnnotation;
+						}
+					}
 				}
+			}
+			@Override
+			public void swapUnresolved(UnresolvedReferenceBinding unresolvedType, ReferenceBinding resolvedType, LookupEnvironment env) {
+				if (this.type == unresolvedType) { //$IDENTITY-COMPARISON$
+					this.type = resolvedType; // cannot be raw since being parameterized below
+					ReferenceBinding enclosing = resolvedType.enclosingType();
+					if (enclosing != null) {
+						this.enclosingType = (ReferenceBinding) env.convertUnresolvedBinaryToRawType(enclosing); // needed when binding unresolved member type
+					}
+				}
+				if (this.arguments != null) {
+					for (int i = 0, l = this.arguments.length; i < l; i++) {
+						if (this.arguments[i] == unresolvedType) { //$IDENTITY-COMPARISON$
+							this.arguments[i] = env.convertUnresolvedBinaryToRawType(resolvedType);
+						}
+					}
+				}
+			}
+			public boolean equals(Object other) {
+				PTBKey that = (PTBKey) other;  // homogeneous container. 
+//{ObjectTeams: more checks:
+				ITeamAnchor thatAnchor = that.teamAnchor;
+				int thatValueParamPos = that.valueParamPosition; 
 				if (this.teamAnchor != thatAnchor) {
 					if (this.teamAnchor == null || thatAnchor == null || !this.teamAnchor.hasSameBestNameAs(thatAnchor))
 						return false;
@@ -105,11 +133,17 @@ public class TypeSystem {
 // SH}
 				return this.type == that.type && this.enclosingType == that.enclosingType && Util.effectivelyEqual(this.arguments, that.arguments); //$IDENTITY-COMPARISON$
 			}
-			
+			final int hash(TypeBinding b) {
+				if(b instanceof WildcardBinding || b instanceof TypeVariableBinding) {
+					return System.identityHashCode(b);
+				}
+				return b.hashCode();
+			}
 			public int hashCode() {
-				int hashCode = this.type.hashCode() + 13 * (this.enclosingType != null ? this.enclosingType.hashCode() : 0);
+				final int prime=31;
+				int hashCode = 1 + hash(this.type) + (this.enclosingType != null ? hash(this.enclosingType) : 0);
 				for (int i = 0, length = this.arguments == null ? 0 : this.arguments.length; i < length; i++) {
-					hashCode += (i + 1) * this.arguments[i].hashCode();
+					hashCode = hashCode * prime + hash(this.arguments[i]);
 				}
 //{ObjectTeams: more
 				if (this.teamAnchor != null)
@@ -121,7 +155,7 @@ public class TypeSystem {
 			}
 		}
 		
-		HashMap<ParameterizedTypeBinding, ParameterizedTypeBinding []> hashedParameterizedTypes = new HashMap<ParameterizedTypeBinding, ParameterizedTypeBinding[]>(256);
+		HashMap<PTBKey, ParameterizedTypeBinding []> hashedParameterizedTypes = new HashMap<>(256);
 
 //{ObjectTeams: more args:
 /* orig:
@@ -140,9 +174,9 @@ public class TypeSystem {
 			ReferenceBinding unannotatedEnclosingType = enclosingType == null ? null : (ReferenceBinding) getUnannotatedType(enclosingType);
 			
 /*
-			ParameterizedTypeBinding typeParameterization = new InternalParameterizedTypeBinding(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, TypeSystem.this.environment);
+			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, null);
   :giro */
-			ParameterizedTypeBinding typeParameterization = new InternalParameterizedTypeBinding(unannotatedGenericType, unannotatedTypeArguments, 
+			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, 
 					anchor, valueParamPosition, unannotatedEnclosingType, TypeSystem.this.environment);
 // SH}
 			ReferenceBinding genericTypeToMatch = unannotatedGenericType, enclosingTypeToMatch = unannotatedEnclosingType;
@@ -152,7 +186,7 @@ public class TypeSystem {
 				enclosingTypeToMatch = enclosingType;
 				typeArgumentsToMatch = typeArguments;
 			}
-			ParameterizedTypeBinding [] parameterizedTypeBindings = this.hashedParameterizedTypes.get(typeParameterization);
+			ParameterizedTypeBinding [] parameterizedTypeBindings = this.hashedParameterizedTypes.get(key);
 			for (int i = 0, length = parameterizedTypeBindings == null ? 0 : parameterizedTypeBindings.length; i < length; i++) {
 				ParameterizedTypeBinding parameterizedType = parameterizedTypeBindings[i];
 				if (parameterizedType.actualType() != genericTypeToMatch) { //$IDENTITY-COMPARISON$
@@ -184,12 +218,12 @@ public class TypeSystem {
 			ReferenceBinding unannotatedEnclosingType = enclosingType == null ? null : (ReferenceBinding) getUnannotatedType(enclosingType);
 			
 /*
-			ParameterizedTypeBinding typeParameterization = new InternalParameterizedTypeBinding(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, TypeSystem.this.environment);
+			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, TypeSystem.this.environment);
   :giro */
-			ParameterizedTypeBinding typeParameterization = new InternalParameterizedTypeBinding(unannotatedGenericType, unannotatedTypeArguments, 
+			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, 
 					anchor, valueParamPosition, unannotatedEnclosingType, TypeSystem.this.environment);
 // SH}			
-			ParameterizedTypeBinding [] parameterizedTypeBindings = this.hashedParameterizedTypes.get(typeParameterization);
+			ParameterizedTypeBinding [] parameterizedTypeBindings = this.hashedParameterizedTypes.get(key);
 			int slot;
 			if (parameterizedTypeBindings == null) {
 				slot = 0;
@@ -199,7 +233,7 @@ public class TypeSystem {
 				System.arraycopy(parameterizedTypeBindings, 0, parameterizedTypeBindings = new ParameterizedTypeBinding[slot + 1], 0, slot);
 			}
 			parameterizedTypeBindings[slot] = parameterizedType;
-			this.hashedParameterizedTypes.put(typeParameterization, parameterizedTypeBindings);
+			this.hashedParameterizedTypes.put(key, parameterizedTypeBindings);
 		}
 	}	
 	
@@ -440,7 +474,9 @@ public class TypeSystem {
 		}
 		TypeBinding unannotatedBound = bound == null ? null : getUnannotatedType(bound);
 
-		TypeBinding[] derivedTypes = this.types[unannotatedGenericType.id];  // by construction, cachedInfo != null now.
+		boolean useDerivedTypesOfBound = unannotatedBound instanceof TypeVariableBinding || unannotatedBound instanceof ParameterizedTypeBinding;
+		TypeBinding[] derivedTypes = this.types[useDerivedTypesOfBound ? unannotatedBound.id :unannotatedGenericType.id];  // by construction, cachedInfo != null now.
+
 		int i, length = derivedTypes.length;
 		for (i = 0; i < length; i++) {
 			TypeBinding derivedType = derivedTypes[i];
@@ -456,7 +492,7 @@ public class TypeSystem {
 		
 		if (i == length) {
 			System.arraycopy(derivedTypes, 0, derivedTypes = new TypeBinding[length * 2], 0, length);
-			this.types[unannotatedGenericType.id] = derivedTypes;
+			this.types[useDerivedTypesOfBound ? unannotatedBound.id :unannotatedGenericType.id] = derivedTypes;
 		}
 		TypeBinding wildcard = derivedTypes[i] = new WildcardBinding(unannotatedGenericType, rank, unannotatedBound, unannotatedOtherBounds, boundKind, this.environment);
 	
