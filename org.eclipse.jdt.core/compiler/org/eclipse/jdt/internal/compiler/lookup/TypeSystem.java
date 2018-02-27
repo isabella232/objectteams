@@ -177,7 +177,7 @@ public class TypeSystem {
 			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, null);
   :giro */
 			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, 
-					anchor, valueParamPosition, unannotatedEnclosingType, TypeSystem.this.environment);
+					anchor, valueParamPosition, unannotatedEnclosingType, null);
 // SH}
 			ReferenceBinding genericTypeToMatch = unannotatedGenericType, enclosingTypeToMatch = unannotatedEnclosingType;
 			TypeBinding [] typeArgumentsToMatch = unannotatedTypeArguments;
@@ -220,7 +220,7 @@ public class TypeSystem {
 /*
 			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, unannotatedEnclosingType, TypeSystem.this.environment);
   :giro */
-			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments, 
+			PTBKey key = new PTBKey(unannotatedGenericType, unannotatedTypeArguments,
 					anchor, valueParamPosition, unannotatedEnclosingType, TypeSystem.this.environment);
 // SH}			
 			ParameterizedTypeBinding [] parameterizedTypeBindings = this.hashedParameterizedTypes.get(key);
