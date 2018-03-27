@@ -1,7 +1,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.jdt.core; singleton:=true
-Bundle-Version: 3.13.101.v_OTDT_r262_qualifier
+Bundle-Version: 3.13.102.v_OTDT_r262_qualifier
 Bundle-Activator: org.eclipse.jdt.core.JavaCore
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -38,7 +38,7 @@ Export-Package: org.eclipse.jdt.core,
    org.eclipse.jdt.compiler.tool,
    org.eclipse.pde.api.tools,
    org.eclipse.jdt.apt.core",
- org.eclipse.jdt.internal.core;x-friends:="org.eclipse.jdt.apt.pluggable.core,org.eclipse.pde.api.tools,org.eclipse.jdt.launching",
+ org.eclipse.jdt.internal.core;x-friends:="org.eclipse.jdt.apt.pluggable.core,org.eclipse.pde.api.tools",
  org.eclipse.jdt.internal.core.builder;x-friends:="org.eclipse.jdt.apt.pluggable.core,org.eclipse.pde.api.tools",
  org.eclipse.jdt.internal.core.dom;x-internal:=true,
  org.eclipse.jdt.internal.core.dom.rewrite;x-internal:=true,
@@ -91,3 +91,4 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.12.0,4.0.0)",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-ExtensibleAPI: true
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.jdt.core

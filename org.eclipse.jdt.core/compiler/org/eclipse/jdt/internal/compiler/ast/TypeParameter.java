@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2017 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,10 @@ package org.eclipse.jdt.internal.compiler.ast;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.internal.compiler.ASTVisitor;
 import org.eclipse.jdt.internal.compiler.ast.TypeReference.AnnotationCollector;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.codegen.AnnotationTargetTypeConstants;
 import org.eclipse.jdt.internal.compiler.codegen.CodeStream;
 import org.eclipse.jdt.internal.compiler.lookup.AnnotationBinding;
@@ -33,6 +35,7 @@ import org.eclipse.jdt.internal.compiler.lookup.MethodScope;
 import org.eclipse.jdt.internal.compiler.lookup.ReferenceBinding;
 import org.eclipse.jdt.internal.compiler.lookup.Scope;
 import org.eclipse.jdt.internal.compiler.lookup.TypeBinding;
+import org.eclipse.jdt.internal.compiler.lookup.TypeConstants;
 import org.eclipse.jdt.internal.compiler.lookup.TypeVariableBinding;
 import org.eclipse.objectteams.otdt.internal.core.compiler.ast.TypeAnchorReference;
 import org.eclipse.objectteams.otdt.internal.core.compiler.lookup.ITeamAnchor;
@@ -127,6 +130,13 @@ public class TypeParameter extends AbstractVariableDeclaration {
 		}
 		if (this.annotations != null || scope.environment().usesNullTypeAnnotations()) {
 			resolveAnnotations(scope);
+		}
+		if (CharOperation.equals(this.name, TypeConstants.VAR)) {
+			if (scope.compilerOptions().sourceLevel < ClassFileConstants.JDK10) {
+				scope.problemReporter().varIsReservedTypeNameInFuture(this);
+			} else {
+				scope.problemReporter().varIsNotAllowedHere(this);
+			}
 		}
 	}
 

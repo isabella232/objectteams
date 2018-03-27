@@ -260,6 +260,9 @@ public class WildcardBinding extends ReferenceBinding {
 		return this.genericType;
 	}
 	
+//{ObjectTeams: increase visibility across AbstractOTReferenceBinding:
+	protected
+// SH}
 	TypeBinding[] additionalBounds() {
 		return this.otherBounds;
 	}

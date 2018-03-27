@@ -1,9 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 IBM Corporation and others.
+ * Copyright (c) 2016, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * This is an implementation of an early-draft specification developed under the Java
+ * Community Process (JCP) and is made available for testing and evaluation purposes
+ * only. The code is not compatible with any specification of the JCP.
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
@@ -707,9 +711,7 @@ public class ModuleBuilderTests extends ModifyingResourceTests {
 		Hashtable<String, String> javaCoreOptions = JavaCore.getOptions();
 		try {
 			IJavaProject project = setUpJavaProject("ConvertToModule", "9");
-			if (!project.getOption("org.eclipse.jdt.core.compiler.compliance", true).equals("9")) {
-				return;
-			}
+			assertEquals(project.getOption("org.eclipse.jdt.core.compiler.compliance", true), "9");
 			project.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 			IPackageFragmentRoot[] roots = project.getPackageFragmentRoots();
 			IPackageFragmentRoot theRoot = null;
@@ -4827,6 +4829,7 @@ public class ModuleBuilderTests extends ModifyingResourceTests {
 			JavaCore.setOptions(javaCoreOptions);
 		}
 	}
+	@Deprecated
 	public void testBug519935() throws CoreException, IOException {
 		if (!isJRE9) return;
 		Hashtable<String, String> javaCoreOptions = JavaCore.getOptions();
@@ -4895,6 +4898,7 @@ public class ModuleBuilderTests extends ModifyingResourceTests {
 			JavaCore.setOptions(javaCoreOptions);
 		}
 	}
+	@Deprecated
 	public void testBug520310() throws CoreException, IOException {
 		if (!isJRE9) return;
 		try {

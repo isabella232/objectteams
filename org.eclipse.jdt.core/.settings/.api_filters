@@ -1,376 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.jdt.core" version="2">
     <resource path="META-INF/MANIFEST.MF">
-        <filter id="923795461">
-            <message_arguments>
-                <message_argument value="3.13.0"/>
-                <message_argument value="3.13.0"/>
-            </message_arguments>
-        </filter>
-        <filter comment="keep the same version as 4.7.1 for now" id="924844039">
-            <message_arguments>
-                <message_argument value="3.13.0"/>
-                <message_argument value="3.13.0"/>
-            </message_arguments>
-        </filter>
-        <filter comment="new API was backported" id="924844039">
-            <message_arguments>
-                <message_argument value="3.13.101"/>
-                <message_argument value="3.13.100"/>
-            </message_arguments>
-        </filter>
         <filter id="924844039">
             <message_arguments>
-                <message_argument value="3.13.50"/>
-                <message_argument value="3.13.0"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="compiler/org/eclipse/jdt/core/compiler/CategorizedProblem.java" type="org.eclipse.jdt.core.compiler.CategorizedProblem">
-        <filter comment="future additions have always been announced in the API" id="336658481">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.compiler.CategorizedProblem"/>
-                <message_argument value="CAT_MODULE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="CAT_MODULE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="compiler/org/eclipse/jdt/core/compiler/CharOperation.java" type="org.eclipse.jdt.core.compiler.CharOperation">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ALL_PREFIX"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="COMMA_SEPARATOR"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="concatAll(char[], char[], char)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="containsEqual(char[][], char[])"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="prepend(char, char[])"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="toCharArrays(List&lt;String&gt;)"/>
+                <message_argument value="3.13.102"/>
+                <message_argument value="3.13.101"/>
             </message_arguments>
         </filter>
     </resource>
     <resource path="compiler/org/eclipse/jdt/core/compiler/IProblem.java" type="org.eclipse.jdt.core.compiler.IProblem">
-        <filter comment="must react to added constant CAT_MODULE" id="388194388">
+        <filter id="1209008130">
             <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.compiler.IProblem"/>
-                <message_argument value="IgnoreCategoriesMask"/>
-                <message_argument value="16777215"/>
+                <message_argument value="3.14"/>
+                <message_argument value="3.13"/>
+                <message_argument value="VarIsNotAllowedHere"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="AbstractServiceImplementation"/>
+                <message_argument value="VarIsReserved"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="AutoManagedVariableResourceNotBelow9"/>
+                <message_argument value="VarIsReservedInFuture"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="ConflictingPackageFromModules"/>
+                <message_argument value="VarLocalCannotBeArray"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="ConflictingPackageFromOtherModules"/>
+                <message_argument value="VarLocalCannotBeArrayInitalizers"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="CyclicModuleDependency"/>
+                <message_argument value="VarLocalCannotBeLambda"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateExports"/>
+                <message_argument value="VarLocalCannotBeMethodReference"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateModuleRef"/>
+                <message_argument value="VarLocalInitializedToNull"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateOpens"/>
+                <message_argument value="VarLocalInitializedToVoid"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateRequires"/>
+                <message_argument value="VarLocalMultipleDeclarators"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateResource"/>
+                <message_argument value="VarLocalReferencesItself"/>
             </message_arguments>
         </filter>
         <filter id="1209008130">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="DuplicateServices"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="DuplicateUses"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="IllegalModifierCombinationForPrivateInterfaceMethod9"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="IllegalModifierForInterfaceMethod9"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="IllegalModifierForModule"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="InvalidOpensStatement"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="InvalidServiceImplType"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="InvalidServiceIntfType"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MissingRequiresTransitiveForTypeInAPI"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ModuleRelated"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NestedServiceImpl"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NonDenotableTypeArgumentForAnonymousDiamond"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NonPublicTypeInAPI"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotAccessibleConstructor"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotAccessibleField"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotAccessibleMethod"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotAccessiblePackage"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotAccessibleType"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="NotExportedTypeInAPI"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="OverridingTerminallyDeprecatedMethod"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="PackageDoesNotExistOrIsEmpty"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ProviderMethodOrConstructorRequiredForServiceImpl"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ServiceImplDefaultConstructorNotPublic"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ServiceImplNotDefinedByModule"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UndefinedModule"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UnnamedPackageInNamedModule"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UsingTerminallyDeprecatedConstructor"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UsingTerminallyDeprecatedField"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UsingTerminallyDeprecatedMethod"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="UsingTerminallyDeprecatedType"/>
+                <message_argument value="VarLocalWithoutInitizalier"/>
             </message_arguments>
         </filter>
     </resource>
@@ -387,624 +107,16 @@
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="JLS9"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newExportsStatement()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newModuleDeclaration()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newModuleModifier(ModuleModifier.ModuleModifierKeyword)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newOpensDirective()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newProvidesDirective()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newRequiresDirective()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="newUsesDirective()"/>
+                <message_argument value="JLS10"/>
             </message_arguments>
         </filter>
     </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/ASTMatcher.java" type="org.eclipse.jdt.core.dom.ASTMatcher">
+    <resource path="dom/org/eclipse/jdt/core/dom/Type.java" type="org.eclipse.jdt.core.dom.Type">
         <filter id="1141899266">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="match(ExportsDirective, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(ModuleDeclaration, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(ModuleModifier, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(OpensDirective, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(ProvidesDirective, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(RequiresDirective, Object)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="match(UsesDirective, Object)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/ASTNode.java" type="org.eclipse.jdt.core.dom.ASTNode">
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="BASE_CALL_MESSAGE_SEND"/>
-                <message_argument value="100"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="BASE_CONSTRUCTOR_INVOCATION"/>
-                <message_argument value="98"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="CALLIN_MAPPING_DECLARATION"/>
-                <message_argument value="94"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="CALLOUT_MAPPING_DECLARATION"/>
-                <message_argument value="95"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="FIELD_ACCESS_SPEC"/>
-                <message_argument value="101"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="GUARD_PREDICATE_DECLARATION"/>
-                <message_argument value="107"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="LIFTING_TYPE"/>
-                <message_argument value="96"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="METHOD_BINDING_OPERATOR"/>
-                <message_argument value="108"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="METHOD_SPEC"/>
-                <message_argument value="93"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="PARAMETER_MAPPING"/>
-                <message_argument value="99"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="PRECEDENCE_DECLARATION"/>
-                <message_argument value="106"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="ROLE_TYPE_DECLARATION"/>
-                <message_argument value="102"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="TSUPER_CONSTRUCTOR_INVOCATION"/>
-                <message_argument value="104"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="TSUPER_MESSAGE_SEND"/>
-                <message_argument value="103"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="TYPE_ANCHOR"/>
-                <message_argument value="105"/>
-            </message_arguments>
-        </filter>
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.ASTNode"/>
-                <message_argument value="WITHIN_STATEMENT"/>
-                <message_argument value="97"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="EXPORTS_DIRECTIVE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_DECLARATION"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_MODIFIER"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="OPENS_DIRECTIVE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="PROVIDES_DIRECTIVE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="REQUIRES_DIRECTIVE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="USES_DIRECTIVE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/ASTVisitor.java" type="org.eclipse.jdt.core.dom.ASTVisitor">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(ExportsDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(ModuleDeclaration)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(ModuleModifier)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(OpensDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(ProvidesDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(RequiresDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="endVisit(UsesDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(ExportsDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(ModuleDeclaration)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(ModuleModifier)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(OpensDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(ProvidesDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(RequiresDirective)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="visit(UsesDirective)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/CompilationUnit.java" type="org.eclipse.jdt.core.dom.CompilationUnit">
-        <filter comment="has never been subclassable" id="336744520">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.CompilationUnit"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_PROPERTY"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getModule()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="setModule(ModuleDeclaration)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/IBinding.java" type="org.eclipse.jdt.core.dom.IBinding">
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.IBinding"/>
-                <message_argument value="METHOD_MAPPING"/>
-                <message_argument value="7"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="dom/org/eclipse/jdt/core/dom/TryStatement.java" type="org.eclipse.jdt.core.dom.TryStatement">
-        <filter comment="has never been subclassable" id="336744520">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.dom.TryStatement"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="RESOURCES2_PROPERTY"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="formatter/org/eclipse/jdt/core/formatter/CodeFormatter.java" type="org.eclipse.jdt.core.formatter.CodeFormatter">
-        <filter id="336658481">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.formatter.CodeFormatter"/>
-                <message_argument value="K_MODULE_INFO"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="K_MODULE_INFO"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="formatter/org/eclipse/jdt/core/formatter/DefaultCodeFormatterConstants.java" type="org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="FORMATTER_ALIGNMENT_FOR_MODULE_STATEMENTS"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/CompletionProposal.java" type="org.eclipse.jdt.core.CompletionProposal">
-        <filter comment="make room for new JDT constants" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.CompletionProposal"/>
-                <message_argument value="OVERRIDE_ROLE_DECLARATION"/>
-                <message_argument value="28"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_DECLARATION"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_REF"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/Flags.java" type="org.eclipse.jdt.core.Flags">
-        <filter comment="Necessary flag change after adopting Java 9 in OTDT" id="388194388">
-            <message_arguments>
-                <message_argument value="org.eclipse.jdt.core.Flags"/>
-                <message_argument value="AccTeam"/>
-                <message_argument value="32768"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="AccModule"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="isModule(int)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/IClasspathAttribute.java" type="org.eclipse.jdt.core.IClasspathAttribute">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ADD_EXPORTS"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ADD_READS"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="LIMIT_MODULES"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_MAIN_CLASS"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="PATCH_MODULE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/IJavaElement.java" type="org.eclipse.jdt.core.IJavaElement">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="JAVA_MODULE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/IJavaProject.java" type="org.eclipse.jdt.core.IJavaProject">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="findModule(String, WorkingCopyOwner)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getModuleDescription()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/IPackageFragment.java" type="org.eclipse.jdt.core.IPackageFragment">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getAllClassFiles()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getModularClassFile()"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getOrdinaryClassFile(String)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getOrdinaryClassFiles()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/IPackageFragmentRoot.java" type="org.eclipse.jdt.core.IPackageFragmentRoot">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getModuleDescription()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/ITypeRoot.java" type="org.eclipse.jdt.core.ITypeRoot">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getModule()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/JavaConventions.java" type="org.eclipse.jdt.core.JavaConventions">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="validateModuleName(String, String, String)"/>
+                <message_argument value="isVar()"/>
             </message_arguments>
         </filter>
     </resource>
@@ -1020,145 +132,14 @@
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="COMPILER_PB_API_LEAKS"/>
+                <message_argument value="VERSION_10"/>
             </message_arguments>
         </filter>
         <filter id="1141899266">
             <message_arguments>
                 <message_argument value="3.14"/>
                 <message_argument value="3.13"/>
-                <message_argument value="COMPILER_PB_TERMINAL_DEPRECATION"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="VERSION_9"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="compileWithAttributes(IModuleDescription, Map&lt;String,String&gt;)"/>
-            </message_arguments>
-        </filter>
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getReferencedModules(IJavaProject)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/JavaModelException.java" type="org.eclipse.jdt.core.JavaModelException">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="JavaModelException(IStatus)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/compiler/ReconcileContext.java" type="org.eclipse.jdt.core.compiler.ReconcileContext">
-        <filter id="1141899266">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="getAST(int)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/util/IAttributeNamesConstants.java" type="org.eclipse.jdt.core.util.IAttributeNamesConstants">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_MAIN_CLASS"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE_PACKAGES"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/util/IConstantPoolConstant.java" type="org.eclipse.jdt.core.util.IConstantPoolConstant">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="CONSTANT_Module"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="CONSTANT_Module_SIZE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="CONSTANT_Package"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="CONSTANT_Package_SIZE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="model/org/eclipse/jdt/core/util/IModifierConstants.java" type="org.eclipse.jdt.core.util.IModifierConstants">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ACC_MODULE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ACC_OPEN"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ACC_STATIC_PHASE"/>
-            </message_arguments>
-        </filter>
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="ACC_TRANSITIVE"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="search/org/eclipse/jdt/core/search/IJavaSearchConstants.java" type="org.eclipse.jdt.core.search.IJavaSearchConstants">
-        <filter id="1209008130">
-            <message_arguments>
-                <message_argument value="3.14"/>
-                <message_argument value="3.13"/>
-                <message_argument value="MODULE"/>
+                <message_argument value="getAllVersions()"/>
             </message_arguments>
         </filter>
     </resource>

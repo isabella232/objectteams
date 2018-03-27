@@ -1539,7 +1539,7 @@ public class ReportedBugs extends AbstractOTJLDTest {
 			    "}\n" +
 			    "    \n"
             };
-       String[] vmArgs = isJRE9 ? new String[]{ "--add-reads", "java.datatransfer=ALL-UNNAMED" } : new String[0];
+       String[] vmArgs = isJRE9Plus ? new String[]{ "--add-reads", "java.datatransfer=ALL-UNNAMED" } : new String[0];
        runTest(files, false, "", "OK", "", false, null, true, vmArgs, getCompilerOptions(), null, true);
     }
 

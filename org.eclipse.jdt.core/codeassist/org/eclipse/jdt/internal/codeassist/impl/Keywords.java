@@ -1,21 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * $Id: Keywords.java 19896 2009-04-15 14:02:56Z stephan $
- *
+ * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *     Fraunhofer FIRST - extended API and implementation
  *     Technical University Berlin - extended API and implementation
+ *      Jesper Steen Møller - Contributions for
+ *                               bug 529552 - [18.3] Add 'var' in completions
  *******************************************************************************/
 package org.eclipse.jdt.internal.codeassist.impl;
 
 public interface Keywords {
 //{ObjectTeams: adapted count
-	int COUNT = 62;
+	int COUNT = 63;
 //carp}
 
 	char[] ABSTRACT = "abstract".toCharArray(); //$NON-NLS-1$
@@ -68,6 +69,7 @@ public interface Keywords {
 	char[] TRUE = "true".toCharArray(); //$NON-NLS-1$
 	char[] FALSE = "false".toCharArray(); //$NON-NLS-1$
 	char[] NULL = "null".toCharArray(); //$NON-NLS-1$
+	char[] VAR = "var".toCharArray(); //$NON-NLS-1$ // Admittedly not a full blown keyword, just "reserved"
 
 //{ObjectTeams: OT specific modifiers and keywords
 	char[] TEAM = "team".toCharArray(); //$NON-NLS-1$

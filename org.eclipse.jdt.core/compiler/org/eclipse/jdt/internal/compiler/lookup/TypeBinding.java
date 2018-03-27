@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2016 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@
  *								Bug 446434 - [1.8][null] Enable interned captures also when analysing null type annotations
  *      Jesper S Moller <jesper@selskabet.org> -  Contributions for
  *								bug 382701 - [1.8][compiler] Implement semantic analysis of Lambda expressions & Reference expression
+ *								bug 527554 - [18.3] Compiler support for JEP 286 Local-Variable Type
+ *
  *******************************************************************************/
 package org.eclipse.jdt.internal.compiler.lookup;
 
@@ -150,6 +152,9 @@ public ReferenceBinding actualType() {
 	return null; // overridden in ParameterizedTypeBinding & WildcardBinding
 }
 
+//{ObjectTeams: increase visibility across AbstractOTReferenceBinding:
+protected
+// SH}
 TypeBinding [] additionalBounds() {
 	return null;  // overridden in WildcardBinding
 }
@@ -280,6 +285,26 @@ public ReferenceBinding enclosingType() {
 }
 
 public TypeBinding erasure() {
+	return this;
+}
+
+/**
+ * Perform an upwards type projection as per JLS 4.10.5
+ * @param scope Relevant scope for evaluating type projection
+ * @param mentionedTypeVariables Filter for mentioned type variabled
+ * @returns Upwards type projection of 'this', or null if downwards projection is undefined 
+*/
+public TypeBinding upwardsProjection(Scope scope, TypeBinding[] mentionedTypeVariables) {
+	return this;
+}
+
+/**
+ * Perform a downwards type projection as per JLS 4.10.5
+ * @param scope Relevant scope for evaluating type projection
+ * @param mentionedTypeVariables Filter for mentioned type variabled
+ * @returns Downwards type projection of 'this', or null if downwards projection is undefined 
+*/
+public TypeBinding downwardsProjection(Scope scope, TypeBinding[] mentionedTypeVariables) {
 	return this;
 }
 
@@ -1759,7 +1784,7 @@ public SyntheticArgumentBinding[] syntheticOuterLocalVariables() {
 }
 /**
  * Call this before descending into type details to prevent infinite recursion.
- * @return true if a recursion has already been started.
+ * @return true if a recursion was not already started.
  */
 public boolean enterRecursiveFunction() {
 	return true;
