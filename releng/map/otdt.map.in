@@ -86,6 +86,6 @@ plugin@org.eclipse.text.tests=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org
 plugin@org.eclipse.core.filebuffers.tests=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/platform/eclipse.platform.text.git,path=org.eclipse.core.filebuffers.tests
 
 !-- jdt.annotation: --!
-plugin@org.eclipse.jdt.annotation,2.1.100=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.annotation
-plugin@org.eclipse.jdt.annotation,1.1.100=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.annotation_v1
+plugin@org.eclipse.jdt.annotation,2.1.150=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.annotation
+plugin@org.eclipse.jdt.annotation,1.1.150=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.core.git,path=org.eclipse.jdt.annotation_v1
 
