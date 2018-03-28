@@ -136,6 +136,8 @@ ANT_OPTIONS="${ANT_PROFILE} \
 ANT_OPTS="-Xmx1024m"
 export ANT_OPTS
 
+unset JAVA_TOOL_OPTIONS
+
 CMD="nice -n ${NICE} ant -f ${BUILDFILE} ${ANT_OPTIONS} ${MAIN_TARGET}"
 
 echo "Running $CMD"
