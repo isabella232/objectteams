@@ -408,7 +408,7 @@ public class MethodSpec extends ASTNode implements InvocationSite
 
 	private TypeBinding boundMethodReturnType() {
 		if (this.resolvedMethod == null)
-			return new ProblemReferenceBinding("<missing>".toCharArray(), null, ProblemReasons.NotFound); //$NON-NLS-1$
+			return new ProblemReferenceBinding("<missing>".toCharArray(), null, ProblemReasons.NotFound, true); //$NON-NLS-1$
 		if (this.resolvedMethod.isCallin())
     		return MethodModel.getReturnType(this.resolvedMethod);
     	return this.resolvedMethod.returnType;

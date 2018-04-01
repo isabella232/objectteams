@@ -1754,6 +1754,14 @@ private boolean isCompatibleWith0(TypeBinding otherType, boolean useObjectShortc
 										// above if same erasure
 			}
 			ReferenceBinding otherReferenceType = (ReferenceBinding) otherType;
+			if (otherReferenceType.isIntersectionType18()) {
+				ReferenceBinding[] intersectingTypes = ((IntersectionTypeBinding18)otherReferenceType).intersectingTypes;
+				for (ReferenceBinding binding : intersectingTypes) {
+					if (!isCompatibleWith(binding))
+						return false;
+				}
+				return true;
+			}
 			if (otherReferenceType.isInterface()) { // could be annotation type
 				if (implementsInterface(otherReferenceType, true))
 					return true;
@@ -1786,7 +1794,6 @@ public boolean isCompatibleViaLowering(ReferenceBinding other) {
 	return false;
 }
 // SH}
-
 public boolean isSubtypeOf(TypeBinding other) {
 	if (isSubTypeOfRTL(other))
 		return true;

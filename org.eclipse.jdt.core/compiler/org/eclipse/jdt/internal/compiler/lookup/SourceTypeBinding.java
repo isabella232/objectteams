@@ -2647,7 +2647,7 @@ private MethodBinding resolveTypesWithSuspendedTempErrorHandlingPolicy(MethodBin
             		|| !parameterType.isCompatibleWith(declaredBaseclass))
             	{
             		ProblemReferenceBinding problemBinding = new ProblemReferenceBinding(
-            				parameterType.readableName(), (ReferenceBinding)parameterType, ProblemReasons.NotVisible);
+            				parameterType.readableName(), (ReferenceBinding)parameterType, ProblemReasons.NotVisible, true);
             		this.scope.problemReporter().invalidType(arg.type, problemBinding);
             	}
             }

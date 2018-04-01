@@ -209,7 +209,7 @@ public class OTClassScope extends ClassScope {
 	{
 		if (problem instanceof ReferenceBinding)
 			return new ProblemReferenceBinding(compoundName,
-					(ReferenceBinding)problem, ProblemReasons.Ambiguous);
+					(ReferenceBinding)problem, ProblemReasons.Ambiguous, true);
 		else
 			return null; // no ProblemBinding can be constructed (cf. Scope.TODO should improve).
 	}

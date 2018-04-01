@@ -186,7 +186,7 @@ public class PrecedenceDeclaration extends ASTNode {
 			if (roleBinding != null) {
 				if (!typeAllowed) {
 					scope.problemReporter().illegalDeepRoleReferenceInPrecedence(this, type, roleBinding);
-					return new ProblemReferenceBinding(name, roleBinding, ProblemReasons.NotVisible);
+					return new ProblemReferenceBinding(name, roleBinding, ProblemReasons.NotVisible, true);
 				}
 				return roleBinding;
 			}

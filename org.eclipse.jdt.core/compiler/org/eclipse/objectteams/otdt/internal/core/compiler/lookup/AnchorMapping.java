@@ -170,7 +170,7 @@ public class AnchorMapping {
 						
 						// missing a required anchor?
 						if (anchor == null && paramDependentType.hasAnchorWithinThisMethodsSignature(currentMethod))
-							return new ProblemReferenceBinding(paramDependentType.sourceName(), paramDependentType, ProblemReasons.AnchorNotFound);
+							return new ProblemReferenceBinding(paramDependentType.sourceName(), paramDependentType, ProblemReasons.AnchorNotFound, true);
 						
 						if (anchor == null && AnchorMapping.this._receiver != null)
 						{

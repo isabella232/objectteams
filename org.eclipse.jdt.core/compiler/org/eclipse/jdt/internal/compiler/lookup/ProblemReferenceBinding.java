@@ -51,8 +51,8 @@ public TypeBinding closestMatch() {
 }
 
 //{ObjectTeams: special uses:
-// for role types
-public ProblemReferenceBinding(char[] name, ReferenceBinding closestMatch, int problemReason) {
+// for role types (otTagArg only serves to disambiguate invocations wrt ProblemReferenceBinding(char[][],ReferenceBinding,int))
+public ProblemReferenceBinding(char[] name, ReferenceBinding closestMatch, int problemReason, boolean otTagArg) {
 	this(new char[][] {name}, closestMatch, problemReason);
 }
 // for anchored types:

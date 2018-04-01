@@ -1214,7 +1214,7 @@ public class RoleTypeCreator implements TagBits {
 		    roleType = anchor.getMemberTypeOfType(roleName);
 	    	problemReporter.referenceContext = contextSave;
 	    	if (roleType == null)
-	    		return new ProblemReferenceBinding(roleName, null, ProblemReasons.NotFound);
+	    		return new ProblemReferenceBinding(roleName, null, ProblemReasons.NotFound, true);
 	    }
 
 	    // call the principal method:
@@ -1479,7 +1479,7 @@ public class RoleTypeCreator implements TagBits {
 	    		return new ProblemReferenceBinding(
 	                    site.sourceName(),
 	                    role,
-	                    ProblemReasons.NoTeamContext);
+	                    ProblemReasons.NoTeamContext, true);
 	    	}
 	    	return teamBinding.getMemberType(role.internalName());
 	    }

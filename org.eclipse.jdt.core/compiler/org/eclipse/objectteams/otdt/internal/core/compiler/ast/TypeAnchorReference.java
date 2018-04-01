@@ -338,7 +338,7 @@ public class TypeAnchorReference extends TypeReference implements InvocationSite
 		if (currentAnchor == null) {
 			currentAnchor = new ProblemFieldBinding(scope.enclosingReceiverType(), currentToken, ProblemReasons.NotFound);
 			((FieldBinding)currentAnchor).type =
-					  reference.resolvedType = new ProblemReferenceBinding("UnresolvedType".toCharArray(), null, ProblemReasons.NotFound); //$NON-NLS-1$
+					  reference.resolvedType = new ProblemReferenceBinding("UnresolvedType".toCharArray(), null, ProblemReasons.NotFound, true); //$NON-NLS-1$
 		} else if (currentAnchor.isValidBinding()) {
 			if (prefix != null && !(prefix instanceof TThisBinding))
 				currentAnchor = currentAnchor.setPathPrefix(prefix);

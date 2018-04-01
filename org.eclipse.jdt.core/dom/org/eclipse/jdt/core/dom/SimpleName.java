@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2013 IBM Corporation and others.
+ * Copyright (c) 2000, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,13 @@ public class SimpleName extends Name {
 		new SimplePropertyDescriptor(SimpleName.class, "identifier", String.class, MANDATORY); //$NON-NLS-1$
 
 	/**
+	 * The "var"  property of this node name (type: {@link Boolean}) (added in JLS10 API).
+	 * @since 3.14
+	 */
+	public static final SimplePropertyDescriptor VAR_PROPERTY =
+		new SimplePropertyDescriptor(SimpleName.class, "var", boolean.class, MANDATORY); //$NON-NLS-1$
+
+	/**
 	 * A list of property descriptors (element type:
 	 * {@link StructuralPropertyDescriptor}),
 	 * or null if uninitialized.
@@ -51,12 +58,26 @@ public class SimpleName extends Name {
 	 */
 	private static final List PROPERTY_DESCRIPTORS;
 
+	/**
+	 * A list of property descriptors (element type:
+	 * {@link StructuralPropertyDescriptor}),
+	 * or null if uninitialized.
+	 * @since 3.14
+	 */
+	private static final List PROPERTY_DESCRIPTORS_10_0;
+
 	static {
 		List propertyList = new ArrayList(2);
 		createPropertyList(SimpleName.class, propertyList);
 		addProperty(IDENTIFIER_PROPERTY, propertyList);
 		PROPERTY_DESCRIPTORS = reapPropertyList(propertyList);
-	}
+
+		propertyList = new ArrayList(3);
+		createPropertyList(SimpleName.class, propertyList);
+		addProperty(IDENTIFIER_PROPERTY, propertyList);
+		addProperty(VAR_PROPERTY, propertyList);
+		PROPERTY_DESCRIPTORS_10_0 = reapPropertyList(propertyList);
+}
 
 	/**
 	 * Returns a list of structural property descriptors for this node type.
@@ -68,7 +89,11 @@ public class SimpleName extends Name {
 	 * @since 3.0
 	 */
 	public static List propertyDescriptors(int apiLevel) {
-		return PROPERTY_DESCRIPTORS;
+		if (apiLevel < AST.JLS10_INTERNAL) {
+			return PROPERTY_DESCRIPTORS;
+		} else {
+			return PROPERTY_DESCRIPTORS_10_0;
+		}
 	}
 
 	/**
@@ -80,6 +105,14 @@ public class SimpleName extends Name {
 	 * The identifier; defaults to a unspecified, legal Java identifier.
 	 */
 	private String identifier = MISSING_IDENTIFIER;
+
+	/**
+	 * Indicates the whether this represents a var;
+	 * defaults to false.
+	 *
+	 * @since 3.14
+	 */
+	private boolean isVarType = false;
 
 	/**
 	 * Creates a new AST node for a simple name owned by the given AST.
@@ -102,6 +135,20 @@ public class SimpleName extends Name {
 	 */
 	final List internalStructuralPropertiesForType(int apiLevel) {
 		return propertyDescriptors(apiLevel);
+	}
+
+	@Override
+	final boolean internalGetSetBooleanProperty(SimplePropertyDescriptor property, boolean get, boolean value) {
+		if (property == VAR_PROPERTY) {
+			if (get) {
+				return isVar();
+			} else {
+				setVar(value);
+				return false;
+			}
+		}
+		// allow default implementation to flag the error
+		return super.internalGetSetBooleanProperty(property, get, value);
 	}
 
 	/* (omit javadoc for this method)
@@ -134,6 +181,9 @@ public class SimpleName extends Name {
 		SimpleName result = new SimpleName(target);
 		result.setSourceRange(getStartPosition(), getLength());
 		result.setIdentifier(getIdentifier());
+		if (this.ast.apiLevel >= AST.JLS10_INTERNAL) {
+			result.setVar(isVar());
+		}
 		return result;
 	}
 
@@ -218,6 +268,27 @@ public class SimpleName extends Name {
 		preValueChange(IDENTIFIER_PROPERTY);
 		this.identifier = identifier;
 		postValueChange(IDENTIFIER_PROPERTY);
+	}
+
+	/**
+	 * Returns whether this represents a "var"  type or not (added in JLS10 API).
+	 *
+	 * @return <code>true</code> if this is a var  type
+	 *    and <code>false</code> otherwise
+	 * @exception UnsupportedOperationException if this operation is used in
+	 * an AST below JLS10
+	 * @since 3.14
+	 */
+	public boolean isVar() {
+		unsupportedBelow10();
+		return this.isVarType;
+	}
+
+	/* package */ void setVar(boolean isVar) {
+		unsupportedBelow10();
+		preValueChange(VAR_PROPERTY);
+		this.isVarType = isVar;
+		postValueChange(VAR_PROPERTY);
 	}
 
 	/* (omit javadoc for this method)
