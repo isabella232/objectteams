@@ -624,7 +624,7 @@ public class OrganizeImportsTest extends TestCase
         buf.append("package teamPkg;\n");
         buf.append("public team class T1 {\n");
         buf.append("    public class R1 playedBy B1 {\n");
-        buf.append("        abstract static void test();");
+        buf.append("        abstract static void test();\n");
         buf.append("    	void test() -> void testB1();\n");
         buf.append("    }\n");
         buf.append("}\n");
@@ -648,7 +648,7 @@ public class OrganizeImportsTest extends TestCase
         buf.append("\n");
         buf.append("public team class T1 {\n");
         buf.append("    public class R1 playedBy B1 {\n");
-        buf.append("        abstract static void test();");
+        buf.append("        abstract static void test();\n");
         buf.append("    	void test() -> void testB1();\n");
         buf.append("    }\n");
         buf.append("}\n");

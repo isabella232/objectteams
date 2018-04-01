@@ -37,11 +37,13 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnnotatableType;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.ArrayType;
+import org.eclipse.jdt.core.dom.CalloutMappingDeclaration;
 import org.eclipse.jdt.core.dom.CharacterLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Dimension;
@@ -66,6 +68,7 @@ import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.eclipse.jdt.internal.compiler.lookup.ExtraCompilerModifiers;
@@ -103,6 +106,7 @@ import org.eclipse.text.edits.TextEdit;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public final class ImportRewrite {
+
 	/**
 	 * Used to determine how a type will be used, so that unwanted annotations can be filtered,
 	 * which is in particular relevant for avoiding redundant null annotations in the scope of {@code @NonNullByDefault}. 
@@ -1171,12 +1175,41 @@ public final class ImportRewrite {
 					return addStaticImport(getRawQualifiedName(declaringType), binding.getName(), true, context);
 				}
 			} else if (binding instanceof IMethodBinding) {
+				//{ObjectTeams: don't import field that can only be accessed by callout (decapsulation):
+				if (   !Flags.isPublic(binding.getModifiers())
+					&& isCalloutAccessed((IMethodBinding) binding, context))
+					return null;
+//SH}
 				ITypeBinding declaringType= ((IMethodBinding) binding).getDeclaringClass();
 				return addStaticImport(getRawQualifiedName(declaringType), binding.getName(), false, context);
 			}
 		}
 		throw new IllegalArgumentException("Binding must be a static field or method."); //$NON-NLS-1$
 	}
+
+//{ObjectTeams: try to map a method to the rhs of a callout binding
+	private boolean isCalloutAccessed(final IMethodBinding binding, ImportRewriteContext context) {
+		class ASTVisitorExtension extends ASTVisitor {
+			boolean found;
+			public boolean visit(org.eclipse.jdt.core.dom.MethodSpec node) {
+				if (node.getLocationInParent() == CalloutMappingDeclaration.BASE_MAPPING_ELEMENT_PROPERTY && node.resolveBinding() == binding)
+					this.found = true;
+				return false;
+			}
+		}
+
+		for (Object t : this.astRoot.types()) {
+			TypeDeclaration type = (TypeDeclaration) t;
+			if (type.isRole() || type.isTeam()) {
+				ASTVisitorExtension visitor = new ASTVisitorExtension();
+				type.accept(visitor);
+				if (visitor.found)
+					return true;
+			}
+		}
+		return false;
+	}
+// SH}
 
 	/**
 	 * Adds a new static import to the rewriter's record and returns a name - single member name if
