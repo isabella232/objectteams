@@ -45,16 +45,16 @@ plugin@org.eclipse.objectteams.otdt.pde.ui=GIT,repo=git://git.eclipse.org/gitroo
 plugin@org.eclipse.objectteams.otdt.samples=GIT,repo=git://git.eclipse.org/gitroot/objectteams/org.eclipse.objectteams.git,path=plugins/org.eclipse.objectteams.otdt.samples,tag=builds/201706061122
 
 !** Consume BCEL from Orbit: **!
-plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository
+plugin@org.apache.bcel,5.2.0=p2IU,id=org.apache.bcel,version=5.2.0.v201005080400,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository
 !** ASM from Orbit: **!
-plugin@org.objectweb.asm,6.0.0=p2IU,id=org.objectweb.asm,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
-plugin@org.objectweb.asm.tree,6.0.0=p2IU,id=org.objectweb.asm.tree,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
-plugin@org.objectweb.asm.commons,6.0.0=p2IU,id=org.objectweb.asm.commons,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
-plugin@org.objectweb.asm.util,6.0.0=p2IU,id=org.objectweb.asm.util,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
-plugin@org.objectweb.asm.analysis,6.0.0=p2IU,id=org.objectweb.asm.analysis,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
+plugin@org.objectweb.asm,6.0.0=p2IU,id=org.objectweb.asm,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
+plugin@org.objectweb.asm.tree,6.0.0=p2IU,id=org.objectweb.asm.tree,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
+plugin@org.objectweb.asm.commons,6.0.0=p2IU,id=org.objectweb.asm.commons,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
+plugin@org.objectweb.asm.util,6.0.0=p2IU,id=org.objectweb.asm.util,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
+plugin@org.objectweb.asm.analysis,6.0.0=p2IU,id=org.objectweb.asm.analysis,version=6.0.0.v20170929-1901,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
 
-plugin@org.mockito,1.9.5=p2IU,id=org.mockito,version=1.9.5.v201605172210,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
-plugin@org.hamcrest.core,1.3.0=p2IU,id=org.hamcrest.core,version=1.3.0.v201303031735,repository=http://download.eclipse.org/tools/orbit/downloads/drops/S20171020092454/repository/
+plugin@org.mockito,1.9.5=p2IU,id=org.mockito,version=1.9.5.v201605172210,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
+plugin@org.hamcrest.core,1.3.0=p2IU,id=org.hamcrest.core,version=1.3.0.v201303031735,repository=http://download.eclipse.org/tools/orbit/downloads/drops/M20180330011457/repository/
 
 !========== JDT/UI: ==========!
 plugin@org.eclipse.jdt.ui=GIT,tag=@SDK_QUALIFIER@,repo=git://git.eclipse.org/gitroot/jdt/eclipse.jdt.ui.git,path=org.eclipse.jdt.ui
