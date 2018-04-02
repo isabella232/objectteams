@@ -209,8 +209,8 @@ public class WordValueAttribute
         return new WordValueAttribute(ROLECLASS_METHOD_MODIFIERS_NAME, modifiers);
     }
 
-    public static void readRoleClassMethodModifiersAttribute(MethodInfo info, int readOffset) {
-		int binaryFlags = info.getModifiers() & ~ExtraCompilerModifiers.AccVisibilityMASK; // reset these bits first
+    public static void readRoleClassMethodModifiersAttribute(MethodInfo info, int readOffset, int flagsSoFar) {
+		int binaryFlags = flagsSoFar & ~ExtraCompilerModifiers.AccVisibilityMASK; // reset these bits first
 		int newFlags = info.u2At(readOffset);
     	info.setAccessFlags(binaryFlags | newFlags);
 	}
@@ -222,10 +222,11 @@ public class WordValueAttribute
      */
     public static WordValueAttribute readCallinFlags(
             MethodInfo      method,
-            int             readOffset)
+            int             readOffset,
+            int				flagsSoFar)
     {
         int  value = method.u2At(readOffset);
-        method.setAccessFlags(method.getModifiers()|ExtraCompilerModifiers.AccCallin);
+        method.setAccessFlags(flagsSoFar|ExtraCompilerModifiers.AccCallin);
         // create and store an attribute anyway, in order to store the actual bits.
         WordValueAttribute result = callinFlagsAttribute(value);
         result._methodInfo = method;

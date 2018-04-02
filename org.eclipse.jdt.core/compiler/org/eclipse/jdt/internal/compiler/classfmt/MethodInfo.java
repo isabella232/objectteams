@@ -545,7 +545,7 @@ private synchronized void readModifierRelatedAttributes() {
 //{ObjectTeams: read method attributes
 					break;
 				default:
-					readOTAttribute(attributeName, this, readOffset+6, this.structOffset, this.constantPoolOffsets);
+					readOTAttribute(attributeName, this, readOffset+6, this.structOffset, this.constantPoolOffsets, flags);
 // SH}
 			}
 		}
@@ -568,7 +568,8 @@ private synchronized void readModifierRelatedAttributes() {
             MethodInfo info,
             int        readOffset,
             int        aStructOffset,
-            int[]      someConstantPoolOffsets)
+            int[]      someConstantPoolOffsets,
+            int        flagsSoFar)
     {
     	if (CharOperation.equals(attributeName, AttributeNamesConstants.CodeName))
     		return; // optimization only.
@@ -579,7 +580,7 @@ private synchronized void readModifierRelatedAttributes() {
         }
         else if (CharOperation.equals(attributeName, ROLECLASS_METHOD_MODIFIERS_NAME))
         {
-        	WordValueAttribute.readRoleClassMethodModifiersAttribute(info, readOffset);
+        	WordValueAttribute.readRoleClassMethodModifiersAttribute(info, readOffset, flagsSoFar);
             // not added to _readAttributes because evaluated immediately.
         }
         else if (CharOperation.equals(attributeName, CALLS_BASE_CTOR))
@@ -589,7 +590,7 @@ private synchronized void readModifierRelatedAttributes() {
         }
         else if (CharOperation.equals(attributeName, CALLIN_FLAGS))
         {
-            this.methodAttributes.add(WordValueAttribute.readCallinFlags(info, readOffset));
+            this.methodAttributes.add(WordValueAttribute.readCallinFlags(info, readOffset, flagsSoFar));
         }
         else if (CharOperation.equals(attributeName, TYPE_ANCHOR_LIST))
         {
