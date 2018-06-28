@@ -4,7 +4,7 @@
   	<parent>
 		<groupId>org.eclipse.objectteams</groupId>
 		<artifactId>objectteams-parent-pom</artifactId>
-		<version>2.6.1</version>
+		<version>2.6.2</version>
   	</parent>
   
 	<artifactId>objectteams-otdre-parent-pom</artifactId>
@@ -66,6 +66,9 @@
     	<!-- Repository path of this module within the Object Teams git: -->
     	<project-repository-path>maven/infrastructure/parent-pom-otdre</project-repository-path>
 
+                <!-- deploy using either scpexe or file protocol: -->
+                <protocol>scpexe</protocol>
+
 		<!-- Select OTDRE: -->
 		<otj.weaving.scheme>otdre</otj.weaving.scheme>
 		<objectteams-otre.version>${otdre.version}</objectteams-otre.version>
@@ -103,7 +106,7 @@
 			    otherwise the variables from the below URL will be pasted verbatim for references
 			    to the parent pom =:-0
 			-->
-			<url>scpexe://${ot.host}:${ot.maven.repository.basepath}/sites/${project.artifactId}</url>
+			<url>${protocol}://${ot.host}:${ot.maven.repository.basepath}/sites/${project.artifactId}</url>
 		</site>
 		<repository>
 			<id>ObjectTeamsRepository</id>
@@ -112,7 +115,7 @@
 			<!--
 				most values are fed from settings.xml
 			-->
-			<url>scpexe://${ot.host}:${ot.maven.repository.basepath}/repository</url>
+			<url>${protocol}://${ot.host}:${ot.maven.repository.basepath}/repository</url>
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
